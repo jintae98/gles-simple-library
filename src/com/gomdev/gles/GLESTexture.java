@@ -1,104 +1,164 @@
 package com.gomdev.gles;
 
-import static android.opengl.GLES20.GL_CLAMP_TO_EDGE;
-import static android.opengl.GLES20.GL_TEXTURE_2D;
-import static android.opengl.GLES20.GL_TEXTURE_WRAP_S;
-import static android.opengl.GLES20.GL_TEXTURE_WRAP_T;
 import android.graphics.Bitmap;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
 import android.util.Log;
 
 public class GLESTexture {
-	private static final String TAG = "gomdev GLESTexture";
-	private static final boolean DEBUG = GLESConfig.DEBUG;
-	
-	private int mWidth;
-	private int mHeight;
-	
-	private int mTextureID;
-	
-	public GLESTexture(Bitmap bitmap)
-	{
-		mWidth = bitmap.getWidth();
-		mHeight = bitmap.getHeight();
-		
-		makeTexture(bitmap);
-		
-	}
+    private static final String CLASS = "GLESTexture";
+    private static final String TAG = GLESConfig.TAG + " " + CLASS;
+    private static final boolean DEBUG = GLESConfig.DEBUG;
 
-	public GLESTexture(int width, int height, Bitmap bitmap)
-	{
-		mWidth = width;
-		mHeight = height;
-		
-		makeTexture(bitmap);
-	}
-	
-	public int getTextureID()
-	{
-		if(GLES20.glIsTexture(mTextureID) == false)
-		{
-			Log.e(TAG, "mTextureID is invalid");
-			return -1;
-		}
-		
-		return mTextureID;
-	}
-	
-	public void changeTexture(Bitmap bitmap)
-	{
-		if(DEBUG) Log.d(TAG, "changeTexture() textureID=" + mTextureID + " bitmap=" + bitmap);
-		
-		
-		if(bitmap == null)
-		{
-		    throw new IllegalArgumentException("changeTexture() bitmap is null");
-		}
-		
+    private int mTextureID;
 
-		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
+    private int mWidth;
+    private int mHeight;
 
-		if(GLES20.glIsTexture(mTextureID) == true)
-		{
-			int[] textures = new int[1];
-			textures[0] = mTextureID;
-			GLES20.glDeleteTextures(1, textures, 0);
-		}
+    private int mFormat = GLES20.GL_RGBA;// 6408;
+    private int mType = GLES20.GL_UNSIGNED_BYTE;// 5121;
+    private int mWrapMode = GLES20.GL_CLAMP_TO_EDGE;// 33071;
 
-		makeTexture(bitmap);
-	}
-	
-	public int getWidth()
-	{
-		return mWidth;
-	}
-	
-	public int getHeight()
-	{
-		return mHeight;
-	}
-	
-	private void makeTexture(Bitmap bitmap)
-	{
-		if(DEBUG) Log.d(TAG, "makeTexture() bitmap=" + bitmap);
-		if(bitmap == null)
-		{
-			throw new IllegalArgumentException("setTexture() bitmap is null");
-		}
-		
-		int[] textureIds = new int[1];
-		GLES20.glGenTextures(1, textureIds, 0);
-		mTextureID = textureIds[0];
-		
-		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureID);
-		GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
-		GLES20.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		GLES20.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
-		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
-		
-		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-		bitmap.recycle();
-	}
+    public GLESTexture() {
+    }
+
+    public GLESTexture(int width, int height, Bitmap bitmap) {
+        this(width, height, bitmap, false);
+    }
+
+    public GLESTexture(int width, int height, Bitmap bitmap,
+            boolean needToRecycle) {
+        mWidth = width;
+        mHeight = height;
+
+        makeTexture(bitmap, needToRecycle);
+    }
+
+    public GLESTexture(Bitmap bitmap) {
+        this(bitmap, false);
+    }
+
+    public GLESTexture(Bitmap bitmap, boolean needToRecycle) {
+        mWidth = bitmap.getWidth();
+        mHeight = bitmap.getHeight();
+
+        makeTexture(bitmap, needToRecycle);
+    }
+
+    public GLESTexture(Bitmap bitmap, int wrapMode, boolean needToRecycle) {
+        mWidth = bitmap.getWidth();
+        mHeight = bitmap.getHeight();
+
+        mWrapMode = wrapMode;
+
+        makeTexture(bitmap, needToRecycle);
+    }
+
+    public void destroy() {
+        if (GLES20.glIsTexture(mTextureID) == true) {
+            int[] textureIDs = new int[1];
+            textureIDs[0] = mTextureID;
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
+            GLES20.glDeleteTextures(1, textureIDs, 0);
+        }
+    }
+
+    public int getWidth() {
+        return mWidth;
+    }
+
+    public int getHeight() {
+        return mHeight;
+    }
+
+    public int getTextureID() {
+        if (!GLES20.glIsTexture(mTextureID)) {
+            Log.e(TAG, "mTextureID is invalid");
+            return -1;
+        }
+        return mTextureID;
+    }
+
+    private void makeTexture(Bitmap bitmap, boolean needToRecycle) {
+        if (bitmap == null) {
+            Log.e(TAG, "makeTexture() bitmap is null");
+            return;
+        }
+
+        mWidth = bitmap.getWidth();
+        mHeight = bitmap.getHeight();
+
+        int[] textureIDs = new int[1];
+        GLES20.glGenTextures(1, textureIDs, 0);
+        mTextureID = textureIDs[0];
+
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureID);
+        GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S,
+                mWrapMode);
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S,
+                mWrapMode);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
+                GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
+                GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
+
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
+
+        if (needToRecycle == true) {
+            bitmap.recycle();
+        }
+    }
+
+    public void makeSubTexture(int width, int height, boolean needToRecycle,
+            Bitmap bitmap) {
+        if (bitmap == null) {
+            Log.e(TAG, "makeSubTexture() bitmap is null");
+            return;
+        }
+
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureID);
+        GLUtils.texSubImage2D(GLES20.GL_TEXTURE_2D, 0, width, height, bitmap);
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
+
+        if (needToRecycle == true) {
+            bitmap.recycle();
+        }
+    }
+
+    public void changeTexture(Bitmap bitmap, boolean needToRecycle) {
+        if (bitmap == null) {
+            Log.e(TAG, "changeTexture() bitmap is null");
+        }
+
+        if (GLES20.glIsTexture(mTextureID) == false) {
+            makeTexture(bitmap, needToRecycle);
+            return;
+        }
+
+        float bitmapWidth = bitmap.getWidth();
+        float bitmapHeight = bitmap.getHeight();
+        if ((Float.compare(bitmapWidth, mWidth) == 0)
+                && (Float.compare(bitmapHeight, mHeight) == 0)) {
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureID);
+            GLUtils.texSubImage2D(GLES20.GL_TEXTURE_2D, 0, 0, 0, bitmap);
+
+            if (needToRecycle == true) {
+                bitmap.recycle();
+            }
+        } else {
+            int[] textureIDs = new int[1];
+            textureIDs[0] = mTextureID;
+
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
+            GLES20.glDeleteTextures(1, textureIDs, 0);
+
+            makeTexture(bitmap, needToRecycle);
+        }
+
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
+
+        return;
+    }
+
 }
