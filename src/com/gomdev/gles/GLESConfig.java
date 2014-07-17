@@ -12,6 +12,7 @@ public class GLESConfig {
     public static final int NUM_OF_VERTEX_ELEMENT_WITH_W = 4;
     public static final int NUM_OF_TEXCOORD_ELEMENT = 2;
     public static final int NUM_OF_NORMAL_ELEMENT = 3;
+    public static final int NUM_OF_COLOR_ELEMENT = 4;
     public static final int NUM_OF_INDEX_ELEMENT = 6;
 
     public static final int SHORT_SIZE_BYTES = 2;
@@ -42,15 +43,6 @@ public class GLESConfig {
 
             return 0f;
         }
-    }
-
-    public static enum MeshType {
-        PLANE, PLANE_MESH, CUSTOM_MESH;
-
-    }
-
-    public enum ObjectType {
-        SOLID, ALPHA_TESTED, TRANPARENT
     }
 
     public enum ProjectionType {

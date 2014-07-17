@@ -34,7 +34,7 @@ public abstract class GLESParticleController {
 
     public GLESParticleController(Context context) {
         mContext = context;
-        mDummyObject = new DummyObject(context, false, false);
+        mDummyObject = new DummyObject(context);
     }
 
     public void addParticleSet(GLESParticleSet particleSet) {
@@ -165,9 +165,8 @@ public abstract class GLESParticleController {
     }
 
     protected class DummyObject extends GLESObject {
-        public DummyObject(Context context, boolean useTexture,
-                boolean useNormal) {
-            super(context, useTexture, useNormal);
+        public DummyObject(Context context) {
+            super(context);
         }
 
         protected void draw() {

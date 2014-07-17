@@ -1,12 +1,13 @@
 package com.gomdev.effect.whitehole;
 
+import java.nio.ShortBuffer;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.opengl.GLES20;
 import android.util.Log;
 
 import com.gomdev.gles.GLESConfig;
-import com.gomdev.gles.GLESConfig.ObjectType;
 import com.gomdev.gles.GLESObject;
 import com.gomdev.gles.GLESProjection;
 import com.gomdev.gles.GLESUtils;
@@ -16,17 +17,8 @@ public class WhiteholeObject extends GLESObject {
     private static final String TAG = WhiteholeConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = WhiteholeConfig.DEBUG;
 
-    private float mX;
-    private float mY;
-
-    private int mNumOfVertics;
-    private int mNumOfVertexElement;
-
     private boolean mIsImageChanged;
     private Bitmap mBitmap;
-
-    private float mObjWidth;
-    private float mObjHeight;
 
     private int mPositionInVSHandle = -1;
     private int mPositionInFSHandle = -1;
@@ -36,18 +28,8 @@ public class WhiteholeObject extends GLESObject {
     private float[] mDownPosInFS = new float[2];
     private float mRadius = 100.0f;
 
-    public WhiteholeObject(Context context, boolean useTexture,
-            boolean useNormal) {
-        super(context, useTexture, useNormal);
-
-        init();
-    }
-
-    public WhiteholeObject(Context context, boolean useTexture,
-            boolean useNormal, ObjectType objectType) {
-        super(context, useTexture, useNormal, objectType);
-
-        init();
+    public WhiteholeObject(Context context) {
+        super(context);
     }
 
     @Override
@@ -87,53 +69,26 @@ public class WhiteholeObject extends GLESObject {
                 Log.d(TAG, "draw() mTexture is invalid");
         }
 
-        if (GLESConfig.USE_VBO == true) {
-            GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, mVBOIDs[0]);
+        GLES20.glEnableVertexAttribArray(mShader.getVertexAttribIndex());
+        GLES20.glVertexAttribPointer(mShader.getVertexAttribIndex(),
+                GLESConfig.NUM_OF_VERTEX_ELEMENT, GLES20.GL_FLOAT, false,
+                GLESConfig.NUM_OF_VERTEX_ELEMENT * GLESConfig.FLOAT_SIZE_BYTES,
+                mVertexInfo.getVertexBuffer().position(0));
 
-            GLES20.glEnableVertexAttribArray(mShader.getVertexAttribIndex());
-            GLES20.glVertexAttribPointer(mShader.getVertexAttribIndex(),
-                    GLESConfig.NUM_OF_VERTEX_ELEMENT, GLES20.GL_FLOAT, false,
-                    mNumOfVertexElement * GLESConfig.FLOAT_SIZE_BYTES, 0);
-
-            if (mUseTexture == true) {
-                GLES20.glEnableVertexAttribArray(mShader
-                        .getTexCoordAttribIndex());
-                GLES20.glVertexAttribPointer(mShader.getTexCoordAttribIndex(),
-                        GLESConfig.NUM_OF_TEXCOORD_ELEMENT, GLES20.GL_FLOAT,
-                        false, mNumOfVertexElement
-                                * GLESConfig.FLOAT_SIZE_BYTES,
-                        GLESConfig.NUM_OF_VERTEX_ELEMENT
-                                * GLESConfig.FLOAT_SIZE_BYTES);
-            }
-
-            GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, mVBOIDs[1]);
-            GLES20.glDrawElements(GLES20.GL_TRIANGLES, mIndexBuffer.capacity(),
-                    GLES20.GL_UNSIGNED_SHORT, 0);
-
-            GLES20.glDisableVertexAttribArray(mShader.getVertexAttribIndex());
-            GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
-        } else {
-            GLES20.glEnableVertexAttribArray(mShader.getVertexAttribIndex());
-            GLES20.glVertexAttribPointer(mShader.getVertexAttribIndex(),
-                    GLESConfig.NUM_OF_VERTEX_ELEMENT, GLES20.GL_FLOAT, false,
-                    mNumOfVertexElement * GLESConfig.FLOAT_SIZE_BYTES,
-                    mVertexBuffer.position(0));
-
-            if (mUseTexture == true) {
-                GLES20.glEnableVertexAttribArray(mShader
-                        .getTexCoordAttribIndex());
-                GLES20.glVertexAttribPointer(mShader.getTexCoordAttribIndex(),
-                        GLESConfig.NUM_OF_TEXCOORD_ELEMENT, GLES20.GL_FLOAT,
-                        false, mNumOfVertexElement
-                                * GLESConfig.FLOAT_SIZE_BYTES, mVertexBuffer
-                                .position(GLESConfig.NUM_OF_VERTEX_ELEMENT));
-            }
-
-            GLES20.glDrawElements(GLES20.GL_TRIANGLES, mIndexBuffer.capacity(),
-                    GLES20.GL_UNSIGNED_SHORT, mIndexBuffer);
-
-            GLES20.glDisableVertexAttribArray(mShader.getVertexAttribIndex());
+        if (mVertexInfo.isUseTexCoord() == true) {
+            GLES20.glEnableVertexAttribArray(mShader.getTexCoordAttribIndex());
+            GLES20.glVertexAttribPointer(mShader.getTexCoordAttribIndex(),
+                    GLESConfig.NUM_OF_TEXCOORD_ELEMENT, GLES20.GL_FLOAT, false,
+                    GLESConfig.NUM_OF_TEXCOORD_ELEMENT
+                            * GLESConfig.FLOAT_SIZE_BYTES, mVertexInfo
+                            .getTexCoordBuffer().position(0));
         }
+
+        ShortBuffer indexBuffer = mVertexInfo.getIndexBuffer();
+        GLES20.glDrawElements(GLES20.GL_TRIANGLES, indexBuffer.capacity(),
+                GLES20.GL_UNSIGNED_SHORT, indexBuffer);
+
+        GLES20.glDisableVertexAttribArray(mShader.getVertexAttribIndex());
     }
 
     @Override
@@ -165,19 +120,6 @@ public class WhiteholeObject extends GLESObject {
     public void setRadius(float radius) {
         Log.d(TAG, "setRadius() radius=" + radius);
         mRadius = radius;
-    }
-
-    private void init() {
-        mNumOfVertexElement = GLESConfig.NUM_OF_VERTEX_ELEMENT;
-
-        if (mUseNormal == true) {
-            mNumOfVertexElement += GLESConfig.NUM_OF_NORMAL_ELEMENT;
-        }
-
-        if (mUseTexture == true) {
-            mNumOfVertexElement += GLESConfig.NUM_OF_TEXCOORD_ELEMENT;
-        }
-
     }
 
     private void checkImageChanged() {

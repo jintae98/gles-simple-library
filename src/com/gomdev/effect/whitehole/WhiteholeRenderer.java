@@ -7,8 +7,6 @@ import javax.microedition.khronos.opengles.GL10;
 
 import com.gomdev.effect.test.R;
 import com.gomdev.gles.*;
-import com.gomdev.gles.GLESConfig.MeshType;
-import com.gomdev.gles.GLESConfig.ObjectType;
 import com.gomdev.gles.GLESConfig.ProjectionType;
 
 import android.content.Context;
@@ -49,8 +47,7 @@ public class WhiteholeRenderer implements GLESRenderer {
     public WhiteholeRenderer(Context context) {
         mContext = context;
 
-        mWhiteholeObject = new WhiteholeObject(context, true, false,
-                ObjectType.TRANPARENT);
+        mWhiteholeObject = new WhiteholeObject(context);
     }
 
     public void destroy() {
@@ -98,16 +95,15 @@ public class WhiteholeRenderer implements GLESRenderer {
         GLES20.glViewport(0, 0, width, height);
 
         mWhiteholeObject.setupSpace(ProjectionType.FRUSTUM, mWidth, mHeight);
-        mWhiteholeObject.createMesh(MeshType.PLANE_MESH, 0f, 0f, mWidth,
-                mHeight, WhiteholeConfig.MESH_RESOLUTION);
         mWhiteholeObject.show();
+        
+        GLESVertexInfo vertexInfo = GLESMeshUtils.createPlaneMesh(mWidth, mHeight, WhiteholeConfig.MESH_RESOLUTION, true, false);
+        mWhiteholeObject.setVertexInfo(vertexInfo);
     }
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         GLES20.glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
-
-        GLES20.glEnable(GLES20.GL_TEXTURE_2D);
 
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         GLES20.glDepthFunc(GLES20.GL_LEQUAL);
@@ -126,7 +122,7 @@ public class WhiteholeRenderer implements GLESRenderer {
         // R.drawable.moon);
         mWhiteholeTexture = new GLESTexture(bitmap, GLES20.GL_MIRRORED_REPEAT,
                 true);
-        mWhiteholeObject.setTexture(mWhiteholeTexture, false);
+        mWhiteholeObject.setTexture(mWhiteholeTexture);
 
         mMinRingSize = GLESUtils.getPixelFromDpi(mContext,
                 WhiteholeConfig.MIN_RING_SIZE);
@@ -235,6 +231,9 @@ public class WhiteholeRenderer implements GLESRenderer {
         mShaderWhitehole.setShadersFromResource(R.raw.whitehole_vs,
                 R.raw.whitehole_fs);
         mShaderWhitehole.load();
+        
+        mShaderWhitehole.setVertexAttribIndex("aPosition");
+        mShaderWhitehole.setTexCoordAttribIndex("aTexCoord");
     }
 
     private void createAnimation() {
