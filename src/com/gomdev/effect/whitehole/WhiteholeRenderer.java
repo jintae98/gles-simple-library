@@ -7,7 +7,6 @@ import javax.microedition.khronos.opengles.GL10;
 
 import com.gomdev.effect.test.R;
 import com.gomdev.gles.*;
-import com.gomdev.gles.GLESConfig.ProjectionType;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -94,11 +93,38 @@ public class WhiteholeRenderer implements GLESRenderer {
 
         GLES20.glViewport(0, 0, width, height);
 
-        mWhiteholeObject.setupSpace(ProjectionType.FRUSTUM, mWidth, mHeight);
+        GLESCamera camera = setupCamera(width, height);
+
+        mWhiteholeObject.setupSpace(camera, mWidth, mHeight);
         mWhiteholeObject.show();
-        
-        GLESVertexInfo vertexInfo = GLESMeshUtils.createPlaneMesh(mWidth, mHeight, WhiteholeConfig.MESH_RESOLUTION, true, false);
+
+        GLESVertexInfo vertexInfo = GLESMeshUtils.createPlaneMesh(mWidth,
+                mHeight, WhiteholeConfig.MESH_RESOLUTION, true, false);
         mWhiteholeObject.setVertexInfo(vertexInfo);
+    }
+
+    private GLESCamera setupCamera(int width, int height) {
+        GLESCamera camera = new GLESCamera();
+        camera.setLookAt(0f, 0f, 64f, 0f, 0f, 0f, 0f, 1f, 0f);
+
+        float right = width * 0.5f / 4f;
+        float left = -right;
+        float top = height * 0.5f / 4f;
+        float bottom = -top;
+        float near = 16f;
+        float far = 256f;
+
+        camera.setFrustum(left, right, bottom, top, near, far);
+
+        int handle = mShaderWhitehole.getUniformLocation("uPMatrix");
+        GLES20.glUniformMatrix4fv(handle, 1, false,
+                camera.getProjectionMatrix(), 0);
+
+        handle = mShaderWhitehole.getUniformLocation("uVMatrix");
+        GLES20.glUniformMatrix4fv(handle, 1, false,
+                camera.getViewMatrix(), 0);
+
+        return camera;
     }
 
     @Override
@@ -231,7 +257,7 @@ public class WhiteholeRenderer implements GLESRenderer {
         mShaderWhitehole.setShadersFromResource(R.raw.whitehole_vs,
                 R.raw.whitehole_fs);
         mShaderWhitehole.load();
-        
+
         mShaderWhitehole.setVertexAttribIndex("aPosition");
         mShaderWhitehole.setTexCoordAttribIndex("aTexCoord");
     }

@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.gomdev.gles.GLESConfig;
 import com.gomdev.gles.GLESObject;
-import com.gomdev.gles.GLESProjection;
+import com.gomdev.gles.GLESCamera;
 import com.gomdev.gles.GLESUtils;
 
 public class WhiteholeObject extends GLESObject {
@@ -33,8 +33,8 @@ public class WhiteholeObject extends GLESObject {
     }
 
     @Override
-    public void setupSpace(GLESProjection projection, int width, int height) {
-        super.setupSpace(projection, width, height);
+    public void setupSpace(GLESCamera camera, int width, int height) {
+        super.setupSpace(camera, width, height);
 
         int handle = mShader.getUniformLocation("uSpaceInfo"); // width, height,
                                                                // width / height
@@ -58,8 +58,6 @@ public class WhiteholeObject extends GLESObject {
     protected void draw() {
         if (DEBUG)
             Log.d(TAG, "draw()");
-
-        GLES20.glViewport(0, 0, (int) mWidth, (int) mHeight);
 
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTexture.getTextureID());

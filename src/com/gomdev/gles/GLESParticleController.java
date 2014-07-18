@@ -6,8 +6,6 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.gomdev.gles.GLESConfig.ProjectionType;
-
 public abstract class GLESParticleController {
     private static final String CLASS = "GLESParticleController";
     private static final String TAG = GLESConfig.TAG + " " + CLASS;
@@ -135,25 +133,6 @@ public abstract class GLESParticleController {
         mShader = paramGLESShader;
         mShader.useProgram();
         mDummyObject.setShader(paramGLESShader);
-    }
-
-    public void setupSpace(ProjectionType projectionType, int width, int height) {
-        mWidth = width;
-        mHeight = height;
-        mDummyObject.setupSpace(projectionType, width, height);
-    }
-
-    public void setupSpace(GLESConfig.ProjectionType projectionType, int width,
-            int height, float projScale) {
-        mWidth = width;
-        mHeight = height;
-        mDummyObject.setupSpace(projectionType, width, height, projScale);
-    }
-
-    public void setupSpace(GLESProjection projection, int width, int height) {
-        mWidth = width;
-        mHeight = height;
-        mDummyObject.setupSpace(projection, width, height);
     }
 
     public void show() {

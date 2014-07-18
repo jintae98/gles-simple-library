@@ -5,9 +5,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.gomdev.gles.GLESConfig.DepthLevel;
-import com.gomdev.gles.GLESConfig.ProjectionType;
-
 public abstract class GLESObject {
     private static final String CLASS = "GLESObject";
     private static final String TAG = GLESConfig.TAG + " " + CLASS;
@@ -19,24 +16,18 @@ public abstract class GLESObject {
     protected GLESShader mShader;
 
     protected GLESTexture mTexture;
-    protected GLESProjection mProjection;
+    protected GLESCamera mCamera;
     protected GLESTransform mTransform;
+
+    protected float mWidth;
+    protected float mHeight;
 
     protected float mBitmapHeight;
     protected float mBitmapWidth;
 
-    protected float mHeight;
-    protected float mWidth;
-
     protected GLESVertexInfo mVertexInfo = null;
 
     protected boolean mIsVisible = false;
-
-    protected DepthLevel mDepth = DepthLevel.DEFAULT_LEVEL_DEPTH;
-
-    protected int mSpaceInfoHandle = -1;
-
-    protected int[] mVBOIDs = null;
 
     public GLESObject(Context context) {
         mContext = context;
@@ -58,27 +49,11 @@ public abstract class GLESObject {
         mTransform = new GLESTransform(shader);
     }
 
-    public void setupSpace(GLESProjection projection, int width, int height) {
-        mProjection = projection;
+    public void setupSpace(GLESCamera camera, int width, int height) {
+        mCamera = camera;
 
         mWidth = width;
         mHeight = height;
-    }
-
-    public void setupSpace(ProjectionType projectionType, int width, int height) {
-        mWidth = width;
-        mHeight = height;
-
-        mProjection = new GLESProjection(mShader, projectionType, width, height);
-    }
-
-    public void setupSpace(ProjectionType projectionType, int width,
-            int height, float projScale) {
-        mWidth = width;
-        mHeight = height;
-
-        mProjection = new GLESProjection(mShader, projectionType, width,
-                height, projScale);
     }
 
     public void setTexture(Bitmap bitmap, boolean needToRecycle) {
@@ -124,10 +99,6 @@ public abstract class GLESObject {
         mIsVisible = false;
     }
 
-    public void setDepth(DepthLevel depth) {
-        mDepth = depth;
-    }
-
     public void drawObject() {
         if (mIsVisible == true) {
             mShader.useProgram();
@@ -138,7 +109,6 @@ public abstract class GLESObject {
     }
 
     public void syncAll() {
-        mProjection.sync();
         mTransform.sync();
     }
 

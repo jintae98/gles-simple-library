@@ -25,27 +25,4 @@ public class GLESConfig {
     public enum ChipVendor {
         CHIPSET_TI, CHIPSET_QUALCOMM;
     }
-
-    public enum DepthLevel {
-        HIGH_LEVEL_DEPTH, // 100f
-        DEFAULT_LEVEL_DEPTH, // 0f
-        LOW_LEVEL_DEPTH; // -100f
-
-        public static float enumToFloat(DepthLevel level) {
-            switch (level) {
-            case HIGH_LEVEL_DEPTH:
-                return 100f;
-            case DEFAULT_LEVEL_DEPTH:
-                return 0f;
-            case LOW_LEVEL_DEPTH:
-                return -100;
-            }
-
-            return 0f;
-        }
-    }
-
-    public enum ProjectionType {
-        ORTHO, FRUSTUM;
-    }
 }
