@@ -1,4 +1,4 @@
-#include "com_lge_gles_GLESShader.h"
+#include "com_gomdev_gles_GLESShader.h"
 
 #include <jni.h>
 #include <GLES2/gl2.h>
@@ -13,7 +13,7 @@
 #define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
 #define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
 
-jstring JNICALL Java_com_lge_gles_GLESShader_nGetShaderCompileLog
+jstring JNICALL Java_com_gomdev_gles_GLESShader_nGetShaderCompileLog
   (JNIEnv * env, jobject obj, jint shader) {
     GLint infoLen = 0;
 
@@ -34,7 +34,7 @@ jstring JNICALL Java_com_lge_gles_GLESShader_nGetShaderCompileLog
 }
 
 static int sBinaryFormat = -1;
-int JNICALL Java_com_lge_gles_GLESShader_nRetrieveProgramBinary
+int JNICALL Java_com_gomdev_gles_GLESShader_nRetrieveProgramBinary
   (JNIEnv * env, jobject obj, jint program, jstring str)
 {
     GLint   binaryLength;
@@ -54,7 +54,7 @@ int JNICALL Java_com_lge_gles_GLESShader_nRetrieveProgramBinary
         binary = (GLvoid*)malloc(binaryLength);
         if(binary == NULL)
         {
-            LOGE("retrieve() malloc fail");
+            LOGE("nRetrieveProgramBinary() malloc fail");
         }
         glGetProgramBinaryOES(program, binaryLength, NULL, &binaryFormat, binary);
 //       checkGLError("retrieve() glGetProgramBinaryOES");
@@ -65,7 +65,8 @@ int JNICALL Java_com_lge_gles_GLESShader_nRetrieveProgramBinary
         outfile = fopen(fileName, "wb");
         if(outfile == NULL)
         {
-            LOGE("retrieve() fopen error");	
+            LOGE("nRetrieveProgramBinary() fileName=%s", fileName);
+            LOGE("nRetrieveProgramBinary() fopen error");
             free(binary);
             return 0;
         }
@@ -123,7 +124,7 @@ int readFile(JNIEnv * env, const char* fileName, int shaderNumber) {
     return 1;
 }
 
-int JNICALL Java_com_lge_gles_GLESShader_nLoadProgramBinary
+int JNICALL Java_com_gomdev_gles_GLESShader_nLoadProgramBinary
   (JNIEnv * env, jobject obj, jint program, jint binaryFormat, jstring str)
 {
     GLint success;
@@ -137,7 +138,7 @@ int JNICALL Java_com_lge_gles_GLESShader_nLoadProgramBinary
             binarySize+=10;
             shaderNumber = 0;
 
-            LOGI("malloc binarySize=%d",binarySize);
+            LOGI("nLoadProgramBinary() malloc binarySize=%d",binarySize);
             binaryLength = (long *)malloc(binarySize*sizeof(int));
             binary = (void *)malloc(binarySize*sizeof(int));
             binaryFileName = (char *)malloc(binarySize*sizeof(int));
@@ -168,7 +169,7 @@ int JNICALL Java_com_lge_gles_GLESShader_nLoadProgramBinary
                 shaderNumber = binarySize;
                 binarySize+=10;
 
-                LOGI("realloc binarySize=%d",binarySize);
+                LOGI("nLoadProgramBinary() realloc binarySize=%d",binarySize);
                 binaryLength = (long *)realloc(binaryLength,binarySize*sizeof(int));
                 binary = (void *)realloc(binary,binarySize*sizeof(int));
                 binaryFileName = (char *)realloc(binaryFileName,binarySize*sizeof(int));
@@ -200,19 +201,19 @@ int JNICALL Java_com_lge_gles_GLESShader_nLoadProgramBinary
 
         if (!success)
         {
-            LOGE("load() link fail");
+            LOGE("nLoadProgramBinary() link fail");
             return 0;
         }
 
         return 1;
     }
     else {
-        LOGE("fileName is NULL");
+        LOGE("nLoadProgramBinary() fileName is NULL");
         return 0;
     }
 }
 
-int JNICALL Java_com_lge_gles_GLESShader_nFreeBinary(JNIEnv * env, jobject obj) {
+int JNICALL Java_com_gomdev_gles_GLESShader_nFreeBinary(JNIEnv * env, jobject obj) {
 	int i;
     for(i=0; i<binarySize; i++) {
         if(binaryFileName[i] != NULL) {

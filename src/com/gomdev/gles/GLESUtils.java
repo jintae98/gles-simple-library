@@ -148,7 +148,7 @@ public class GLESUtils {
         return bitmap;
     }
 
-    public static String makeLockScreenStringPath(Context context,
+    public static String makeAppStringPath(Context context,
             StringBuilder builder, String path) {
         try {
             PackageInfo packageInfo = context.getPackageManager()
@@ -157,7 +157,7 @@ public class GLESUtils {
             String str2 = builder + path + str1;
             return str2;
         } catch (Exception localException) {
-            Log.e(TAG, "makeLockScreenStringPath() Exception e="
+            Log.e(TAG, "makeAppStringPath() Exception e="
                     + localException);
         }
         return null;

@@ -19,6 +19,10 @@ public class WhiteholeRenderer implements GLESRenderer {
     private static final String TAG = WhiteholeConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = WhiteholeConfig.DEBUG;
     private static final boolean DEBUG_PERF = WhiteholeConfig.DEBUG_PERF;
+    
+    static {
+        System.loadLibrary("gomdev");
+    }
 
     private Context mContext;
     private GLESSurfaceView mView;
@@ -256,7 +260,7 @@ public class WhiteholeRenderer implements GLESRenderer {
         mShaderWhitehole = new GLESShader(mContext);
         mShaderWhitehole.setShadersFromResource(R.raw.whitehole_vs,
                 R.raw.whitehole_fs);
-        mShaderWhitehole.load();
+        mShaderWhitehole.load("WhiteHole");
 
         mShaderWhitehole.setVertexAttribIndex("aPosition");
         mShaderWhitehole.setTexCoordAttribIndex("aTexCoord");

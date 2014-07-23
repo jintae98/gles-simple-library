@@ -48,26 +48,34 @@ public class GLESShader {
     }
 
     public int getVertexAttribIndex() {
-        if (mVertexIndex == -1)
+        if (mVertexIndex == -1) {
             Log.e(TAG, "getVertexAttribIndex() mVertexIndex is not set");
+        }
+
         return mVertexIndex;
     }
 
     public int getColorAttribIndex() {
-        if (mColorIndex == -1)
+        if (mColorIndex == -1) {
             Log.e(TAG, "getColorAttribIndex() mColorIndex is not set");
+        }
+
         return mColorIndex;
     }
 
     public int getNormalAttribIndex() {
-        if (mNormalIndex == -1)
+        if (mNormalIndex == -1) {
             Log.e(TAG, "getNormalAttribIndex() mNormalIndex is not set");
+        }
+
         return mNormalIndex;
     }
 
     public int getTexCoordAttribIndex() {
-        if (mTexCoordIndex == -1)
+        if (mTexCoordIndex == -1) {
             Log.e(TAG, "getTexCoordAttribIndex() mTexCoordIndex is not set");
+        }
+
         return mTexCoordIndex;
     }
 
@@ -210,25 +218,40 @@ public class GLESShader {
             return load();
         }
 
-        if (GLESUtils.checkFileExists(fileName) == false) {
+        StringBuilder path = GLESUtils.getDataPathName(mContext);
+        String filePath = GLESUtils.makeAppStringPath(mContext, path,
+                fileName);
+
+        if (DEBUG) {
+            Log.d(TAG, "load() filePath=" + filePath);
+        }
+
+        if (GLESUtils.checkFileExists(filePath) == false) {
             Log.d(TAG, "load() file is not exist");
             needToCompile = true;
         }
 
         if (needToCompile == false) {
-            if (loadProgramBinary(fileName, -1) == 1) {
+            if (loadProgramBinary(filePath, -1) == 1) {
+                if (DEBUG) {
+                    Log.d(TAG, "load() loadProgramBinary() success");
+                }
                 return true;
+            } else {
+                if (DEBUG) {
+                    Log.d(TAG, "load() loadProgramBinary() fail");
+                }
             }
 
             needToCompile = true;
         }
 
         if (needToCompile == true) {
-            Log.e(TAG, "Link Error file=" + fileName + " Compile again");
+            Log.e(TAG, "Link Error file=" + filePath + " Compile again");
 
             boolean result = compileAndLink();
-            GLESUtils.deleteFile(fileName);
-            retrieveProgramBinary(fileName);
+            GLESUtils.deleteFile(filePath);
+            retrieveProgramBinary(filePath);
 
             return result;
         }
