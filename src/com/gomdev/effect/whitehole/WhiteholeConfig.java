@@ -2,7 +2,7 @@ package com.gomdev.effect.whitehole;
 
 public class WhiteholeConfig {
     static final boolean DEBUG = false;
-    static final boolean DEBUG_PERF = true;
+    static final boolean DEBUG_PERF = false;
     static final String TAG = "gomdev";
 
     static final int MESH_RESOLUTION = 100;

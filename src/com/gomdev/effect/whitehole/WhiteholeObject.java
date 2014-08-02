@@ -116,7 +116,6 @@ public class WhiteholeObject extends GLESObject {
     }
 
     public void setRadius(float radius) {
-        Log.d(TAG, "setRadius() radius=" + radius);
         mRadius = radius;
     }
 
