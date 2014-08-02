@@ -19,7 +19,7 @@ public class WhiteholeRenderer implements GLESRenderer {
     private static final String TAG = WhiteholeConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = WhiteholeConfig.DEBUG;
     private static final boolean DEBUG_PERF = WhiteholeConfig.DEBUG_PERF;
-    
+
     static {
         System.loadLibrary("gomdev");
     }
@@ -125,8 +125,7 @@ public class WhiteholeRenderer implements GLESRenderer {
                 camera.getProjectionMatrix(), 0);
 
         handle = mShaderWhitehole.getUniformLocation("uVMatrix");
-        GLES20.glUniformMatrix4fv(handle, 1, false,
-                camera.getViewMatrix(), 0);
+        GLES20.glUniformMatrix4fv(handle, 1, false, camera.getViewMatrix(), 0);
 
         return camera;
     }
@@ -260,6 +259,24 @@ public class WhiteholeRenderer implements GLESRenderer {
         mShaderWhitehole = new GLESShader(mContext);
         mShaderWhitehole.setShadersFromResource(R.raw.whitehole_vs,
                 R.raw.whitehole_fs);
+        mShaderWhitehole.load("WhiteHole");
+
+        GLESShader shader = new GLESShader(mContext);
+        shader.setShadersFromResource(R.raw.bg_vs, R.raw.bg_fs);
+        shader.load("test1");
+        shader.load("test2");
+        shader.load("test3");
+        shader.load("test4");
+        shader.load("test5");
+        shader.load("test6");
+        shader.load("test7");
+        shader.load("test8");
+        shader.load("test9");
+        mShaderWhitehole.load("WhiteHole");
+        shader.load("test10");
+        shader.load("test11");
+        shader.load("test12");
+        
         mShaderWhitehole.load("WhiteHole");
 
         mShaderWhitehole.setVertexAttribIndex("aPosition");

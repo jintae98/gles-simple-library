@@ -10,15 +10,16 @@
 #include <android/log.h>
 #include <android/asset_manager.h>
 
-#include <vector>
-#include <map>
+#include <list>
 #include <string>
 
 #define  LOG_TAG    "gomdev"
 #define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
 #define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
 
-//#define DEBUG
+#define MAX_NUM_OF_CACHED_BINARY    10
+
+#define DEBUG
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,12 +31,54 @@ typedef struct _BinaryInfo {
     void* binary;
 } BinaryInfo;
 
-static std::map<std::string, BinaryInfo*> sBinaryMap;
+static std::list<BinaryInfo*> sBinaryList;
+
+typedef std::list<BinaryInfo*>::iterator BinaryIter;
 
 static PFNGLGETPROGRAMBINARYOESPROC glGetProgramBinaryOES = NULL;
 static PFNGLPROGRAMBINARYOESPROC glProgramBinaryOES = NULL;
 
 static int sBinaryFormat = -1;
+
+void add(BinaryInfo* info) {
+    sBinaryList.push_back(info);
+
+    if (sBinaryList.size() > MAX_NUM_OF_CACHED_BINARY) {
+        sBinaryList.pop_front();
+    }
+}
+
+void removeBinary(BinaryIter iter) {
+    BinaryInfo* info = *iter;
+    free(info);
+    sBinaryList.erase(iter);
+}
+
+BinaryIter find(std::string name) {
+    BinaryIter iter;
+
+    BinaryInfo* info = NULL;
+    for (iter = sBinaryList.begin(); iter != sBinaryList.end(); iter++) {
+        info = *iter;
+
+        if (name.compare(*info->name) == 0) {
+            return iter;
+        }
+    }
+
+    return sBinaryList.end();
+}
+
+void clear() {
+    BinaryIter iter;
+    for (iter = sBinaryList.begin(); iter != sBinaryList.end(); iter++) {
+        BinaryInfo* info = *iter;
+        delete info->name;
+        delete info;
+    }
+
+    sBinaryList.clear();
+}
 
 BinaryInfo* readFile(JNIEnv * env, char* fileName, int shaderNumber) {
     FILE *fp = fopen(fileName, "rb");
@@ -79,35 +122,6 @@ BinaryInfo* readFile(JNIEnv * env, char* fileName, int shaderNumber) {
     return binaryInfo;
 }
 
-void insert(std::string name, BinaryInfo* info) {
-    sBinaryMap[name] = info;
-}
-
-BinaryInfo* get(std::string name) {
-    return sBinaryMap[name];
-}
-
-BinaryInfo* find(std::string name) {
-    std::map<std::string, BinaryInfo*>::iterator iter = sBinaryMap.find(name);
-
-    if (iter != sBinaryMap.end()) {
-        return iter->second;
-    }
-
-    return NULL;
-}
-
-void freeCache() {
-    std::map<std::string, BinaryInfo*>::iterator iter;
-    for (iter = sBinaryMap.begin(); iter != sBinaryMap.end(); iter++) {
-        BinaryInfo* info = iter->second;
-        delete info->name;
-        delete info;
-    }
-
-    sBinaryMap.clear();
-}
-
 void checkGLError(char* str) {
 #ifdef DEBUG
     int error = 0;
@@ -117,14 +131,14 @@ void checkGLError(char* str) {
 #endif
 }
 
-void dump() {
-    LOGI("dump()");
-    std::map<std::string, BinaryInfo*>::iterator iterator;
+void dump(char* str) {
+    LOGI("dump() %s", str);
+    BinaryIter iter;
 
-    for (iterator = sBinaryMap.begin(); iterator != sBinaryMap.end();
-            iterator++) {
-        LOGI("\tName=%s BinaryInfo=%p", (iterator->first).c_str(),
-                iterator->second);
+    BinaryInfo* info = NULL;
+    for (iter = sBinaryList.begin(); iter != sBinaryList.end(); iter++) {
+        info = *iter;
+        LOGI("\tName=%s BinaryInfo=%p", (info->name)->c_str(), info);
     }
 }
 
@@ -190,7 +204,12 @@ int JNICALL Java_com_gomdev_gles_GLESShader_nRetrieveProgramBinary
         fwrite(binary, binaryLength, 1, outfile);
         fclose(outfile);
 
+        // if binary is already cached, remove cached binary
         std::string name = fileName;
+        BinaryIter iter = find(name);
+        if (iter != sBinaryList.end()) {
+            removeBinary(iter);
+        }
 
         BinaryInfo* binaryInfo = (BinaryInfo*)malloc(sizeof(BinaryInfo));
         if (binaryInfo != NULL ) {
@@ -198,7 +217,7 @@ int JNICALL Java_com_gomdev_gles_GLESShader_nRetrieveProgramBinary
             binaryInfo->length = binaryLength;
             binaryInfo->binary = binary;
 
-            insert(name, binaryInfo);
+            add(binaryInfo);
         }
 
         env->ReleaseStringUTFChars(str, fileName);
@@ -218,18 +237,21 @@ int JNICALL Java_com_gomdev_gles_GLESShader_nLoadProgramBinary
     char* fileName = (char*)env->GetStringUTFChars(str, NULL);
 
 #ifdef DEBUG
-    dump();
+    dump("before");
 #endif
 
     if(fileName != NULL)
     {
+        BinaryInfo* binaryInfo = NULL;
         std::string name = fileName;
-        BinaryInfo* binaryInfo = find(name);
-        if(binaryInfo != NULL) {
+        BinaryIter iter = find(name);
+        if(iter != sBinaryList.end()) {
 #ifdef DEBUG
-            LOGI("Load() cache hit!!!");
+            LOGI("Load() cache hit!!! - %s", fileName);
 #endif
-            binaryInfo = get(name);
+            binaryInfo = *iter;
+            sBinaryList.erase(iter);
+            add(binaryInfo);
         } else {
 #ifdef DEBUG
             LOGI("Load() cache miss!! - %s", fileName);
@@ -240,7 +262,7 @@ int JNICALL Java_com_gomdev_gles_GLESShader_nLoadProgramBinary
                 return 0;
             }
 
-            insert(name, binaryInfo);
+            add(binaryInfo);
         }
 
         if (glProgramBinaryOES == NULL) {
@@ -261,6 +283,9 @@ int JNICALL Java_com_gomdev_gles_GLESShader_nLoadProgramBinary
             return 0;
         }
 
+#ifdef DEBUG
+        dump("after");
+#endif
         return 1;
     }
     else {
@@ -270,7 +295,7 @@ int JNICALL Java_com_gomdev_gles_GLESShader_nLoadProgramBinary
 }
 
 int JNICALL Java_com_gomdev_gles_GLESShader_nFreeBinary(JNIEnv * env, jobject obj) {
-    freeCache();
+    clear();
 }
 
 #ifdef __cplusplus
