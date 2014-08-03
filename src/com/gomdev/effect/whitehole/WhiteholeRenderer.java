@@ -261,24 +261,6 @@ public class WhiteholeRenderer implements GLESRenderer {
                 R.raw.whitehole_fs);
         mShaderWhitehole.load("WhiteHole");
 
-        GLESShader shader = new GLESShader(mContext);
-        shader.setShadersFromResource(R.raw.bg_vs, R.raw.bg_fs);
-        shader.load("test1");
-        shader.load("test2");
-        shader.load("test3");
-        shader.load("test4");
-        shader.load("test5");
-        shader.load("test6");
-        shader.load("test7");
-        shader.load("test8");
-        shader.load("test9");
-        mShaderWhitehole.load("WhiteHole");
-        shader.load("test10");
-        shader.load("test11");
-        shader.load("test12");
-        
-        mShaderWhitehole.load("WhiteHole");
-
         mShaderWhitehole.setVertexAttribIndex("aPosition");
         mShaderWhitehole.setTexCoordAttribIndex("aTexCoord");
     }

@@ -50,6 +50,8 @@ void add(BinaryInfo* info) {
 
 void removeBinary(BinaryIter iter) {
     BinaryInfo* info = *iter;
+    delete info->name;
+    delete info->binary;
     free(info);
     sBinaryList.erase(iter);
 }
@@ -74,13 +76,14 @@ void clear() {
     for (iter = sBinaryList.begin(); iter != sBinaryList.end(); iter++) {
         BinaryInfo* info = *iter;
         delete info->name;
+        delete info->binary;
         delete info;
     }
 
     sBinaryList.clear();
 }
 
-BinaryInfo* readFile(JNIEnv * env, char* fileName, int shaderNumber) {
+BinaryInfo* readFile(char* fileName) {
     FILE *fp = fopen(fileName, "rb");
     if (fp == NULL) {
         LOGE("\treadFile() file open fail");
@@ -133,9 +136,9 @@ void checkGLError(char* str) {
 
 void dump(char* str) {
     LOGI("dump() %s", str);
-    BinaryIter iter;
 
     BinaryInfo* info = NULL;
+    BinaryIter iter;
     for (iter = sBinaryList.begin(); iter != sBinaryList.end(); iter++) {
         info = *iter;
         LOGI("\tName=%s BinaryInfo=%p", (info->name)->c_str(), info);
@@ -231,9 +234,6 @@ int JNICALL Java_com_gomdev_gles_GLESShader_nRetrieveProgramBinary
 int JNICALL Java_com_gomdev_gles_GLESShader_nLoadProgramBinary
 (JNIEnv * env, jobject obj, jint program, jint binaryFormat, jstring str)
 {
-    GLint success;
-    int i = 0;
-    int shaderNumber = -1;
     char* fileName = (char*)env->GetStringUTFChars(str, NULL);
 
 #ifdef DEBUG
@@ -256,7 +256,7 @@ int JNICALL Java_com_gomdev_gles_GLESShader_nLoadProgramBinary
 #ifdef DEBUG
             LOGI("Load() cache miss!! - %s", fileName);
 #endif
-            binaryInfo = readFile(env, fileName, shaderNumber);
+            binaryInfo = readFile(fileName);
             if(binaryInfo == NULL) {
                 LOGE("Load() binaryInfo is NULL");
                 return 0;
@@ -273,6 +273,7 @@ int JNICALL Java_com_gomdev_gles_GLESShader_nLoadProgramBinary
                 binaryInfo->binary,
                 binaryInfo->length);
 
+        GLint success;
         glGetProgramiv(program, GL_LINK_STATUS, &success);
 
         env->ReleaseStringUTFChars(str, fileName);
