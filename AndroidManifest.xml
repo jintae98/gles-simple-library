@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gomdev.effect.test"
+    package="com.gomdev.effect"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -9,12 +9,28 @@
 
     <application
         android:icon="@drawable/ic_launcher"
-        android:theme="@android:style/Theme.NoTitleBar"
         android:screenOrientation="portrait"
         android:label="@string/app_name" >
         <activity
             android:label="@string/app_name"
-            android:name="com.gomdev.effect.test.TestActivity" >
+            android:name="com.gomdev.effect.whitehole.WhiteholeActivity" >
+        </activity>
+        <activity
+            android:label="@string/app_name"
+            android:name="com.gomdev.effect.DummyActivity" >
+        </activity>
+        <activity
+            android:label="@string/app_name"
+            android:name="com.gomdev.effect.ShaderViewActivity" >
+        </activity>
+        <activity
+            android:label="@string/app_name"
+            android:name="com.gomdev.effect.ShaderEditActivity" 
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+        <activity
+            android:label="@string/app_name"
+            android:name="com.gomdev.effect.EffectListActivity" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

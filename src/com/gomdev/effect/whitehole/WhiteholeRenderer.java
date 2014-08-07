@@ -1,24 +1,34 @@
 package com.gomdev.effect.whitehole;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import com.gomdev.effect.test.R;
+import com.gomdev.effect.EffectConfig;
+import com.gomdev.effect.EffectUtils;
+import com.gomdev.effect.R;
 import com.gomdev.gles.*;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 public class WhiteholeRenderer implements GLESRenderer {
     private static final String CLASS = "WhiteholeRenderer";
     private static final String TAG = WhiteholeConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = WhiteholeConfig.DEBUG;
     private static final boolean DEBUG_PERF = WhiteholeConfig.DEBUG_PERF;
+
+    private static final int COMPILE_OR_LINK_ERROR = 1;
 
     static {
         System.loadLibrary("gomdev");
@@ -47,10 +57,23 @@ public class WhiteholeRenderer implements GLESRenderer {
     private float mMaxRingSize = 0.0f;
     private float mBoundaryRingSize = 0f;
 
+    private Handler mHandler = new Handler(Looper.getMainLooper()) {
+
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == COMPILE_OR_LINK_ERROR) {
+                Toast.makeText(mContext, "Compile or Link fails",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    };
+
     public WhiteholeRenderer(Context context) {
         mContext = context;
 
         mWhiteholeObject = new WhiteholeObject(context);
+
     }
 
     public void destroy() {
@@ -255,14 +278,50 @@ public class WhiteholeRenderer implements GLESRenderer {
         }
     }
 
-    private void createShader() {
+    private boolean createShader() {
+        Log.d(TAG, "createShader()");
         mShaderWhitehole = new GLESShader(mContext);
-        mShaderWhitehole.setShadersFromResource(R.raw.whitehole_vs,
-                R.raw.whitehole_fs);
-        mShaderWhitehole.load("WhiteHole");
+
+        SharedPreferences pref = mContext.getSharedPreferences(
+                EffectConfig.PREF_NAME, Context.MODE_PRIVATE);
+        String effectName = pref.getString(EffectConfig.PREF_EFFECT_NAME,
+                "Whiltehole");
+        String shaderType = pref.getString(EffectConfig.PREF_SHADER_TYPE,
+                EffectConfig.SHADER_TYPE_VS);
+
+        String vsFilePath = EffectUtils.getSavedFilePath("Whitehole",
+                EffectConfig.SHADER_TYPE_VS);
+        String vertexShaderSource = null;
+        File file = new File(vsFilePath);
+        if (file.exists() == true) {
+            vertexShaderSource = GLESFileUtils.read(vsFilePath);
+        } else {
+            vertexShaderSource = GLESUtils.getStringFromReosurce(mContext,
+                    R.raw.whitehole_vs);
+        }
+
+        String fsFilePath = EffectUtils.getSavedFilePath("Whitehole",
+                EffectConfig.SHADER_TYPE_FS);
+        String fragmentShaderSource = null;
+        file = new File(fsFilePath);
+        if (file.exists() == true) {
+            fragmentShaderSource = GLESFileUtils.read(fsFilePath);
+        } else {
+            fragmentShaderSource = GLESUtils.getStringFromReosurce(mContext,
+                    R.raw.whitehole_fs);
+        }
+
+        mShaderWhitehole.setShaderSource(vertexShaderSource,
+                fragmentShaderSource);
+        if (mShaderWhitehole.load() == false) {
+            mHandler.sendEmptyMessage(COMPILE_OR_LINK_ERROR);
+            return false;
+        }
 
         mShaderWhitehole.setVertexAttribIndex("aPosition");
         mShaderWhitehole.setTexCoordAttribIndex("aTexCoord");
+
+        return true;
     }
 
     private void createAnimation() {

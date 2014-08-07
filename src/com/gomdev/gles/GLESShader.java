@@ -22,10 +22,6 @@ public class GLESShader {
     private String mVertexShaderSource = null;
     private String mFragmentShaderSource = null;
 
-    private boolean mUseResourceID = true;
-    private int mVertexShaderID = -1;
-    private int mFragmentShaderID = -1;
-
     private int mVertexIndex = -1;
     private int mTexCoordIndex = -1;
     private int mColorIndex = -1;
@@ -92,13 +88,17 @@ public class GLESShader {
     }
 
     private boolean compileAndLink() {
-        if (mUseResourceID == true) {
-            setShaderFromResource(GLES20.GL_VERTEX_SHADER, mVertexShaderID);
-            setShaderFromResource(GLES20.GL_FRAGMENT_SHADER, mFragmentShaderID);
-        } else {
-            setShaderFromString(GLES20.GL_VERTEX_SHADER, mVertexShaderSource);
-            setShaderFromString(GLES20.GL_FRAGMENT_SHADER,
-                    mFragmentShaderSource);
+        if (mVertexShaderSource == null || mFragmentShaderSource == null) {
+            Log.e(TAG, "compileAndLink() shader source is not set!!!");
+            return false;
+        }
+        
+        if (setShaderFromString(GLES20.GL_VERTEX_SHADER, mVertexShaderSource) == false) {
+            return false;
+        }
+        
+        if (setShaderFromString(GLES20.GL_FRAGMENT_SHADER, mFragmentShaderSource) == false) {
+            return false;
         }
 
         if (linkProgram() == false) {
@@ -111,7 +111,8 @@ public class GLESShader {
     private boolean setShaderFromResource(int shaderType, int resourceID) {
         int shader = GLES20.glCreateShader(shaderType);
         if (shader != 0) {
-            String source = GLESUtils.getStringFromReosurce(mContext, resourceID);
+            String source = GLESUtils.getStringFromReosurce(mContext,
+                    resourceID);
             GLES20.glShaderSource(shader, source);
             GLES20.glCompileShader(shader);
 
@@ -144,7 +145,7 @@ public class GLESShader {
                 Log.e(TAG, GLES20.glGetShaderInfoLog(shader));
                 GLES20.glDeleteShader(shader);
                 shader = 0;
-                throw new RuntimeException("glShaderSource() Error");
+                return false;
             }
         }
 
@@ -163,7 +164,7 @@ public class GLESShader {
             Log.e(TAG, GLES20.glGetProgramInfoLog(mProgram));
             GLES20.glDeleteProgram(mProgram);
             mProgram = 0;
-            throw new RuntimeException("glLinkProgram() Error");
+            return false;
         }
 
         GLES20.glUseProgram(mProgram);
@@ -217,12 +218,12 @@ public class GLESShader {
 
         return true;
     }
-    
+
     private String getBinaryFilePath(String prefix) {
         String appDataPath = GLESUtils.getAppDataPathName(mContext);
         String versionName = GLESUtils.getAppVersionName(mContext);
         String path = appDataPath + prefix + "_" + versionName + ".dat";
-        
+
         return path;
     }
 
@@ -242,18 +243,19 @@ public class GLESShader {
         mNormalIndex = GLES20.glGetAttribLocation(mProgram, normalAttribName);
     }
 
-    public boolean setShadersFromResource(int vertexShaderID,
-            int fragmentShaderID) {
-        mUseResourceID = true;
-        mVertexShaderID = vertexShaderID;
-        mFragmentShaderID = fragmentShaderID;
+    public boolean setShaderSource(String vertexShaderSource,
+            String fragmentShaderSource) {
+        mVertexShaderSource = vertexShaderSource;
+        mFragmentShaderSource = fragmentShaderSource;
         return true;
     }
 
-    public boolean setShadersFromString(String vertexShaderSource,
-            String fragmentShaderSource) {
-        mUseResourceID = false;
+    public boolean setVertexShaderSource(String vertexShaderSource) {
         mVertexShaderSource = vertexShaderSource;
+        return true;
+    }
+
+    public boolean setFragmentShaderSource(String fragmentShaderSource) {
         mFragmentShaderSource = fragmentShaderSource;
         return true;
     }

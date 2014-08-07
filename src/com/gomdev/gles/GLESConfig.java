@@ -1,8 +1,8 @@
 package com.gomdev.gles;
 
 public class GLESConfig {
-    static final boolean DEBUG = false;
-    static final String TAG = "gomdev";
+    public static final boolean DEBUG = false;
+    public static final String TAG = "gomdev";
 
     public static final int BINARY_FORMAT_NVIDIA = 35633;
     public static final int BINARY_FORMAT_QUALCOMM = 34624;

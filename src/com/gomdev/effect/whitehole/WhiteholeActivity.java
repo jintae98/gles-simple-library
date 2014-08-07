@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package com.gomdev.effect.test;
+package com.gomdev.effect.whitehole;
 
+import com.gomdev.effect.EffectActivity;
+import com.gomdev.effect.R;
 import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESSurfaceView;
-import com.gomdev.effect.test.R;
 
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
@@ -26,7 +27,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
-public class TestActivity extends Activity {
+public class WhiteholeActivity extends EffectActivity {
     private static final String CLASS = "TestActivity";
     private static final String TAG = "gomdev " + CLASS;
     private static final boolean DEBUG = false;
@@ -48,8 +49,6 @@ public class TestActivity extends Activity {
         mView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         mView.setRenderer(mRenderer);
         mView.setDebugFlags(GLSurfaceView.DEBUG_LOG_GL_CALLS);
-        // mView.setZOrderOnTop(true);
-        // mView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         mView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 
         FrameLayout layout = (FrameLayout) findViewById(R.id.layout);

@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.gomdev.effect.EffectActivity" >
+
+    <item
+        android:id="@+id/vertex_shader"
+        android:showAsAction="ifRoom"
+        android:title="VS"/>
+    <item
+        android:id="@+id/fragment_shader"
+        android:showAsAction="ifRoom"
+        android:title="FS"/>
+    <item
+        android:id="@+id/restore_vs"
+        android:title="restore VS"/>
+    <item
+        android:id="@+id/restore_fs"
+        android:title="restore FS"/>
+
+</menu>
