@@ -2,6 +2,7 @@ package com.gomdev.gles;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -151,18 +152,18 @@ public class GLESUtils {
         builder.append(File.separatorChar);
         return builder.toString();
     }
-
-    public static String getFileNameWithVersion(Context context, String fileName) {
+    
+    public static String getAppVersionName(Context context) {
         try {
             PackageInfo packageInfo = context.getPackageManager()
                     .getPackageInfo(context.getPackageName(), 0);
-            String str1 = "_" + packageInfo.versionName + ".dat";
-            String str2 = fileName + str1;
-            return str2;
-        } catch (Exception localException) {
-            Log.e(TAG, "makeAppDataPath() Exception e=" + localException);
+            
+            return packageInfo.versionName;
+        } catch (NameNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-
+        
         return null;
     }
 

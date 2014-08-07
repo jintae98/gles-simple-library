@@ -179,9 +179,7 @@ public class GLESShader {
             return load();
         }
 
-        String appDataPath = GLESUtils.getAppDataPathName(mContext);
-        String fileNameWithVersion = GLESUtils.getFileNameWithVersion(mContext, fileName);
-        String filePath = appDataPath + fileNameWithVersion;
+        String filePath = getBinaryFilePath(fileName);
 
         if (DEBUG) {
             Log.d(TAG, "load() filePath=" + filePath);
@@ -218,6 +216,14 @@ public class GLESShader {
         }
 
         return true;
+    }
+    
+    private String getBinaryFilePath(String prefix) {
+        String appDataPath = GLESUtils.getAppDataPathName(mContext);
+        String versionName = GLESUtils.getAppVersionName(mContext);
+        String path = appDataPath + prefix + "_" + versionName + ".dat";
+        
+        return path;
     }
 
     public int loadProgramBinary(String fileName, int binaryFormat) {
