@@ -111,7 +111,7 @@ public class GLESShader {
     private boolean setShaderFromResource(int shaderType, int resourceID) {
         int shader = GLES20.glCreateShader(shaderType);
         if (shader != 0) {
-            String source = getShaderFromReosurce(resourceID);
+            String source = GLESUtils.getStringFromReosurce(mContext, resourceID);
             GLES20.glShaderSource(shader, source);
             GLES20.glCompileShader(shader);
 
@@ -129,45 +129,6 @@ public class GLESShader {
         GLES20.glAttachShader(mProgram, shader);
 
         return true;
-    }
-
-    private String getShaderFromReosurce(int resourceID) {
-        byte[] str;
-        int strLength;
-        String shader = null;
-        InputStream is = mRes.openRawResource(resourceID);
-        try {
-            try {
-                str = new byte[1024];
-                strLength = 0;
-                while (true) {
-                    int bytesLeft = str.length - strLength;
-                    if (bytesLeft == 0) {
-                        byte[] buf2 = new byte[str.length * 2];
-                        System.arraycopy(str, 0, buf2, 0, str.length);
-                        str = buf2;
-                        bytesLeft = str.length - strLength;
-                    }
-                    int bytesRead = is.read(str, strLength, bytesLeft);
-                    if (bytesRead <= 0) {
-                        break;
-                    }
-                    strLength += bytesRead;
-                }
-            } finally {
-                is.close();
-            }
-        } catch (IOException e) {
-            throw new Resources.NotFoundException();
-        }
-
-        try {
-            shader = new String(str, 0, strLength, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            Log.e(TAG, "Could not decode shader string");
-        }
-
-        return shader;
     }
 
     private boolean setShaderFromString(int shaderType, String source) {

@@ -2,6 +2,7 @@ package com.gomdev.gles;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -9,6 +10,9 @@ import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -157,9 +161,48 @@ public class GLESUtils {
             String str2 = builder + path + str1;
             return str2;
         } catch (Exception localException) {
-            Log.e(TAG, "makeAppStringPath() Exception e="
-                    + localException);
+            Log.e(TAG, "makeAppStringPath() Exception e=" + localException);
         }
         return null;
+    }
+
+    public static String getStringFromReosurce(Context context, int resourceID) {
+        byte[] data;
+        int strLength;
+        String str = null;
+        Resources res = context.getResources();
+        InputStream is = res.openRawResource(resourceID);
+        try {
+            try {
+                data = new byte[1024];
+                strLength = 0;
+                while (true) {
+                    int bytesLeft = data.length - strLength;
+                    if (bytesLeft == 0) {
+                        byte[] buf2 = new byte[data.length * 2];
+                        System.arraycopy(data, 0, buf2, 0, data.length);
+                        data = buf2;
+                        bytesLeft = data.length - strLength;
+                    }
+                    int bytesRead = is.read(data, strLength, bytesLeft);
+                    if (bytesRead <= 0) {
+                        break;
+                    }
+                    strLength += bytesRead;
+                }
+            } finally {
+                is.close();
+            }
+        } catch (IOException e) {
+            throw new Resources.NotFoundException();
+        }
+
+        try {
+            str = new String(data, 0, strLength, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            Log.e(TAG, "Could not decode shader string");
+        }
+
+        return str;
     }
 }
