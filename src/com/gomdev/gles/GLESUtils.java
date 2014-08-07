@@ -102,17 +102,6 @@ public class GLESUtils {
         }
     }
 
-    public static StringBuilder getDataPathName(Context context) {
-        StringBuilder builder = new StringBuilder(Environment
-                .getDataDirectory().getAbsolutePath());
-        builder.append(File.separatorChar);
-        builder.append("data");
-        builder.append(File.separatorChar);
-        builder.append(context.getPackageName());
-        builder.append(File.separatorChar);
-        return builder;
-    }
-
     public static float getWidthPixels(Context context) {
         if (Float.compare(sWidthPixels, 0.0F) == 0) {
             DisplayMetrics metric = context.getResources().getDisplayMetrics();
@@ -152,17 +141,28 @@ public class GLESUtils {
         return bitmap;
     }
 
-    public static String makeAppStringPath(Context context,
-            StringBuilder builder, String path) {
+    public static String getAppDataPathName(Context context) {
+        StringBuilder builder = new StringBuilder(Environment
+                .getDataDirectory().getAbsolutePath());
+        builder.append(File.separatorChar);
+        builder.append("data");
+        builder.append(File.separatorChar);
+        builder.append(context.getPackageName());
+        builder.append(File.separatorChar);
+        return builder.toString();
+    }
+
+    public static String getFileNameWithVersion(Context context, String fileName) {
         try {
             PackageInfo packageInfo = context.getPackageManager()
                     .getPackageInfo(context.getPackageName(), 0);
             String str1 = "_" + packageInfo.versionName + ".dat";
-            String str2 = builder + path + str1;
+            String str2 = fileName + str1;
             return str2;
         } catch (Exception localException) {
-            Log.e(TAG, "makeAppStringPath() Exception e=" + localException);
+            Log.e(TAG, "makeAppDataPath() Exception e=" + localException);
         }
+
         return null;
     }
 

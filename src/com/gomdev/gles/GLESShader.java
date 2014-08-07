@@ -179,9 +179,9 @@ public class GLESShader {
             return load();
         }
 
-        StringBuilder path = GLESUtils.getDataPathName(mContext);
-        String filePath = GLESUtils.makeAppStringPath(mContext, path,
-                fileName);
+        String appDataPath = GLESUtils.getAppDataPathName(mContext);
+        String fileNameWithVersion = GLESUtils.getFileNameWithVersion(mContext, fileName);
+        String filePath = appDataPath + fileNameWithVersion;
 
         if (DEBUG) {
             Log.d(TAG, "load() filePath=" + filePath);
