@@ -289,7 +289,7 @@ public class WhiteholeRenderer implements GLESRenderer {
         String shaderType = pref.getString(EffectConfig.PREF_SHADER_TYPE,
                 EffectConfig.SHADER_TYPE_VS);
 
-        String vsFilePath = EffectUtils.getSavedFilePath("Whitehole",
+        String vsFilePath = EffectUtils.getSavedFilePath(mContext, "Whitehole",
                 EffectConfig.SHADER_TYPE_VS);
         String vertexShaderSource = null;
         File file = new File(vsFilePath);
@@ -300,7 +300,7 @@ public class WhiteholeRenderer implements GLESRenderer {
                     R.raw.whitehole_vs);
         }
 
-        String fsFilePath = EffectUtils.getSavedFilePath("Whitehole",
+        String fsFilePath = EffectUtils.getSavedFilePath(mContext, "Whitehole",
                 EffectConfig.SHADER_TYPE_FS);
         String fragmentShaderSource = null;
         file = new File(fsFilePath);

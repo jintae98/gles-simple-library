@@ -8,8 +8,12 @@ import com.gomdev.gles.GLESUtils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
+import android.util.Log;
 
 public class EffectUtils {
+    private static final String CLASS = "EffectUtils";
+    private static final String TAG = "gomdev " + CLASS;
+    private static final boolean DEBUG = false;
 
     public static String getSavedFilePath(String effectName, String shaderType) {
         StringBuilder builder = new StringBuilder(Environment
@@ -22,6 +26,18 @@ public class EffectUtils {
         builder.append(shaderType);
         builder.append(".dat");
 
+        return builder.toString();
+    }
+    
+    public static String getSavedFilePath(Context context, String effectName, String shaderType) {
+        File file = context.getExternalFilesDir(null);
+        StringBuilder builder = new StringBuilder(file.getAbsolutePath());
+        builder.append(File.separatorChar);
+        builder.append(effectName);
+        builder.append('_');
+        builder.append(shaderType);
+        builder.append(".dat");
+        
         return builder.toString();
     }
     

@@ -62,7 +62,7 @@ public class ShaderEditActivity extends Activity {
                 return false;
             }
 
-            String path = EffectUtils.getSavedFilePath(effect, shaderType);
+            String path = EffectUtils.getSavedFilePath(this, effect, shaderType);
 
             GLESFileUtils.write(path, mEditView.getText().toString());
 

@@ -62,7 +62,7 @@ public class EffectActivity extends Activity {
         case R.id.vertex_shader:
             editor.putString(EffectConfig.PREF_SHADER_TYPE,
                     EffectConfig.SHADER_TYPE_VS);
-            savedFileName = EffectUtils.getSavedFilePath(effectName,
+            savedFileName = EffectUtils.getSavedFilePath(this, effectName,
                     EffectConfig.SHADER_TYPE_VS);
             editor.putString(EffectConfig.PREF_VS_FILE_NAME, savedFileName);
             editor.commit();
@@ -74,8 +74,9 @@ public class EffectActivity extends Activity {
         case R.id.fragment_shader:
             editor.putString(EffectConfig.PREF_SHADER_TYPE,
                     EffectConfig.SHADER_TYPE_FS);
-            savedFileName = EffectUtils.getSavedFilePath(effectName,
+            savedFileName = EffectUtils.getSavedFilePath(this, effectName,
                     EffectConfig.SHADER_TYPE_FS);
+            String test = EffectUtils.getSavedFilePath(this, effectName, EffectConfig.SHADER_TYPE_FS);
             editor.putString(EffectConfig.PREF_FS_FILE_NAME, savedFileName);
             editor.commit();
 
@@ -84,14 +85,14 @@ public class EffectActivity extends Activity {
             startActivity(intent);
             return true;
         case R.id.restore_vs:
-            savedFileName = EffectUtils.getSavedFilePath(effectName,
+            savedFileName = EffectUtils.getSavedFilePath(this, effectName,
                     EffectConfig.SHADER_TYPE_VS);
             File file = new File(savedFileName);
             file.delete();
             this.finish();
             return true;
         case R.id.restore_fs:
-            savedFileName = EffectUtils.getSavedFilePath(effectName,
+            savedFileName = EffectUtils.getSavedFilePath(this, effectName,
                     EffectConfig.SHADER_TYPE_FS);
             file = new File(savedFileName);
             file.delete();
