@@ -50,8 +50,7 @@ public class ShaderEditActivity extends Activity {
         case R.id.save:
             SharedPreferences pref = this.getSharedPreferences(
                     EffectConfig.PREF_NAME, MODE_PRIVATE);
-            String effect = pref.getString(EffectConfig.PREF_EFFECT_NAME,
-                    "");
+            String effect = pref.getString(EffectConfig.PREF_EFFECT_NAME, "");
             String shaderType = pref.getString(EffectConfig.PREF_SHADER_TYPE,
                     EffectConfig.SHADER_TYPE_VS);
 
@@ -62,7 +61,8 @@ public class ShaderEditActivity extends Activity {
                 return false;
             }
 
-            String path = EffectUtils.getSavedFilePath(this, effect, shaderType);
+            String path = EffectUtils
+                    .getSavedFilePath(this, effect, shaderType);
 
             GLESFileUtils.write(path, mEditView.getText().toString());
 

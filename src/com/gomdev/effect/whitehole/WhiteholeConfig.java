@@ -5,6 +5,8 @@ public class WhiteholeConfig {
     static final boolean DEBUG_PERF = false;
     static final String TAG = "gomdev";
 
+    public static final String EFFECT_NAME = "Whitehole";
+
     static final int MESH_RESOLUTION = 100;
 
     static final float MIN_RING_SIZE = 45.0f; // dp

@@ -85,21 +85,33 @@ public class EffectListActivity extends Activity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
-            String item = parent.getItemAtPosition(position).toString();
-            EffectInfo info = mEffectMap.get(item);
+            String effectName = parent.getItemAtPosition(position).toString();
+            EffectInfo info = mEffectMap.get(effectName);
 
             SharedPreferences pref = EffectListActivity.this
                     .getSharedPreferences(EffectConfig.PREF_NAME,
                             Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
-            editor.putString(EffectConfig.PREF_EFFECT_NAME, item);
+
+            editor.putString(EffectConfig.PREF_EFFECT_NAME, effectName);
             editor.putInt(EffectConfig.PREF_VS_RES_ID, info.mVertexShaderResID);
             editor.putInt(EffectConfig.PREF_FS_RES_ID,
                     info.mFragmentShaderResID);
+
+            String savedFileName = EffectUtils.getSavedFilePath(
+                    EffectListActivity.this, effectName,
+                    EffectConfig.SHADER_TYPE_VS);
+            editor.putString(EffectConfig.PREF_VS_FILE_NAME, savedFileName);
+
+            savedFileName = EffectUtils.getSavedFilePath(
+                    EffectListActivity.this, effectName,
+                    EffectConfig.SHADER_TYPE_FS);
+            editor.putString(EffectConfig.PREF_FS_FILE_NAME, savedFileName);
+
             editor.commit();
 
             if (DEBUG) {
-                Log.d(TAG, "onItemClick() item=" + item);
+                Log.d(TAG, "onItemClick() item=" + effectName);
             }
             startActivity(info.mIntent);
         }

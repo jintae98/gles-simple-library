@@ -282,15 +282,8 @@ public class WhiteholeRenderer implements GLESRenderer {
         Log.d(TAG, "createShader()");
         mShaderWhitehole = new GLESShader(mContext);
 
-        SharedPreferences pref = mContext.getSharedPreferences(
-                EffectConfig.PREF_NAME, Context.MODE_PRIVATE);
-        String effectName = pref.getString(EffectConfig.PREF_EFFECT_NAME,
-                "Whiltehole");
-        String shaderType = pref.getString(EffectConfig.PREF_SHADER_TYPE,
-                EffectConfig.SHADER_TYPE_VS);
-
-        String vsFilePath = EffectUtils.getSavedFilePath(mContext, "Whitehole",
-                EffectConfig.SHADER_TYPE_VS);
+        String vsFilePath = EffectUtils.getSavedFilePath(mContext,
+                WhiteholeConfig.EFFECT_NAME, EffectConfig.SHADER_TYPE_VS);
         String vertexShaderSource = null;
         File file = new File(vsFilePath);
         if (file.exists() == true) {
@@ -300,8 +293,8 @@ public class WhiteholeRenderer implements GLESRenderer {
                     R.raw.whitehole_vs);
         }
 
-        String fsFilePath = EffectUtils.getSavedFilePath(mContext, "Whitehole",
-                EffectConfig.SHADER_TYPE_FS);
+        String fsFilePath = EffectUtils.getSavedFilePath(mContext,
+                WhiteholeConfig.EFFECT_NAME, EffectConfig.SHADER_TYPE_FS);
         String fragmentShaderSource = null;
         file = new File(fsFilePath);
         if (file.exists() == true) {

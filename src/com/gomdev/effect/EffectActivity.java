@@ -19,6 +19,7 @@ package com.gomdev.effect;
 import java.io.File;
 
 import com.gomdev.effect.R;
+import com.gomdev.effect.whitehole.WhiteholeConfig;
 
 import android.app.Activity;
 import android.content.Context;
@@ -54,7 +55,7 @@ public class EffectActivity extends Activity {
         SharedPreferences.Editor editor = pref.edit();
 
         String effectName = pref.getString(EffectConfig.PREF_EFFECT_NAME,
-                "Whitehole");
+                WhiteholeConfig.EFFECT_NAME);
 
         String savedFileName = null;
 
@@ -62,9 +63,7 @@ public class EffectActivity extends Activity {
         case R.id.vertex_shader:
             editor.putString(EffectConfig.PREF_SHADER_TYPE,
                     EffectConfig.SHADER_TYPE_VS);
-            savedFileName = EffectUtils.getSavedFilePath(this, effectName,
-                    EffectConfig.SHADER_TYPE_VS);
-            editor.putString(EffectConfig.PREF_VS_FILE_NAME, savedFileName);
+
             editor.commit();
 
             intent = new Intent(this,
@@ -74,10 +73,7 @@ public class EffectActivity extends Activity {
         case R.id.fragment_shader:
             editor.putString(EffectConfig.PREF_SHADER_TYPE,
                     EffectConfig.SHADER_TYPE_FS);
-            savedFileName = EffectUtils.getSavedFilePath(this, effectName,
-                    EffectConfig.SHADER_TYPE_FS);
-            String test = EffectUtils.getSavedFilePath(this, effectName, EffectConfig.SHADER_TYPE_FS);
-            editor.putString(EffectConfig.PREF_FS_FILE_NAME, savedFileName);
+
             editor.commit();
 
             intent = new Intent(this,
@@ -99,7 +95,7 @@ public class EffectActivity extends Activity {
             this.finish();
             return true;
         }
-        
+
         return super.onOptionsItemSelected(item);
     }
 }

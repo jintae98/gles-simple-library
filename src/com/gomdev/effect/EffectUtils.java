@@ -28,8 +28,9 @@ public class EffectUtils {
 
         return builder.toString();
     }
-    
-    public static String getSavedFilePath(Context context, String effectName, String shaderType) {
+
+    public static String getSavedFilePath(Context context, String effectName,
+            String shaderType) {
         File file = context.getExternalFilesDir(null);
         StringBuilder builder = new StringBuilder(file.getAbsolutePath());
         builder.append(File.separatorChar);
@@ -37,10 +38,10 @@ public class EffectUtils {
         builder.append('_');
         builder.append(shaderType);
         builder.append(".dat");
-        
+
         return builder.toString();
     }
-    
+
     public static String getShaderSource(Context context) {
         SharedPreferences pref = context.getSharedPreferences(
                 EffectConfig.PREF_NAME, Context.MODE_PRIVATE);
@@ -62,9 +63,10 @@ public class EffectUtils {
         if (file.exists() == true) {
             shaderSource = GLESFileUtils.read(savedFileName);
         } else {
-            shaderSource = GLESUtils.getStringFromReosurce(context, shaderResID);
+            shaderSource = GLESUtils
+                    .getStringFromReosurce(context, shaderResID);
         }
-        
+
         return shaderSource;
     }
 }
