@@ -54,7 +54,7 @@ public class ShaderEditActivity extends Activity {
             String shaderType = pref.getString(EffectConfig.PREF_SHADER_TYPE,
                     EffectConfig.SHADER_TYPE_VS);
 
-            if (checkSDCardState() == false) {
+            if (GLESFileUtils.isExternalStorageWriable() == false) {
                 Toast.makeText(this, "SDCard is not available",
                         Toast.LENGTH_SHORT).show();
 
@@ -73,15 +73,5 @@ public class ShaderEditActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private boolean checkSDCardState() {
-        GLESFileUtils.checkExternalStorageState();
-        if (GLESFileUtils.isExternalStorageAvaiable() == false
-                || GLESFileUtils.isExternalStorageWriable() == false) {
-            return false;
-        }
-
-        return true;
     }
 }

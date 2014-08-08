@@ -14,36 +14,26 @@ public class GLESFileUtils {
     private static final String TAG = GLESConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = GLESConfig.DEBUG;
 
-    private static boolean sExternalStorageAvailable = false;
-    private static boolean sExternalStorageWriteable = false;
+    public static boolean isExternalStorageWriable() {
+        boolean writable = false;
 
-    public static boolean checkExternalStorageState() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
-            sExternalStorageAvailable = sExternalStorageWriteable = true;
+            writable = true;
         } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            sExternalStorageAvailable = true;
-            sExternalStorageWriteable = false;
+            writable = false;
         } else {
-            sExternalStorageAvailable = sExternalStorageWriteable = false;
+            writable = false;
         }
 
-        return true;
-    }
-    
-    public static boolean isExternalStorageAvaiable() {
-        return sExternalStorageAvailable;
-    }
-    
-    public static boolean isExternalStorageWriable() {
-        return sExternalStorageWriteable;
+        return writable;
     }
 
     public static boolean write(String path, String str) {
         String parentDirPath = getParentDirectoryPath(path);
         File dir = new File(parentDirPath);
         dir.mkdir();
-        
+
         File file = new File(path);
 
         try {
@@ -65,7 +55,7 @@ public class GLESFileUtils {
 
         return true;
     }
-    
+
     public static String getParentDirectoryPath(String path) {
         int index = path.lastIndexOf(File.separator);
         String parentDirectory = path.substring(0, index);
