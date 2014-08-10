@@ -13,24 +13,13 @@ public class GLESTransform {
 
     private static boolean sIsAlphaBlending = false;
 
-    private GLESShader mShader;
-
-    private int mMMatrixHandle = -1;
-
     private float[] mMMatrix = new float[16];
 
     private Vector<float[]> mMatrixStack = new Vector();
 
-    public GLESTransform(GLESShader shader) {
-        mShader = shader;
+    public GLESTransform() {
         mMatrixStack.clear();
-        init();
-    }
-
-    private void init() {
-        mMMatrixHandle = mShader.getUniformLocation("uMMatrix");
         Matrix.setIdentityM(mMMatrix, 0);
-        GLES20.glUniformMatrix4fv(mMMatrixHandle, 1, false, mMMatrix, 0);
     }
 
     public void destroy() {
@@ -95,7 +84,7 @@ public class GLESTransform {
         System.arraycopy(matrix, 0, mMMatrix, 0, matrix.length);
     }
 
-    public float[] getCurrentMatrix() {
+    public float[] getMatrix() {
         float[] matrix = new float[16];
         System.arraycopy(mMMatrix, 0, matrix, 0, matrix.length);
         return matrix;
@@ -107,10 +96,6 @@ public class GLESTransform {
         return matrix;
     }
 
-    public int getTransformHandle() {
-        return mMMatrixHandle;
-    }
-
     public void push() {
         float[] matrix = new float[16];
         System.arraycopy(mMMatrix, 0, matrix, 0, matrix.length);
@@ -120,11 +105,6 @@ public class GLESTransform {
     public void pop() {
         int i = -1 + mMatrixStack.size();
         mMMatrix = ((float[]) mMatrixStack.remove(i));
-    }
-
-    public void sync() {
-        mShader.useProgram();
-        GLES20.glUniformMatrix4fv(mMMatrixHandle, 1, false, mMMatrix, 0);
     }
 
     public void dump(String str) {

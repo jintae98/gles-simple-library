@@ -53,6 +53,8 @@ public class BasicRenderer implements GLESRenderer {
 
     ArrayList<GLESAnimator> mAnimatorList = new ArrayList<GLESAnimator>();
     private GLESAnimator mAnimator = null;
+    
+    private int mMMatrixHandle = -1;
 
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
 
@@ -70,7 +72,7 @@ public class BasicRenderer implements GLESRenderer {
         mContext = context;
 
         mBasicObject = new BasicObject(context);
-
+        mBasicObject.setTransform(new GLESTransform());
     }
 
     public void destroy() {
@@ -97,6 +99,8 @@ public class BasicRenderer implements GLESRenderer {
                 }
             }
         }
+        
+        update();
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
@@ -105,6 +109,11 @@ public class BasicRenderer implements GLESRenderer {
         if (count > 0) {
             mView.requestRender();
         }
+    }
+    
+    private void update() {
+        GLESTransform transform = mBasicObject.getTransform();
+        GLES20.glUniformMatrix4fv(mMMatrixHandle, 1, false, transform.getMatrix(), 0);
     }
 
     @Override
@@ -167,6 +176,8 @@ public class BasicRenderer implements GLESRenderer {
         Bitmap bitmap = GLESUtils.makeBitmap(512, 512, Config.ARGB_8888, Color.RED);
         mBasicTexture = new GLESTexture(bitmap, GLES20.GL_MIRRORED_REPEAT, true);
         mBasicObject.setTexture(mBasicTexture);
+        
+        mMMatrixHandle = mBasicShader.getUniformLocation("uMMatrix");
     }
 
     @Override

@@ -139,10 +139,6 @@ public abstract class GLESParticleController {
         mIsVisible = true;
     }
 
-    public void syncAll() {
-        mDummyObject.syncAll();
-    }
-
     protected class DummyObject extends GLESObject {
         public DummyObject(Context context) {
             super(context);

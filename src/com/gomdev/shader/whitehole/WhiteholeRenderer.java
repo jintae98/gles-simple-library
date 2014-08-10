@@ -55,6 +55,8 @@ public class WhiteholeRenderer implements GLESRenderer {
     private float mMinRingSize = 0f;
     private float mMaxRingSize = 0.0f;
     private float mBoundaryRingSize = 0f;
+    
+    private int mMMatrixHandle = -1;
 
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
 
@@ -72,6 +74,7 @@ public class WhiteholeRenderer implements GLESRenderer {
         mContext = context;
 
         mWhiteholeObject = new WhiteholeObject(context);
+        mWhiteholeObject.setTransform(new GLESTransform());
 
     }
 
@@ -102,11 +105,18 @@ public class WhiteholeRenderer implements GLESRenderer {
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
+        update();
+
         mWhiteholeObject.drawObject();
 
         if (count > 0) {
             mView.requestRender();
         }
+    }
+
+    private void update() {
+        GLESTransform transform = mWhiteholeObject.getTransform();
+        GLES20.glUniformMatrix4fv(mMMatrixHandle, 1, false, transform.getMatrix(), 0);
     }
 
     @Override
@@ -169,8 +179,6 @@ public class WhiteholeRenderer implements GLESRenderer {
         mWhiteholeObject.setShader(mShaderWhitehole);
         Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.galaxy);
-        // Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(),
-        // R.drawable.moon);
         mWhiteholeTexture = new GLESTexture(bitmap, GLES20.GL_MIRRORED_REPEAT,
                 true);
         mWhiteholeObject.setTexture(mWhiteholeTexture);
@@ -181,6 +189,8 @@ public class WhiteholeRenderer implements GLESRenderer {
                 GLESUtils.getHeightPixels(mContext));
         mBoundaryRingSize = GLESUtils.getPixelFromDpi(mContext,
                 WhiteholeConfig.BOUNDARY_RING_SIZE);
+        
+        mMMatrixHandle = mShaderWhitehole.getUniformLocation("uMMatrix");
     }
 
     @Override

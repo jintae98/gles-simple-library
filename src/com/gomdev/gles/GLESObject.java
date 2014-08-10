@@ -39,8 +39,6 @@ public abstract class GLESObject {
         shader.useProgram();
 
         getUniformLocations();
-
-        mTransform = new GLESTransform(shader);
     }
 
     public void setupSpace(GLESCamera camera, int width, int height) {
@@ -70,6 +68,14 @@ public abstract class GLESObject {
         mTexture = texture;
     }
 
+    public void setTransform(GLESTransform transform) {
+        mTransform = transform;
+    }
+
+    public GLESTransform getTransform() {
+        return mTransform;
+    }
+
     public void show() {
         mIsVisible = true;
     }
@@ -85,10 +91,6 @@ public abstract class GLESObject {
             this.update();
             this.draw();
         }
-    }
-
-    public void syncAll() {
-        mTransform.sync();
     }
 
     protected abstract void update();
