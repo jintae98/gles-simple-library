@@ -1,4 +1,4 @@
-package com.gomdev.effect.whitehole;
+package com.gomdev.shader.whitehole;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -6,13 +6,12 @@ import java.util.ArrayList;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import com.gomdev.effect.EffectConfig;
-import com.gomdev.effect.EffectUtils;
-import com.gomdev.effect.R;
+import com.gomdev.shader.R;
 import com.gomdev.gles.*;
+import com.gomdev.shader.EffectConfig;
+import com.gomdev.shader.EffectUtils;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;

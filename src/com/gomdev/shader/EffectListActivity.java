@@ -1,13 +1,14 @@
-package com.gomdev.effect;
+package com.gomdev.shader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.gomdev.effect.whitehole.WhiteholeConfig;
+import com.gomdev.shader.R;
+import com.gomdev.shader.basic.BasicConfig;
+import com.gomdev.shader.whitehole.WhiteholeConfig;
 import com.gomdev.gles.GLESConfig;
 
 import android.app.Activity;
@@ -15,13 +16,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class EffectListActivity extends Activity {
     private static final String CLASS = "EffectListActivity";
@@ -43,11 +42,19 @@ public class EffectListActivity extends Activity {
 
         EffectInfo info = new EffectInfo();
         info.mIntent = new Intent(this,
-                com.gomdev.effect.whitehole.WhiteholeActivity.class);
+                com.gomdev.shader.whitehole.WhiteholeActivity.class);
         info.mVertexShaderResID = R.raw.whitehole_vs;
         info.mFragmentShaderResID = R.raw.whitehole_fs;
 
-        mEffectMap.put("Whitehole", info);
+        mEffectMap.put(WhiteholeConfig.EFFECT_NAME, info);
+        
+        info = new EffectInfo();
+        info.mIntent = new Intent(this,
+                com.gomdev.shader.basic.BasicActivity.class);
+        info.mVertexShaderResID = R.raw.basic_vs;
+        info.mFragmentShaderResID = R.raw.basic_fs;
+
+        mEffectMap.put(BasicConfig.EFFECT_NAME, info);
 
         if (DEBUG) {
             Log.d(TAG, "onCreate() map<String, EffectInfo>");

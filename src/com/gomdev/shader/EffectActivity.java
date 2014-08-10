@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package com.gomdev.effect;
+package com.gomdev.shader;
 
 import java.io.File;
 
-import com.gomdev.effect.R;
-import com.gomdev.effect.whitehole.WhiteholeConfig;
+import com.gomdev.shader.R;
+import com.gomdev.shader.whitehole.WhiteholeConfig;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -67,7 +66,7 @@ public class EffectActivity extends Activity {
             editor.commit();
 
             intent = new Intent(this,
-                    com.gomdev.effect.ShaderViewActivity.class);
+                    com.gomdev.shader.ShaderViewActivity.class);
             startActivity(intent);
             return true;
         case R.id.fragment_shader:
@@ -77,7 +76,7 @@ public class EffectActivity extends Activity {
             editor.commit();
 
             intent = new Intent(this,
-                    com.gomdev.effect.ShaderViewActivity.class);
+                    com.gomdev.shader.ShaderViewActivity.class);
             startActivity(intent);
             return true;
         case R.id.restore_vs:

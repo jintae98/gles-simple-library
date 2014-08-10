@@ -135,7 +135,7 @@ public class GLESMeshUtils {
         vertexInfo.setVertexBuffer(vertex, 3);
 
         if (useTexCoord == true) {
-            float[] texCoord = { 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f };
+            float[] texCoord = { 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f };
 
             vertexInfo.setTexCoordBuffer(texCoord, 2);
         }
@@ -150,6 +150,148 @@ public class GLESMeshUtils {
             short[] index = { 0, 1, 2, 2, 1, 3 };
 
             vertexInfo.setIndexBuffer(index);
+        }
+
+        return vertexInfo;
+    }
+
+    public static GLESVertexInfo createCube(float width, float height,
+            boolean useTexCoord, boolean useNormal) {
+        width = GLESUtils.convertScreenToSpace(width);
+        height = GLESUtils.convertScreenToSpace(height);
+
+        float right = width * 0.35f;
+        float left = -right;
+        float top = height * 0.35f;
+        float bottom = -top;
+        float z = width * 0.35f;
+
+        float[] vertex = {
+                // front
+                left, bottom, z, 
+                right, bottom, z, 
+                left, top, z,
+                right, top, z,
+                
+                // right
+                right, bottom, z,
+                right, bottom, -z,
+                right, top, z,
+                right, top, -z,
+                
+                // back
+                right, bottom, -z,
+                left, bottom, -z,
+                right, top, -z,
+                left, top, -z,
+                
+                // left
+                left, bottom, -z,
+                left, bottom, z,
+                left, top, -z, 
+                left, top, z,
+                
+                // top
+                left, top, z,
+                right, top, z,
+                left, top, -z,
+                right, top, -z,
+                
+                // bottom
+                left, bottom, -z,
+                right, bottom, -z,
+                left, bottom, z,
+                right, bottom, z
+        };
+
+        GLESVertexInfo vertexInfo = new GLESVertexInfo();
+
+        vertexInfo.setVertexBuffer(vertex, 3);
+
+        if (useTexCoord == true) {
+            float[] texCoord = {
+                    // front
+                    0f, 1f, 
+                    1f, 1f, 
+                    0f, 0f, 
+                    1f, 0f,
+                    
+                    // right
+                    0f, 1f, 
+                    1f, 1f, 
+                    0f, 0f, 
+                    1f, 0f,
+                    
+                    // back
+                    0f, 1f, 
+                    1f, 1f, 
+                    0f, 0f, 
+                    1f, 0f,
+                    
+                    // left
+                    0f, 1f, 
+                    1f, 1f, 
+                    0f, 0f, 
+                    1f, 0f,
+                    
+                    // top
+                    0f, 1f, 
+                    1f, 1f, 
+                    0f, 0f, 
+                    1f, 0f,
+                    
+                    // bottom
+                    0f, 1f, 
+                    1f, 1f, 
+                    0f, 0f, 
+                    1f, 0f,
+                    
+            };
+
+            vertexInfo.setTexCoordBuffer(texCoord, 2);
+        }
+
+        if (useNormal == true) {
+            float[] normal = { 
+                    // front
+                    0f, 0f, 1f, 
+                    0f, 0f, 1f, 
+                    0f, 0f, 1f, 
+                    0f, 0f, 1f,
+                    
+                    // right
+                    1f, 0f, 0f, 
+                    1f, 0f, 0f, 
+                    1f, 0f, 0f, 
+                    1f, 0f, 0f,
+                    
+                    // back
+                    0f, 0f, -1f, 
+                    0f, 0f, -1f, 
+                    0f, 0f, -1f, 
+                    0f, 0f, -1f,
+                    
+                    // left
+                    -1f, 0f, 0f, 
+                    -1f, 0f, 0f, 
+                    -1f, 0f, 0f, 
+                    -1f, 0f, 0f,
+                    
+                    // top
+                    0f, 1f, 0f, 
+                    0f, 1f, 0f, 
+                    0f, 1f, 0f, 
+                    0f, 1f, 0f,
+                    
+                    // bottom
+                    0f, -1f, 0f, 
+                    0f, -1f, 0f, 
+                    0f, -1f, 0f, 
+                    0f, -1f, 0f,
+            };
+            
+
+            vertexInfo.setNormalBuffer(normal, 3);
         }
 
         return vertexInfo;

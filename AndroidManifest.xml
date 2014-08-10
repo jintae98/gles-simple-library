@@ -1,43 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gomdev.effect"
+    package="com.gomdev.shader"
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="14" />
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="19" />
+
     <uses-permission
-     android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-     android:maxSdkVersion="18" />
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:icon="@drawable/ic_launcher"
-        android:screenOrientation="portrait"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        android:screenOrientation="portrait" >
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <activity
-            android:label="@string/app_name"
-            android:name="com.gomdev.effect.whitehole.WhiteholeActivity" >
+            android:name="com.gomdev.shader.DummyActivity"
+            android:label="@string/app_name" >
         </activity>
         <activity
-            android:label="@string/app_name"
-            android:name="com.gomdev.effect.DummyActivity" >
+            android:name="com.gomdev.shader.ShaderViewActivity"
+            android:label="@string/app_name" >
         </activity>
         <activity
+            android:name="com.gomdev.shader.ShaderEditActivity"
             android:label="@string/app_name"
-            android:name="com.gomdev.effect.ShaderViewActivity" >
+            android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
         <activity
-            android:label="@string/app_name"
-            android:name="com.gomdev.effect.ShaderEditActivity" 
-            android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
-        <activity
-            android:label="@string/app_name"
-            android:name="com.gomdev.effect.EffectListActivity" >
-            <intent-filter >
+            android:name="com.gomdev.shader.EffectListActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.gomdev.shader.whitehole.WhiteholeActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.gomdev.shader.basic.BasicActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
     </application>
 
 </manifest>

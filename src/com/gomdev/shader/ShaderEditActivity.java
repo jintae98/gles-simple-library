@@ -1,16 +1,11 @@
-package com.gomdev.effect;
+package com.gomdev.shader;
 
-import java.io.File;
-
+import com.gomdev.shader.R;
 import com.gomdev.gles.GLESFileUtils;
-import com.gomdev.gles.GLESUtils;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;

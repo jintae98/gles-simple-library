@@ -1,9 +1,9 @@
-package com.gomdev.effect;
+package com.gomdev.shader;
+
+import com.gomdev.shader.R;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 public class DummyActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {

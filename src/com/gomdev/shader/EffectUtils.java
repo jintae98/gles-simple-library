@@ -1,4 +1,4 @@
-package com.gomdev.effect;
+package com.gomdev.shader;
 
 import java.io.File;
 
@@ -8,7 +8,6 @@ import com.gomdev.gles.GLESUtils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
-import android.util.Log;
 
 public class EffectUtils {
     private static final String CLASS = "EffectUtils";

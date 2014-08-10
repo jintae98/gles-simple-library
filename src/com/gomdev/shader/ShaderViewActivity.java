@@ -1,13 +1,9 @@
-package com.gomdev.effect;
+package com.gomdev.shader;
 
-import java.io.File;
-
-import com.gomdev.gles.GLESFileUtils;
-import com.gomdev.gles.GLESUtils;
+import com.gomdev.shader.R;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,7 +43,7 @@ public class ShaderViewActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = new Intent(this,
-                com.gomdev.effect.ShaderEditActivity.class);
+                com.gomdev.shader.ShaderEditActivity.class);
         switch (item.getItemId()) {
         case R.id.edit:
             startActivity(intent);

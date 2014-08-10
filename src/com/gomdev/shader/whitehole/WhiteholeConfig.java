@@ -1,4 +1,4 @@
-package com.gomdev.effect.whitehole;
+package com.gomdev.shader.whitehole;
 
 public class WhiteholeConfig {
     static final boolean DEBUG = false;

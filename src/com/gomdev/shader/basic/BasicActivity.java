@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-package com.gomdev.effect.whitehole;
+package com.gomdev.shader.basic;
 
-import com.gomdev.effect.EffectActivity;
-import com.gomdev.effect.R;
+import com.gomdev.shader.R;
 import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESSurfaceView;
+import com.gomdev.shader.EffectActivity;
 
-import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
-public class WhiteholeActivity extends EffectActivity {
-    private static final String CLASS = "TestActivity";
+public class BasicActivity extends EffectActivity {
+    private static final String CLASS = "BasicActivity";
     private static final String TAG = "gomdev " + CLASS;
     private static final boolean DEBUG = false;
 
@@ -41,8 +40,7 @@ public class WhiteholeActivity extends EffectActivity {
 
         setContentView(R.layout.main);
 
-        mRenderer = new com.gomdev.effect.whitehole.WhiteholeRenderer(this);
-        // mRenderer = new com.gomdev.particle.ParticleRenderer(this);
+        mRenderer = new com.gomdev.shader.basic.BasicRenderer(this);
         mView = new GLESSurfaceView(this, mRenderer);
 
         mView.setEGLContextClientVersion(2);

@@ -1,4 +1,4 @@
-package com.gomdev.effect;
+package com.gomdev.shader;
 
 public class EffectConfig {
     static final boolean DEBUG = false;
