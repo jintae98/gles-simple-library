@@ -2,7 +2,6 @@ package com.gomdev.gles;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.util.Log;
 
 public abstract class GLESObject {
@@ -22,9 +21,6 @@ public abstract class GLESObject {
     protected float mWidth;
     protected float mHeight;
 
-    protected float mBitmapHeight;
-    protected float mBitmapWidth;
-
     protected GLESVertexInfo mVertexInfo = null;
 
     protected boolean mIsVisible = false;
@@ -32,8 +28,6 @@ public abstract class GLESObject {
     public GLESObject(Context context) {
         mContext = context;
         mRes = context.getResources();
-
-        mTexture = new GLESTexture();
     }
 
     public void setVertexInfo(GLESVertexInfo vertexInfo) {
@@ -56,13 +50,6 @@ public abstract class GLESObject {
         mHeight = height;
     }
 
-    public void setTexture(Bitmap bitmap, boolean needToRecycle) {
-        if (bitmap == null) {
-            return;
-        }
-        mTexture.changeTexture(bitmap, needToRecycle);
-    }
-
     public void setTexture(GLESTexture texture) {
         if (texture == null) {
             return;
@@ -73,14 +60,6 @@ public abstract class GLESObject {
 
     public GLESTexture getTexture() {
         return mTexture;
-    }
-
-    public void changeTexture(Bitmap bitmap, boolean needToRecycle) {
-        if (bitmap == null || mTexture == null) {
-            return;
-        }
-
-        mTexture.changeTexture(bitmap, needToRecycle);
     }
 
     public void changeTexture(GLESTexture texture) {
