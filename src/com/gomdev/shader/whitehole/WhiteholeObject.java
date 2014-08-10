@@ -38,8 +38,7 @@ public class WhiteholeObject extends GLESObject {
 
         int handle = mShader.getUniformLocation("uSpaceInfo"); // width, height,
                                                                // width / height
-        GLES20.glUniform3f(handle, GLESUtils.convertScreenToSpace(width),
-                GLESUtils.convertScreenToSpace(height), (float) width / height);
+        GLES20.glUniform3f(handle, width, height, (float) width / height);
     }
 
     @Override
@@ -50,8 +49,7 @@ public class WhiteholeObject extends GLESObject {
                 mDownPosInVS[1]);
         GLES20.glUniform2f(mPositionInFSHandle, mDownPosInFS[0],
                 mDownPosInFS[1]);
-        GLES20.glUniform1f(mRadiusHandle,
-                GLESUtils.convertScreenToSpace(mRadius));
+        GLES20.glUniform1f(mRadiusHandle, mRadius);
     }
 
     @Override
@@ -98,8 +96,8 @@ public class WhiteholeObject extends GLESObject {
         GLES20.glUniform1f(mRadiusHandle, 0.1f);
 
         int handle = mShader.getUniformLocation("uBandWidth");
-        GLES20.glUniform1f(handle, GLESUtils.convertScreenToSpace(GLESUtils
-                .getPixelFromDpi(mContext, WhiteholeConfig.BAND_WIDTH)));
+        GLES20.glUniform1f(handle, GLESUtils
+                .getPixelFromDpi(mContext, WhiteholeConfig.BAND_WIDTH));
     }
 
     public void setImage(Bitmap bitmap) {
@@ -108,8 +106,8 @@ public class WhiteholeObject extends GLESObject {
     }
 
     public void setPosition(float x, float y) {
-        mDownPosInVS[0] = GLESUtils.convertScreenToSpace(x - mWidth * 0.5f);
-        mDownPosInVS[1] = GLESUtils.convertScreenToSpace(mHeight * 0.5f - y);
+        mDownPosInVS[0] = x - mWidth * 0.5f;
+        mDownPosInVS[1] = mHeight * 0.5f - y;
 
         mDownPosInFS[0] = x / mWidth;
         mDownPosInFS[1] = y / mHeight;

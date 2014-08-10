@@ -21,8 +21,6 @@ public abstract class GLESParticleSet {
 
     protected float mWidth = 0.0F;
     protected float mHeight = 0.0F;
-    protected float mWidthInSpace = 0.0F;
-    protected float mHeightInSpace = 0.0F;
 
     private float mMinParticleSize = 0.0F;
     private int mNumOfParticle = 0;
@@ -48,8 +46,8 @@ public abstract class GLESParticleSet {
         mWidth = width;
         mHeight = height;
 
-        mWidthInSpace = GLESUtils.convertScreenToSpace(width);
-        mHeightInSpace = GLESUtils.convertScreenToSpace(height);
+        mWidth = width;
+        mHeight = height;
 
         onCreate();
     }
@@ -99,11 +97,11 @@ public abstract class GLESParticleSet {
     }
 
     public float getSpaceHeight() {
-        return mHeightInSpace;
+        return mHeight;
     }
 
     public float getSpaceWidth() {
-        return mWidthInSpace;
+        return mWidth;
     }
 
     public float getSurfaceHeight() {

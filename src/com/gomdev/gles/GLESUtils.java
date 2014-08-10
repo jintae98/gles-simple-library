@@ -74,10 +74,6 @@ public class GLESUtils {
         return file.exists();
     }
 
-    public static float convertScreenToSpace(float f) {
-        return f / 4.0F;
-    }
-
     public static FloatBuffer makeFloatBuffer(float[] array) {
         FloatBuffer buffer = ByteBuffer
                 .allocateDirect(array.length * GLESConfig.FLOAT_SIZE_BYTES)

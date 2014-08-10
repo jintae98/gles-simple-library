@@ -13,8 +13,6 @@ public class GLESMeshUtils {
 
     public static GLESVertexInfo createPlaneMesh(float width, float height,
             int resolution, boolean useTexCoord, boolean useNormal) {
-        width = GLESUtils.convertScreenToSpace(width);
-        height = GLESUtils.convertScreenToSpace(height);
 
         int wResolution = 0;
         int hResolution = resolution + 2;
@@ -118,8 +116,6 @@ public class GLESMeshUtils {
 
     public static GLESVertexInfo createPlane(float width, float height,
             boolean useTexCoord, boolean useNormal, boolean useIndex) {
-        width = GLESUtils.convertScreenToSpace(width);
-        height = GLESUtils.convertScreenToSpace(height);
 
         float right = width * 0.5f;
         float left = -right;
@@ -157,8 +153,6 @@ public class GLESMeshUtils {
 
     public static GLESVertexInfo createCube(float width, float height,
             boolean useTexCoord, boolean useNormal) {
-        width = GLESUtils.convertScreenToSpace(width);
-        height = GLESUtils.convertScreenToSpace(height);
 
         float right = width * 0.5f;
         float left = -right;
