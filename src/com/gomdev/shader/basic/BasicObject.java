@@ -59,9 +59,9 @@ public class BasicObject extends GLESObject {
 
         int numOfVertex = mVertexInfo.getVertexBuffer().limit() / 3;
         int numOfRect = numOfVertex / 4;
-//        for (int i = 0; i < numOfRect; i++) {
-            GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
-//        }
+        for (int i = 0; i < numOfRect; i++) {
+            GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 4 * i, 4);
+        }
 
         GLES20.glDisableVertexAttribArray(mShader.getVertexAttribIndex());
     }

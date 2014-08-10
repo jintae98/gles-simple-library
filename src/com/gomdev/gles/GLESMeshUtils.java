@@ -160,24 +160,26 @@ public class GLESMeshUtils {
         width = GLESUtils.convertScreenToSpace(width);
         height = GLESUtils.convertScreenToSpace(height);
 
-        float right = width * 0.35f;
+        float right = width * 0.5f;
         float left = -right;
-        float top = height * 0.35f;
+        float top = height * 0.5f;
         float bottom = -top;
-        float z = width * 0.35f;
+        float z = width * 0.5f;
 
         float[] vertex = {
+             // right
+                right, bottom, z,
+                right, bottom, -z,
+                right, top, z,
+                right, top, -z,
+                
                 // front
                 left, bottom, z, 
                 right, bottom, z, 
                 left, top, z,
                 right, top, z,
                 
-                // right
-                right, bottom, z,
-                right, bottom, -z,
-                right, top, z,
-                right, top, -z,
+                
                 
                 // back
                 right, bottom, -z,

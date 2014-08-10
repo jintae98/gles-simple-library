@@ -46,14 +46,18 @@ public class BasicRenderer implements GLESRenderer {
     private int mHeight;
 
     private boolean mIsTouchDown = false;
+
     private float mDownX = 0f;
     private float mDownY = 0f;
+
+    private float mMoveX = 0f;
+    private float mMoveY = 0f;
 
     private GLESAnimatorCallback mCallback = null;
 
     ArrayList<GLESAnimator> mAnimatorList = new ArrayList<GLESAnimator>();
     private GLESAnimator mAnimator = null;
-    
+
     private int mMMatrixHandle = -1;
 
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
@@ -99,7 +103,7 @@ public class BasicRenderer implements GLESRenderer {
                 }
             }
         }
-        
+
         update();
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
@@ -110,10 +114,17 @@ public class BasicRenderer implements GLESRenderer {
             mView.requestRender();
         }
     }
-    
+
     private void update() {
         GLESTransform transform = mBasicObject.getTransform();
-        GLES20.glUniformMatrix4fv(mMMatrixHandle, 1, false, transform.getMatrix(), 0);
+
+        transform.setIdentity();
+
+        transform.rotate(mMoveX * 0.1f, 0f, 1f, 0f);
+        transform.rotate(mMoveY * 0.1f, 1f, 0f, 0f);
+
+        GLES20.glUniformMatrix4fv(mMMatrixHandle, 1, false,
+                transform.getMatrix(), 0);
     }
 
     @Override
@@ -131,20 +142,21 @@ public class BasicRenderer implements GLESRenderer {
         mBasicObject.setupSpace(camera, mWidth, mHeight);
         mBasicObject.show();
 
-         GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(mWidth, mWidth, true, true);
-         mBasicObject.setVertexInfo(vertexInfo);
+        GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(mWidth,
+                mWidth, true, true);
+        mBasicObject.setVertexInfo(vertexInfo);
     }
 
     private GLESCamera setupCamera(int width, int height) {
         GLESCamera camera = new GLESCamera();
-        camera.setLookAt(0f, 0f, 512f, 0f, 0f, 0f, 0f, 1f, 0f);
+        camera.setLookAt(0f, 0f, 2048f, 0f, 0f, 0f, 0f, 1f, 0f);
 
         float right = width * 0.5f / 4f;
         float left = -right;
         float top = height * 0.5f / 4f;
         float bottom = -top;
-        float near = 16f;
-        float far = 1024f;
+        float near = 128f;
+        float far = 2048f * 2f;
 
         camera.setFrustum(left, right, bottom, top, near, far);
 
@@ -173,10 +185,11 @@ public class BasicRenderer implements GLESRenderer {
         createAnimation();
 
         mBasicObject.setShader(mBasicShader);
-        Bitmap bitmap = GLESUtils.makeBitmap(512, 512, Config.ARGB_8888, Color.RED);
+        Bitmap bitmap = GLESUtils.makeBitmap(512, 512, Config.ARGB_8888,
+                Color.RED);
         mBasicTexture = new GLESTexture(bitmap, GLES20.GL_MIRRORED_REPEAT, true);
         mBasicObject.setTexture(mBasicTexture);
-        
+
         mMMatrixHandle = mBasicShader.getUniformLocation("uMMatrix");
     }
 
@@ -230,12 +243,14 @@ public class BasicRenderer implements GLESRenderer {
             return;
         }
 
+        mMoveX = x - mDownX;
+        mMoveY = y - mDownY;
+
         mView.requestRender();
     }
 
     @Override
     public void touchCancel(float x, float y) {
-
     }
 
     @Override
