@@ -15,13 +15,15 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
+import android.opengl.GLSurfaceView;
+import android.opengl.GLSurfaceView.Renderer;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
-public class WhiteholeRenderer implements GLESRenderer {
+public class WhiteholeRenderer implements Renderer {
     private static final String CLASS = "WhiteholeRenderer";
     private static final String TAG = WhiteholeConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = WhiteholeConfig.DEBUG;
@@ -34,7 +36,7 @@ public class WhiteholeRenderer implements GLESRenderer {
     }
 
     private Context mContext;
-    private GLESSurfaceView mView;
+    private GLSurfaceView mView;
 
     private WhiteholeObject mWhiteholeObject;
     private GLESTexture mWhiteholeTexture;
@@ -55,7 +57,7 @@ public class WhiteholeRenderer implements GLESRenderer {
     private float mMinRingSize = 0f;
     private float mMaxRingSize = 0.0f;
     private float mBoundaryRingSize = 0f;
-    
+
     private int mMMatrixHandle = -1;
 
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
@@ -80,6 +82,10 @@ public class WhiteholeRenderer implements GLESRenderer {
 
     public void destroy() {
         mWhiteholeObject = null;
+    }
+
+    public void setSurfaceView(GLSurfaceView surfaceView) {
+        mView = surfaceView;
     }
 
     @Override
@@ -116,7 +122,8 @@ public class WhiteholeRenderer implements GLESRenderer {
 
     private void update() {
         GLESTransform transform = mWhiteholeObject.getTransform();
-        GLES20.glUniformMatrix4fv(mMMatrixHandle, 1, false, transform.getMatrix(), 0);
+        GLES20.glUniformMatrix4fv(mMMatrixHandle, 1, false,
+                transform.getMatrix(), 0);
     }
 
     @Override
@@ -189,26 +196,11 @@ public class WhiteholeRenderer implements GLESRenderer {
                 GLESUtils.getHeightPixels(mContext));
         mBoundaryRingSize = GLESUtils.getPixelFromDpi(mContext,
                 WhiteholeConfig.BOUNDARY_RING_SIZE);
-        
+
         mMMatrixHandle = mShaderWhitehole.getUniformLocation("uMMatrix");
     }
 
-    @Override
-    public void initRenderer() {
-
-    }
-
-    @Override
-    public void setSurfaceView(GLESSurfaceView surfaceView) {
-        if (surfaceView == null) {
-            Log.e(TAG, "setSurfaceView() surfaceView is null");
-            return;
-        }
-        mView = surfaceView;
-    }
-
-    @Override
-    public void touchDown(float x, float y, float userData) {
+    public void touchDown(float x, float y) {
         if (DEBUG)
             Log.d(TAG, "touchDown() x=" + x + " y=" + y);
 
@@ -229,8 +221,7 @@ public class WhiteholeRenderer implements GLESRenderer {
         mView.requestRender();
     }
 
-    @Override
-    public void touchUp(float x, float y, float userData) {
+    public void touchUp(float x, float y) {
         if (mIsTouchDown == false) {
             return;
         }
@@ -250,8 +241,7 @@ public class WhiteholeRenderer implements GLESRenderer {
         mIsTouchDown = false;
     }
 
-    @Override
-    public void touchMove(float x, float y, float userData) {
+    public void touchMove(float x, float y) {
         if (mIsTouchDown == false) {
             return;
         }
@@ -262,19 +252,16 @@ public class WhiteholeRenderer implements GLESRenderer {
         mView.requestRender();
     }
 
-    @Override
     public void touchCancel(float x, float y) {
 
     }
 
-    @Override
     public void showAll() {
         if (mWhiteholeObject != null) {
             mWhiteholeObject.show();
         }
     }
 
-    @Override
     public void hideAll() {
         if (mWhiteholeObject != null) {
             mWhiteholeObject.hide();
@@ -348,17 +335,5 @@ public class WhiteholeRenderer implements GLESRenderer {
 
         mAnimator = new GLESAnimator(mCallback);
         mAnimatorList.add(mAnimator);
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-
     }
 }

@@ -17,11 +17,10 @@
 package com.gomdev.shader.basic;
 
 import com.gomdev.shader.R;
-import com.gomdev.gles.GLESRenderer;
-import com.gomdev.gles.GLESSurfaceView;
 import com.gomdev.shader.EffectActivity;
 
 import android.opengl.GLSurfaceView;
+import android.opengl.GLSurfaceView.Renderer;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
@@ -31,8 +30,8 @@ public class BasicActivity extends EffectActivity {
     private static final String TAG = "gomdev " + CLASS;
     private static final boolean DEBUG = false;
 
-    private GLESSurfaceView mView;
-    private GLESRenderer mRenderer;
+    private GLSurfaceView mView;
+    private BasicRenderer mRenderer;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -40,8 +39,9 @@ public class BasicActivity extends EffectActivity {
 
         setContentView(R.layout.main);
 
-        mRenderer = new com.gomdev.shader.basic.BasicRenderer(this);
-        mView = new GLESSurfaceView(this, mRenderer);
+        mRenderer = new BasicRenderer(this);
+        mView = new GLSurfaceView(this);
+        mRenderer.setSurfaceView(mView);
 
         mView.setEGLContextClientVersion(2);
         mView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
@@ -78,13 +78,13 @@ public class BasicActivity extends EffectActivity {
 
         switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
-            mView.touchDown(x, y);
+            ((BasicRenderer) mRenderer).touchDown(x, y);
             break;
         case MotionEvent.ACTION_UP:
-            mView.touchUp(x, y);
+            ((BasicRenderer) mRenderer).touchUp(x, y);
             break;
         case MotionEvent.ACTION_MOVE:
-            mView.touchMove(x, y);
+            ((BasicRenderer) mRenderer).touchMove(x, y);
             break;
         }
 

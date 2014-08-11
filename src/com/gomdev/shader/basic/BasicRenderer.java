@@ -15,15 +15,16 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Bitmap.Config;
-import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
+import android.opengl.GLSurfaceView;
+import android.opengl.GLSurfaceView.Renderer;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
-public class BasicRenderer implements GLESRenderer {
+public class BasicRenderer implements Renderer {
     private static final String CLASS = "BasicRenderer";
     private static final String TAG = BasicConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = BasicConfig.DEBUG;
@@ -36,7 +37,7 @@ public class BasicRenderer implements GLESRenderer {
     }
 
     private Context mContext;
-    private GLESSurfaceView mView;
+    private GLSurfaceView mView;
 
     private BasicObject mBasicObject;
     private GLESTexture mBasicTexture;
@@ -81,6 +82,10 @@ public class BasicRenderer implements GLESRenderer {
 
     public void destroy() {
         mBasicObject = null;
+    }
+
+    public void setSurfaceView(GLSurfaceView surfaceView) {
+        mView = surfaceView;
     }
 
     @Override
@@ -142,8 +147,8 @@ public class BasicRenderer implements GLESRenderer {
         mBasicObject.setupSpace(camera, mWidth, mHeight);
         mBasicObject.show();
 
-        GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(mWidth,
-                mWidth, true, true);
+        GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(mWidth, mWidth,
+                true, true);
         mBasicObject.setVertexInfo(vertexInfo);
     }
 
@@ -193,22 +198,7 @@ public class BasicRenderer implements GLESRenderer {
         mMMatrixHandle = mBasicShader.getUniformLocation("uMMatrix");
     }
 
-    @Override
-    public void initRenderer() {
-
-    }
-
-    @Override
-    public void setSurfaceView(GLESSurfaceView surfaceView) {
-        if (surfaceView == null) {
-            Log.e(TAG, "setSurfaceView() surfaceView is null");
-            return;
-        }
-        mView = surfaceView;
-    }
-
-    @Override
-    public void touchDown(float x, float y, float userData) {
+    public void touchDown(float x, float y) {
         if (DEBUG)
             Log.d(TAG, "touchDown() x=" + x + " y=" + y);
 
@@ -226,8 +216,7 @@ public class BasicRenderer implements GLESRenderer {
         mView.requestRender();
     }
 
-    @Override
-    public void touchUp(float x, float y, float userData) {
+    public void touchUp(float x, float y) {
         if (mIsTouchDown == false) {
             return;
         }
@@ -237,8 +226,7 @@ public class BasicRenderer implements GLESRenderer {
         mIsTouchDown = false;
     }
 
-    @Override
-    public void touchMove(float x, float y, float userData) {
+    public void touchMove(float x, float y) {
         if (mIsTouchDown == false) {
             return;
         }
@@ -249,18 +237,15 @@ public class BasicRenderer implements GLESRenderer {
         mView.requestRender();
     }
 
-    @Override
     public void touchCancel(float x, float y) {
     }
 
-    @Override
     public void showAll() {
         if (mBasicObject != null) {
             mBasicObject.show();
         }
     }
 
-    @Override
     public void hideAll() {
         if (mBasicObject != null) {
             mBasicObject.hide();
@@ -331,17 +316,5 @@ public class BasicRenderer implements GLESRenderer {
 
         mAnimator = new GLESAnimator(mCallback);
         mAnimatorList.add(mAnimator);
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-
     }
 }

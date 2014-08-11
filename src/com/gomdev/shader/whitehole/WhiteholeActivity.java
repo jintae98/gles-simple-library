@@ -17,11 +17,10 @@
 package com.gomdev.shader.whitehole;
 
 import com.gomdev.shader.R;
-import com.gomdev.gles.GLESRenderer;
-import com.gomdev.gles.GLESSurfaceView;
 import com.gomdev.shader.EffectActivity;
 
 import android.opengl.GLSurfaceView;
+import android.opengl.GLSurfaceView.Renderer;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
@@ -31,8 +30,8 @@ public class WhiteholeActivity extends EffectActivity {
     private static final String TAG = "gomdev " + CLASS;
     private static final boolean DEBUG = false;
 
-    private GLESSurfaceView mView;
-    private GLESRenderer mRenderer;
+    private GLSurfaceView mView;
+    private WhiteholeRenderer mRenderer;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -40,9 +39,9 @@ public class WhiteholeActivity extends EffectActivity {
 
         setContentView(R.layout.main);
 
-        mRenderer = new com.gomdev.shader.whitehole.WhiteholeRenderer(this);
-        // mRenderer = new com.gomdev.particle.ParticleRenderer(this);
-        mView = new GLESSurfaceView(this, mRenderer);
+        mRenderer = new WhiteholeRenderer(this);
+        mView = new GLSurfaceView(this);
+        mRenderer.setSurfaceView(mView);
 
         mView.setEGLContextClientVersion(2);
         mView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
@@ -79,13 +78,13 @@ public class WhiteholeActivity extends EffectActivity {
 
         switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
-            mView.touchDown(x, y);
+            ((WhiteholeRenderer) mRenderer).touchDown(x, y);
             break;
         case MotionEvent.ACTION_UP:
-            mView.touchUp(x, y);
+            ((WhiteholeRenderer) mRenderer).touchUp(x, y);
             break;
         case MotionEvent.ACTION_MOVE:
-            mView.touchMove(x, y);
+            ((WhiteholeRenderer) mRenderer).touchMove(x, y);
             break;
         }
 
