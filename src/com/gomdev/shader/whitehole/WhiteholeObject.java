@@ -53,41 +53,6 @@ public class WhiteholeObject extends GLESObject {
     }
 
     @Override
-    protected void draw() {
-        if (DEBUG)
-            Log.d(TAG, "draw()");
-
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTexture.getTextureID());
-
-        if (GLES20.glIsTexture(mTexture.getTextureID()) == false) {
-            if (DEBUG)
-                Log.d(TAG, "draw() mTexture is invalid");
-        }
-
-        GLES20.glEnableVertexAttribArray(mShader.getVertexAttribIndex());
-        GLES20.glVertexAttribPointer(mShader.getVertexAttribIndex(),
-                GLESConfig.NUM_OF_VERTEX_ELEMENT, GLES20.GL_FLOAT, false,
-                GLESConfig.NUM_OF_VERTEX_ELEMENT * GLESConfig.FLOAT_SIZE_BYTES,
-                mVertexInfo.getVertexBuffer().position(0));
-
-        if (mVertexInfo.isUseTexCoord() == true) {
-            GLES20.glEnableVertexAttribArray(mShader.getTexCoordAttribIndex());
-            GLES20.glVertexAttribPointer(mShader.getTexCoordAttribIndex(),
-                    GLESConfig.NUM_OF_TEXCOORD_ELEMENT, GLES20.GL_FLOAT, false,
-                    GLESConfig.NUM_OF_TEXCOORD_ELEMENT
-                            * GLESConfig.FLOAT_SIZE_BYTES, mVertexInfo
-                            .getTexCoordBuffer().position(0));
-        }
-
-        ShortBuffer indexBuffer = mVertexInfo.getIndexBuffer();
-        GLES20.glDrawElements(GLES20.GL_TRIANGLES, indexBuffer.capacity(),
-                GLES20.GL_UNSIGNED_SHORT, indexBuffer);
-
-        GLES20.glDisableVertexAttribArray(mShader.getVertexAttribIndex());
-    }
-
-    @Override
     protected void getUniformLocations() {
         mPositionInVSHandle = mShader.getUniformLocation("uTouchPosInVS");
         mPositionInFSHandle = mShader.getUniformLocation("uTouchPosInFS");

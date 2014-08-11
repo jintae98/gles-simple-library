@@ -8,6 +8,8 @@ import javax.microedition.khronos.opengles.GL10;
 
 import com.gomdev.shader.R;
 import com.gomdev.gles.*;
+import com.gomdev.gles.GLESObject.PrimitiveMode;
+import com.gomdev.gles.GLESObject.RenderType;
 import com.gomdev.shader.EffectConfig;
 import com.gomdev.shader.EffectUtils;
 
@@ -37,6 +39,7 @@ public class WhiteholeRenderer implements Renderer {
 
     private Context mContext;
     private GLSurfaceView mView;
+    private GLESRenderer mRenderer;
 
     private WhiteholeObject mWhiteholeObject;
     private GLESTexture mWhiteholeTexture;
@@ -74,9 +77,15 @@ public class WhiteholeRenderer implements Renderer {
 
     public WhiteholeRenderer(Context context) {
         mContext = context;
+        
+        mRenderer = new GLESRenderer();
 
         mWhiteholeObject = new WhiteholeObject(context);
         mWhiteholeObject.setTransform(new GLESTransform());
+        mWhiteholeObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
+        mWhiteholeObject.setRenderType(RenderType.DRAW_ELEMENTS);
+        
+        mRenderer.addObject(mWhiteholeObject);
 
     }
 
@@ -113,7 +122,8 @@ public class WhiteholeRenderer implements Renderer {
 
         update();
 
-        mWhiteholeObject.drawObject();
+        mRenderer.updateObject();
+        mRenderer.drawObjects();
 
         if (count > 0) {
             mView.requestRender();

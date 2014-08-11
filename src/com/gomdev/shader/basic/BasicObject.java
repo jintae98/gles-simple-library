@@ -30,43 +30,6 @@ public class BasicObject extends GLESObject {
     }
 
     @Override
-    protected void draw() {
-        if (DEBUG)
-            Log.d(TAG, "draw()");
-
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTexture.getTextureID());
-
-        if (GLES20.glIsTexture(mTexture.getTextureID()) == false) {
-            if (DEBUG)
-                Log.d(TAG, "draw() mTexture is invalid");
-        }
-
-        GLES20.glEnableVertexAttribArray(mShader.getVertexAttribIndex());
-        GLES20.glVertexAttribPointer(mShader.getVertexAttribIndex(),
-                GLESConfig.NUM_OF_VERTEX_ELEMENT, GLES20.GL_FLOAT, false,
-                GLESConfig.NUM_OF_VERTEX_ELEMENT * GLESConfig.FLOAT_SIZE_BYTES,
-                mVertexInfo.getVertexBuffer().position(0));
-
-        if (mVertexInfo.isUseTexCoord() == true) {
-            GLES20.glEnableVertexAttribArray(mShader.getTexCoordAttribIndex());
-            GLES20.glVertexAttribPointer(mShader.getTexCoordAttribIndex(),
-                    GLESConfig.NUM_OF_TEXCOORD_ELEMENT, GLES20.GL_FLOAT, false,
-                    GLESConfig.NUM_OF_TEXCOORD_ELEMENT
-                            * GLESConfig.FLOAT_SIZE_BYTES, mVertexInfo
-                            .getTexCoordBuffer().position(0));
-        }
-
-        int numOfVertex = mVertexInfo.getVertexBuffer().limit() / 3;
-        int numOfRect = numOfVertex / 4;
-        for (int i = 0; i < numOfRect; i++) {
-            GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 4 * i, 4);
-        }
-
-        GLES20.glDisableVertexAttribArray(mShader.getVertexAttribIndex());
-    }
-
-    @Override
     protected void getUniformLocations() {
     }
 

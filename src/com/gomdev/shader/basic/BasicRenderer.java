@@ -8,6 +8,8 @@ import javax.microedition.khronos.opengles.GL10;
 
 import com.gomdev.shader.R;
 import com.gomdev.gles.*;
+import com.gomdev.gles.GLESObject.PrimitiveMode;
+import com.gomdev.gles.GLESObject.RenderType;
 import com.gomdev.shader.EffectConfig;
 import com.gomdev.shader.EffectUtils;
 
@@ -39,12 +41,10 @@ public class BasicRenderer implements Renderer {
     private Context mContext;
     private GLSurfaceView mView;
 
-    private BasicObject mBasicObject;
-    private GLESTexture mBasicTexture;
-    private GLESShader mBasicShader;
+    private GLESRenderer mRenderer;
 
-    private int mWidth;
-    private int mHeight;
+    private BasicObject mBasicObject;
+    private GLESShader mBasicShader;
 
     private boolean mIsTouchDown = false;
 
@@ -53,11 +53,6 @@ public class BasicRenderer implements Renderer {
 
     private float mMoveX = 0f;
     private float mMoveY = 0f;
-
-    private GLESAnimatorCallback mCallback = null;
-
-    ArrayList<GLESAnimator> mAnimatorList = new ArrayList<GLESAnimator>();
-    private GLESAnimator mAnimator = null;
 
     private int mMMatrixHandle = -1;
 
@@ -76,8 +71,14 @@ public class BasicRenderer implements Renderer {
     public BasicRenderer(Context context) {
         mContext = context;
 
+        mRenderer = new GLESRenderer();
+
         mBasicObject = new BasicObject(context);
         mBasicObject.setTransform(new GLESTransform());
+        mBasicObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
+        mBasicObject.setRenderType(RenderType.DRAW_ELEMENTS);
+
+        mRenderer.addObject(mBasicObject);
     }
 
     public void destroy() {
@@ -96,28 +97,12 @@ public class BasicRenderer implements Renderer {
         if (DEBUG_PERF)
             GLESUtils.checkFPS();
 
-        int count = 0;
-        boolean needToRequestRender = false;
-
-        for (GLESAnimator animator : mAnimatorList) {
-            if (animator != null) {
-                needToRequestRender = animator.doAnimation();
-
-                if (needToRequestRender == true) {
-                    count++;
-                }
-            }
-        }
-
         update();
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-        mBasicObject.drawObject();
-
-        if (count > 0) {
-            mView.requestRender();
-        }
+        mRenderer.updateObject();
+        mRenderer.drawObjects();
     }
 
     private void update() {
@@ -134,9 +119,6 @@ public class BasicRenderer implements Renderer {
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
-        mWidth = width;
-        mHeight = height;
-
         if (DEBUG)
             Log.d(TAG, "onSurfaceChanged()");
 
@@ -144,11 +126,11 @@ public class BasicRenderer implements Renderer {
 
         GLESCamera camera = setupCamera(width, height);
 
-        mBasicObject.setupSpace(camera, mWidth, mHeight);
+        mBasicObject.setupSpace(camera, width, height);
         mBasicObject.show();
 
-        GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(mWidth, mWidth,
-                true, true);
+        GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(width, 
+                false, false, true);
         mBasicObject.setVertexInfo(vertexInfo);
     }
 
@@ -187,13 +169,7 @@ public class BasicRenderer implements Renderer {
 
         createShader();
 
-        createAnimation();
-
         mBasicObject.setShader(mBasicShader);
-        Bitmap bitmap = GLESUtils.makeBitmap(512, 512, Config.ARGB_8888,
-                Color.RED);
-        mBasicTexture = new GLESTexture(bitmap, GLES20.GL_MIRRORED_REPEAT, true);
-        mBasicObject.setTexture(mBasicTexture);
 
         mMMatrixHandle = mBasicShader.getUniformLocation("uMMatrix");
     }
@@ -203,12 +179,6 @@ public class BasicRenderer implements Renderer {
             Log.d(TAG, "touchDown() x=" + x + " y=" + y);
 
         mIsTouchDown = true;
-
-        for (GLESAnimator animator : mAnimatorList) {
-            if (animator != null) {
-                animator.cancel();
-            }
-        }
 
         mDownX = x;
         mDownY = y;
@@ -270,7 +240,7 @@ public class BasicRenderer implements Renderer {
             vertexShaderSource = GLESFileUtils.read(vsFilePath);
         } else {
             vertexShaderSource = GLESUtils.getStringFromReosurce(mContext,
-                    R.raw.whitehole_vs);
+                    R.raw.basic_vs);
         }
 
         String fsFilePath = EffectUtils.getSavedFilePath(mContext,
@@ -281,7 +251,7 @@ public class BasicRenderer implements Renderer {
             fragmentShaderSource = GLESFileUtils.read(fsFilePath);
         } else {
             fragmentShaderSource = GLESUtils.getStringFromReosurce(mContext,
-                    R.raw.whitehole_fs);
+                    R.raw.basic_fs);
         }
 
         mBasicShader.setShaderSource(vertexShaderSource, fragmentShaderSource);
@@ -291,30 +261,8 @@ public class BasicRenderer implements Renderer {
         }
 
         mBasicShader.setVertexAttribIndex("aPosition");
-        mBasicShader.setTexCoordAttribIndex("aTexCoord");
+        mBasicShader.setColorAttribIndex("aColor");
 
         return true;
-    }
-
-    private void createAnimation() {
-        mCallback = new GLESAnimatorCallback() {
-
-            @Override
-            public void onAnimation(GLESVector currentValue) {
-            }
-
-            @Override
-            public void onFinished() {
-            }
-
-            @Override
-            public void onCancel() {
-                // TODO Auto-generated method stub
-
-            }
-        };
-
-        mAnimator = new GLESAnimator(mCallback);
-        mAnimatorList.add(mAnimator);
     }
 }

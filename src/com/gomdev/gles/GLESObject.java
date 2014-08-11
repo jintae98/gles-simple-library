@@ -9,6 +9,17 @@ public abstract class GLESObject {
     private static final String TAG = GLESConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = GLESConfig.DEBUG;
 
+    public enum PrimitiveMode {
+        TRIANGLES,
+        TRIANGLE_STRIP,
+        TRIANGLE_FAN
+    }
+
+    public enum RenderType {
+        DRAW_ELEMENTS,
+        DRAW_ARRAYS
+    }
+
     protected Context mContext;
 
     protected Resources mRes;
@@ -17,6 +28,9 @@ public abstract class GLESObject {
     protected GLESTexture mTexture;
     protected GLESCamera mCamera;
     protected GLESTransform mTransform;
+
+    protected PrimitiveMode mPrimitiveMode = PrimitiveMode.TRIANGLES;
+    protected RenderType mRenderType = RenderType.DRAW_ELEMENTS;
 
     protected float mWidth;
     protected float mHeight;
@@ -34,11 +48,35 @@ public abstract class GLESObject {
         mVertexInfo = vertexInfo;
     }
 
+    public GLESVertexInfo getVertexInfo() {
+        return mVertexInfo;
+    }
+
     public void setShader(GLESShader shader) {
         mShader = shader;
         shader.useProgram();
 
         getUniformLocations();
+    }
+
+    public GLESShader getShader() {
+        return mShader;
+    }
+
+    public void setPrimitiveMode(PrimitiveMode mode) {
+        mPrimitiveMode = mode;
+    }
+
+    public PrimitiveMode getPrimitiveMode() {
+        return mPrimitiveMode;
+    }
+
+    public void setRenderType(RenderType renderType) {
+        mRenderType = renderType;
+    }
+
+    public RenderType getRenderType() {
+        return mRenderType;
     }
 
     public void setupSpace(GLESCamera camera, int width, int height) {
@@ -84,18 +122,7 @@ public abstract class GLESObject {
         mIsVisible = false;
     }
 
-    public void drawObject() {
-        if (mIsVisible == true) {
-            mShader.useProgram();
-
-            this.update();
-            this.draw();
-        }
-    }
-
     protected abstract void update();
-
-    protected abstract void draw();
 
     protected abstract void getUniformLocations();
 
