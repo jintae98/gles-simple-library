@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.Log;
 
-public abstract class GLESObject {
+public class GLESObject {
     private static final String CLASS = "GLESObject";
     private static final String TAG = GLESConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = GLESConfig.DEBUG;
@@ -122,8 +122,10 @@ public abstract class GLESObject {
         mIsVisible = false;
     }
 
-    protected abstract void update();
+    protected void update() {
+    }
 
-    protected abstract void getUniformLocations();
+    protected void getUniformLocations() {
+    }
 
 }

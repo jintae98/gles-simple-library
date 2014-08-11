@@ -3,6 +3,8 @@ package com.gomdev.gles;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -26,6 +28,8 @@ public class GLESShader {
     private int mTexCoordIndex = -1;
     private int mColorIndex = -1;
     private int mNormalIndex = -1;
+    
+    private Map<String, Integer> mUniforms = new HashMap<String, Integer>();
 
     public GLESShader(Context context) {
         mContext = context;
@@ -80,7 +84,14 @@ public class GLESShader {
     }
 
     public int getUniformLocation(String uniformName) {
-        return GLES20.glGetUniformLocation(mProgram, uniformName);
+        Integer location = mUniforms.get(uniformName);
+        if (location == null) {
+            int loc = GLES20.glGetUniformLocation(mProgram, uniformName);
+            mUniforms.put(uniformName, loc);
+            return loc;
+        } else {
+            return location;
+        }
     }
 
     public boolean load() {

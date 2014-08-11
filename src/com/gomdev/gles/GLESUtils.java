@@ -162,6 +162,14 @@ public class GLESUtils {
         
         return null;
     }
+    
+    public static String getShaderBinaryFilePath(Context context, String prefix) {
+        String appDataPath = GLESUtils.getAppDataPathName(context);
+        String versionName = GLESUtils.getAppVersionName(context);
+        String path = appDataPath + prefix + "_" + versionName + ".dat";
+
+        return path;
+    }
 
     public static String getStringFromReosurce(Context context, int resourceID) {
         byte[] data;

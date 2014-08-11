@@ -43,7 +43,7 @@ public class BasicRenderer implements Renderer {
 
     private GLESRenderer mRenderer;
 
-    private BasicObject mBasicObject;
+    private GLESObject mBasicObject;
     private GLESShader mBasicShader;
 
     private boolean mIsTouchDown = false;
@@ -73,7 +73,7 @@ public class BasicRenderer implements Renderer {
 
         mRenderer = new GLESRenderer();
 
-        mBasicObject = new BasicObject(context);
+        mBasicObject = new GLESObject(context);
         mBasicObject.setTransform(new GLESTransform());
         mBasicObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
         mBasicObject.setRenderType(RenderType.DRAW_ELEMENTS);
@@ -101,7 +101,7 @@ public class BasicRenderer implements Renderer {
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-        mRenderer.updateObject();
+        mRenderer.updateObjects();
         mRenderer.drawObjects();
     }
 
@@ -112,9 +112,6 @@ public class BasicRenderer implements Renderer {
 
         transform.rotate(mMoveX * 0.1f, 0f, 1f, 0f);
         transform.rotate(mMoveY * 0.1f, 1f, 0f, 0f);
-
-        GLES20.glUniformMatrix4fv(mMMatrixHandle, 1, false,
-                transform.getMatrix(), 0);
     }
 
     @Override
@@ -129,7 +126,7 @@ public class BasicRenderer implements Renderer {
         mBasicObject.setupSpace(camera, width, height);
         mBasicObject.show();
 
-        GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(width, 
+        GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(width,
                 false, false, true);
         mBasicObject.setVertexInfo(vertexInfo);
     }
@@ -147,11 +144,13 @@ public class BasicRenderer implements Renderer {
 
         camera.setFrustum(left, right, bottom, top, near, far);
 
-        int handle = mBasicShader.getUniformLocation("uPMatrix");
+        String uniformName = GLESShaderConstant.UNIFORM_PROJ_MATRIX;
+        int handle = mBasicShader.getUniformLocation(uniformName);
         GLES20.glUniformMatrix4fv(handle, 1, false,
                 camera.getProjectionMatrix(), 0);
 
-        handle = mBasicShader.getUniformLocation("uVMatrix");
+        uniformName = GLESShaderConstant.UNIFORM_VIEW_MATRIX;
+        handle = mBasicShader.getUniformLocation(uniformName);
         GLES20.glUniformMatrix4fv(handle, 1, false, camera.getViewMatrix(), 0);
 
         return camera;
@@ -222,12 +221,6 @@ public class BasicRenderer implements Renderer {
         }
     }
 
-    public void setImage(Bitmap bitmap) {
-        if (mBasicObject != null) {
-            mBasicObject.setImage(bitmap);
-        }
-    }
-
     private boolean createShader() {
         Log.d(TAG, "createShader()");
         mBasicShader = new GLESShader(mContext);
@@ -260,8 +253,11 @@ public class BasicRenderer implements Renderer {
             return false;
         }
 
-        mBasicShader.setVertexAttribIndex("aPosition");
-        mBasicShader.setColorAttribIndex("aColor");
+        String attribName = GLESShaderConstant.ATTRIB_POSITION;
+        mBasicShader.setVertexAttribIndex(attribName);
+        
+        attribName = GLESShaderConstant.ATTRIB_COLOR;
+        mBasicShader.setColorAttribIndex(attribName);
 
         return true;
     }

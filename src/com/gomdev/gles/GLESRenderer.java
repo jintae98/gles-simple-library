@@ -23,11 +23,20 @@ public class GLESRenderer {
     public void addObject(GLESObject object) {
         mObjects.add(object);
     }
-    
-    public void updateObject() {
+
+    public void updateObjects() {
         for (GLESObject object : mObjects) {
             object.update();
+            updateTransform(object.getShader(), object.getTransform());
         }
+    }
+
+    private void updateTransform(GLESShader shader, GLESTransform transform) {
+        float[] matrix = transform.getMatrix();
+        String uniformName = GLESShaderConstant.UNIFORM_MODEL_MATRIX;
+        GLES20.glUniformMatrix4fv(shader.getUniformLocation(uniformName),
+                1, false, matrix, 0);
+
     }
 
     public void drawObjects() {

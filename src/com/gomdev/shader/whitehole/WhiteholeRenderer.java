@@ -120,20 +120,12 @@ public class WhiteholeRenderer implements Renderer {
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-        update();
-
-        mRenderer.updateObject();
+        mRenderer.updateObjects();
         mRenderer.drawObjects();
 
         if (count > 0) {
             mView.requestRender();
         }
-    }
-
-    private void update() {
-        GLESTransform transform = mWhiteholeObject.getTransform();
-        GLES20.glUniformMatrix4fv(mMMatrixHandle, 1, false,
-                transform.getMatrix(), 0);
     }
 
     @Override
@@ -169,11 +161,13 @@ public class WhiteholeRenderer implements Renderer {
 
         camera.setFrustum(left, right, bottom, top, near, far);
 
-        int handle = mShaderWhitehole.getUniformLocation("uPMatrix");
+        String uniformName = GLESShaderConstant.UNIFORM_PROJ_MATRIX;
+        int handle = mShaderWhitehole.getUniformLocation(uniformName);
         GLES20.glUniformMatrix4fv(handle, 1, false,
                 camera.getProjectionMatrix(), 0);
 
-        handle = mShaderWhitehole.getUniformLocation("uVMatrix");
+        uniformName = GLESShaderConstant.UNIFORM_VIEW_MATRIX;
+        handle = mShaderWhitehole.getUniformLocation(uniformName);
         GLES20.glUniformMatrix4fv(handle, 1, false, camera.getViewMatrix(), 0);
 
         return camera;
@@ -206,8 +200,6 @@ public class WhiteholeRenderer implements Renderer {
                 GLESUtils.getHeightPixels(mContext));
         mBoundaryRingSize = GLESUtils.getPixelFromDpi(mContext,
                 WhiteholeConfig.BOUNDARY_RING_SIZE);
-
-        mMMatrixHandle = mShaderWhitehole.getUniformLocation("uMMatrix");
     }
 
     public void touchDown(float x, float y) {
@@ -317,8 +309,11 @@ public class WhiteholeRenderer implements Renderer {
             return false;
         }
 
-        mShaderWhitehole.setVertexAttribIndex("aPosition");
-        mShaderWhitehole.setTexCoordAttribIndex("aTexCoord");
+        String attribName = GLESShaderConstant.ATTRIB_POSITION;
+        mShaderWhitehole.setVertexAttribIndex(attribName);
+        
+        attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
+        mShaderWhitehole.setTexCoordAttribIndex(attribName);
 
         return true;
     }
