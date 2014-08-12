@@ -11,37 +11,24 @@ import com.gomdev.gles.*;
 import com.gomdev.gles.GLESObject.PrimitiveMode;
 import com.gomdev.gles.GLESObject.RenderType;
 import com.gomdev.shader.EffectConfig;
+import com.gomdev.shader.EffectRenderer;
 import com.gomdev.shader.EffectUtils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Bitmap.Config;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLSurfaceView.Renderer;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
-public class BasicRenderer implements Renderer {
+public class BasicRenderer extends EffectRenderer implements Renderer {
     private static final String CLASS = "BasicRenderer";
     private static final String TAG = BasicConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = BasicConfig.DEBUG;
     private static final boolean DEBUG_PERF = BasicConfig.DEBUG_PERF;
-
-    private static final int COMPILE_OR_LINK_ERROR = 1;
-
-    static {
-        System.loadLibrary("gomdev");
-    }
-
-    private Context mContext;
-    private GLSurfaceView mView;
-
-    private GLESRenderer mRenderer;
 
     private GLESObject mBasicObject;
     private GLESShader mBasicShader;
@@ -54,24 +41,8 @@ public class BasicRenderer implements Renderer {
     private float mMoveX = 0f;
     private float mMoveY = 0f;
 
-    private int mMMatrixHandle = -1;
-
-    private Handler mHandler = new Handler(Looper.getMainLooper()) {
-
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == COMPILE_OR_LINK_ERROR) {
-                Toast.makeText(mContext, "Compile or Link fails",
-                        Toast.LENGTH_SHORT).show();
-            }
-        }
-
-    };
-
     public BasicRenderer(Context context) {
-        mContext = context;
-
-        mRenderer = new GLESRenderer();
+        super(context);
 
         mBasicObject = new GLESObject();
         mBasicObject.setTransform(new GLESTransform());
@@ -83,10 +54,6 @@ public class BasicRenderer implements Renderer {
 
     public void destroy() {
         mBasicObject = null;
-    }
-
-    public void setSurfaceView(GLSurfaceView surfaceView) {
-        mView = surfaceView;
     }
 
     @Override
@@ -169,8 +136,6 @@ public class BasicRenderer implements Renderer {
         createShader();
 
         mBasicObject.setShader(mBasicShader);
-
-        mMMatrixHandle = mBasicShader.getUniformLocation("uMMatrix");
     }
 
     public void touchDown(float x, float y) {
@@ -225,37 +190,18 @@ public class BasicRenderer implements Renderer {
         Log.d(TAG, "createShader()");
         mBasicShader = new GLESShader(mContext);
 
-        String vsFilePath = EffectUtils.getSavedFilePath(mContext,
-                BasicConfig.EFFECT_NAME, EffectConfig.SHADER_TYPE_VS);
-        String vertexShaderSource = null;
-        File file = new File(vsFilePath);
-        if (file.exists() == true) {
-            vertexShaderSource = GLESFileUtils.read(vsFilePath);
-        } else {
-            vertexShaderSource = GLESUtils.getStringFromReosurce(mContext,
-                    R.raw.basic_vs);
-        }
+        String vsSource = EffectUtils.getVertexShaderSource(mContext);
+        String fsSource = EffectUtils.getFragmentShaderSource(mContext);
 
-        String fsFilePath = EffectUtils.getSavedFilePath(mContext,
-                BasicConfig.EFFECT_NAME, EffectConfig.SHADER_TYPE_FS);
-        String fragmentShaderSource = null;
-        file = new File(fsFilePath);
-        if (file.exists() == true) {
-            fragmentShaderSource = GLESFileUtils.read(fsFilePath);
-        } else {
-            fragmentShaderSource = GLESUtils.getStringFromReosurce(mContext,
-                    R.raw.basic_fs);
-        }
-
-        mBasicShader.setShaderSource(vertexShaderSource, fragmentShaderSource);
+        mBasicShader.setShaderSource(vsSource, fsSource);
         if (mBasicShader.load() == false) {
-            mHandler.sendEmptyMessage(COMPILE_OR_LINK_ERROR);
+            mHandler.sendEmptyMessage(EffectRenderer.COMPILE_OR_LINK_ERROR);
             return false;
         }
 
         String attribName = GLESShaderConstant.ATTRIB_POSITION;
         mBasicShader.setVertexAttribIndex(attribName);
-        
+
         attribName = GLESShaderConstant.ATTRIB_COLOR;
         mBasicShader.setColorAttribIndex(attribName);
 

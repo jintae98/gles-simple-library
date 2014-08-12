@@ -11,6 +11,7 @@ import com.gomdev.gles.*;
 import com.gomdev.gles.GLESObject.PrimitiveMode;
 import com.gomdev.gles.GLESObject.RenderType;
 import com.gomdev.shader.EffectConfig;
+import com.gomdev.shader.EffectRenderer;
 import com.gomdev.shader.EffectUtils;
 
 import android.content.Context;
@@ -25,21 +26,11 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
-public class WhiteholeRenderer implements Renderer {
+public class WhiteholeRenderer extends EffectRenderer implements Renderer {
     private static final String CLASS = "WhiteholeRenderer";
     private static final String TAG = WhiteholeConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = WhiteholeConfig.DEBUG;
     private static final boolean DEBUG_PERF = WhiteholeConfig.DEBUG_PERF;
-
-    private static final int COMPILE_OR_LINK_ERROR = 1;
-
-    static {
-        System.loadLibrary("gomdev");
-    }
-
-    private Context mContext;
-    private GLSurfaceView mView;
-    private GLESRenderer mRenderer;
 
     private WhiteholeObject mWhiteholeObject;
     private GLESTexture mWhiteholeTexture;
@@ -61,24 +52,8 @@ public class WhiteholeRenderer implements Renderer {
     private float mMaxRingSize = 0.0f;
     private float mBoundaryRingSize = 0f;
 
-    private int mMMatrixHandle = -1;
-
-    private Handler mHandler = new Handler(Looper.getMainLooper()) {
-
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == COMPILE_OR_LINK_ERROR) {
-                Toast.makeText(mContext, "Compile or Link fails",
-                        Toast.LENGTH_SHORT).show();
-            }
-        }
-
-    };
-
     public WhiteholeRenderer(Context context) {
-        mContext = context;
-
-        mRenderer = new GLESRenderer();
+        super(context);
 
         mWhiteholeObject = new WhiteholeObject();
         mWhiteholeObject.setTransform(new GLESTransform());
@@ -91,10 +66,6 @@ public class WhiteholeRenderer implements Renderer {
 
     public void destroy() {
         mWhiteholeObject = null;
-    }
-
-    public void setSurfaceView(GLSurfaceView surfaceView) {
-        mView = surfaceView;
     }
 
     @Override

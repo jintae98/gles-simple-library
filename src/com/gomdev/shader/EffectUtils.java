@@ -45,23 +45,49 @@ public class EffectUtils {
         SharedPreferences pref = context.getSharedPreferences(
                 EffectConfig.PREF_NAME, Context.MODE_PRIVATE);
 
-        int shaderResID = 0;
-        String savedFileName = null;
+        String shaderSource = null;
         String shaderType = pref.getString(EffectConfig.PREF_SHADER_TYPE,
                 EffectConfig.SHADER_TYPE_VS);
         if (shaderType.compareTo(EffectConfig.SHADER_TYPE_VS) == 0) {
-            shaderResID = pref.getInt(EffectConfig.PREF_VS_RES_ID, 0);
-            savedFileName = pref.getString(EffectConfig.PREF_VS_FILE_NAME, "");
+            shaderSource = getVertexShaderSource(context);
         } else {
-            shaderResID = pref.getInt(EffectConfig.PREF_FS_RES_ID, 0);
-            savedFileName = pref.getString(EffectConfig.PREF_FS_FILE_NAME, "");
+            shaderSource = getFragmentShaderSource(context);
         }
 
+        return shaderSource;
+    }
+
+    public static String getVertexShaderSource(Context context) {
+        SharedPreferences pref = context.getSharedPreferences(
+                EffectConfig.PREF_NAME, Context.MODE_PRIVATE);
+
+        String savedFileName = pref.getString(EffectConfig.PREF_VS_FILE_NAME,
+                "");
         String shaderSource = null;
         File file = new File(savedFileName);
         if (file.exists() == true) {
             shaderSource = GLESFileUtils.read(savedFileName);
         } else {
+            int shaderResID = pref.getInt(EffectConfig.PREF_VS_RES_ID, 0);
+            shaderSource = GLESUtils
+                    .getStringFromReosurce(context, shaderResID);
+        }
+
+        return shaderSource;
+    }
+    
+    public static String getFragmentShaderSource(Context context) {
+        SharedPreferences pref = context.getSharedPreferences(
+                EffectConfig.PREF_NAME, Context.MODE_PRIVATE);
+
+        String savedFileName = pref.getString(EffectConfig.PREF_FS_FILE_NAME,
+                "");
+        String shaderSource = null;
+        File file = new File(savedFileName);
+        if (file.exists() == true) {
+            shaderSource = GLESFileUtils.read(savedFileName);
+        } else {
+            int shaderResID = pref.getInt(EffectConfig.PREF_FS_RES_ID, 0);
             shaderSource = GLESUtils
                     .getStringFromReosurce(context, shaderResID);
         }
