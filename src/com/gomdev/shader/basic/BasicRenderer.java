@@ -128,7 +128,7 @@ public class BasicRenderer implements Renderer {
 
         GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(width,
                 false, false, true);
-        mBasicObject.setVertexInfo(vertexInfo);
+        mBasicObject.setVertexInfo(vertexInfo, true);
     }
 
     private GLESCamera setupCamera(int width, int height) {

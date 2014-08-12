@@ -1,7 +1,11 @@
 package com.gomdev.gles;
 
+import java.nio.FloatBuffer;
+import java.nio.ShortBuffer;
+
 import android.content.Context;
 import android.content.res.Resources;
+import android.opengl.GLES20;
 import android.util.Log;
 
 public class GLESObject {
@@ -22,7 +26,6 @@ public class GLESObject {
 
     protected Context mContext;
 
-    protected Resources mRes;
     protected GLESShader mShader;
 
     protected GLESTexture mTexture;
@@ -36,16 +39,30 @@ public class GLESObject {
     protected float mHeight;
 
     protected GLESVertexInfo mVertexInfo = null;
+    protected boolean mUseVBO = false;
 
     protected boolean mIsVisible = false;
 
     public GLESObject(Context context) {
         mContext = context;
-        mRes = context.getResources();
     }
 
     public void setVertexInfo(GLESVertexInfo vertexInfo) {
+        setVertexInfo(vertexInfo, false);
+    }
+
+    public void setVertexInfo(GLESVertexInfo vertexInfo, boolean useVBO) {
         mVertexInfo = vertexInfo;
+        mUseVBO = useVBO;
+
+        if (useVBO == true) {
+            GLESRenderer renderer = GLESContext.getInstance().getRenderer();
+            renderer.setupVBO(vertexInfo);
+        }
+    }
+
+    public boolean useVBO() {
+        return mUseVBO;
     }
 
     public GLESVertexInfo getVertexInfo() {

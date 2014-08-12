@@ -12,22 +12,25 @@ public class GLESVertexInfo {
     private boolean mIsUseNormal = false;
     private boolean mIsUseColor = false;
     private boolean mIsUseIndex = false;
-    private boolean mIsUseTangent = false;
 
     private FloatBuffer mVertexBuffer = null;
     private int mNumOfVertexElements = 0;
+    private int mVertexVBOID = -1;
 
     private FloatBuffer mTexCoordBuffer = null;
     private int mNumOfTexCoordElements = 0;
+    private int mTexCoordVBOID = -1;
 
     private FloatBuffer mNormalBuffer = null;
     private int mNumOfNormalElements = 0;
+    private int mNormalVBOID = -1;
 
     private FloatBuffer mColorBuffer = null;
     private int mNumOfColorElements = 0;
+    private int mColorVBOID = -1;
 
     private ShortBuffer mIndexBuffer = null;
-    private FloatBuffer mTangentBuffer = null;
+    private int mIndexVBOID = -1;
 
     public GLESVertexInfo() {
 
@@ -46,8 +49,12 @@ public class GLESVertexInfo {
         return mNumOfVertexElements;
     }
 
-    public void setTexCoordBuffer(float[] texCoord) {
-        setTexCoordBuffer(texCoord, GLESConfig.NUM_OF_VERTEX_ELEMENT);
+    public void setVertexVBOID(int id) {
+        mVertexVBOID = id;
+    }
+
+    public int getVertexVBOID() {
+        return mVertexVBOID;
     }
 
     public void setTexCoordBuffer(float[] texCoord, int numOfElements) {
@@ -68,8 +75,12 @@ public class GLESVertexInfo {
         return mIsUseTexture;
     }
 
-    public void setNormalBuffer(float[] normal) {
-        setNormalBuffer(normal, GLESConfig.NUM_OF_NORMAL_ELEMENT);
+    public void setTexCoordVBOID(int id) {
+        mTexCoordVBOID = id;
+    }
+
+    public int getTexCoordVBOID() {
+        return mTexCoordVBOID;
     }
 
     public void setNormalBuffer(float[] normal, int numOfElements) {
@@ -88,6 +99,14 @@ public class GLESVertexInfo {
 
     public boolean isUseNormal() {
         return mIsUseNormal;
+    }
+
+    public void setNormalVBOID(int id) {
+        mNormalVBOID = id;
+    }
+
+    public int getNormalVBOID() {
+        return mNormalVBOID;
     }
 
     public void setColorBuffer(float[] color) {
@@ -112,6 +131,14 @@ public class GLESVertexInfo {
         return mIsUseColor;
     }
 
+    public void setColorVBOID(int id) {
+        mColorVBOID = id;
+    }
+
+    public int getColorVBOID() {
+        return mColorVBOID;
+    }
+
     public void setIndexBuffer(short[] index) {
         mIndexBuffer = GLESUtils.makeShortBuffer(index);
         mIsUseIndex = true;
@@ -125,16 +152,11 @@ public class GLESVertexInfo {
         return mIsUseIndex;
     }
 
-    public void setTangentBuffer(float[] tangent) {
-        mTangentBuffer = GLESUtils.makeFloatBuffer(tangent);
-        mIsUseTangent = true;
+    public void setIndexVBOID(int id) {
+        mIndexVBOID = id;
     }
 
-    public FloatBuffer getTangentBuffer() {
-        return mTangentBuffer;
-    }
-
-    public boolean isUseTangent() {
-        return mIsUseTangent;
+    public int getIndexVBOID() {
+        return mIndexVBOID;
     }
 }

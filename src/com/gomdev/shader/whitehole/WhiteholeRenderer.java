@@ -145,7 +145,7 @@ public class WhiteholeRenderer implements Renderer {
 
         GLESVertexInfo vertexInfo = GLESMeshUtils.createPlaneMesh(mWidth,
                 mHeight, WhiteholeConfig.MESH_RESOLUTION, true, false);
-        mWhiteholeObject.setVertexInfo(vertexInfo);
+        mWhiteholeObject.setVertexInfo(vertexInfo, true);
     }
 
     private GLESCamera setupCamera(int width, int height) {
