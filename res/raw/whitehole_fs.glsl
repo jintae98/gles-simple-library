@@ -6,7 +6,6 @@ varying vec2            vPosition;
 uniform sampler2D       uTexture;
 uniform float           uAlpha;
 
-uniform vec2            uSpaceInfo; // width, height, width / height
 uniform vec2            uTouchPosInFS;
 uniform vec2            uTouchPosInVS;
 uniform float           uRadius;

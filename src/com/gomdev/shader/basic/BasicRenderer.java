@@ -73,7 +73,7 @@ public class BasicRenderer implements Renderer {
 
         mRenderer = new GLESRenderer();
 
-        mBasicObject = new GLESObject(context);
+        mBasicObject = new GLESObject();
         mBasicObject.setTransform(new GLESTransform());
         mBasicObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
         mBasicObject.setRenderType(RenderType.DRAW_ELEMENTS);
@@ -123,7 +123,7 @@ public class BasicRenderer implements Renderer {
 
         GLESCamera camera = setupCamera(width, height);
 
-        mBasicObject.setupSpace(camera, width, height);
+        mBasicObject.setCamera(camera);
         mBasicObject.show();
 
         GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(width,

@@ -1,9 +1,15 @@
 package com.gomdev.gles;
 
+import android.content.Context;
+
 public class GLESContext {
     private static GLESContext sContext = new GLESContext();
 
     private GLESRenderer mRenderer = null;
+    private Context mContext = null;
+
+    private float mWidth = 0f;
+    private float mHeight = 0f;
 
     public static GLESContext getInstance() {
         return sContext;
@@ -15,5 +21,13 @@ public class GLESContext {
 
     public GLESRenderer getRenderer() {
         return mRenderer;
+    }
+
+    public void setContext(Context context) {
+        mContext = context;
+    }
+
+    public Context getContext() {
+        return mContext;
     }
 }

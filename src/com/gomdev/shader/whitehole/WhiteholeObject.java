@@ -8,6 +8,7 @@ import android.opengl.GLES20;
 import android.util.Log;
 
 import com.gomdev.gles.GLESConfig;
+import com.gomdev.gles.GLESContext;
 import com.gomdev.gles.GLESObject;
 import com.gomdev.gles.GLESCamera;
 import com.gomdev.gles.GLESUtils;
@@ -27,18 +28,11 @@ public class WhiteholeObject extends GLESObject {
     private float[] mDownPosInVS = new float[2];
     private float[] mDownPosInFS = new float[2];
     private float mRadius = 100.0f;
+    
+    private float mWidth = 0f;
+    private float mHeight = 0f;
 
-    public WhiteholeObject(Context context) {
-        super(context);
-    }
-
-    @Override
-    public void setupSpace(GLESCamera camera, int width, int height) {
-        super.setupSpace(camera, width, height);
-
-        int handle = mShader.getUniformLocation("uSpaceInfo"); // width, height,
-                                                               // width / height
-        GLES20.glUniform3f(handle, width, height, (float) width / height);
+    public WhiteholeObject() {
     }
 
     @Override
@@ -61,16 +55,23 @@ public class WhiteholeObject extends GLESObject {
         GLES20.glUniform1f(mRadiusHandle, 0.1f);
 
         int handle = mShader.getUniformLocation("uBandWidth");
+        Context context = GLESContext.getInstance().getContext();
         GLES20.glUniform1f(handle, GLESUtils
-                .getPixelFromDpi(mContext, WhiteholeConfig.BAND_WIDTH));
+                .getPixelFromDpi(context, WhiteholeConfig.BAND_WIDTH));
     }
 
     public void setImage(Bitmap bitmap) {
         mBitmap = bitmap;
         mIsImageChanged = true;
     }
+    
+    public void setScreenSize(float width, float height) {
+        mWidth = width;
+        mHeight = height;
+    }
 
     public void setPosition(float x, float y) {
+        
         mDownPosInVS[0] = x - mWidth * 0.5f;
         mDownPosInVS[1] = mHeight * 0.5f - y;
 

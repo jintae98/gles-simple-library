@@ -24,8 +24,6 @@ public class GLESObject {
         DRAW_ARRAYS
     }
 
-    protected Context mContext;
-
     protected GLESShader mShader;
 
     protected GLESTexture mTexture;
@@ -35,16 +33,12 @@ public class GLESObject {
     protected PrimitiveMode mPrimitiveMode = PrimitiveMode.TRIANGLES;
     protected RenderType mRenderType = RenderType.DRAW_ELEMENTS;
 
-    protected float mWidth;
-    protected float mHeight;
-
     protected GLESVertexInfo mVertexInfo = null;
     protected boolean mUseVBO = false;
 
     protected boolean mIsVisible = false;
 
-    public GLESObject(Context context) {
-        mContext = context;
+    public GLESObject() {
     }
 
     public void setVertexInfo(GLESVertexInfo vertexInfo) {
@@ -96,11 +90,8 @@ public class GLESObject {
         return mRenderType;
     }
 
-    public void setupSpace(GLESCamera camera, int width, int height) {
+    public void setCamera(GLESCamera camera) {
         mCamera = camera;
-
-        mWidth = width;
-        mHeight = height;
     }
 
     public void setTexture(GLESTexture texture) {

@@ -77,14 +77,14 @@ public class WhiteholeRenderer implements Renderer {
 
     public WhiteholeRenderer(Context context) {
         mContext = context;
-        
+
         mRenderer = new GLESRenderer();
 
-        mWhiteholeObject = new WhiteholeObject(context);
+        mWhiteholeObject = new WhiteholeObject();
         mWhiteholeObject.setTransform(new GLESTransform());
         mWhiteholeObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
         mWhiteholeObject.setRenderType(RenderType.DRAW_ELEMENTS);
-        
+
         mRenderer.addObject(mWhiteholeObject);
 
     }
@@ -140,7 +140,8 @@ public class WhiteholeRenderer implements Renderer {
 
         GLESCamera camera = setupCamera(width, height);
 
-        mWhiteholeObject.setupSpace(camera, mWidth, mHeight);
+        mWhiteholeObject.setCamera(camera);
+        mWhiteholeObject.setScreenSize(width, height);
         mWhiteholeObject.show();
 
         GLESVertexInfo vertexInfo = GLESMeshUtils.createPlaneMesh(mWidth,
@@ -311,7 +312,7 @@ public class WhiteholeRenderer implements Renderer {
 
         String attribName = GLESShaderConstant.ATTRIB_POSITION;
         mShaderWhitehole.setVertexAttribIndex(attribName);
-        
+
         attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
         mShaderWhitehole.setTexCoordAttribIndex(attribName);
 
