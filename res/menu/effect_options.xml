@@ -3,18 +3,12 @@
     tools:context="com.gomdev.effect.EffectActivity" >
 
     <item
-        android:id="@+id/vertex_shader"
+        android:id="@+id/shader_list"
         android:showAsAction="ifRoom"
-        android:title="VS"/>
+        android:title="List"/>
     <item
-        android:id="@+id/fragment_shader"
+        android:id="@+id/restore"
         android:showAsAction="ifRoom"
-        android:title="FS"/>
-    <item
-        android:id="@+id/restore_vs"
-        android:title="restore VS"/>
-    <item
-        android:id="@+id/restore_fs"
-        android:title="restore FS"/>
+        android:title="Restore"/>
 
 </menu>

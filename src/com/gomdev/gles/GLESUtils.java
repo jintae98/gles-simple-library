@@ -65,15 +65,6 @@ public class GLESUtils {
         }
     }
 
-    public static boolean checkFileExists(String fileName) {
-        File file = new File(fileName);
-        if (file == null) {
-            Log.e(TAG, "checkFileExists() file instance is null");
-            return false;
-        }
-        return file.exists();
-    }
-
     public static FloatBuffer makeFloatBuffer(float[] array) {
         FloatBuffer buffer = ByteBuffer
                 .allocateDirect(array.length * GLESConfig.FLOAT_SIZE_BYTES)
@@ -90,13 +81,6 @@ public class GLESUtils {
         buffer.put(array).position(0);
 
         return buffer;
-    }
-
-    public static void deleteFile(String fileName) {
-        File file = new File(new String(fileName));
-        if (file.exists() == true) {
-            file.delete();
-        }
     }
 
     public static float getWidthPixels(Context context) {

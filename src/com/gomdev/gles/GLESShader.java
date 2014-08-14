@@ -1,8 +1,5 @@
 package com.gomdev.gles;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -197,7 +194,7 @@ public class GLESShader {
             Log.d(TAG, "load() filePath=" + filePath);
         }
 
-        if (GLESUtils.checkFileExists(filePath) == false) {
+        if (GLESFileUtils.isExist(filePath) == false) {
             Log.d(TAG, "load() file is not exist");
             needToCompile = true;
         }
@@ -221,7 +218,7 @@ public class GLESShader {
             Log.e(TAG, "Link Error file=" + filePath + " Compile again");
 
             boolean result = compileAndLink();
-            GLESUtils.deleteFile(filePath);
+            GLESFileUtils.delete(filePath);
             retrieveProgramBinary(filePath);
 
             return result;

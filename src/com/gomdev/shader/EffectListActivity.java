@@ -32,8 +32,8 @@ public class EffectListActivity extends Activity {
 
     class EffectInfo {
         Intent mIntent = null;
-        int mVertexShaderResID = 0;
-        int mFragmentShaderResID = 0;
+        int[] mShaderResIDs;
+        String[] mShaderTitle;
     }
 
     public void onCreate(Bundle savedInstanceState) {
@@ -43,16 +43,37 @@ public class EffectListActivity extends Activity {
         EffectInfo info = new EffectInfo();
         info.mIntent = new Intent(this,
                 com.gomdev.shader.whitehole.WhiteholeActivity.class);
-        info.mVertexShaderResID = R.raw.whitehole_vs;
-        info.mFragmentShaderResID = R.raw.whitehole_fs;
+        info.mShaderResIDs = new int[] {
+                R.raw.whitehole_vs,
+                R.raw.whitehole_fs,
+                R.raw.whitehole_vs,
+                R.raw.whitehole_fs
+        };
+        info.mShaderTitle = new String[] {
+                "Whitehole main VS",
+                "Whitehole main FS",
+                "Whitehole overlay VS",
+                "Whitehole overlay FS"
+        };
 
         mEffectMap.put(WhiteholeConfig.EFFECT_NAME, info);
         
         info = new EffectInfo();
         info.mIntent = new Intent(this,
                 com.gomdev.shader.basic.BasicActivity.class);
-        info.mVertexShaderResID = R.raw.basic_vs;
-        info.mFragmentShaderResID = R.raw.basic_fs;
+        
+        info.mShaderResIDs = new int[] {
+                R.raw.basic_vs,
+                R.raw.basic_fs,
+                R.raw.basic_vs,
+                R.raw.basic_fs
+        };
+        info.mShaderTitle = new String[] {
+                "Basic main VS",
+                "Basic main FS",
+                "Basic overlay VS",
+                "Basic overlay FS"
+        };
 
         mEffectMap.put(BasicConfig.EFFECT_NAME, info);
 
@@ -101,19 +122,12 @@ public class EffectListActivity extends Activity {
             SharedPreferences.Editor editor = pref.edit();
 
             editor.putString(EffectConfig.PREF_EFFECT_NAME, effectName);
-            editor.putInt(EffectConfig.PREF_VS_RES_ID, info.mVertexShaderResID);
-            editor.putInt(EffectConfig.PREF_FS_RES_ID,
-                    info.mFragmentShaderResID);
-
-            String savedFileName = EffectUtils.getSavedFilePath(
-                    EffectListActivity.this, effectName,
-                    EffectConfig.SHADER_TYPE_VS);
-            editor.putString(EffectConfig.PREF_VS_FILE_NAME, savedFileName);
-
-            savedFileName = EffectUtils.getSavedFilePath(
-                    EffectListActivity.this, effectName,
-                    EffectConfig.SHADER_TYPE_FS);
-            editor.putString(EffectConfig.PREF_FS_FILE_NAME, savedFileName);
+            editor.putInt(EffectConfig.PREF_SHADER_COUNT, info.mShaderResIDs.length);
+            
+            for (int i = 0; i < info.mShaderResIDs.length; i++) {
+                editor.putInt(EffectConfig.PREF_SHADER_RES_ID + i, info.mShaderResIDs[i]);
+                editor.putString(EffectConfig.PREF_SHADER_TITLE + i, info.mShaderTitle[i]);
+            }
 
             editor.commit();
 

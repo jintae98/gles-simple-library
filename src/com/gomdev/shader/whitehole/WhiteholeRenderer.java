@@ -252,30 +252,10 @@ public class WhiteholeRenderer extends EffectRenderer implements Renderer {
         Log.d(TAG, "createShader()");
         mShaderWhitehole = new GLESShader(mContext);
 
-        String vsFilePath = EffectUtils.getSavedFilePath(mContext,
-                WhiteholeConfig.EFFECT_NAME, EffectConfig.SHADER_TYPE_VS);
-        String vertexShaderSource = null;
-        File file = new File(vsFilePath);
-        if (file.exists() == true) {
-            vertexShaderSource = GLESFileUtils.read(vsFilePath);
-        } else {
-            vertexShaderSource = GLESUtils.getStringFromReosurce(mContext,
-                    R.raw.whitehole_vs);
-        }
+        String vsSource = EffectUtils.getVertexShaderSource(mContext, 0);
+        String fsSource = EffectUtils.getFragmentShaderSource(mContext, 0);
 
-        String fsFilePath = EffectUtils.getSavedFilePath(mContext,
-                WhiteholeConfig.EFFECT_NAME, EffectConfig.SHADER_TYPE_FS);
-        String fragmentShaderSource = null;
-        file = new File(fsFilePath);
-        if (file.exists() == true) {
-            fragmentShaderSource = GLESFileUtils.read(fsFilePath);
-        } else {
-            fragmentShaderSource = GLESUtils.getStringFromReosurce(mContext,
-                    R.raw.whitehole_fs);
-        }
-
-        mShaderWhitehole.setShaderSource(vertexShaderSource,
-                fragmentShaderSource);
+        mShaderWhitehole.setShaderSource(vsSource, fsSource);
         if (mShaderWhitehole.load() == false) {
             mHandler.sendEmptyMessage(COMPILE_OR_LINK_ERROR);
             return false;

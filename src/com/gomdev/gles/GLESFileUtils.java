@@ -87,4 +87,16 @@ public class GLESFileUtils {
 
         return new String(data);
     }
+    
+    public static boolean isExist(String path) {
+        File file = new File(path);
+        return file.exists();
+    }
+    
+    public static void delete(String path) {
+        File file = new File(new String(path));
+        if (file.exists() == true) {
+            file.delete();
+        }
+    }
 }

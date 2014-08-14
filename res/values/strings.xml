@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Effects</string>
+    <string name="shader_list_title">Shader List</string>
 </resources>

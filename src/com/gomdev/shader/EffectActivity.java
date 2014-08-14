@@ -47,54 +47,25 @@ public class EffectActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = null;
-
-        SharedPreferences pref = this.getSharedPreferences(
-                EffectConfig.PREF_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-
-        String effectName = pref.getString(EffectConfig.PREF_EFFECT_NAME,
-                WhiteholeConfig.EFFECT_NAME);
-
-        String savedFileName = null;
-
         switch (item.getItemId()) {
-        case R.id.vertex_shader:
-            editor.putString(EffectConfig.PREF_SHADER_TYPE,
-                    EffectConfig.SHADER_TYPE_VS);
-
-            editor.commit();
-
-            intent = new Intent(this,
-                    com.gomdev.shader.ShaderViewActivity.class);
-            startActivity(intent);
+        case R.id.shader_list:
+            showShaderListDialog();
             return true;
-        case R.id.fragment_shader:
-            editor.putString(EffectConfig.PREF_SHADER_TYPE,
-                    EffectConfig.SHADER_TYPE_FS);
-
-            editor.commit();
-
-            intent = new Intent(this,
-                    com.gomdev.shader.ShaderViewActivity.class);
-            startActivity(intent);
-            return true;
-        case R.id.restore_vs:
-            savedFileName = EffectUtils.getSavedFilePath(this, effectName,
-                    EffectConfig.SHADER_TYPE_VS);
-            File file = new File(savedFileName);
-            file.delete();
-            this.finish();
-            return true;
-        case R.id.restore_fs:
-            savedFileName = EffectUtils.getSavedFilePath(this, effectName,
-                    EffectConfig.SHADER_TYPE_FS);
-            file = new File(savedFileName);
-            file.delete();
-            this.finish();
+        case R.id.restore:
+            showRestoreDialog();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    
+    private void showRestoreDialog() {
+        ShaderRestoreDialog dialog = new ShaderRestoreDialog();
+        dialog.show(getFragmentManager(), "restore");
+    }
+
+    public void showShaderListDialog() {
+        ShaderListDialog dialog = new ShaderListDialog();
+        dialog.show(getFragmentManager(),"shaderlist");
     }
 }

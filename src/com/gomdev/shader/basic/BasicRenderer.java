@@ -190,8 +190,8 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
         Log.d(TAG, "createShader()");
         mBasicShader = new GLESShader(mContext);
 
-        String vsSource = EffectUtils.getVertexShaderSource(mContext);
-        String fsSource = EffectUtils.getFragmentShaderSource(mContext);
+        String vsSource = EffectUtils.getVertexShaderSource(mContext, 0);
+        String fsSource = EffectUtils.getFragmentShaderSource(mContext, 0);
 
         mBasicShader.setShaderSource(vsSource, fsSource);
         if (mBasicShader.load() == false) {

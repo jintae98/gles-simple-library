@@ -45,9 +45,6 @@ public class ShaderEditActivity extends Activity {
         case R.id.save:
             SharedPreferences pref = this.getSharedPreferences(
                     EffectConfig.PREF_NAME, MODE_PRIVATE);
-            String effect = pref.getString(EffectConfig.PREF_EFFECT_NAME, "");
-            String shaderType = pref.getString(EffectConfig.PREF_SHADER_TYPE,
-                    EffectConfig.SHADER_TYPE_VS);
 
             if (GLESFileUtils.isExternalStorageWriable() == false) {
                 Toast.makeText(this, "SDCard is not available",
@@ -56,12 +53,11 @@ public class ShaderEditActivity extends Activity {
                 return false;
             }
 
-            String path = EffectUtils
-                    .getSavedFilePath(this, effect, shaderType);
+            String savedFileName = pref.getString(EffectConfig.PREF_SAVED_FILE_NAME, "");
 
-            GLESFileUtils.write(path, mEditView.getText().toString());
+            GLESFileUtils.write(savedFileName, mEditView.getText().toString());
 
-            Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, savedFileName + " Saved", Toast.LENGTH_SHORT).show();
 
             this.finish();
 
