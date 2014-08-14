@@ -8,9 +8,6 @@ public class GLESContext {
     private GLESRenderer mRenderer = null;
     private Context mContext = null;
 
-    private float mWidth = 0f;
-    private float mHeight = 0f;
-
     public static GLESContext getInstance() {
         return sContext;
     }

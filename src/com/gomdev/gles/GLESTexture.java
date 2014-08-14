@@ -8,15 +8,12 @@ import android.util.Log;
 public class GLESTexture {
     private static final String CLASS = "GLESTexture";
     private static final String TAG = GLESConfig.TAG + " " + CLASS;
-    private static final boolean DEBUG = GLESConfig.DEBUG;
 
     private int mTextureID;
 
     private int mWidth;
     private int mHeight;
 
-    private int mFormat = GLES20.GL_RGBA;// 6408;
-    private int mType = GLES20.GL_UNSIGNED_BYTE;// 5121;
     private int mWrapMode = GLES20.GL_CLAMP_TO_EDGE;// 33071;
 
     public GLESTexture() {

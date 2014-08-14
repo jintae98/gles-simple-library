@@ -10,9 +10,6 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 public class ShaderViewActivity extends Activity {
-    private static final String CLASS = "ShaderEditActivity";
-    private static final String TAG = "gomdev " + CLASS;
-    private static final boolean DEBUG = false;
 
     private TextView mTextView = null;
     private String mShaderSource = null;

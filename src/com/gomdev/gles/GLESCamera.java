@@ -1,6 +1,5 @@
 package com.gomdev.gles;
 
-import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.util.Log;
 
@@ -70,7 +69,7 @@ public class GLESCamera {
     }
 
     public void dump(String str) {
-        if (DEBUG == false) {
+        if (!DEBUG) {
             return;
         }
 

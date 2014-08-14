@@ -33,7 +33,6 @@ public class GLESMeshUtils {
                 * GLESConfig.NUM_OF_VERTEX_ELEMENT];
         float[] texCoord = null;
         float[] normal = null;
-        short[] index = null;
 
         if (useNormal == true) {
             normal = new float[numOfVertics * GLESConfig.NUM_OF_NORMAL_ELEMENT];

@@ -7,12 +7,8 @@ import com.gomdev.gles.GLESUtils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Environment;
 
 public class EffectUtils {
-    private static final String CLASS = "EffectUtils";
-    private static final String TAG = "gomdev " + CLASS;
-    private static final boolean DEBUG = false;
 
     public static String getSavedFilePath(Context context, String shaderTitle) {
         File file = context.getExternalFilesDir(null);

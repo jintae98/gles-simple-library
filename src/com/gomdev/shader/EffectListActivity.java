@@ -27,7 +27,6 @@ public class EffectListActivity extends Activity {
     private static final String TAG = GLESConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = true;// GLESConfig.DEBUG;
 
-    // private Map<String, Intent> mEffectMap = new HashMap<String, Intent>();
     private Map<String, EffectInfo> mEffectMap = new HashMap<String, EffectInfo>();
 
     class EffectInfo {
@@ -81,7 +80,7 @@ public class EffectListActivity extends Activity {
             Log.d(TAG, "onCreate() map<String, EffectInfo>");
             Set<Entry<String, EffectInfo>> entrySet = mEffectMap.entrySet();
 
-            for (Entry entry : entrySet) {
+            for (Entry<String, EffectInfo> entry : entrySet) {
                 Log.d(TAG, "\t Item=" + entry.getKey());
             }
         }

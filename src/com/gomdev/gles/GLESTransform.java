@@ -15,7 +15,7 @@ public class GLESTransform {
 
     private float[] mMMatrix = new float[16];
 
-    private Vector<float[]> mMatrixStack = new Vector();
+    private Vector<float[]> mMatrixStack = new Vector<float[]>();
 
     public GLESTransform() {
         mMatrixStack.clear();
@@ -108,7 +108,7 @@ public class GLESTransform {
     }
 
     public void dump(String str) {
-        if (DEBUG == false) {
+        if (!DEBUG) {
             return;
         }
 

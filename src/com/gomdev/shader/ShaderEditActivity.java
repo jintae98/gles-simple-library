@@ -12,9 +12,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class ShaderEditActivity extends Activity {
-    private static final String CLASS = "ShaderEditActivity";
-    private static final String TAG = "gomdev " + CLASS;
-    private static final boolean DEBUG = false;
 
     private EditText mEditView = null;
 

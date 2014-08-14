@@ -1,9 +1,6 @@
 package com.gomdev.gles;
 
 public class GLESVector {
-    private static final String CLASS = "GLESVector";
-    private static final String TAG = GLESConfig.TAG + " " + CLASS;
-    private static final boolean DEBUG = GLESConfig.DEBUG;
 
     public float mX = 0.0F;
     public float mY = 0.0F;

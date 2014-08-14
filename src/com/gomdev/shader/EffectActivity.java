@@ -16,22 +16,15 @@
 
 package com.gomdev.shader;
 
-import java.io.File;
 
 import com.gomdev.shader.R;
-import com.gomdev.shader.whitehole.WhiteholeConfig;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class EffectActivity extends Activity {
-    private static final String CLASS = "EffectActivity";
-    private static final String TAG = "gomdev " + CLASS;
-    private static final boolean DEBUG = false;
 
     @Override
     public void onCreate(Bundle icicle) {

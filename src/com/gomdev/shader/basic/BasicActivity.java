@@ -20,19 +20,11 @@ import com.gomdev.shader.R;
 import com.gomdev.shader.EffectActivity;
 
 import android.opengl.GLSurfaceView;
-import android.opengl.GLSurfaceView.Renderer;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MotionEvent;
-import android.view.SurfaceView;
 import android.widget.FrameLayout;
-import android.widget.PopupMenu;
 
 public class BasicActivity extends EffectActivity {
-    private static final String CLASS = "BasicActivity";
-    private static final String TAG = "gomdev " + CLASS;
-    private static final boolean DEBUG = false;
-
     private GLSurfaceView mView;
     private BasicRenderer mRenderer;
 
@@ -93,7 +85,4 @@ public class BasicActivity extends EffectActivity {
 
         return super.onTouchEvent(event);
     }
-
-    private static final int POPUP_MENU_MAIN_VS = 0;
-    private static final int POPUP_MENU_MAIN_FS = 1;
 }

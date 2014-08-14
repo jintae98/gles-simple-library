@@ -1,17 +1,6 @@
 package com.gomdev.gles;
 
-import java.nio.FloatBuffer;
-import java.nio.ShortBuffer;
-
-import android.content.Context;
-import android.content.res.Resources;
-import android.opengl.GLES20;
-import android.util.Log;
-
 public class GLESObject {
-    private static final String CLASS = "GLESObject";
-    private static final String TAG = GLESConfig.TAG + " " + CLASS;
-    private static final boolean DEBUG = GLESConfig.DEBUG;
 
     public enum PrimitiveMode {
         TRIANGLES,

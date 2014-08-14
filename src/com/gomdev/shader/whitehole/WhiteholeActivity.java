@@ -20,15 +20,11 @@ import com.gomdev.shader.R;
 import com.gomdev.shader.EffectActivity;
 
 import android.opengl.GLSurfaceView;
-import android.opengl.GLSurfaceView.Renderer;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
 public class WhiteholeActivity extends EffectActivity {
-    private static final String CLASS = "WhiteholeActivity";
-    private static final String TAG = "gomdev " + CLASS;
-    private static final boolean DEBUG = false;
 
     private GLSurfaceView mView;
     private WhiteholeRenderer mRenderer;

@@ -1,26 +1,16 @@
 package com.gomdev.shader.basic;
 
-import java.io.File;
-import java.util.ArrayList;
-
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import com.gomdev.shader.R;
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESObject.PrimitiveMode;
 import com.gomdev.gles.GLESObject.RenderType;
-import com.gomdev.shader.EffectConfig;
 import com.gomdev.shader.EffectRenderer;
 import com.gomdev.shader.EffectUtils;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Bitmap.Config;
 import android.opengl.GLES20;
-import android.opengl.GLSurfaceView;
 import android.opengl.GLSurfaceView.Renderer;
 import android.util.Log;
 

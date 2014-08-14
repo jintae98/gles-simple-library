@@ -13,7 +13,6 @@ import android.util.Log;
 public class GLESRenderer {
     private static final String CLASS = "GLESRenderer";
     private static final String TAG = GLESConfig.TAG + " " + CLASS;
-    private static final boolean DEBUG = GLESConfig.DEBUG;
 
     private ArrayList<GLESObject> mObjects = new ArrayList<GLESObject>();
 

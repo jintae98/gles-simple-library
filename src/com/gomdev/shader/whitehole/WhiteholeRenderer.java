@@ -1,6 +1,5 @@
 package com.gomdev.shader.whitehole;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -10,7 +9,6 @@ import com.gomdev.shader.R;
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESObject.PrimitiveMode;
 import com.gomdev.gles.GLESObject.RenderType;
-import com.gomdev.shader.EffectConfig;
 import com.gomdev.shader.EffectRenderer;
 import com.gomdev.shader.EffectUtils;
 
@@ -18,13 +16,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
-import android.opengl.GLSurfaceView;
 import android.opengl.GLSurfaceView.Renderer;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 public class WhiteholeRenderer extends EffectRenderer implements Renderer {
     private static final String CLASS = "WhiteholeRenderer";

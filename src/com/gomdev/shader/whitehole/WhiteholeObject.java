@@ -1,22 +1,14 @@
 package com.gomdev.shader.whitehole;
 
-import java.nio.ShortBuffer;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.opengl.GLES20;
-import android.util.Log;
 
-import com.gomdev.gles.GLESConfig;
 import com.gomdev.gles.GLESContext;
 import com.gomdev.gles.GLESObject;
-import com.gomdev.gles.GLESCamera;
 import com.gomdev.gles.GLESUtils;
 
 public class WhiteholeObject extends GLESObject {
-    private static final String CLASS = "WhiteholeObject";
-    private static final String TAG = WhiteholeConfig.TAG + " " + CLASS;
-    private static final boolean DEBUG = WhiteholeConfig.DEBUG;
 
     private boolean mIsImageChanged;
     private Bitmap mBitmap;

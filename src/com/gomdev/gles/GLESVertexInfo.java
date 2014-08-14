@@ -4,9 +4,6 @@ import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
 public class GLESVertexInfo {
-    private static final String CLASS = "GLESVertexInfo";
-    private static final String TAG = GLESConfig.TAG + " " + CLASS;
-    private static final boolean DEBUG = GLESConfig.DEBUG;
 
     private boolean mIsUseTexture = false;
     private boolean mIsUseNormal = false;

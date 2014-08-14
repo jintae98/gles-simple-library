@@ -12,7 +12,6 @@ import android.util.Log;
 public class GLESFileUtils {
     private static final String CLASS = "GLESFileUtils";
     private static final String TAG = GLESConfig.TAG + " " + CLASS;
-    private static final boolean DEBUG = GLESConfig.DEBUG;
 
     public static boolean isExternalStorageWriable() {
         boolean writable = false;
