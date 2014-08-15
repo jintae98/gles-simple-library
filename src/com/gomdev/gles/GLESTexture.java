@@ -20,35 +20,26 @@ public class GLESTexture {
     }
 
     public GLESTexture(int width, int height, Bitmap bitmap) {
-        this(width, height, bitmap, false);
-    }
-
-    public GLESTexture(int width, int height, Bitmap bitmap,
-            boolean needToRecycle) {
         mWidth = width;
         mHeight = height;
 
-        makeTexture(bitmap, needToRecycle);
+        makeTexture(bitmap);
     }
 
     public GLESTexture(Bitmap bitmap) {
-        this(bitmap, false);
-    }
-
-    public GLESTexture(Bitmap bitmap, boolean needToRecycle) {
         mWidth = bitmap.getWidth();
         mHeight = bitmap.getHeight();
 
-        makeTexture(bitmap, needToRecycle);
+        makeTexture(bitmap);
     }
 
-    public GLESTexture(Bitmap bitmap, int wrapMode, boolean needToRecycle) {
+    public GLESTexture(Bitmap bitmap, int wrapMode) {
         mWidth = bitmap.getWidth();
         mHeight = bitmap.getHeight();
 
         mWrapMode = wrapMode;
 
-        makeTexture(bitmap, needToRecycle);
+        makeTexture(bitmap);
     }
 
     public void destroy() {
@@ -76,7 +67,7 @@ public class GLESTexture {
         return mTextureID;
     }
 
-    private void makeTexture(Bitmap bitmap, boolean needToRecycle) {
+    private void makeTexture(Bitmap bitmap) {
         if (bitmap == null) {
             Log.e(TAG, "makeTexture() bitmap is null");
             return;
@@ -101,10 +92,6 @@ public class GLESTexture {
                 GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
 
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-
-        if (needToRecycle == true) {
-            bitmap.recycle();
-        }
     }
 
     public void makeSubTexture(int width, int height, boolean needToRecycle,
@@ -123,13 +110,13 @@ public class GLESTexture {
         }
     }
 
-    public void changeTexture(Bitmap bitmap, boolean needToRecycle) {
+    public void changeTexture(Bitmap bitmap) {
         if (bitmap == null) {
             Log.e(TAG, "changeTexture() bitmap is null");
         }
 
         if (GLES20.glIsTexture(mTextureID) == false) {
-            makeTexture(bitmap, needToRecycle);
+            makeTexture(bitmap);
             return;
         }
 
@@ -139,10 +126,6 @@ public class GLESTexture {
                 && (Float.compare(bitmapHeight, mHeight) == 0)) {
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureID);
             GLUtils.texSubImage2D(GLES20.GL_TEXTURE_2D, 0, 0, 0, bitmap);
-
-            if (needToRecycle == true) {
-                bitmap.recycle();
-            }
         } else {
             int[] textureIDs = new int[1];
             textureIDs[0] = mTextureID;
@@ -150,7 +133,7 @@ public class GLESTexture {
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
             GLES20.glDeleteTextures(1, textureIDs, 0);
 
-            makeTexture(bitmap, needToRecycle);
+            makeTexture(bitmap);
         }
 
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);

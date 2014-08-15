@@ -77,7 +77,7 @@ public class WhiteholeObject extends GLESObject {
 
     private void checkImageChanged() {
         if (mIsImageChanged == true) {
-            mTexture.changeTexture(mBitmap, false);
+            mTexture.changeTexture(mBitmap);
             mBitmap = null;
             mIsImageChanged = false;
         }

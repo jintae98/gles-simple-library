@@ -129,7 +129,8 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
         mTextureObject.setShader(mTextureShader);
 
         Bitmap bitmap = GLESUtils.makeCheckerboard(512, 512, 32);
-        GLESTexture texture = new GLESTexture(bitmap, true);
+        GLESTexture texture = new GLESTexture(bitmap);
+        bitmap.recycle();
         mTextureObject.setTexture(texture);
     }
 
