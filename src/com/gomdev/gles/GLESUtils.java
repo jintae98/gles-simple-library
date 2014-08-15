@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -121,6 +122,23 @@ public class GLESUtils {
         return bitmap;
     }
 
+    public static Bitmap makeCheckerboard(int width, int height, int unitSize) {
+        int[] data = new int[width * height];
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                if ((j & unitSize) == (i & unitSize)) {
+                    data[i * width + j] = Color.BLACK;
+                } else {
+                    data[i * width + j] = Color.WHITE;
+                }
+            }
+        }
+        
+        Bitmap bitmap = Bitmap.createBitmap(data, width, height, Config.ARGB_8888);
+        
+        return bitmap;
+    }
+
     public static String getAppDataPathName(Context context) {
         StringBuilder builder = new StringBuilder(Environment
                 .getDataDirectory().getAbsolutePath());
@@ -131,21 +149,21 @@ public class GLESUtils {
         builder.append(File.separatorChar);
         return builder.toString();
     }
-    
+
     public static String getAppVersionName(Context context) {
         try {
             PackageInfo packageInfo = context.getPackageManager()
                     .getPackageInfo(context.getPackageName(), 0);
-            
+
             return packageInfo.versionName;
         } catch (NameNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+
         return null;
     }
-    
+
     public static String getShaderBinaryFilePath(Context context, String prefix) {
         String appDataPath = GLESUtils.getAppDataPathName(context);
         String versionName = GLESUtils.getAppVersionName(context);

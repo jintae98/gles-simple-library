@@ -1,26 +1,27 @@
 package com.gomdev.shader;
 
-import android.app.Activity;
+import java.util.ArrayList;
+
+import com.gomdev.shader.EffectContext.ShaderInfo;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 public class ShaderListDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        SharedPreferences pref = getActivity()
-                .getSharedPreferences(EffectConfig.PREF_NAME,
-                        Context.MODE_PRIVATE);
-        int numOfShaders = pref.getInt(EffectConfig.PREF_SHADER_COUNT, 1);
+        EffectContext context = EffectContext.getInstance();
+        int numOfShaders = context.getNumOfShaders();
         String[] list = new String[numOfShaders];
+        
+        ArrayList<ShaderInfo> mShaderInfos = context.getShaderInfoList();
 
         for (int i = 0; i < numOfShaders; i++) {
-            list[i] = pref.getString(EffectConfig.PREF_SHADER_TITLE + i, "");
+            list[i] = mShaderInfos.get(i).mTitle;
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -40,21 +41,11 @@ public class ShaderListDialog extends DialogFragment {
     }
 
     private void saveSelectedShaderInfo(int which) {
-        Activity activity = getActivity();
+        EffectContext context = EffectContext.getInstance();
+        ArrayList<ShaderInfo> mShaderInfos = context.getShaderInfoList();
         
-        SharedPreferences pref = activity.getSharedPreferences(
-                EffectConfig.PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
+        ShaderInfo info = mShaderInfos.get(which);
 
-        String shaderTitle = pref.getString(EffectConfig.PREF_SHADER_TITLE
-                + which, "");
-        int resID = pref.getInt(EffectConfig.PREF_SHADER_RES_ID + which, 0);
-
-        String savedFileName = EffectUtils.getSavedFilePath(activity,
-                shaderTitle);
-        editor.putString(EffectConfig.PREF_SAVED_FILE_NAME, savedFileName);
-        editor.putInt(EffectConfig.PREF_SAVED_RES_ID, resID);
-
-        editor.commit();
+        context.setSavedShaderInfo(info);
     }
 }

@@ -16,13 +16,17 @@
 
 package com.gomdev.shader;
 
+import java.util.ArrayList;
 
+import com.gomdev.gles.GLESFileUtils;
 import com.gomdev.shader.R;
+import com.gomdev.shader.EffectContext.ShaderInfo;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class EffectActivity extends Activity {
 
@@ -51,14 +55,33 @@ public class EffectActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-    
+
     private void showRestoreDialog() {
+        if (isEmptySavedFile() == true) {
+            Toast.makeText(this, "No saved shader file", Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
+
         ShaderRestoreDialog dialog = new ShaderRestoreDialog();
         dialog.show(getFragmentManager(), "restore");
     }
 
-    public void showShaderListDialog() {
+    private boolean isEmptySavedFile() {
+        EffectContext context = EffectContext.getInstance();
+
+        ArrayList<ShaderInfo> shaders = context.getShaderInfoList();
+        for (ShaderInfo shaderInfo : shaders) {
+            if (GLESFileUtils.isExist(shaderInfo.mFilePath)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void showShaderListDialog() {
         ShaderListDialog dialog = new ShaderListDialog();
-        dialog.show(getFragmentManager(),"shaderlist");
+        dialog.show(getFragmentManager(), "shaderlist");
     }
 }

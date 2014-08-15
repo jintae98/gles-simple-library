@@ -8,13 +8,12 @@ import java.util.Set;
 
 import com.gomdev.shader.R;
 import com.gomdev.shader.basic.BasicConfig;
+import com.gomdev.shader.texture.TextureConfig;
 import com.gomdev.shader.whitehole.WhiteholeConfig;
 import com.gomdev.gles.GLESConfig;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -75,6 +74,21 @@ public class EffectListActivity extends Activity {
         };
 
         mEffectMap.put(BasicConfig.EFFECT_NAME, info);
+        
+        info = new EffectInfo();
+        info.mIntent = new Intent(this,
+                com.gomdev.shader.texture.TextureActivity.class);
+        
+        info.mShaderResIDs = new int[] {
+                R.raw.texture_vs,
+                R.raw.texture_fs,
+        };
+        info.mShaderTitle = new String[] {
+                "Texture VS",
+                "Texture FS",
+        };
+
+        mEffectMap.put(TextureConfig.EFFECT_NAME, info);
 
         if (DEBUG) {
             Log.d(TAG, "onCreate() map<String, EffectInfo>");
@@ -113,22 +127,21 @@ public class EffectListActivity extends Activity {
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
             String effectName = parent.getItemAtPosition(position).toString();
-            EffectInfo info = mEffectMap.get(effectName);
-
-            SharedPreferences pref = EffectListActivity.this
-                    .getSharedPreferences(EffectConfig.PREF_NAME,
-                            Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = pref.edit();
-
-            editor.putString(EffectConfig.PREF_EFFECT_NAME, effectName);
-            editor.putInt(EffectConfig.PREF_SHADER_COUNT, info.mShaderResIDs.length);
             
-            for (int i = 0; i < info.mShaderResIDs.length; i++) {
-                editor.putInt(EffectConfig.PREF_SHADER_RES_ID + i, info.mShaderResIDs[i]);
-                editor.putString(EffectConfig.PREF_SHADER_TITLE + i, info.mShaderTitle[i]);
+            EffectInfo info = mEffectMap.get(effectName);
+            int numOfShader = info.mShaderResIDs.length;
+            
+            EffectContext context = EffectContext.newInstance();
+            context.setEffetName(effectName);
+            context.setNumOfShaders(numOfShader);
+            
+            String title = null;
+            String savedFileName = null;
+            for(int i = 0; i < numOfShader; i++) {
+                title = info.mShaderTitle[i];
+                savedFileName = EffectUtils.getSavedFilePath(EffectListActivity.this, title);
+                context.setShaderInfo(info.mShaderTitle[i], info.mShaderResIDs[i], savedFileName);
             }
-
-            editor.commit();
 
             if (DEBUG) {
                 Log.d(TAG, "onItemClick() item=" + effectName);

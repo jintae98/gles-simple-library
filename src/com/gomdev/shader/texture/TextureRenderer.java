@@ -1,4 +1,4 @@
-package com.gomdev.shader.basic;
+package com.gomdev.shader.texture;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -10,18 +10,19 @@ import com.gomdev.shader.EffectRenderer;
 import com.gomdev.shader.EffectUtils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView.Renderer;
 import android.util.Log;
 
-public class BasicRenderer extends EffectRenderer implements Renderer {
-    private static final String CLASS = "BasicRenderer";
-    private static final String TAG = BasicConfig.TAG + " " + CLASS;
-    private static final boolean DEBUG = BasicConfig.DEBUG;
-    private static final boolean DEBUG_PERF = BasicConfig.DEBUG_PERF;
+public class TextureRenderer extends EffectRenderer implements Renderer {
+    private static final String CLASS = "TextureRenderer";
+    private static final String TAG = TextureConfig.TAG + " " + CLASS;
+    private static final boolean DEBUG = TextureConfig.DEBUG;
+    private static final boolean DEBUG_PERF = TextureConfig.DEBUG_PERF;
 
-    private GLESObject mBasicObject;
-    private GLESShader mBasicShader;
+    private GLESObject mTextureObject;
+    private GLESShader mTextureShader;
 
     private boolean mIsTouchDown = false;
 
@@ -31,19 +32,19 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
     private float mMoveX = 0f;
     private float mMoveY = 0f;
 
-    public BasicRenderer(Context context) {
+    public TextureRenderer(Context context) {
         super(context);
 
-        mBasicObject = new GLESObject();
-        mBasicObject.setTransform(new GLESTransform());
-        mBasicObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
-        mBasicObject.setRenderType(RenderType.DRAW_ELEMENTS);
+        mTextureObject = new GLESObject();
+        mTextureObject.setTransform(new GLESTransform());
+        mTextureObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
+        mTextureObject.setRenderType(RenderType.DRAW_ELEMENTS);
 
-        mRenderer.addObject(mBasicObject);
+        mRenderer.addObject(mTextureObject);
     }
 
     public void destroy() {
-        mBasicObject = null;
+        mTextureObject = null;
     }
 
     @Override
@@ -63,7 +64,7 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
     }
 
     private void update() {
-        GLESTransform transform = mBasicObject.getTransform();
+        GLESTransform transform = mTextureObject.getTransform();
 
         transform.setIdentity();
 
@@ -80,12 +81,12 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
 
         GLESCamera camera = setupCamera(width, height);
 
-        mBasicObject.setCamera(camera);
-        mBasicObject.show();
+        mTextureObject.setCamera(camera);
+        mTextureObject.show();
 
         GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(width,
-                false, false, true);
-        mBasicObject.setVertexInfo(vertexInfo, true);
+                false, true, false);
+        mTextureObject.setVertexInfo(vertexInfo, true);
     }
 
     private GLESCamera setupCamera(int width, int height) {
@@ -102,12 +103,12 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
         camera.setFrustum(left, right, bottom, top, near, far);
 
         String uniformName = GLESShaderConstant.UNIFORM_PROJ_MATRIX;
-        int handle = mBasicShader.getUniformLocation(uniformName);
+        int handle = mTextureShader.getUniformLocation(uniformName);
         GLES20.glUniformMatrix4fv(handle, 1, false,
                 camera.getProjectionMatrix(), 0);
 
         uniformName = GLESShaderConstant.UNIFORM_VIEW_MATRIX;
-        handle = mBasicShader.getUniformLocation(uniformName);
+        handle = mTextureShader.getUniformLocation(uniformName);
         GLES20.glUniformMatrix4fv(handle, 1, false, camera.getViewMatrix(), 0);
 
         return camera;
@@ -125,7 +126,11 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
 
         createShader();
 
-        mBasicObject.setShader(mBasicShader);
+        mTextureObject.setShader(mTextureShader);
+
+        Bitmap bitmap = GLESUtils.makeCheckerboard(512, 512, 32);
+        GLESTexture texture = new GLESTexture(bitmap, true);
+        mTextureObject.setTexture(texture);
     }
 
     public void touchDown(float x, float y) {
@@ -165,35 +170,35 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
     }
 
     public void showAll() {
-        if (mBasicObject != null) {
-            mBasicObject.show();
+        if (mTextureObject != null) {
+            mTextureObject.show();
         }
     }
 
     public void hideAll() {
-        if (mBasicObject != null) {
-            mBasicObject.hide();
+        if (mTextureObject != null) {
+            mTextureObject.hide();
         }
     }
 
     private boolean createShader() {
         Log.d(TAG, "createShader()");
-        mBasicShader = new GLESShader(mContext);
+        mTextureShader = new GLESShader(mContext);
 
         String vsSource = EffectUtils.getVertexShaderSource(mContext, 0);
         String fsSource = EffectUtils.getFragmentShaderSource(mContext, 1);
 
-        mBasicShader.setShaderSource(vsSource, fsSource);
-        if (mBasicShader.load() == false) {
+        mTextureShader.setShaderSource(vsSource, fsSource);
+        if (mTextureShader.load() == false) {
             mHandler.sendEmptyMessage(EffectRenderer.COMPILE_OR_LINK_ERROR);
             return false;
         }
 
         String attribName = GLESShaderConstant.ATTRIB_POSITION;
-        mBasicShader.setVertexAttribIndex(attribName);
+        mTextureShader.setVertexAttribIndex(attribName);
 
-        attribName = GLESShaderConstant.ATTRIB_COLOR;
-        mBasicShader.setColorAttribIndex(attribName);
+        attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
+        mTextureShader.setTexCoordAttribIndex(attribName);
 
         return true;
     }

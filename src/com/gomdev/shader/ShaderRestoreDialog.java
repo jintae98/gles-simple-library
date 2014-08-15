@@ -3,14 +3,13 @@ package com.gomdev.shader;
 import java.util.ArrayList;
 
 import com.gomdev.gles.GLESFileUtils;
+import com.gomdev.shader.EffectContext.ShaderInfo;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.widget.ArrayAdapter;
@@ -26,24 +25,14 @@ public class ShaderRestoreDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Activity activity = getActivity();
-        SharedPreferences pref = activity.getSharedPreferences(
-                EffectConfig.PREF_NAME, Context.MODE_PRIVATE);
-        int numOfShaders = pref.getInt(EffectConfig.PREF_SHADER_COUNT, 1);
-
-        String title = null;
-        for (int i = 0; i < numOfShaders; i++) {
-            title = pref.getString(EffectConfig.PREF_SHADER_TITLE + i, "");
-            String savedFileName = EffectUtils
-                    .getSavedFilePath(activity, title);
-            if (GLESFileUtils.isExist(savedFileName) == true) {
-                mSavedShaders.add(title);
+        EffectContext context = EffectContext.getInstance();
+        
+        ArrayList<ShaderInfo> shaderInfos = context.getShaderInfoList();
+        
+        for (ShaderInfo info : shaderInfos) {
+            if (GLESFileUtils.isExist(info.mFilePath) == true) {
+                mSavedShaders.add(info.mTitle);
             }
-        }
-
-        if (mSavedShaders.isEmpty() == true) {
-            this.dismiss();
-            Toast.makeText(activity, "No saved shader file", Toast.LENGTH_SHORT)
-                    .show();
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity,
