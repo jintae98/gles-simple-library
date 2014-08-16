@@ -106,10 +106,6 @@ public class GLESVertexInfo {
         return mNormalVBOID;
     }
 
-    public void setColorBuffer(float[] color) {
-        setColorBuffer(color, GLESConfig.NUM_OF_COLOR_ELEMENT);
-    }
-
     public void setColorBuffer(float[] color, int numOfElements) {
         mColorBuffer = GLESUtils.makeFloatBuffer(color);
         mNumOfColorElements = numOfElements;

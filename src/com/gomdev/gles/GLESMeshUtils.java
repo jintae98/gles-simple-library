@@ -158,145 +158,6 @@ public class GLESMeshUtils {
         return vertexInfo;
     }
 
-    public static GLESVertexInfo createCube(float width, float height,
-            boolean useTexCoord, boolean useNormal) {
-
-        float right = width * 0.5f;
-        float left = -right;
-        float top = height * 0.5f;
-        float bottom = -top;
-        float z = width * 0.5f;
-
-        float[] vertex = {
-                // right
-                right, bottom, z,
-                right, bottom, -z,
-                right, top, z,
-                right, top, -z,
-
-                // front
-                left, bottom, z,
-                right, bottom, z,
-                left, top, z,
-                right, top, z,
-
-                // back
-                right, bottom, -z,
-                left, bottom, -z,
-                right, top, -z,
-                left, top, -z,
-
-                // left
-                left, bottom, -z,
-                left, bottom, z,
-                left, top, -z,
-                left, top, z,
-
-                // top
-                left, top, z,
-                right, top, z,
-                left, top, -z,
-                right, top, -z,
-
-                // bottom
-                left, bottom, -z,
-                right, bottom, -z,
-                left, bottom, z,
-                right, bottom, z
-        };
-
-        GLESVertexInfo vertexInfo = new GLESVertexInfo();
-
-        vertexInfo.setVertexBuffer(vertex, 3);
-
-        if (useTexCoord == true) {
-            float[] texCoord = {
-                    // front
-                    0f, 1f,
-                    1f, 1f,
-                    0f, 0f,
-                    1f, 0f,
-
-                    // right
-                    0f, 1f,
-                    1f, 1f,
-                    0f, 0f,
-                    1f, 0f,
-
-                    // back
-                    0f, 1f,
-                    1f, 1f,
-                    0f, 0f,
-                    1f, 0f,
-
-                    // left
-                    0f, 1f,
-                    1f, 1f,
-                    0f, 0f,
-                    1f, 0f,
-
-                    // top
-                    0f, 1f,
-                    1f, 1f,
-                    0f, 0f,
-                    1f, 0f,
-
-                    // bottom
-                    0f, 1f,
-                    1f, 1f,
-                    0f, 0f,
-                    1f, 0f,
-
-            };
-
-            vertexInfo.setTexCoordBuffer(texCoord, 2);
-        }
-
-        if (useNormal == true) {
-            float[] normal = {
-                    // front
-                    0f, 0f, 1f,
-                    0f, 0f, 1f,
-                    0f, 0f, 1f,
-                    0f, 0f, 1f,
-
-                    // right
-                    1f, 0f, 0f,
-                    1f, 0f, 0f,
-                    1f, 0f, 0f,
-                    1f, 0f, 0f,
-
-                    // back
-                    0f, 0f, -1f,
-                    0f, 0f, -1f,
-                    0f, 0f, -1f,
-                    0f, 0f, -1f,
-
-                    // left
-                    -1f, 0f, 0f,
-                    -1f, 0f, 0f,
-                    -1f, 0f, 0f,
-                    -1f, 0f, 0f,
-
-                    // top
-                    0f, 1f, 0f,
-                    0f, 1f, 0f,
-                    0f, 1f, 0f,
-                    0f, 1f, 0f,
-
-                    // bottom
-                    0f, -1f, 0f,
-                    0f, -1f, 0f,
-                    0f, -1f, 0f,
-                    0f, -1f, 0f,
-            };
-
-            vertexInfo.setNormalBuffer(normal, 3);
-        }
-
-        return vertexInfo;
-    }
-
     public static GLESVertexInfo createCube(float cubeSize,
             boolean useNormal, boolean useTexCoord, boolean useColor) {
         float half = cubeSize * 0.5f;
@@ -479,6 +340,112 @@ public class GLESMeshUtils {
 
             vertexInfo.setColorBuffer(color, 4);
         }
+
+        return vertexInfo;
+    }
+
+    public static GLESVertexInfo createSphere(float radius,
+            int numOfVerticalLine,
+            int numOfHorizontalLine, boolean useTexCoord, boolean useNormal,
+            boolean useColor)
+    {
+        double theta = 0f;
+        double sinTheta = 0f;
+        double cosTheta = 0f;
+
+        double phi = 0f;
+        double sinPhi = 0f;
+        double cosPhi = 0f;
+
+        float normalX = 0f;
+        float normalY = 0f;
+        float normalZ = 0f;
+
+        GLESVertexInfo vertexInfo = new GLESVertexInfo();
+
+        int numOfVertex = (numOfVerticalLine + 1) * (numOfHorizontalLine + 1);
+        float[] vertices = new float[numOfVertex * 3];
+        float[] normal = new float[numOfVertex * 3];
+        float[] color = new float[numOfVertex * 4];
+        float[] texCoord = new float[numOfVertex * 2];
+
+        for (int i = 0; i <= numOfVerticalLine; ++i) {
+            theta = Math.PI * (i / (double) numOfVerticalLine);
+            sinTheta = Math.sin(theta);
+            cosTheta = Math.cos(theta);
+
+            int vertexStride = i * (numOfHorizontalLine + 1) * 3;
+            int normalStride = i * (numOfHorizontalLine + 1) * 3;
+            int colorStride = i * (numOfHorizontalLine + 1) * 4;
+            int texCoordStride = i * (numOfHorizontalLine + 1) * 2;
+
+            for (int j = numOfHorizontalLine, k = 0; j >= 0; --j, k++) {
+                phi = 2 * Math.PI * (j / (double) numOfHorizontalLine);
+                sinPhi = Math.sin(phi);
+                cosPhi = Math.cos(phi);
+
+                normalX = (float) (cosPhi * sinTheta);
+                normalY = (float) (cosTheta);
+                normalZ = (float) (sinPhi * sinTheta);
+
+                normal[normalStride + k * 3 + 0] = normalX;
+                normal[normalStride + k * 3 + 1] = normalY;
+                normal[normalStride + k * 3 + 2] = normalZ;
+
+                vertices[vertexStride + k * 3 + 0] = (float) (normalX * radius);
+                vertices[vertexStride + k * 3 + 1] = (float) (normalY * radius);
+                vertices[vertexStride + k * 3 + 2] = (float) (normalZ * radius);
+
+                color[colorStride + k * 4 + 0] = 0xff;
+                color[colorStride + k * 4 + 1] = 0x0;
+                color[colorStride + k * 4 + 2] = 0x0;
+                color[colorStride + k * 4 + 3] = 0xff;
+
+                texCoord[texCoordStride + k * 2 + 0] = (float) (1 - (j / (double) numOfHorizontalLine));
+                texCoord[texCoordStride + k * 2 + 1] = (float) (i / (double) numOfVerticalLine);
+            }
+        }
+
+        vertexInfo.setVertexBuffer(vertices, 3);
+
+        if (useNormal == true) {
+            vertexInfo.setNormalBuffer(normal, 3);
+        }
+
+        if (useTexCoord == true) {
+            vertexInfo.setTexCoordBuffer(texCoord, 2);
+        }
+
+        if (useColor == true) {
+            vertexInfo.setColorBuffer(color, 4);
+        } else if (useTexCoord == false) {
+            new IllegalArgumentException(
+                    "Only one of useTexCoord and useColor should be true");
+        }
+
+        int numOfIndex = numOfVerticalLine * numOfHorizontalLine * 6;
+        short[] indices = new short[numOfIndex];
+
+        short first = 0;
+        short second = 0;
+
+        for (int i = 0; i < numOfVerticalLine; ++i) {
+            int stride = i * numOfHorizontalLine * 6;
+            for (int j = 0; j < numOfHorizontalLine; ++j) {
+                first = (short) ((i * (numOfHorizontalLine + 1)) + j);
+                second = (short) (first + numOfHorizontalLine + 1);
+
+                indices[stride + j * 6 + 0] = first;
+                indices[stride + j * 6 + 1] = second;
+                indices[stride + j * 6 + 2] = (short) (first + 1);
+
+                indices[stride + j * 6 + 3] = second;
+                indices[stride + j * 6 + 4] = (short) (second + 1);
+                indices[stride + j * 6 + 5] = (short) (first + 1);
+            }
+        }
+
+        vertexInfo.setIndexBuffer(indices);
 
         return vertexInfo;
     }
