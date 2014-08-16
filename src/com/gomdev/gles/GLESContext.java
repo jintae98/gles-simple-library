@@ -12,6 +12,10 @@ public class GLESContext {
         return sContext;
     }
 
+    private GLESContext() {
+
+    }
+
     public void setRenderer(GLESRenderer renderer) {
         mRenderer = renderer;
     }
