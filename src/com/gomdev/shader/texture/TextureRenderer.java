@@ -40,6 +40,13 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
         mTextureObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
         mTextureObject.setRenderType(RenderType.DRAW_ELEMENTS);
 
+        GLESGLState state = new GLESGLState();
+        state.setCullFaceState(true);
+        state.setCullFace(GLES20.GL_BACK);
+        state.setDepthState(true);
+        state.setDepthFunc(GLES20.GL_LEQUAL);
+        mTextureObject.setGLState(state);
+
         mRenderer.addObject(mTextureObject);
     }
 
@@ -68,8 +75,8 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
 
         transform.setIdentity();
 
-        transform.rotate(mMoveX * 0.1f, 0f, 1f, 0f);
-        transform.rotate(mMoveY * 0.1f, 1f, 0f, 0f);
+        transform.rotate(mMoveX * 0.2f, 0f, 1f, 0f);
+        transform.rotate(mMoveY * 0.2f, 1f, 0f, 0f);
     }
 
     @Override

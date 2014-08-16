@@ -53,6 +53,13 @@ public class WhiteholeRenderer extends EffectRenderer implements Renderer {
         mWhiteholeObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
         mWhiteholeObject.setRenderType(RenderType.DRAW_ELEMENTS);
 
+        GLESGLState state = new GLESGLState();
+        state.setCullFaceState(true);
+        state.setCullFace(GLES20.GL_BACK);
+        state.setDepthState(true);
+        state.setDepthFunc(GLES20.GL_LEQUAL);
+        mWhiteholeObject.setGLState(state);
+
         mRenderer.addObject(mWhiteholeObject);
 
     }
@@ -141,12 +148,6 @@ public class WhiteholeRenderer extends EffectRenderer implements Renderer {
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         GLES20.glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
-
-        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
-        GLES20.glDepthFunc(GLES20.GL_LEQUAL);
-
-        GLES20.glEnable(GLES20.GL_CULL_FACE);
-        GLES20.glCullFace(GLES20.GL_BACK);
 
         createShader();
 

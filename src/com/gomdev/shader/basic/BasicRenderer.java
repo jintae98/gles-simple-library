@@ -39,6 +39,13 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
         mBasicObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
         mBasicObject.setRenderType(RenderType.DRAW_ELEMENTS);
 
+        GLESGLState state = new GLESGLState();
+        state.setCullFaceState(true);
+        state.setCullFace(GLES20.GL_BACK);
+        state.setDepthState(true);
+        state.setDepthFunc(GLES20.GL_LEQUAL);
+        mBasicObject.setGLState(state);
+
         mRenderer.addObject(mBasicObject);
     }
 
@@ -67,8 +74,8 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
 
         transform.setIdentity();
 
-        transform.rotate(mMoveX * 0.1f, 0f, 1f, 0f);
-        transform.rotate(mMoveY * 0.1f, 1f, 0f, 0f);
+        transform.rotate(mMoveX * 0.2f, 0f, 1f, 0f);
+        transform.rotate(mMoveY * 0.2f, 1f, 0f, 0f);
     }
 
     @Override
@@ -116,12 +123,6 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         GLES20.glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
-
-        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
-        GLES20.glDepthFunc(GLES20.GL_LEQUAL);
-
-        GLES20.glEnable(GLES20.GL_CULL_FACE);
-        GLES20.glCullFace(GLES20.GL_BACK);
 
         createShader();
 

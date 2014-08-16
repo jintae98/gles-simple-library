@@ -15,6 +15,7 @@ public class GLESRenderer {
     private static final String TAG = GLESConfig.TAG + " " + CLASS;
 
     private ArrayList<GLESObject> mObjects = new ArrayList<GLESObject>();
+    private GLESGLState mCurrentGLState = null;
 
     public GLESRenderer() {
         GLESContext.getInstance().setRenderer(this);
@@ -41,6 +42,7 @@ public class GLESRenderer {
 
     public void drawObjects() {
         for (GLESObject object : mObjects) {
+            setGLState(object);
             bindTexture(object);
             drawPrimitive(object);
         }
@@ -103,11 +105,12 @@ public class GLESRenderer {
         if (object.useVBO() == true) {
             int id = vertexInfo.getIndexVBOID();
             GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, id);
-            
+
             ShortBuffer indexBuffer = vertexInfo.getIndexBuffer();
             switch (mode) {
             case TRIANGLES:
-                GLES20.glDrawElements(GLES20.GL_TRIANGLES, indexBuffer.capacity(),
+                GLES20.glDrawElements(GLES20.GL_TRIANGLES,
+                        indexBuffer.capacity(),
                         GLES20.GL_UNSIGNED_SHORT, 0);
                 break;
             case TRIANGLE_FAN:
@@ -124,7 +127,7 @@ public class GLESRenderer {
                 Log.d(TAG, "drawElements() mode is invalid. mode=" + mode);
                 break;
             }
-            
+
             GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, 0);
         } else {
             ShortBuffer indexBuffer = vertexInfo.getIndexBuffer();
@@ -258,6 +261,49 @@ public class GLESRenderer {
         if (vertexInfo.isUseColor() == true) {
             GLES20.glDisableVertexAttribArray(shader.getColorAttribIndex());
         }
+    }
+
+    private void setGLState(GLESObject object) {
+        GLESGLState glState = object.getGLState();
+
+        if (mCurrentGLState == null ||
+                glState.getBlendState() != mCurrentGLState.getBlendState()) {
+            if (glState.getBlendState() == true) {
+                GLES20.glEnable(GLES20.GL_BLEND);
+
+                GLESGLState.BlendFunc blendFunc = glState.getBlendFunc();
+                GLES20.glBlendFuncSeparate(blendFunc.mSrcColor,
+                        blendFunc.mDstColor,
+                        blendFunc.mSrcAlpha,
+                        blendFunc.mDstAlpha);
+            } else {
+                GLES20.glDisable(GLES20.GL_BLEND);
+            }
+        }
+
+        if (mCurrentGLState == null ||
+                glState.getDepthState() != mCurrentGLState.getDepthState()) {
+            if (glState.getDepthState() == true) {
+                GLES20.glEnable(GLES20.GL_DEPTH_TEST);
+
+                GLES20.glDepthFunc(glState.getDepthFunc());
+            } else {
+                GLES20.glDisable(GLES20.GL_DEPTH_TEST);
+            }
+        }
+
+        if (mCurrentGLState == null ||
+                glState.getCullFaceState() != mCurrentGLState.getCullFaceState()) {
+            if (glState.getCullFaceState() == true) {
+                GLES20.glEnable(GLES20.GL_CULL_FACE);
+
+                GLES20.glCullFace(glState.getCullFace());
+            } else {
+                GLES20.glDisable(GLES20.GL_CULL_FACE);
+            }
+        }
+
+        mCurrentGLState = glState;
     }
 
     void setupVBO(GLESVertexInfo vertexInfo) {

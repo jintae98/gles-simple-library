@@ -18,6 +18,7 @@ public class GLESObject {
     protected GLESTexture mTexture;
     protected GLESCamera mCamera;
     protected GLESTransform mTransform;
+    protected GLESGLState mGLState;
 
     protected PrimitiveMode mPrimitiveMode = PrimitiveMode.TRIANGLES;
     protected RenderType mRenderType = RenderType.DRAW_ELEMENTS;
@@ -109,6 +110,14 @@ public class GLESObject {
 
     public GLESTransform getTransform() {
         return mTransform;
+    }
+
+    public void setGLState(GLESGLState state) {
+        mGLState = state;
+    }
+
+    public GLESGLState getGLState() {
+        return mGLState;
     }
 
     public void show() {

@@ -11,8 +11,6 @@ public class GLESTransform {
     private static final String TAG = GLESConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = GLESConfig.DEBUG;
 
-    private static boolean sIsAlphaBlending = false;
-
     private float[] mMMatrix = new float[16];
 
     private Vector<float[]> mMatrixStack = new Vector<float[]>();
@@ -26,42 +24,6 @@ public class GLESTransform {
         mMatrixStack.clear();
         mMatrixStack = null;
         mMMatrix = null;
-    }
-
-    public static void enableAlphaBlending(int srcColor, int dstColor,
-            int srcAlpha, int dstAlpha, boolean disableDepthTest) {
-        GLES20.glEnable(GLES20.GL_BLEND);
-        GLES20.glBlendFuncSeparate(srcColor, dstColor, srcAlpha, dstAlpha);
-
-        if (disableDepthTest == true) {
-            GLES20.glDisable(GLES20.GL_DEPTH_TEST);
-        }
-
-        sIsAlphaBlending = true;
-    }
-
-    public static void enableAlphaBlending(boolean disableDepthTest) {
-        GLES20.glEnable(GLES20.GL_BLEND);
-        GLES20.glBlendFuncSeparate(GLES20.GL_SRC_ALPHA,
-                GLES20.GL_ONE_MINUS_SRC_ALPHA, GLES20.GL_ONE,
-                GLES20.GL_ONE_MINUS_SRC_ALPHA);
-
-        if (disableDepthTest == true) {
-            GLES20.glDisable(GLES20.GL_DEPTH_TEST);
-        }
-
-        sIsAlphaBlending = true;
-    }
-
-    public static void disableAlphaBlending() {
-        if (sIsAlphaBlending == false) {
-            return;
-        }
-
-        GLES20.glDisable(GLES20.GL_BLEND);
-        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
-
-        sIsAlphaBlending = false;
     }
 
     public void setIdentity() {
