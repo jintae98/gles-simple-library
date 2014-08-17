@@ -11,6 +11,7 @@ import com.gomdev.shader.basic.BasicConfig;
 import com.gomdev.shader.texture.TextureConfig;
 import com.gomdev.shader.whitehole.WhiteholeConfig;
 import com.gomdev.gles.GLESConfig;
+import com.gomdev.gles.GLESConfig.Version;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,7 +25,7 @@ import android.widget.ListView;
 public class EffectListActivity extends Activity {
     private static final String CLASS = "EffectListActivity";
     private static final String TAG = GLESConfig.TAG + " " + CLASS;
-    private static final boolean DEBUG = true;// GLESConfig.DEBUG;
+    private static final boolean DEBUG = GLESConfig.DEBUG;
 
     private Map<String, EffectInfo> mEffectMap = new HashMap<String, EffectInfo>();
 
@@ -41,12 +42,20 @@ public class EffectListActivity extends Activity {
         EffectInfo info = new EffectInfo();
         info.mIntent = new Intent(this,
                 com.gomdev.shader.whitehole.WhiteholeActivity.class);
-        info.mShaderResIDs = new int[] {
-                R.raw.whitehole_vs,
-                R.raw.whitehole_fs,
-                R.raw.whitehole_vs,
-                R.raw.whitehole_fs
-        };
+
+        if (GLESConfig.GLES_VERSION == Version.GLES_20) {
+            info.mShaderResIDs = new int[] {
+                    R.raw.whitehole_20_vs,
+                    R.raw.whitehole_20_fs,
+                    R.raw.whitehole_20_vs,
+                    R.raw.whitehole_20_fs
+            };
+        } else {
+            info.mShaderResIDs = new int[] {
+                    R.raw.whitehole_30_vs,
+                    R.raw.whitehole_30_fs
+            };
+        }
         info.mShaderTitle = new String[] {
                 "Whitehole main VS",
                 "Whitehole main FS",
@@ -55,17 +64,23 @@ public class EffectListActivity extends Activity {
         };
 
         mEffectMap.put(WhiteholeConfig.EFFECT_NAME, info);
-        
+
         info = new EffectInfo();
         info.mIntent = new Intent(this,
                 com.gomdev.shader.basic.BasicActivity.class);
-        
-        info.mShaderResIDs = new int[] {
-                R.raw.basic_vs,
-                R.raw.basic_fs,
-                R.raw.basic_vs,
-                R.raw.basic_fs
-        };
+        if (GLESConfig.GLES_VERSION == Version.GLES_20) {
+            info.mShaderResIDs = new int[] {
+                    R.raw.basic_20_vs,
+                    R.raw.basic_20_fs,
+                    R.raw.basic_20_vs,
+                    R.raw.basic_20_fs
+            };
+        } else {
+            info.mShaderResIDs = new int[] {
+                    R.raw.basic_30_vs,
+                    R.raw.basic_30_fs
+            };            
+        }
         info.mShaderTitle = new String[] {
                 "Basic main VS",
                 "Basic main FS",
@@ -74,15 +89,22 @@ public class EffectListActivity extends Activity {
         };
 
         mEffectMap.put(BasicConfig.EFFECT_NAME, info);
-        
+
         info = new EffectInfo();
         info.mIntent = new Intent(this,
                 com.gomdev.shader.texture.TextureActivity.class);
-        
-        info.mShaderResIDs = new int[] {
-                R.raw.texture_vs,
-                R.raw.texture_fs,
-        };
+
+        if (GLESConfig.GLES_VERSION == Version.GLES_20) {
+            info.mShaderResIDs = new int[] {
+                    R.raw.texture_20_vs,
+                    R.raw.texture_20_fs,
+            };
+        } else {
+            info.mShaderResIDs = new int[] {
+                    R.raw.texture_30_vs,
+                    R.raw.texture_30_fs,
+            };
+        }
         info.mShaderTitle = new String[] {
                 "Texture VS",
                 "Texture FS",
@@ -127,20 +149,22 @@ public class EffectListActivity extends Activity {
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
             String effectName = parent.getItemAtPosition(position).toString();
-            
+
             EffectInfo info = mEffectMap.get(effectName);
             int numOfShader = info.mShaderResIDs.length;
-            
+
             EffectContext context = EffectContext.newInstance();
             context.setEffetName(effectName);
             context.setNumOfShaders(numOfShader);
-            
+
             String title = null;
             String savedFileName = null;
-            for(int i = 0; i < numOfShader; i++) {
+            for (int i = 0; i < numOfShader; i++) {
                 title = info.mShaderTitle[i];
-                savedFileName = EffectUtils.getSavedFilePath(EffectListActivity.this, title);
-                context.setShaderInfo(info.mShaderTitle[i], info.mShaderResIDs[i], savedFileName);
+                savedFileName = EffectUtils.getSavedFilePath(
+                        EffectListActivity.this, title);
+                context.setShaderInfo(info.mShaderTitle[i],
+                        info.mShaderResIDs[i], savedFileName);
             }
 
             if (DEBUG) {

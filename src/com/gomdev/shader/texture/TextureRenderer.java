@@ -4,6 +4,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import com.gomdev.gles.*;
+import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESObject.PrimitiveMode;
 import com.gomdev.gles.GLESObject.RenderType;
 import com.gomdev.shader.EffectRenderer;
@@ -202,11 +203,13 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
             return false;
         }
 
-        String attribName = GLESShaderConstant.ATTRIB_POSITION;
-        mTextureShader.setVertexAttribIndex(attribName);
+        if (GLESConfig.GLES_VERSION == Version.GLES_20) {
+            String attribName = GLESShaderConstant.ATTRIB_POSITION;
+            mTextureShader.setVertexAttribIndex(attribName);
 
-        attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
-        mTextureShader.setTexCoordAttribIndex(attribName);
+            attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
+            mTextureShader.setTexCoordAttribIndex(attribName);
+        }
 
         return true;
     }

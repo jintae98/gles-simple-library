@@ -19,7 +19,7 @@ public class EffectContext {
     public static EffectContext getInstance() {
         return sEffectContext;
     }
-    
+
     public static EffectContext newInstance() {
         sEffectContext = new EffectContext();
         return sEffectContext;

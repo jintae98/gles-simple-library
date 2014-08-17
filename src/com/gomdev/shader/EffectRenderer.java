@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.gomdev.gles.GLESContext;
 import com.gomdev.gles.GLESRenderer;
-import com.gomdev.gles.GLESRenderer.Version;
+import com.gomdev.gles.GLESConfig;
 
 public class EffectRenderer {
     protected static final int COMPILE_OR_LINK_ERROR = 1;
@@ -18,10 +18,10 @@ public class EffectRenderer {
         System.loadLibrary("gomdev");
     }
 
-    public Context mContext;
-    public GLSurfaceView mView;
-    public GLESRenderer mRenderer;
-    public Handler mHandler = new Handler(Looper.getMainLooper()) {
+    protected Context mContext;
+    protected GLSurfaceView mView;
+    protected GLESRenderer mRenderer;
+    protected Handler mHandler = new Handler(Looper.getMainLooper()) {
 
         @Override
         public void handleMessage(Message msg) {
@@ -35,10 +35,11 @@ public class EffectRenderer {
 
     public EffectRenderer(Context context) {
         mContext = context;
-
-        mRenderer = GLESRenderer.createRenderer(Version.GLES_20);
-
+        
         GLESContext.getInstance().setContext(context);
+
+        mRenderer = GLESRenderer.createRenderer(GLESConfig.GLES_VERSION);
+        GLESContext.getInstance().setVersion(GLESConfig.GLES_VERSION);
     }
 
     public void setSurfaceView(GLSurfaceView surfaceView) {

@@ -7,6 +7,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import com.gomdev.shader.R;
 import com.gomdev.gles.*;
+import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESObject.PrimitiveMode;
 import com.gomdev.gles.GLESObject.RenderType;
 import com.gomdev.shader.EffectRenderer;
@@ -255,11 +256,13 @@ public class WhiteholeRenderer extends EffectRenderer implements Renderer {
             return false;
         }
 
-        String attribName = GLESShaderConstant.ATTRIB_POSITION;
-        mShaderWhitehole.setVertexAttribIndex(attribName);
+        if (GLESConfig.GLES_VERSION == Version.GLES_20) {
+            String attribName = GLESShaderConstant.ATTRIB_POSITION;
+            mShaderWhitehole.setVertexAttribIndex(attribName);
 
-        attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
-        mShaderWhitehole.setTexCoordAttribIndex(attribName);
+            attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
+            mShaderWhitehole.setTexCoordAttribIndex(attribName);
+        }
 
         return true;
     }

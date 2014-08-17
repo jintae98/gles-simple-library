@@ -1,5 +1,7 @@
 package com.gomdev.gles;
 
+import com.gomdev.gles.GLESConfig.Version;
+
 import android.content.Context;
 
 public class GLESContext {
@@ -7,6 +9,7 @@ public class GLESContext {
 
     private GLESRenderer mRenderer = null;
     private Context mContext = null;
+    private Version mGLESVersion = Version.GLES_20;
 
     public static GLESContext getInstance() {
         return sContext;
@@ -30,5 +33,13 @@ public class GLESContext {
 
     public Context getContext() {
         return mContext;
+    }
+
+    public void setVersion(Version version) {
+        mGLESVersion = version;
+    }
+
+    public Version getVersion() {
+        return mGLESVersion;
     }
 }

@@ -15,4 +15,5 @@ public class EffectConfig {
     public static final String PREF_SAVED_RES_ID = "saved_res_id";
 
     public static final String APP_DIRECTORY_NAME = "gomdev";
+
 }

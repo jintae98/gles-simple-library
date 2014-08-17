@@ -2,19 +2,16 @@ package com.gomdev.gles;
 
 import java.util.ArrayList;
 
+import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESObject.RenderType;
 import com.gomdev.gles.gles20.GLES20Renderer;
+import com.gomdev.gles.gles30.GLES30Renderer;
 
 import android.util.Log;
 
 public abstract class GLESRenderer {
     private static final String CLASS = "GLESRenderer";
     private static final String TAG = GLESConfig.TAG + " " + CLASS;
-
-    public enum Version {
-        GLES_20,
-        GLES_30
-    }
 
     private ArrayList<GLESObject> mObjects = new ArrayList<GLESObject>();
     protected GLESGLState mCurrentGLState = null;
@@ -24,8 +21,7 @@ public abstract class GLESRenderer {
         case GLES_20:
             return new GLES20Renderer();
         case GLES_30:
-            // return new GLES30Renderer();
-            break;
+            return new GLES30Renderer();
         }
 
         Log.e(TAG, "createRenderer() you should select version!!!");
