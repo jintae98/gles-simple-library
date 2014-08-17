@@ -170,7 +170,7 @@ public class GLESRenderer {
                     0);
             GLES20.glEnableVertexAttribArray(shader.getVertexAttribIndex());
 
-            if (vertexInfo.isUseNormal() == true) {
+            if (vertexInfo.useNormal() == true) {
                 id = vertexInfo.getNormalVBOID();
                 GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, id);
 
@@ -182,7 +182,7 @@ public class GLESRenderer {
                 GLES20.glEnableVertexAttribArray(shader.getNormalAttribIndex());
             }
 
-            if (vertexInfo.isUseTexCoord() == true) {
+            if (vertexInfo.useTexCoord() == true) {
                 id = vertexInfo.getTexCoordVBOID();
                 GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, id);
 
@@ -195,7 +195,7 @@ public class GLESRenderer {
                         .getTexCoordAttribIndex());
             }
 
-            if (vertexInfo.isUseColor() == true) {
+            if (vertexInfo.useColor() == true) {
                 id = vertexInfo.getColorVBOID();
                 GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, id);
 
@@ -216,7 +216,7 @@ public class GLESRenderer {
                     vertexInfo.getVertexBuffer());
             GLES20.glEnableVertexAttribArray(shader.getVertexAttribIndex());
 
-            if (vertexInfo.isUseNormal() == true) {
+            if (vertexInfo.useNormal() == true) {
                 numOfElements = vertexInfo.getNumOfNormalElements();
                 GLES20.glVertexAttribPointer(shader.getNormalAttribIndex(),
                         numOfElements, GLES20.GL_FLOAT, false,
@@ -225,7 +225,7 @@ public class GLESRenderer {
                 GLES20.glEnableVertexAttribArray(shader.getNormalAttribIndex());
             }
 
-            if (vertexInfo.isUseTexCoord() == true) {
+            if (vertexInfo.useTexCoord() == true) {
                 numOfElements = vertexInfo.getNumOfTexCoordElements();
                 GLES20.glVertexAttribPointer(shader.getTexCoordAttribIndex(),
                         numOfElements, GLES20.GL_FLOAT, false,
@@ -235,7 +235,7 @@ public class GLESRenderer {
                         .getTexCoordAttribIndex());
             }
 
-            if (vertexInfo.isUseColor() == true) {
+            if (vertexInfo.useColor() == true) {
                 numOfElements = vertexInfo.getNumOfColorElements();
                 GLES20.glVertexAttribPointer(shader.getColorAttribIndex(),
                         numOfElements, GLES20.GL_FLOAT, false,
@@ -250,15 +250,15 @@ public class GLESRenderer {
             GLESShader shader) {
         GLES20.glDisableVertexAttribArray(shader.getVertexAttribIndex());
 
-        if (vertexInfo.isUseNormal() == true) {
+        if (vertexInfo.useNormal() == true) {
             GLES20.glDisableVertexAttribArray(shader.getNormalAttribIndex());
         }
 
-        if (vertexInfo.isUseTexCoord() == true) {
+        if (vertexInfo.useTexCoord() == true) {
             GLES20.glDisableVertexAttribArray(shader.getTexCoordAttribIndex());
         }
 
-        if (vertexInfo.isUseColor() == true) {
+        if (vertexInfo.useColor() == true) {
             GLES20.glDisableVertexAttribArray(shader.getColorAttribIndex());
         }
     }
@@ -318,7 +318,7 @@ public class GLESRenderer {
                 GLES20.GL_STATIC_DRAW);
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
-        if (vertexInfo.isUseTexCoord() == true) {
+        if (vertexInfo.useTexCoord() == true) {
             GLES20.glGenBuffers(1, ids, 0);
             vertexInfo.setTexCoordVBOID(ids[0]);
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, ids[0]);
@@ -330,7 +330,7 @@ public class GLESRenderer {
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
         }
 
-        if (vertexInfo.isUseNormal() == true) {
+        if (vertexInfo.useNormal() == true) {
             GLES20.glGenBuffers(1, ids, 0);
             vertexInfo.setNormalVBOID(ids[0]);
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, ids[0]);
@@ -342,7 +342,7 @@ public class GLESRenderer {
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
         }
 
-        if (vertexInfo.isUseColor() == true) {
+        if (vertexInfo.useColor() == true) {
             GLES20.glGenBuffers(1, ids, 0);
             vertexInfo.setColorVBOID(ids[0]);
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, ids[0]);
@@ -354,7 +354,7 @@ public class GLESRenderer {
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
         }
 
-        if (vertexInfo.isUseIndex() == true) {
+        if (vertexInfo.useIndex() == true) {
             GLES20.glGenBuffers(1, ids, 0);
             vertexInfo.setIndexVBOID(ids[0]);
             GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, ids[0]);

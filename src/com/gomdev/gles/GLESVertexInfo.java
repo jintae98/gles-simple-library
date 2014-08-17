@@ -5,10 +5,10 @@ import java.nio.ShortBuffer;
 
 public class GLESVertexInfo {
 
-    private boolean mIsUseTexture = false;
-    private boolean mIsUseNormal = false;
-    private boolean mIsUseColor = false;
-    private boolean mIsUseIndex = false;
+    private boolean mUseTexture = false;
+    private boolean mUseNormal = false;
+    private boolean mUseColor = false;
+    private boolean mUseIndex = false;
 
     private FloatBuffer mVertexBuffer = null;
     private int mNumOfVertexElements = 0;
@@ -57,7 +57,7 @@ public class GLESVertexInfo {
     public void setTexCoordBuffer(float[] texCoord, int numOfElements) {
         mTexCoordBuffer = GLESUtils.makeFloatBuffer(texCoord);
         mNumOfTexCoordElements = numOfElements;
-        mIsUseTexture = true;
+        mUseTexture = true;
     }
 
     public FloatBuffer getTexCoordBuffer() {
@@ -68,8 +68,8 @@ public class GLESVertexInfo {
         return mNumOfTexCoordElements;
     }
 
-    public boolean isUseTexCoord() {
-        return mIsUseTexture;
+    public boolean useTexCoord() {
+        return mUseTexture;
     }
 
     public void setTexCoordVBOID(int id) {
@@ -83,7 +83,7 @@ public class GLESVertexInfo {
     public void setNormalBuffer(float[] normal, int numOfElements) {
         mNormalBuffer = GLESUtils.makeFloatBuffer(normal);
         mNumOfNormalElements = numOfElements;
-        mIsUseNormal = true;
+        mUseNormal = true;
     }
 
     public FloatBuffer getNormalBuffer() {
@@ -94,8 +94,8 @@ public class GLESVertexInfo {
         return mNumOfNormalElements;
     }
 
-    public boolean isUseNormal() {
-        return mIsUseNormal;
+    public boolean useNormal() {
+        return mUseNormal;
     }
 
     public void setNormalVBOID(int id) {
@@ -109,7 +109,7 @@ public class GLESVertexInfo {
     public void setColorBuffer(float[] color, int numOfElements) {
         mColorBuffer = GLESUtils.makeFloatBuffer(color);
         mNumOfColorElements = numOfElements;
-        mIsUseColor = true;
+        mUseColor = true;
     }
 
     public FloatBuffer getColorBuffer() {
@@ -120,8 +120,8 @@ public class GLESVertexInfo {
         return mNumOfColorElements;
     }
 
-    public boolean isUseColor() {
-        return mIsUseColor;
+    public boolean useColor() {
+        return mUseColor;
     }
 
     public void setColorVBOID(int id) {
@@ -134,15 +134,15 @@ public class GLESVertexInfo {
 
     public void setIndexBuffer(short[] index) {
         mIndexBuffer = GLESUtils.makeShortBuffer(index);
-        mIsUseIndex = true;
+        mUseIndex = true;
     }
 
     public ShortBuffer getIndexBuffer() {
         return mIndexBuffer;
     }
 
-    public boolean isUseIndex() {
-        return mIsUseIndex;
+    public boolean useIndex() {
+        return mUseIndex;
     }
 
     public void setIndexVBOID(int id) {
