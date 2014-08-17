@@ -3,11 +3,11 @@ package com.gomdev.gles;
 import android.opengl.GLES20;
 
 public class GLESGLState {
-    class BlendFunc {
-        int mSrcColor;
-        int mDstColor;
-        int mSrcAlpha;
-        int mDstAlpha;
+    public class BlendFunc {
+        public int mSrcColor;
+        public int mDstColor;
+        public int mSrcAlpha;
+        public int mDstAlpha;
     }
 
     private boolean mBlendState = false;

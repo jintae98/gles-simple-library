@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.gomdev.gles.GLESContext;
 import com.gomdev.gles.GLESRenderer;
+import com.gomdev.gles.GLESRenderer.Version;
 
 public class EffectRenderer {
     protected static final int COMPILE_OR_LINK_ERROR = 1;
@@ -35,7 +36,7 @@ public class EffectRenderer {
     public EffectRenderer(Context context) {
         mContext = context;
 
-        mRenderer = new GLESRenderer();
+        mRenderer = GLESRenderer.createRenderer(Version.GLES_20);
 
         GLESContext.getInstance().setContext(context);
     }
