@@ -326,8 +326,10 @@ public class GLES20Renderer extends GLESRenderer {
     }
 
     @Override
-    protected void disableVertexAttribute(GLESVertexInfo vertexInfo,
-            GLESShader shader) {
+    protected void disableVertexAttribute(GLESObject object) {
+        GLESVertexInfo vertexInfo = object.getVertexInfo();
+        GLESShader shader = object.getShader();
+
         GLES20.glDisableVertexAttribArray(shader.getVertexAttribIndex());
 
         if (vertexInfo.useNormal() == true) {

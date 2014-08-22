@@ -29,6 +29,8 @@ public class GLESVertexInfo {
     private ShortBuffer mIndexBuffer = null;
     private int mIndexVBOID = -1;
 
+    private int mVAOID = -1;
+
     public GLESVertexInfo() {
 
     }
@@ -151,5 +153,13 @@ public class GLESVertexInfo {
 
     public int getIndexVBOID() {
         return mIndexVBOID;
+    }
+
+    public void setVAOID(int id) {
+        mVAOID = id;
+    }
+
+    public int getVAOID() {
+        return mVAOID;
     }
 }

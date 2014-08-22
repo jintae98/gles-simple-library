@@ -52,7 +52,6 @@ public abstract class GLESRenderer {
     }
 
     private void drawPrimitive(GLESObject object) {
-        GLESVertexInfo vertexInfo = object.getVertexInfo();
         GLESShader shader = object.getShader();
 
         shader.useProgram();
@@ -66,7 +65,7 @@ public abstract class GLESRenderer {
             drawElements(object);
         }
 
-        disableVertexAttribute(vertexInfo, shader);
+        disableVertexAttribute(object);
     }
 
     public abstract void setupVBO(GLESVertexInfo vertexInfo);
@@ -84,6 +83,5 @@ public abstract class GLESRenderer {
 
     protected abstract void drawElements(GLESObject object);
 
-    protected abstract void disableVertexAttribute(GLESVertexInfo vertexInfo,
-            GLESShader shader);
+    protected abstract void disableVertexAttribute(GLESObject object);
 }

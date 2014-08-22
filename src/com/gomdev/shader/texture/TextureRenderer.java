@@ -94,7 +94,7 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
 
         GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(width,
                 false, true, false);
-        mTextureObject.setVertexInfo(vertexInfo, true);
+        mTextureObject.setVertexInfo(vertexInfo, true, true);
     }
 
     private GLESCamera setupCamera(int width, int height) {

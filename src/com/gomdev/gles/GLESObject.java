@@ -1,5 +1,7 @@
 package com.gomdev.gles;
 
+import com.gomdev.gles.gles30.GLES30Renderer;
+
 public class GLESObject {
 
     public enum PrimitiveMode {
@@ -24,7 +26,8 @@ public class GLESObject {
     protected RenderType mRenderType = RenderType.DRAW_ELEMENTS;
 
     protected GLESVertexInfo mVertexInfo = null;
-    protected boolean mUseVBO = false;
+    protected boolean mUseVBO = true;
+    protected boolean mUseVAO = false;
 
     protected boolean mIsVisible = false;
 
@@ -32,21 +35,33 @@ public class GLESObject {
     }
 
     public void setVertexInfo(GLESVertexInfo vertexInfo) {
-        setVertexInfo(vertexInfo, false);
+        setVertexInfo(vertexInfo, true, false);
     }
 
-    public void setVertexInfo(GLESVertexInfo vertexInfo, boolean useVBO) {
+    public void setVertexInfo(GLESVertexInfo vertexInfo, boolean useVBO,
+            boolean useVAO) {
         mVertexInfo = vertexInfo;
         mUseVBO = useVBO;
 
+        GLESRenderer renderer = GLESContext.getInstance().getRenderer();
         if (useVBO == true) {
-            GLESRenderer renderer = GLESContext.getInstance().getRenderer();
             renderer.setupVBO(vertexInfo);
+        }
+
+        if (GLESContext.getInstance().getVersion() == GLESConfig.Version.GLES_30
+                && useVAO == true && useVBO == true) {
+            mUseVAO = useVAO;
+            ((GLES30Renderer) renderer).setupVAO(this);
+
         }
     }
 
     public boolean useVBO() {
         return mUseVBO;
+    }
+
+    public boolean useVAO() {
+        return mUseVAO;
     }
 
     public GLESVertexInfo getVertexInfo() {

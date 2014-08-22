@@ -9,7 +9,7 @@ public class GLESContext {
 
     private GLESRenderer mRenderer = null;
     private Context mContext = null;
-    private Version mGLESVersion = Version.GLES_20;
+    private Version mGLESVersion = Version.GLES_30;
 
     public static GLESContext getInstance() {
         return sContext;

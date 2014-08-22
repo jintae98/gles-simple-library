@@ -118,7 +118,7 @@ public class WhiteholeRenderer extends EffectRenderer implements Renderer {
 
         GLESVertexInfo vertexInfo = GLESMeshUtils.createPlaneMesh(mWidth,
                 mHeight, WhiteholeConfig.MESH_RESOLUTION, true, false);
-        mWhiteholeObject.setVertexInfo(vertexInfo, true);
+        mWhiteholeObject.setVertexInfo(vertexInfo, true, true);
     }
 
     private GLESCamera setupCamera(int width, int height) {
