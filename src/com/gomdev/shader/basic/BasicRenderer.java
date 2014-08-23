@@ -19,7 +19,6 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
     private static final String CLASS = "BasicRenderer";
     private static final String TAG = BasicConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = BasicConfig.DEBUG;
-    private static final boolean DEBUG_PERF = BasicConfig.DEBUG_PERF;
 
     private GLESObject mBasicObject;
     private GLESShader mBasicShader;
@@ -59,8 +58,7 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
         if (DEBUG)
             Log.d(TAG, "onDrawFrame()");
 
-        if (DEBUG_PERF)
-            GLESUtils.checkFPS();
+        super.updateFPS();
 
         update();
 
@@ -123,7 +121,7 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        GLES20.glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
+        GLES20.glClearColor(0.7f, 0.7f, 0.7f, 0.0f);
 
         createShader();
 

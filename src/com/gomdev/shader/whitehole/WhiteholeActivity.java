@@ -33,8 +33,6 @@ public class WhiteholeActivity extends EffectActivity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        setContentView(R.layout.main);
-
         mRenderer = new WhiteholeRenderer(this);
         mView = new GLSurfaceView(this);
         mRenderer.setSurfaceView(mView);
@@ -45,9 +43,8 @@ public class WhiteholeActivity extends EffectActivity {
         mView.setDebugFlags(GLSurfaceView.DEBUG_LOG_GL_CALLS);
         mView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 
-        FrameLayout layout = (FrameLayout) findViewById(R.id.layout);
+        FrameLayout layout = (FrameLayout) findViewById(R.id.layout_surface);
         layout.addView(mView);
-
     }
 
     @Override

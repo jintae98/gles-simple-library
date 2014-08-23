@@ -33,7 +33,7 @@ public class EffectActivity extends Activity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        setContentView(R.layout.main);
+        setContentView(R.layout.effect);
     }
 
     @Override

@@ -20,7 +20,6 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
     private static final String CLASS = "TextureRenderer";
     private static final String TAG = TextureConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = TextureConfig.DEBUG;
-    private static final boolean DEBUG_PERF = TextureConfig.DEBUG_PERF;
 
     private GLESObject mTextureObject;
     private GLESShader mTextureShader;
@@ -60,8 +59,7 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
         if (DEBUG)
             Log.d(TAG, "onDrawFrame()");
 
-        if (DEBUG_PERF)
-            GLESUtils.checkFPS();
+        super.updateFPS();
 
         update();
 
@@ -124,7 +122,7 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        GLES20.glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
+        GLES20.glClearColor(0.7f, 0.7f, 0.7f, 0.0f);
 
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         GLES20.glDepthFunc(GLES20.GL_LEQUAL);

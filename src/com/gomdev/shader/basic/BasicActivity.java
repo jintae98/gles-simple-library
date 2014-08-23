@@ -16,8 +16,8 @@
 
 package com.gomdev.shader.basic;
 
-import com.gomdev.shader.R;
 import com.gomdev.shader.EffectActivity;
+import com.gomdev.shader.R;
 
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
@@ -32,8 +32,6 @@ public class BasicActivity extends EffectActivity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        setContentView(R.layout.main);
-
         mRenderer = new BasicRenderer(this);
         mView = new GLSurfaceView(this);
         mRenderer.setSurfaceView(mView);
@@ -44,9 +42,8 @@ public class BasicActivity extends EffectActivity {
         mView.setDebugFlags(GLSurfaceView.DEBUG_LOG_GL_CALLS);
         mView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 
-        FrameLayout layout = (FrameLayout) findViewById(R.id.layout);
+        FrameLayout layout = (FrameLayout) findViewById(R.id.layout_surface);
         layout.addView(mView);
-
     }
 
     @Override

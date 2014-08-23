@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">Effects</string>
     <string name="shader_list_title">Shader List</string>
+    <string name="fps_title">FPS : </string>
 </resources>

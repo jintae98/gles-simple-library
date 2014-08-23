@@ -24,7 +24,6 @@ public class WhiteholeRenderer extends EffectRenderer implements Renderer {
     private static final String CLASS = "WhiteholeRenderer";
     private static final String TAG = WhiteholeConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = WhiteholeConfig.DEBUG;
-    private static final boolean DEBUG_PERF = WhiteholeConfig.DEBUG_PERF;
 
     private WhiteholeObject mWhiteholeObject;
     private GLESTexture mWhiteholeTexture;
@@ -74,8 +73,7 @@ public class WhiteholeRenderer extends EffectRenderer implements Renderer {
         if (DEBUG)
             Log.d(TAG, "onDrawFrame()");
 
-        if (DEBUG_PERF)
-            GLESUtils.checkFPS();
+        super.updateFPS();
 
         int count = 0;
         boolean needToRequestRender = false;
@@ -148,7 +146,7 @@ public class WhiteholeRenderer extends EffectRenderer implements Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        GLES20.glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+        GLES20.glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
 
         createShader();
 

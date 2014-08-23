@@ -31,6 +31,7 @@ public class GLESUtils {
     private static int sFrameCount = 0;
     private static long sStartTick = -1L;
     private static long sTotalTime = 0L;
+    private static float sFPS = 0f;
 
     private static float sWidthPixels = 0f;
     private static float sHeightPixels = 0f;
@@ -45,24 +46,50 @@ public class GLESUtils {
     }
 
     public static void checkFPS() {
+        float fps = 0.0f;
+        long currentTick = 0L;
+
         if (sStartTick < 0L) {
             sStartTick = System.nanoTime();
             sFrameCount = 0;
-        }
-
-        if (sFrameCount >= NUM_OF_FRAME) {
-            long currentNano = System.nanoTime();
-            sTotalTime = currentNano - sStartTick;
-
-            float fps = sFrameCount * 1000000000 / (float) sTotalTime;
-            Log.d(TAG, "checkFPS() fps=" + fps);
-
-            sFrameCount = 0;
-            sStartTick = currentNano;
-            sTotalTime = 0L;
         } else {
-            sFrameCount++;
+            ++sFrameCount;
+
+            if (sFrameCount >= NUM_OF_FRAME) {
+                currentTick = System.nanoTime();
+                sTotalTime = currentTick - sStartTick;
+                fps = (float)sFrameCount * 1000000000 / sTotalTime;
+
+                Log.d(TAG, "checkFPS() fps=" + fps);
+
+                sFrameCount = 0;
+                sStartTick = currentTick;
+                sTotalTime = 0L;
+            }
         }
+    }
+    
+    public static float getFPS() {
+        long currentTick = 0L;
+
+        if (sStartTick < 0L) {
+            sStartTick = System.nanoTime();
+            sFrameCount = 0;
+        } else {
+            ++sFrameCount;
+
+            if (sFrameCount >= NUM_OF_FRAME) {
+                currentTick = System.nanoTime();
+                sTotalTime = currentTick - sStartTick;
+                sFPS = (float)sFrameCount * 1000000000 / sTotalTime;
+
+                sFrameCount = 0;
+                sStartTick = currentTick;
+                sTotalTime = 0L;
+            }
+        }
+        
+        return sFPS;
     }
 
     public static FloatBuffer makeFloatBuffer(float[] array) {
