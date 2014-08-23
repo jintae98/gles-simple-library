@@ -42,7 +42,7 @@ public class ShaderRestoreDialog extends DialogFragment {
         mListView = getMultiChoiceListView(adapter);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.shader_list_title)
+        builder.setTitle(R.string.effect_shader_list)
                 .setView(mListView)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 

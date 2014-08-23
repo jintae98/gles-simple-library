@@ -245,8 +245,8 @@ public class WhiteholeRenderer extends EffectRenderer implements Renderer {
         Log.d(TAG, "createShader()");
         mShaderWhitehole = new GLESShader(mContext);
 
-        String vsSource = EffectUtils.getVertexShaderSource(mContext, 0);
-        String fsSource = EffectUtils.getFragmentShaderSource(mContext, 1);
+        String vsSource = EffectUtils.getShaderSource(mContext, 0);
+        String fsSource = EffectUtils.getShaderSource(mContext, 1);
 
         mShaderWhitehole.setShaderSource(vsSource, fsSource);
         if (mShaderWhitehole.load() == false) {

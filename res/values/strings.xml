@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Effects</string>
-    <string name="shader_list_title">Shader List</string>
-    <string name="fps_title">FPS : </string>
+    <string name="effect_shader_list">Shader List</string>
+    <string name="effect_fps">FPS : </string>
+    <string name="options_list">List</string>
+    <string name="options_restore">Restore</string>
+    <string name="options_options">Options</string>
+    <string name="edit_save">Save</string>
+    <string name="view_edit">Edit</string>
+
 </resources>

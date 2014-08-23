@@ -9,7 +9,7 @@ public class GLESConfig {
         GLES_30
     }
 
-    public static final Version GLES_VERSION = Version.GLES_30;
+    public static final Version GLES_VERSION = Version.GLES_20;
     
     public static final int POSITION_LOCATION = 0;
     public static final int TEXCOORD_LOCATION = 1;

@@ -192,8 +192,8 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
         Log.d(TAG, "createShader()");
         mTextureShader = new GLESShader(mContext);
 
-        String vsSource = EffectUtils.getVertexShaderSource(mContext, 0);
-        String fsSource = EffectUtils.getFragmentShaderSource(mContext, 1);
+        String vsSource = EffectUtils.getShaderSource(mContext, 0);
+        String fsSource = EffectUtils.getShaderSource(mContext, 1);
 
         mTextureShader.setShaderSource(vsSource, fsSource);
         if (mTextureShader.load() == false) {

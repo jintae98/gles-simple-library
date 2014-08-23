@@ -17,6 +17,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -38,6 +40,8 @@ public class EffectListActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list);
+
+        EffectContext.newInstance();
 
         EffectInfo info = new EffectInfo();
         info.mIntent = new Intent(this,
@@ -79,7 +83,7 @@ public class EffectListActivity extends Activity {
             info.mShaderResIDs = new int[] {
                     R.raw.basic_30_vs,
                     R.raw.basic_30_fs
-            };            
+            };
         }
         info.mShaderTitle = new String[] {
                 "Basic main VS",
@@ -153,9 +157,11 @@ public class EffectListActivity extends Activity {
             EffectInfo info = mEffectMap.get(effectName);
             int numOfShader = info.mShaderResIDs.length;
 
-            EffectContext context = EffectContext.newInstance();
+            EffectContext context = EffectContext.getInstance();
             context.setEffetName(effectName);
             context.setNumOfShaders(numOfShader);
+            
+            context.clearShaderInfos();
 
             String title = null;
             String savedFileName = null;
@@ -173,4 +179,26 @@ public class EffectListActivity extends Activity {
             startActivity(info.mIntent);
         }
     };
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.effect_list_options, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.options:
+            showOptionsDialog();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showOptionsDialog() {
+        EffectOptionsDialog dialog = new EffectOptionsDialog();
+        dialog.show(getFragmentManager(), "effect_options");
+    }
 }

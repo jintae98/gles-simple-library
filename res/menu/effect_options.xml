@@ -5,10 +5,10 @@
     <item
         android:id="@+id/shader_list"
         android:showAsAction="ifRoom"
-        android:title="List"/>
+        android:title="@string/options_list"/>
     <item
         android:id="@+id/restore"
         android:showAsAction="ifRoom"
-        android:title="Restore"/>
+        android:title="@string/options_restore"/>
 
 </menu>

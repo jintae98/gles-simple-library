@@ -39,7 +39,7 @@ public class EffectUtils {
         return shaderSource;
     }
 
-    public static String getVertexShaderSource(Context context, int i) {
+    public static String getShaderSource(Context context, int i) {
         EffectContext effectContext = EffectContext.getInstance();
 
         ArrayList<ShaderInfo> shaderInfos = effectContext.getShaderInfoList();

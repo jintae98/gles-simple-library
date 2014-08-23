@@ -16,6 +16,8 @@ public class EffectContext {
     private int mNumOfShaders = 0;
     private ShaderInfo mSavedShaderInfo = null;
 
+    private boolean mShowFPS = true;
+
     public static EffectContext getInstance() {
         return sEffectContext;
     }
@@ -58,11 +60,23 @@ public class EffectContext {
         return mShaderInfos;
     }
 
+    public void clearShaderInfos() {
+        mShaderInfos.clear();
+    }
+
     public void setSavedShaderInfo(ShaderInfo info) {
         mSavedShaderInfo = info;
     }
 
     public ShaderInfo getSavedShaderInfo() {
         return mSavedShaderInfo;
+    }
+
+    public void setShowFPS(boolean showFPS) {
+        mShowFPS = showFPS;
+    }
+
+    public boolean showFPS() {
+        return mShowFPS;
     }
 }

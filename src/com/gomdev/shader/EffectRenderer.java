@@ -59,10 +59,15 @@ public class EffectRenderer {
     public void setSurfaceView(GLSurfaceView surfaceView) {
         mView = surfaceView;
     }
-    
+
     protected void updateFPS() {
-        int fps = (int) GLESUtils.getFPS();
+        boolean showFPS = EffectContext.getInstance().showFPS();
+        if (showFPS == false) {
+            return;
+        }
         
+        int fps = (int) GLESUtils.getFPS();
+
         Message msg = mHandler.obtainMessage(UPDATE_FPS);
         msg.arg1 = fps;
         mHandler.sendMessage(msg);

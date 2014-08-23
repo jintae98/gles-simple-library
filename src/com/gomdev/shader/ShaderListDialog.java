@@ -25,7 +25,7 @@ public class ShaderListDialog extends DialogFragment {
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.shader_list_title)
+        builder.setTitle(R.string.effect_shader_list)
                 .setItems(list, new DialogInterface.OnClickListener() {
 
                     @Override

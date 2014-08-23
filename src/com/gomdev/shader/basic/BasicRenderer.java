@@ -91,7 +91,7 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
 
         GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(width,
                 false, false, true);
-        mBasicObject.setVertexInfo(vertexInfo, false, true);
+        mBasicObject.setVertexInfo(vertexInfo, true, true);
     }
 
     private GLESCamera setupCamera(int width, int height) {
@@ -180,8 +180,8 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
         Log.d(TAG, "createShader()");
         mBasicShader = new GLESShader(mContext);
 
-        String vsSource = EffectUtils.getVertexShaderSource(mContext, 0);
-        String fsSource = EffectUtils.getFragmentShaderSource(mContext, 1);
+        String vsSource = EffectUtils.getShaderSource(mContext, 0);
+        String fsSource = EffectUtils.getShaderSource(mContext, 1);
 
         mBasicShader.setShaderSource(vsSource, fsSource);
         if (mBasicShader.load() == false) {

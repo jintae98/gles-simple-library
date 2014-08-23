@@ -33,7 +33,14 @@ public class EffectActivity extends Activity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        setContentView(R.layout.effect);
+
+        boolean showFPS = EffectContext.getInstance().showFPS();
+
+        if (showFPS == true) {
+            setContentView(R.layout.effect_with_fps);
+        } else {
+            setContentView(R.layout.effect_without_fps);
+        }
     }
 
     @Override

@@ -16,4 +16,21 @@ public class EffectConfig {
 
     public static final String APP_DIRECTORY_NAME = "gomdev";
 
+    public enum Options {
+        SHOW_FPS("Show FPS");
+
+        private final String mOptionName;
+
+        Options(String optionName) {
+            mOptionName = optionName;
+        }
+
+        public String getOption() {
+            return mOptionName;
+        }
+    }
+
+    public static final Options[] EFFECT_OPTIONS = new Options[] {
+            Options.SHOW_FPS
+    };
 }

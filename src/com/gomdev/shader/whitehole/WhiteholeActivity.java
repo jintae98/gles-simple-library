@@ -25,7 +25,6 @@ import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
 public class WhiteholeActivity extends EffectActivity {
-
     private GLSurfaceView mView;
     private WhiteholeRenderer mRenderer;
 

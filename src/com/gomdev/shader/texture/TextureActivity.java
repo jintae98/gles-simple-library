@@ -16,7 +16,6 @@
 
 package com.gomdev.shader.texture;
 
-
 import com.gomdev.shader.R;
 import com.gomdev.shader.EffectActivity;
 
