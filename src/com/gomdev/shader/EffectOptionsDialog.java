@@ -18,19 +18,19 @@ public class EffectOptionsDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final EffectContext context = EffectContext.getInstance();
 
-        final int numOfShowOptions = EffectConfig.EFFECT_SHOW_OPTIONS.length;
-        mOptions = new String[numOfShowOptions];
-        for(int i = 0; i < numOfShowOptions; i++) {
-            mOptions[i] = EffectConfig.EFFECT_SHOW_OPTIONS[i].getOption();
+        final int numOfOptions = EffectConfig.EFFECT_OPTIONS.length;
+        mOptions = new String[numOfOptions];
+        for(int i = 0; i < numOfOptions; i++) {
+            mOptions[i] = EffectConfig.EFFECT_OPTIONS[i].getOption();
         }
 
         if (mCheckedItem == null) {
-            mCheckedItem = new boolean[numOfShowOptions];
+            mCheckedItem = new boolean[numOfOptions];
         }
 
         Options option = null;
-        for (int i = 0; i < numOfShowOptions; i++) {
-            option = EffectConfig.EFFECT_SHOW_OPTIONS[i];
+        for (int i = 0; i < numOfOptions; i++) {
+            option = EffectConfig.EFFECT_OPTIONS[i];
             switch (option) {
             case SHOW_INFO:
                 mCheckedItem[i] = context.showInfo();
@@ -53,13 +53,7 @@ public class EffectOptionsDialog extends DialogFragment {
                             @Override
                             public void onClick(DialogInterface dialog,
                                     int which, boolean isChecked) {
-                                mCheckedItem[which] = isChecked;
                                 
-                                Options option = EffectConfig.EFFECT_SHOW_OPTIONS[which];
-                                if (option == Options.SHOW_INFO) {
-                                    for (int i = which + 1; i < numOfShowOptions; i++) {
-                                    }
-                                }
                             }
                         })
                 .setPositiveButton("OK", new OnClickListener() {
@@ -67,8 +61,8 @@ public class EffectOptionsDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Options option = null;
-                        for (int i = 0; i < numOfShowOptions; i++) {
-                            option = EffectConfig.EFFECT_SHOW_OPTIONS[i];
+                        for (int i = 0; i < numOfOptions; i++) {
+                            option = EffectConfig.EFFECT_OPTIONS[i];
                             switch (option) {
                             case SHOW_INFO:
                                 context.setShowInfo(mCheckedItem[i]);

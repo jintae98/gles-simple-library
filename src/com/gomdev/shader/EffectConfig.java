@@ -32,11 +32,7 @@ public class EffectConfig {
         }
     }
 
-    public static final Options[] EFFECT_HIDE_OPTIONS = new Options[] {
-            Options.SHOW_INFO
-    };
-    
-    public static final Options[] EFFECT_SHOW_OPTIONS = new Options[] {
+    public static final Options[] EFFECT_OPTIONS = new Options[] {
         Options.SHOW_INFO,
         Options.USE_GLES30,
         Options.SHOW_FPS
