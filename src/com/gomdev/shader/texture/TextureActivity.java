@@ -16,16 +16,13 @@
 
 package com.gomdev.shader.texture;
 
-import com.gomdev.shader.R;
 import com.gomdev.shader.EffectActivity;
 
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.MotionEvent;
-import android.widget.FrameLayout;
 
 public class TextureActivity extends EffectActivity {
-    private GLSurfaceView mView;
     private TextureRenderer mRenderer;
 
     @Override
@@ -36,14 +33,13 @@ public class TextureActivity extends EffectActivity {
         mView = new GLSurfaceView(this);
         mRenderer.setSurfaceView(mView);
 
-        mView.setEGLContextClientVersion(2);
-        mView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-        mView.setRenderer(mRenderer);
-        mView.setDebugFlags(GLSurfaceView.DEBUG_LOG_GL_CALLS);
-        mView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        setGLESVersion();
+        addSurfaceView();
 
-        FrameLayout layout = (FrameLayout) findViewById(R.id.layout_surface);
-        layout.addView(mView);
+        mView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+
+        mView.setRenderer(mRenderer);
+        mView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
     @Override

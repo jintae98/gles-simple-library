@@ -2,6 +2,10 @@ package com.gomdev.shader;
 
 import java.util.ArrayList;
 
+import com.gomdev.gles.GLESConfig;
+import com.gomdev.gles.GLESConfig.Version;
+import com.gomdev.gles.GLESContext;
+
 public class EffectContext {
     private static EffectContext sEffectContext = null;
 
@@ -16,7 +20,10 @@ public class EffectContext {
     private int mNumOfShaders = 0;
     private ShaderInfo mSavedShaderInfo = null;
 
+    private boolean mShowInfo = true;
     private boolean mShowFPS = true;
+    private boolean mUseGLES30 = (GLESConfig.GLES_VERSION == Version.GLES_30) ? true
+            : false;
 
     public static EffectContext getInstance() {
         return sEffectContext;
@@ -72,11 +79,33 @@ public class EffectContext {
         return mSavedShaderInfo;
     }
 
+    public void setShowInfo(boolean showInfo) {
+        mShowInfo = showInfo;
+    }
+
+    public boolean showInfo() {
+        return mShowInfo;
+    }
+
     public void setShowFPS(boolean showFPS) {
         mShowFPS = showFPS;
     }
 
     public boolean showFPS() {
         return mShowFPS;
+    }
+
+    public void setUseGLES30(boolean useGLES30) {
+        mUseGLES30 = useGLES30;
+
+        if (useGLES30 == true) {
+            GLESContext.getInstance().setVersion(Version.GLES_30);
+        } else {
+            GLESContext.getInstance().setVersion(Version.GLES_20);
+        }
+    }
+
+    public boolean useGLES30() {
+        return mUseGLES30;
     }
 }

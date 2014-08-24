@@ -9,5 +9,5 @@
     <string name="options_options">Options</string>
     <string name="edit_save">Save</string>
     <string name="view_edit">Edit</string>
-
+    <string name="effect_list_show_info">Show informations</string>
 </resources>

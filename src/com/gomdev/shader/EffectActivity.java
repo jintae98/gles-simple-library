@@ -18,28 +18,64 @@ package com.gomdev.shader;
 
 import java.util.ArrayList;
 
+import com.gomdev.gles.GLESContext;
 import com.gomdev.gles.GLESFileUtils;
+import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.shader.R;
 import com.gomdev.shader.EffectContext.ShaderInfo;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class EffectActivity extends Activity {
+    protected GLSurfaceView mView;
 
+    @SuppressLint("InflateParams")
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        boolean showFPS = EffectContext.getInstance().showFPS();
+        setContentView(R.layout.effect_main);
 
-        if (showFPS == true) {
-            setContentView(R.layout.effect_with_fps);
-        } else {
-            setContentView(R.layout.effect_without_fps);
+        boolean showInfo = EffectContext.getInstance().showInfo();
+        if (showInfo == true) {
+            FrameLayout frameLayout = (FrameLayout) findViewById(R.id.layout);
+
+            LayoutInflater inflater = (LayoutInflater) getSystemService
+                    (Context.LAYOUT_INFLATER_SERVICE);
+            LinearLayout layout = (LinearLayout) inflater.inflate(
+                    R.layout.effect_info, null);
+
+            frameLayout.addView(layout);
+
+            showGLESVersion();
+
+        }
+    }
+
+    private void showGLESVersion() {
+        TextView textView = (TextView) findViewById(R.id.layout_version);
+
+        Version version = GLESContext.getInstance().getVersion();
+        switch (version) {
+        case GLES_20:
+            textView.setText("OpenGL ES 2.0");
+            break;
+        case GLES_30:
+            textView.setText("OpenGL ES 3.0");
+            break;
+        default:
+
         }
     }
 
@@ -90,5 +126,24 @@ public class EffectActivity extends Activity {
     private void showShaderListDialog() {
         ShaderListDialog dialog = new ShaderListDialog();
         dialog.show(getFragmentManager(), "shaderlist");
+    }
+
+    protected void setGLESVersion() {
+        Version version = GLESContext.getInstance().getVersion();
+        switch (version) {
+        case GLES_20:
+            mView.setEGLContextClientVersion(2);
+            break;
+        case GLES_30:
+            mView.setEGLContextClientVersion(3);
+            break;
+        default:
+            mView.setEGLContextClientVersion(2);
+        }
+    }
+
+    protected void addSurfaceView() {
+        FrameLayout layout = (FrameLayout) findViewById(R.id.layout_surface);
+        layout.addView(mView);
     }
 }

@@ -17,7 +17,9 @@ public class EffectConfig {
     public static final String APP_DIRECTORY_NAME = "gomdev";
 
     public enum Options {
-        SHOW_FPS("Show FPS");
+        SHOW_INFO("Show informations"),
+        SHOW_FPS("Show FPS"),
+        USE_GLES30("Use GLES 3.0");
 
         private final String mOptionName;
 
@@ -30,7 +32,13 @@ public class EffectConfig {
         }
     }
 
-    public static final Options[] EFFECT_OPTIONS = new Options[] {
-            Options.SHOW_FPS
+    public static final Options[] EFFECT_HIDE_OPTIONS = new Options[] {
+            Options.SHOW_INFO
     };
+    
+    public static final Options[] EFFECT_SHOW_OPTIONS = new Options[] {
+        Options.SHOW_INFO,
+        Options.USE_GLES30,
+        Options.SHOW_FPS
+};
 }

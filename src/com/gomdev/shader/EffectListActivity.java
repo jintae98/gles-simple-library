@@ -11,6 +11,7 @@ import com.gomdev.shader.basic.BasicConfig;
 import com.gomdev.shader.texture.TextureConfig;
 import com.gomdev.shader.whitehole.WhiteholeConfig;
 import com.gomdev.gles.GLESConfig;
+import com.gomdev.gles.GLESContext;
 import com.gomdev.gles.GLESConfig.Version;
 
 import android.app.Activity;
@@ -43,11 +44,17 @@ public class EffectListActivity extends Activity {
 
         EffectContext.newInstance();
 
+        optionChanged();
+    }
+
+    private void setupEffectInfos() {
+        mEffectMap.clear();
+
         EffectInfo info = new EffectInfo();
         info.mIntent = new Intent(this,
                 com.gomdev.shader.whitehole.WhiteholeActivity.class);
-
-        if (GLESConfig.GLES_VERSION == Version.GLES_20) {
+        Version version = GLESContext.getInstance().getVersion();
+        if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
                     R.raw.whitehole_20_vs,
                     R.raw.whitehole_20_fs,
@@ -72,7 +79,7 @@ public class EffectListActivity extends Activity {
         info = new EffectInfo();
         info.mIntent = new Intent(this,
                 com.gomdev.shader.basic.BasicActivity.class);
-        if (GLESConfig.GLES_VERSION == Version.GLES_20) {
+        if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
                     R.raw.basic_20_vs,
                     R.raw.basic_20_fs,
@@ -98,7 +105,7 @@ public class EffectListActivity extends Activity {
         info.mIntent = new Intent(this,
                 com.gomdev.shader.texture.TextureActivity.class);
 
-        if (GLESConfig.GLES_VERSION == Version.GLES_20) {
+        if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
                     R.raw.texture_20_vs,
                     R.raw.texture_20_fs,
@@ -124,7 +131,9 @@ public class EffectListActivity extends Activity {
                 Log.d(TAG, "\t Item=" + entry.getKey());
             }
         }
+    }
 
+    private void makeEffectList() {
         ArrayList<String> effectList = new ArrayList<String>();
         Set<String> effectSet = mEffectMap.keySet();
 
@@ -160,7 +169,7 @@ public class EffectListActivity extends Activity {
             EffectContext context = EffectContext.getInstance();
             context.setEffetName(effectName);
             context.setNumOfShaders(numOfShader);
-            
+
             context.clearShaderInfos();
 
             String title = null;
@@ -200,5 +209,10 @@ public class EffectListActivity extends Activity {
     private void showOptionsDialog() {
         EffectOptionsDialog dialog = new EffectOptionsDialog();
         dialog.show(getFragmentManager(), "effect_options");
+    }
+
+    void optionChanged() {
+        setupEffectInfos();
+        makeEffectList();
     }
 }
