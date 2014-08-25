@@ -38,6 +38,23 @@ public class EffectRenderer {
                         Toast.LENGTH_SHORT).show();
                 break;
             case UPDATE_FPS:
+                EffectContext context = EffectContext.getInstance();
+                boolean showInfo = context.showInfo();
+                boolean showFPS = context.showFPS();
+                if (showInfo == true) {
+                    LinearLayout layout = (LinearLayout) ((Activity) mContext)
+                            .findViewById(R.id.layout_fps);
+                    if (showFPS == false) {
+                        layout.setVisibility(View.INVISIBLE);
+                    } else {
+                        layout.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                if (showFPS == false || showInfo == false) {
+                    return;
+                }
+
                 if (mFPS == null) {
                     mFPS = (TextView) ((Activity) mContext)
                             .findViewById(R.id.fps);
@@ -63,23 +80,6 @@ public class EffectRenderer {
     }
 
     protected void updateFPS() {
-        EffectContext context = EffectContext.getInstance();
-        boolean showInfo = context.showInfo();
-        boolean showFPS = context.showFPS();
-        if (showInfo == true) {
-            LinearLayout layout = (LinearLayout) ((Activity) mContext)
-                    .findViewById(R.id.layout_fps);
-            if (showFPS == false) {
-                layout.setVisibility(View.INVISIBLE);
-            } else {
-                layout.setVisibility(View.VISIBLE);
-            }
-        }
-
-        if (showFPS == false || showInfo == false) {
-            return;
-        }
-
         int fps = (int) GLESUtils.getFPS();
 
         Message msg = mHandler.obtainMessage(UPDATE_FPS);

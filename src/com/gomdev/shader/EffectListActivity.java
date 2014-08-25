@@ -15,6 +15,7 @@ import com.gomdev.gles.GLESContext;
 import com.gomdev.gles.GLESConfig.Version;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,7 +26,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class EffectListActivity extends Activity {
+public class EffectListActivity extends Activity implements DialogListener {
     private static final String CLASS = "EffectListActivity";
     private static final String TAG = GLESConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = GLESConfig.DEBUG;
@@ -214,5 +215,14 @@ public class EffectListActivity extends Activity {
     void optionChanged() {
         setupEffectInfos();
         makeEffectList();
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        optionChanged();
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
     }
 }

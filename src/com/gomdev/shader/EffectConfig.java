@@ -17,14 +17,20 @@ public class EffectConfig {
     public static final String APP_DIRECTORY_NAME = "gomdev";
 
     public enum Options {
-        SHOW_INFO("Show informations"),
-        SHOW_FPS("Show FPS"),
-        USE_GLES30("Use GLES 3.0");
+        SHOW_INFO(0, "Show informations"),
+        SHOW_FPS(1, "Show FPS"),
+        USE_GLES30(2, "Use GLES 3.0");
 
+        private final int mIndex;
         private final String mOptionName;
 
-        Options(String optionName) {
+        Options(int index, String optionName) {
+            mIndex = index;
             mOptionName = optionName;
+        }
+
+        public int getIndex() {
+            return mIndex;
         }
 
         public String getOption() {
@@ -33,8 +39,8 @@ public class EffectConfig {
     }
 
     public static final Options[] EFFECT_OPTIONS = new Options[] {
-        Options.SHOW_INFO,
-        Options.USE_GLES30,
-        Options.SHOW_FPS
-};
+            Options.SHOW_INFO,
+            Options.USE_GLES30,
+            Options.SHOW_FPS
+    };
 }
