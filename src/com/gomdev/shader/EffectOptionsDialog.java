@@ -138,9 +138,11 @@ public class EffectOptionsDialog extends DialogFragment {
         SparseBooleanArray sb = listView.getCheckedItemPositions();
         boolean showInfo = context.showInfo();
         if (sb.size() != 0) {
+            int startIndex = EffectConfig.Options.SHOW_INFO.getIndex() + 1;
             if (sb.get(0) == false) {
                 if (showInfo == true) {
-                    for (int i = listView.getCount() - 1; i >= 1; i--) {
+                    
+                    for (int i = listView.getCount() - 1; i >= startIndex; i--) {
                         mOptions.remove(i);
                     }
                     context.setShowInfo(false);
@@ -149,7 +151,7 @@ public class EffectOptionsDialog extends DialogFragment {
                 }
             } else {
                 if (showInfo == false) {
-                    for (int i = 1; i < numOfOptions; i++) {
+                    for (int i = startIndex; i < numOfOptions; i++) {
                         mOptions.add(EffectConfig.EFFECT_OPTIONS[i]
                                 .getOption());
                     }

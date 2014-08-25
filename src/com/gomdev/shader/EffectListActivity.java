@@ -212,7 +212,7 @@ public class EffectListActivity extends Activity implements DialogListener {
         dialog.show(getFragmentManager(), "effect_options");
     }
 
-    void optionChanged() {
+    private void optionChanged() {
         setupEffectInfos();
         makeEffectList();
     }
