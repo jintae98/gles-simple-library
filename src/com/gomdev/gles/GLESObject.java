@@ -1,7 +1,5 @@
 package com.gomdev.gles;
 
-import com.gomdev.gles.gles30.GLES30Renderer;
-
 public class GLESObject {
 
     public enum PrimitiveMode {
@@ -12,7 +10,9 @@ public class GLESObject {
 
     public enum RenderType {
         DRAW_ELEMENTS,
-        DRAW_ARRAYS
+        DRAW_ARRAYS,
+        DRAW_ELEMENTS_INSTANCED,
+        DRAW_ARRAYS_INSTANCED,
     }
 
     protected GLESShader mShader;
@@ -27,7 +27,6 @@ public class GLESObject {
 
     protected GLESVertexInfo mVertexInfo = null;
     protected boolean mUseVBO = true;
-    protected boolean mUseVAO = false;
 
     protected boolean mIsVisible = false;
 
@@ -47,13 +46,6 @@ public class GLESObject {
         if (useVBO == true) {
             renderer.setupVBO(vertexInfo);
         }
-
-        if (GLESContext.getInstance().getVersion() == GLESConfig.Version.GLES_30
-                && useVAO == true && useVBO == true) {
-            mUseVAO = useVAO;
-            ((GLES30Renderer) renderer).setupVAO(this);
-
-        }
     }
 
     public boolean useVBO() {
@@ -61,7 +53,7 @@ public class GLESObject {
     }
 
     public boolean useVAO() {
-        return mUseVAO;
+        return false;
     }
 
     public GLESVertexInfo getVertexInfo() {
@@ -149,4 +141,10 @@ public class GLESObject {
     protected void getUniformLocations() {
     }
 
+    public void setNumOfInstance(int num) {
+    }
+
+    public int getNumOfInstance() {
+        return 0;
+    }
 }

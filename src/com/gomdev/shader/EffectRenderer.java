@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESContext;
 import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESUtils;
@@ -71,8 +70,7 @@ public class EffectRenderer {
 
         GLESContext.getInstance().setContext(context);
 
-        Version version = GLESContext.getInstance().getVersion();
-        mRenderer = GLESRenderer.createRenderer(version);
+        mRenderer = GLESRenderer.createRenderer();
     }
 
     public void setSurfaceView(GLSurfaceView surfaceView) {

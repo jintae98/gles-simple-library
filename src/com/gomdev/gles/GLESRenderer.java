@@ -16,7 +16,11 @@ public abstract class GLESRenderer {
     private ArrayList<GLESObject> mObjects = new ArrayList<GLESObject>();
     protected GLESGLState mCurrentGLState = null;
 
-    public static GLESRenderer createRenderer(Version version) {
+    protected GLESRendererListener mListener = null;
+
+    public static GLESRenderer createRenderer() {
+        Version version = GLESContext.getInstance().getVersion();
+
         switch (version) {
         case GLES_20:
             return new GLES20Renderer();
@@ -30,6 +34,10 @@ public abstract class GLESRenderer {
 
     protected GLESRenderer() {
         GLESContext.getInstance().setRenderer(this);
+    }
+
+    public void setListener(GLESRendererListener listener) {
+        mListener = listener;
     }
 
     public void addObject(GLESObject object) {
@@ -59,10 +67,19 @@ public abstract class GLESRenderer {
         enableVertexAttribute(object);
 
         RenderType renderType = object.getRenderType();
-        if (renderType == RenderType.DRAW_ARRAYS) {
+        switch (renderType) {
+        case DRAW_ARRAYS:
             drawArrays(object);
-        } else if (renderType == RenderType.DRAW_ELEMENTS) {
+            break;
+        case DRAW_ELEMENTS:
             drawElements(object);
+            break;
+        case DRAW_ARRAYS_INSTANCED:
+            drawArraysInstanced(object);
+            break;
+        case DRAW_ELEMENTS_INSTANCED:
+            drawElementsInstanced(object);
+            break;
         }
 
         disableVertexAttribute(object);
@@ -82,6 +99,10 @@ public abstract class GLESRenderer {
     protected abstract void drawArrays(GLESObject object);
 
     protected abstract void drawElements(GLESObject object);
+
+    protected abstract void drawArraysInstanced(GLESObject object);
+
+    protected abstract void drawElementsInstanced(GLESObject object);
 
     protected abstract void disableVertexAttribute(GLESObject object);
 }

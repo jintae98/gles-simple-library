@@ -114,7 +114,7 @@ public class GLESMeshUtils {
     }
 
     public static GLESVertexInfo createPlane(float width, float height,
-            boolean useTexCoord, boolean useNormal, boolean useIndex) {
+            boolean useNormal, boolean useTexCoord, boolean useColor, boolean useIndex) {
 
         float right = width * 0.5f;
         float left = -right;
@@ -123,7 +123,9 @@ public class GLESMeshUtils {
         float z = 0.0f;
 
         float[] vertex = {
-                left, bottom, z, right, bottom, z, left, top, z,
+                left, bottom, z, 
+                right, bottom, z, 
+                left, top, z,
                 right, top, z
         };
 
@@ -133,7 +135,10 @@ public class GLESMeshUtils {
 
         if (useTexCoord == true) {
             float[] texCoord = {
-                    0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f
+                    0f, 1f, 
+                    1f, 1f, 
+                    0f, 0f, 
+                    1f, 0f
             };
 
             vertexInfo.setTexCoordBuffer(texCoord, 2);
@@ -141,15 +146,30 @@ public class GLESMeshUtils {
 
         if (useNormal == true) {
             float[] normal = {
-                    0f, 0f, 1f, 0f, 0f, 1f, 0f, 0f, 1f, 0f, 0f, 1f
+                    0f, 0f, 1f, 
+                    0f, 0f, 1f, 
+                    0f, 0f, 1f, 
+                    0f, 0f, 1f
             };
 
             vertexInfo.setNormalBuffer(normal, 3);
         }
+        
+        if (useColor == true) {
+            float[] color = {
+                    1f, 0f, 0f, 1f,
+                    1f, 0f, 0f, 1f, 
+                    1f, 0f, 0f, 1f,
+                    1f, 0f, 0f, 1f
+            };
+
+            vertexInfo.setColorBuffer(color, 4);
+        }
 
         if (useIndex == true) {
             short[] index = {
-                    0, 1, 2, 2, 1, 3
+                    0, 1, 2, 
+                    2, 1, 3
             };
 
             vertexInfo.setIndexBuffer(index);

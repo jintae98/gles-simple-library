@@ -35,7 +35,7 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
     public TextureRenderer(Context context) {
         super(context);
 
-        mTextureObject = new GLESObject();
+        mTextureObject = GLESSceneManager.createObject();
         mTextureObject.setTransform(new GLESTransform());
         mTextureObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
         mTextureObject.setRenderType(RenderType.DRAW_ELEMENTS);

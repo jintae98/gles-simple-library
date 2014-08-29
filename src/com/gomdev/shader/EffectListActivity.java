@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.gomdev.shader.R;
 import com.gomdev.shader.basic.BasicConfig;
+import com.gomdev.shader.instancedRendering.IRConfig;
 import com.gomdev.shader.texture.TextureConfig;
 import com.gomdev.shader.whitehole.WhiteholeConfig;
 import com.gomdev.gles.GLESConfig;
@@ -51,33 +52,73 @@ public class EffectListActivity extends Activity implements DialogListener {
     private void setupEffectInfos() {
         mEffectMap.clear();
 
+        Version version = GLESContext.getInstance().getVersion();
+
+        setupBasic(version);
+        setupTexture(version);
+        setupIR(version);
+        setupWhitehole(version);
+
+        if (DEBUG) {
+            Log.d(TAG, "onCreate() map<String, EffectInfo>");
+            Set<Entry<String, EffectInfo>> entrySet = mEffectMap.entrySet();
+
+            for (Entry<String, EffectInfo> entry : entrySet) {
+                Log.d(TAG, "\t Item=" + entry.getKey());
+            }
+        }
+    }
+
+    private void setupIR(Version version) {
         EffectInfo info = new EffectInfo();
         info.mIntent = new Intent(this,
-                com.gomdev.shader.whitehole.WhiteholeActivity.class);
-        Version version = GLESContext.getInstance().getVersion();
+                com.gomdev.shader.instancedRendering.IRActivity.class);
+
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
-                    R.raw.whitehole_20_vs,
-                    R.raw.whitehole_20_fs,
-                    R.raw.whitehole_20_vs,
-                    R.raw.whitehole_20_fs
+                    R.raw.ir_20_vs,
+                    R.raw.ir_20_fs,
             };
         } else {
             info.mShaderResIDs = new int[] {
-                    R.raw.whitehole_30_vs,
-                    R.raw.whitehole_30_fs
+                    R.raw.ir_30_vs,
+                    R.raw.ir_30_fs,
             };
         }
         info.mShaderTitle = new String[] {
-                "Whitehole main VS",
-                "Whitehole main FS",
-                "Whitehole overlay VS",
-                "Whitehole overlay FS"
+                "IR VS",
+                "IR FS",
         };
 
-        mEffectMap.put(WhiteholeConfig.EFFECT_NAME, info);
+        mEffectMap.put(IRConfig.EFFECT_NAME, info);
+    }
 
-        info = new EffectInfo();
+    private void setupTexture(Version version) {
+        EffectInfo info = new EffectInfo();
+        info.mIntent = new Intent(this,
+                com.gomdev.shader.texture.TextureActivity.class);
+
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[] {
+                    R.raw.texture_20_vs,
+                    R.raw.texture_20_fs,
+            };
+        } else {
+            info.mShaderResIDs = new int[] {
+                    R.raw.texture_30_vs,
+                    R.raw.texture_30_fs,
+            };
+        }
+        info.mShaderTitle = new String[] {
+                "Texture VS",
+                "Texture FS",
+        };
+
+        mEffectMap.put(TextureConfig.EFFECT_NAME, info);
+    }
+
+    private void setupBasic(Version version) {
+        EffectInfo info = new EffectInfo();
         info.mIntent = new Intent(this,
                 com.gomdev.shader.basic.BasicActivity.class);
         if (version == Version.GLES_20) {
@@ -101,37 +142,33 @@ public class EffectListActivity extends Activity implements DialogListener {
         };
 
         mEffectMap.put(BasicConfig.EFFECT_NAME, info);
+    }
 
-        info = new EffectInfo();
+    private void setupWhitehole(Version version) {
+        EffectInfo info = new EffectInfo();
         info.mIntent = new Intent(this,
-                com.gomdev.shader.texture.TextureActivity.class);
-
+                com.gomdev.shader.whitehole.WhiteholeActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
-                    R.raw.texture_20_vs,
-                    R.raw.texture_20_fs,
+                    R.raw.whitehole_20_vs,
+                    R.raw.whitehole_20_fs,
+                    R.raw.whitehole_20_vs,
+                    R.raw.whitehole_20_fs
             };
         } else {
             info.mShaderResIDs = new int[] {
-                    R.raw.texture_30_vs,
-                    R.raw.texture_30_fs,
+                    R.raw.whitehole_30_vs,
+                    R.raw.whitehole_30_fs
             };
         }
         info.mShaderTitle = new String[] {
-                "Texture VS",
-                "Texture FS",
+                "Whitehole main VS",
+                "Whitehole main FS",
+                "Whitehole overlay VS",
+                "Whitehole overlay FS"
         };
 
-        mEffectMap.put(TextureConfig.EFFECT_NAME, info);
-
-        if (DEBUG) {
-            Log.d(TAG, "onCreate() map<String, EffectInfo>");
-            Set<Entry<String, EffectInfo>> entrySet = mEffectMap.entrySet();
-
-            for (Entry<String, EffectInfo> entry : entrySet) {
-                Log.d(TAG, "\t Item=" + entry.getKey());
-            }
-        }
+        mEffectMap.put(WhiteholeConfig.EFFECT_NAME, info);
     }
 
     private void makeEffectList() {

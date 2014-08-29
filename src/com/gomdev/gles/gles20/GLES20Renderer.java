@@ -85,6 +85,10 @@ public class GLES20Renderer extends GLESRenderer {
                     GLES20.GL_STATIC_DRAW);
             GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, 0);
         }
+
+        if (mListener != null) {
+            mListener.setupVBO(vertexInfo);
+        }
     }
 
     @Override
@@ -242,6 +246,10 @@ public class GLES20Renderer extends GLESRenderer {
                 GLES20.glEnableVertexAttribArray(shader.getColorAttribIndex());
             }
         }
+
+        if (mListener != null) {
+            mListener.enableVertexAttribute(object);
+        }
     }
 
     @Override
@@ -290,7 +298,7 @@ public class GLES20Renderer extends GLESRenderer {
                         GLES20.GL_UNSIGNED_SHORT, 0);
                 break;
             case TRIANGLE_STRIP:
-                GLES20.glDrawElements(GLES20.GL_TRIANGLE_FAN,
+                GLES20.glDrawElements(GLES20.GL_TRIANGLE_STRIP,
                         indexBuffer.capacity(),
                         GLES20.GL_UNSIGNED_SHORT, 0);
                 break;
@@ -326,6 +334,18 @@ public class GLES20Renderer extends GLESRenderer {
     }
 
     @Override
+    protected void drawArraysInstanced(GLESObject object) {
+        throw new IllegalStateException(
+                "this feature is available in OpenGL ES 3.0");
+    }
+
+    @Override
+    protected void drawElementsInstanced(GLESObject object) {
+        throw new IllegalStateException(
+                "this feature is available in OpenGL ES 3.0");
+    }
+
+    @Override
     protected void disableVertexAttribute(GLESObject object) {
         GLESVertexInfo vertexInfo = object.getVertexInfo();
         GLESShader shader = object.getShader();
@@ -342,6 +362,10 @@ public class GLES20Renderer extends GLESRenderer {
 
         if (vertexInfo.useColor() == true) {
             GLES20.glDisableVertexAttribArray(shader.getColorAttribIndex());
+        }
+        
+        if (mListener != null) {
+            mListener.disableVertexAttribute(object);
         }
     }
 }

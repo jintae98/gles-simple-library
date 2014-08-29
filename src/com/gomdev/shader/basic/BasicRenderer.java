@@ -34,7 +34,7 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
     public BasicRenderer(Context context) {
         super(context);
 
-        mBasicObject = new GLESObject();
+        mBasicObject = GLESSceneManager.createObject();
         mBasicObject.setTransform(new GLESTransform());
         mBasicObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
         mBasicObject.setRenderType(RenderType.DRAW_ELEMENTS);
