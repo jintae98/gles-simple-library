@@ -1,4 +1,4 @@
-package com.gomdev.shader.instancedRendering;
+package com.gomdev.shader.instancedRendering2;
 
 import java.nio.FloatBuffer;
 import java.util.Random;
@@ -17,18 +17,16 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView.Renderer;
+import android.os.SystemClock;
 import android.util.Log;
 
-public class IRRenderer extends EffectRenderer implements Renderer,
-        GLESRendererListener {
-    private static final String CLASS = "IRRenderer";
-    private static final String TAG = IRConfig.TAG + " " + CLASS;
-    private static final boolean DEBUG = IRConfig.DEBUG;
+public class IR2Renderer extends EffectRenderer implements Renderer {
+    private static final String CLASS = "IR2Renderer";
+    private static final String TAG = IR2Config.TAG + " " + CLASS;
+    private static final boolean DEBUG = IR2Config.DEBUG;
 
     private final static int NUM_OF_INSTANCE = 1000;
-    private final static int NUM_OF_ELEMENT = 3;
-
-    private final static int USER_ATTRIB_LOCATION = 4;
+    private final static int NUM_OF_ELEMENT = 4;
 
     private GLESObject mObject;
     private GLESShader mShader;
@@ -43,13 +41,16 @@ public class IRRenderer extends EffectRenderer implements Renderer,
 
     private float mScreenRatio = 0f;
 
-    private float[] mTrans = new float[NUM_OF_ELEMENT * NUM_OF_INSTANCE];
-    private FloatBuffer mTransBuffer = null;
-    private Random mRandom = new Random();
-    private int mVBOID = -1;
+    private float[] mInstanceDatas = new float[NUM_OF_ELEMENT * NUM_OF_INSTANCE
+            * 2];
+    private FloatBuffer mInstanceBuffer = null;
 
-    public IRRenderer(Context context) {
+    private Random mRandom = null;
+
+    public IR2Renderer(Context context) {
         super(context);
+
+        mRandom = new Random(SystemClock.currentThreadTimeMillis());
 
         mObject = GLESSceneManager.createObject();
         mObject.setTransform(new GLESTransform());
@@ -71,8 +72,6 @@ public class IRRenderer extends EffectRenderer implements Renderer,
         mObject.setGLState(state);
 
         mRenderer.addObject(mObject);
-
-        mRenderer.setListener(this);
     }
 
     public void destroy() {
@@ -103,9 +102,9 @@ public class IRRenderer extends EffectRenderer implements Renderer,
                 GLESTransform transform = mObject.getTransform();
                 transform.setIdentity();
                 transform.translate(
-                        mTrans[i * NUM_OF_ELEMENT + 0],
-                        mTrans[i * NUM_OF_ELEMENT + 1],
-                        mTrans[i * NUM_OF_ELEMENT + 2]);
+                        mInstanceDatas[i * NUM_OF_ELEMENT + 0],
+                        mInstanceDatas[i * NUM_OF_ELEMENT + 1],
+                        mInstanceDatas[i * NUM_OF_ELEMENT + 2]);
                 transform.rotate(mMoveX * 0.2f, 0f, 1f, 0f);
                 transform.rotate(mMoveY * 0.2f, 1f, 0f, 0f);
 
@@ -129,11 +128,18 @@ public class IRRenderer extends EffectRenderer implements Renderer,
         mObject.setCamera(camera);
         mObject.show();
 
-        makeTransBuffer();
+        updateInstanceUniform();
 
-        GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(0.1f,
-                false, false, true);
-        mObject.setVertexInfo(vertexInfo, true, true);
+        Version version = GLESContext.getInstance().getVersion();
+        if (version == Version.GLES_20) {
+            GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(0.1f,
+                    false, false, true);
+            mObject.setVertexInfo(vertexInfo, true, true);
+        } else {
+            GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(0.1f,
+                    false, false, false);
+            mObject.setVertexInfo(vertexInfo, true, true);
+        }
     }
 
     private GLESCamera setupCamera(int width, int height) {
@@ -158,15 +164,51 @@ public class IRRenderer extends EffectRenderer implements Renderer,
         return camera;
     }
 
-    private void makeTransBuffer() {
+    private void updateInstanceUniform() {
         for (int i = 0; i < NUM_OF_INSTANCE; i++) {
-            mTrans[i * NUM_OF_ELEMENT + 0] = (mRandom.nextFloat() - 0.5f)
+            mInstanceDatas[i * NUM_OF_ELEMENT + 0] = (mRandom.nextFloat() - 0.5f)
                     * mScreenRatio * 2f;
-            mTrans[i * NUM_OF_ELEMENT + 1] = (mRandom.nextFloat() - 0.5f) * 2f;
-            mTrans[i * NUM_OF_ELEMENT + 2] = (mRandom.nextFloat() - 0.5f);
+            mInstanceDatas[i * NUM_OF_ELEMENT + 1] = (mRandom.nextFloat() - 0.5f) * 2f;
+            mInstanceDatas[i * NUM_OF_ELEMENT + 2] = (mRandom.nextFloat() - 0.5f);
+            mInstanceDatas[i * NUM_OF_ELEMENT + 3] = 0f;
         }
 
-        mTransBuffer = GLESUtils.makeFloatBuffer(mTrans);
+        for (int i = NUM_OF_INSTANCE; i < NUM_OF_INSTANCE * 2; i++) {
+            mInstanceDatas[i * NUM_OF_ELEMENT + 0] = mRandom.nextFloat();
+            mInstanceDatas[i * NUM_OF_ELEMENT + 1] = mRandom.nextFloat();
+            mInstanceDatas[i * NUM_OF_ELEMENT + 2] = mRandom.nextFloat();
+            mInstanceDatas[i * NUM_OF_ELEMENT + 3] = mRandom.nextFloat();
+        }
+
+        mInstanceBuffer = GLESUtils.makeFloatBuffer(mInstanceDatas);
+
+        int bindingPoint = 1;
+        int blockSize = -1;
+        int uBufferID = -1;
+        int program = mShader.getProgram();
+
+        int location = GLES30.glGetUniformBlockIndex(program, "InstanceBlock");
+
+        GLES30.glUniformBlockBinding(program, location, bindingPoint);
+
+        int[] blockSizes = new int[1];
+        GLES30.glGetActiveUniformBlockiv(program, location,
+                GLES30.GL_UNIFORM_BLOCK_DATA_SIZE, blockSizes, 0);
+        blockSize = blockSizes[0];
+
+        int[] uniformBufIDs = new int[1];
+        GLES30.glGenBuffers(1, uniformBufIDs, 0);
+        GLES30.glBindBuffer(GLES30.GL_UNIFORM_BUFFER, uniformBufIDs[0]);
+        uBufferID = uniformBufIDs[0];
+        GLES30.glBufferData(GLES30.GL_UNIFORM_BUFFER, blockSize,
+                mInstanceBuffer,
+                GLES30.GL_DYNAMIC_DRAW);
+        GLES30.glBindBufferBase(GLES30.GL_UNIFORM_BUFFER, bindingPoint,
+                uBufferID);
+
+        long[] sizes = new long[1];
+        GLES30.glGetInteger64v(GLES30.GL_MAX_UNIFORM_BLOCK_SIZE, sizes, 0);
+        Log.d(TAG, "updateTransUniform() max uniform block size=" + sizes[0]);
     }
 
     @Override
@@ -248,86 +290,5 @@ public class IRRenderer extends EffectRenderer implements Renderer,
         }
 
         return true;
-    }
-
-    @Override
-    public void setupVBO(GLESVertexInfo vertexInfo) {
-        if (GLESContext.getInstance().getVersion() == Version.GLES_20) {
-            return;
-        }
-
-        int[] vboIDs = new int[1];
-        GLES30.glGenBuffers(1, vboIDs, 0);
-        mVBOID = vboIDs[0];
-        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, vboIDs[0]);
-        GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER, mTransBuffer.capacity()
-                * GLESConfig.FLOAT_SIZE_BYTES,
-                mTransBuffer, GLES30.GL_STATIC_DRAW);
-        GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0);
-    }
-
-    @Override
-    public void setupVAO(GLESObject object) {
-        if (GLESContext.getInstance().getVersion() == Version.GLES_20) {
-            return;
-        }
-
-        GLES30.glEnableVertexAttribArray(USER_ATTRIB_LOCATION);
-
-        boolean useVBO = object.useVBO();
-        if (useVBO == true) {
-            GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER,
-                    mVBOID);
-            GLES30.glVertexAttribPointer(USER_ATTRIB_LOCATION,
-                    NUM_OF_ELEMENT, GLES30.GL_FLOAT, false,
-                    NUM_OF_ELEMENT * GLESConfig.FLOAT_SIZE_BYTES,
-                    0);
-        } else {
-            GLES30.glVertexAttribPointer(USER_ATTRIB_LOCATION,
-                    NUM_OF_ELEMENT, GLES30.GL_FLOAT, false,
-                    NUM_OF_ELEMENT * GLESConfig.FLOAT_SIZE_BYTES,
-                    mTransBuffer);
-        }
-
-        GLES30.glVertexAttribDivisor(USER_ATTRIB_LOCATION, 1);
-    }
-
-    @Override
-    public void enableVertexAttribute(GLESObject object) {
-        if (GLESContext.getInstance().getVersion() == Version.GLES_20) {
-            return;
-        }
-
-        boolean useVBO = object.useVBO();
-
-        if (useVBO == true) {
-            GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, mVBOID);
-
-            GLES30.glVertexAttribPointer(USER_ATTRIB_LOCATION,
-                    NUM_OF_ELEMENT, GLES30.GL_FLOAT, false,
-                    NUM_OF_ELEMENT * GLESConfig.FLOAT_SIZE_BYTES,
-                    0);
-            GLES30.glEnableVertexAttribArray(USER_ATTRIB_LOCATION);
-        } else {
-            GLES30.glVertexAttribPointer(USER_ATTRIB_LOCATION,
-                    NUM_OF_ELEMENT, GLES30.GL_FLOAT, false,
-                    NUM_OF_ELEMENT * GLESConfig.FLOAT_SIZE_BYTES,
-                    mTransBuffer);
-            GLES30.glEnableVertexAttribArray(USER_ATTRIB_LOCATION);
-        }
-    }
-
-    @Override
-    public void disableVertexAttribute(GLESObject object) {
-        if (GLESContext.getInstance().getVersion() == Version.GLES_20) {
-            return;
-        }
-
-        if (object.useVAO() == true) {
-            GLES30.glBindVertexArray(0);
-            return;
-        }
-
-        GLES30.glDisableVertexAttribArray(USER_ATTRIB_LOCATION);
     }
 }

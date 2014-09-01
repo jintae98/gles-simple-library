@@ -9,6 +9,7 @@ import java.util.Set;
 import com.gomdev.shader.R;
 import com.gomdev.shader.basic.BasicConfig;
 import com.gomdev.shader.instancedRendering.IRConfig;
+import com.gomdev.shader.instancedRendering2.IR2Config;
 import com.gomdev.shader.texture.TextureConfig;
 import com.gomdev.shader.whitehole.WhiteholeConfig;
 import com.gomdev.gles.GLESConfig;
@@ -57,6 +58,7 @@ public class EffectListActivity extends Activity implements DialogListener {
         setupBasic(version);
         setupTexture(version);
         setupIR(version);
+        setupIR2(version);
         setupWhitehole(version);
 
         if (DEBUG) {
@@ -91,6 +93,30 @@ public class EffectListActivity extends Activity implements DialogListener {
         };
 
         mEffectMap.put(IRConfig.EFFECT_NAME, info);
+    }
+    
+    private void setupIR2(Version version) {
+        EffectInfo info = new EffectInfo();
+        info.mIntent = new Intent(this,
+                com.gomdev.shader.instancedRendering2.IR2Activity.class);
+
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[] {
+                    R.raw.ir2_20_vs,
+                    R.raw.ir2_20_fs,
+            };
+        } else {
+            info.mShaderResIDs = new int[] {
+                    R.raw.ir2_30_vs,
+                    R.raw.ir2_30_fs,
+            };
+        }
+        info.mShaderTitle = new String[] {
+                "IR2 VS",
+                "IR2 FS",
+        };
+
+        mEffectMap.put(IR2Config.EFFECT_NAME, info);
     }
 
     private void setupTexture(Version version) {

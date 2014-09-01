@@ -57,6 +57,10 @@
             android:label="@string/app_name" >
         </activity>
         <activity
+            android:name="com.gomdev.shader.instancedRendering2.IR2Activity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
     </application>
