@@ -17,7 +17,6 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView.Renderer;
-import android.os.SystemClock;
 import android.util.Log;
 
 public class IR2Renderer extends EffectRenderer implements Renderer {
@@ -45,12 +44,10 @@ public class IR2Renderer extends EffectRenderer implements Renderer {
             * 2];
     private FloatBuffer mInstanceBuffer = null;
 
-    private Random mRandom = null;
+    private Random mRandom = new Random();
 
     public IR2Renderer(Context context) {
         super(context);
-
-        mRandom = new Random(SystemClock.currentThreadTimeMillis());
 
         mObject = GLESSceneManager.createObject();
         mObject.setTransform(new GLESTransform());
@@ -177,7 +174,7 @@ public class IR2Renderer extends EffectRenderer implements Renderer {
             mInstanceDatas[i * NUM_OF_ELEMENT + 0] = mRandom.nextFloat();
             mInstanceDatas[i * NUM_OF_ELEMENT + 1] = mRandom.nextFloat();
             mInstanceDatas[i * NUM_OF_ELEMENT + 2] = mRandom.nextFloat();
-            mInstanceDatas[i * NUM_OF_ELEMENT + 3] = mRandom.nextFloat();
+            mInstanceDatas[i * NUM_OF_ELEMENT + 3] = 1f;
         }
 
         mInstanceBuffer = GLESUtils.makeFloatBuffer(mInstanceDatas);
