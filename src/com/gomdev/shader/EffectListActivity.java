@@ -10,6 +10,7 @@ import com.gomdev.shader.R;
 import com.gomdev.shader.basic.BasicConfig;
 import com.gomdev.shader.instancedRendering.IRConfig;
 import com.gomdev.shader.instancedRendering2.IR2Config;
+import com.gomdev.shader.occlusionQuery.OQConfig;
 import com.gomdev.shader.texture.TextureConfig;
 import com.gomdev.shader.whitehole.WhiteholeConfig;
 import com.gomdev.gles.GLESConfig;
@@ -104,6 +105,7 @@ public class EffectListActivity extends Activity implements DialogListener {
         Version version = GLESContext.getInstance().getVersion();
 
         setupBasic(version);
+        setupOQ(version);
         setupTexture(version);
         setupIR(version);
         setupIR2(version);
@@ -216,6 +218,29 @@ public class EffectListActivity extends Activity implements DialogListener {
         };
 
         mEffectMap.put(BasicConfig.EFFECT_NAME, info);
+    }
+
+    private void setupOQ(Version version) {
+        EffectInfo info = new EffectInfo();
+        info.mIntent = new Intent(this,
+                com.gomdev.shader.occlusionQuery.OQActivity.class);
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[] {
+                    R.raw.oq_20_vs,
+                    R.raw.oq_20_fs,
+            };
+        } else {
+            info.mShaderResIDs = new int[] {
+                    R.raw.oq_30_vs,
+                    R.raw.oq_30_fs
+            };
+        }
+        info.mShaderTitle = new String[] {
+                "Occlusion Query VS",
+                "Occlusion Query FS",
+        };
+
+        mEffectMap.put(OQConfig.EFFECT_NAME, info);
     }
 
     private void setupWhitehole(Version version) {
