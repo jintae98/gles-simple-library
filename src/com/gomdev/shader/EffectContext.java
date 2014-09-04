@@ -25,6 +25,8 @@ public class EffectContext {
     private boolean mUseGLES30 = (GLESConfig.GLES_VERSION == Version.GLES_30) ? true
             : false;
 
+    private String mExtensions = null;
+
     public static EffectContext getInstance() {
         return sEffectContext;
     }
@@ -107,5 +109,13 @@ public class EffectContext {
 
     public boolean useGLES30() {
         return mUseGLES30;
+    }
+
+    public void setExtensions(String extensions) {
+        mExtensions = extensions;
+    }
+
+    public String getExtensions() {
+        return mExtensions;
     }
 }

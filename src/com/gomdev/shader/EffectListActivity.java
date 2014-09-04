@@ -19,13 +19,19 @@ import com.gomdev.gles.GLESConfig.Version;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.graphics.PixelFormat;
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 
 public class EffectListActivity extends Activity implements DialogListener {
@@ -33,7 +39,26 @@ public class EffectListActivity extends Activity implements DialogListener {
     private static final String TAG = GLESConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = GLESConfig.DEBUG;
 
+    static final int GET_EXTENSIONS = 100;
+
+    private GLSurfaceView mView;
+    private DummyRenderer mRenderer;
     private Map<String, EffectInfo> mEffectMap = new HashMap<String, EffectInfo>();
+
+    protected Handler mHandler = new Handler(Looper.getMainLooper()) {
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+            case GET_EXTENSIONS:
+                FrameLayout layout = (FrameLayout) findViewById(R.id.layout);
+                layout.removeView(mView);
+                break;
+            default:
+            }
+        }
+
+    };
 
     class EffectInfo {
         Intent mIntent = null;
@@ -43,11 +68,34 @@ public class EffectListActivity extends Activity implements DialogListener {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.list);
 
         EffectContext.newInstance();
 
+        setupGLRendererForExtensions();
+
         optionChanged();
+    }
+
+    private void setupGLRendererForExtensions() {
+        mRenderer = new DummyRenderer();
+        mRenderer.setHandler(mHandler);
+        mView = new GLSurfaceView(this);
+        mView.setEGLContextClientVersion(2);
+        mView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+        mView.setRenderer(mRenderer);
+        mView.setZOrderOnTop(true);
+        mView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+        mView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+
+        FrameLayout layout = (FrameLayout) findViewById(R.id.layout);
+        layout.addView(mView);
+    }
+
+    private void optionChanged() {
+        setupEffectInfos();
+        makeEffectList();
     }
 
     private void setupEffectInfos() {
@@ -94,7 +142,7 @@ public class EffectListActivity extends Activity implements DialogListener {
 
         mEffectMap.put(IRConfig.EFFECT_NAME, info);
     }
-    
+
     private void setupIR2(Version version) {
         EffectInfo info = new EffectInfo();
         info.mIntent = new Intent(this,
@@ -254,6 +302,18 @@ public class EffectListActivity extends Activity implements DialogListener {
     };
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        mView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mView.onPause();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.effect_list_options, menu);
         return true;
@@ -265,6 +325,9 @@ public class EffectListActivity extends Activity implements DialogListener {
         case R.id.options:
             showOptionsDialog();
             return true;
+        case R.id.deviceInfo:
+            showDeviceInfoDialog();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -275,9 +338,9 @@ public class EffectListActivity extends Activity implements DialogListener {
         dialog.show(getFragmentManager(), "effect_options");
     }
 
-    private void optionChanged() {
-        setupEffectInfos();
-        makeEffectList();
+    private void showDeviceInfoDialog() {
+        DeviceInfoDialog dialog = new DeviceInfoDialog();
+        dialog.show(getFragmentManager(), "effect_device_info");
     }
 
     @Override

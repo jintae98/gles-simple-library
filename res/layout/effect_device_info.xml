@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dip"
+        android:paddingLeft="5dip"
+        android:paddingTop="5dip"
+        android:text="@string/effect_list_version" />
+
+    <TextView
+        android:id="@+id/version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dip"
+        android:paddingLeft="10dip"
+        android:paddingTop="5dip"
+        android:textSize="15sp" />
+
+    <TextView
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dip"
+        android:paddingLeft="5dip"
+        android:paddingTop="5dip"
+        android:text="@string/effect_list_extensions" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:id="@+id/extensions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dip"
+            android:paddingLeft="5dip"
+            android:paddingTop="5dip"
+            android:textSize="15sp" />
+    </ScrollView>
+
+</LinearLayout>

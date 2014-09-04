@@ -6,5 +6,8 @@
         android:id="@+id/options"
         android:showAsAction="ifRoom"
         android:title="@string/options_options"/>
+    <item
+        android:id="@+id/deviceInfo"
+        android:title="@string/options_device_info"/>
 
 </menu>
