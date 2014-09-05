@@ -23,6 +23,7 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
 
     private GLESObject mTextureObject;
     private GLESShader mTextureShader;
+    private Version mVersion;
 
     private boolean mIsTouchDown = false;
 
@@ -34,6 +35,8 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
 
     public TextureRenderer(Context context) {
         super(context);
+        
+        mVersion = GLESContext.getInstance().getVersion();
 
         mTextureObject = GLESSceneManager.createObject();
         mTextureObject.setTransform(new GLESTransform());
@@ -201,7 +204,7 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
             return false;
         }
 
-        if (GLESConfig.GLES_VERSION == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             String attribName = GLESShaderConstant.ATTRIB_POSITION;
             mTextureShader.setVertexAttribIndex(attribName);
 

@@ -32,6 +32,8 @@ public class IRRenderer extends EffectRenderer implements Renderer,
 
     private GLESObject mObject;
     private GLESShader mShader;
+    
+    private Version mVersion;
 
     private boolean mIsTouchDown = false;
 
@@ -50,13 +52,14 @@ public class IRRenderer extends EffectRenderer implements Renderer,
 
     public IRRenderer(Context context) {
         super(context);
+        
+        mVersion = GLESContext.getInstance().getVersion();
 
         mObject = GLESSceneManager.createObject();
         mObject.setTransform(new GLESTransform());
         mObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
 
-        Version version = GLESContext.getInstance().getVersion();
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             mObject.setRenderType(RenderType.DRAW_ELEMENTS);
         } else {
             mObject.setRenderType(RenderType.DRAW_ELEMENTS_INSTANCED);
@@ -88,9 +91,7 @@ public class IRRenderer extends EffectRenderer implements Renderer,
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-        Version version = GLESContext.getInstance().getVersion();
-
-        if (version == Version.GLES_30) {
+        if (mVersion == Version.GLES_30) {
             GLESTransform transform = mObject.getTransform();
             transform.setIdentity();
             transform.rotate(mMoveX * 0.2f, 0f, 1f, 0f);
@@ -239,7 +240,7 @@ public class IRRenderer extends EffectRenderer implements Renderer,
             return false;
         }
 
-        if (GLESConfig.GLES_VERSION == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             String attribName = GLESShaderConstant.ATTRIB_POSITION;
             mShader.setVertexAttribIndex(attribName);
 
@@ -252,7 +253,7 @@ public class IRRenderer extends EffectRenderer implements Renderer,
 
     @Override
     public void setupVBO(GLESVertexInfo vertexInfo) {
-        if (GLESContext.getInstance().getVersion() == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             return;
         }
 
@@ -268,7 +269,7 @@ public class IRRenderer extends EffectRenderer implements Renderer,
 
     @Override
     public void setupVAO(GLESObject object) {
-        if (GLESContext.getInstance().getVersion() == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             return;
         }
 
@@ -294,7 +295,7 @@ public class IRRenderer extends EffectRenderer implements Renderer,
 
     @Override
     public void enableVertexAttribute(GLESObject object) {
-        if (GLESContext.getInstance().getVersion() == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             return;
         }
 
@@ -319,7 +320,7 @@ public class IRRenderer extends EffectRenderer implements Renderer,
 
     @Override
     public void disableVertexAttribute(GLESObject object) {
-        if (GLESContext.getInstance().getVersion() == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             return;
         }
 

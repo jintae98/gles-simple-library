@@ -27,6 +27,7 @@ public class WhiteholeRenderer extends EffectRenderer implements Renderer {
 
     private WhiteholeObject mWhiteholeObject;
     private GLESTexture mWhiteholeTexture;
+    private Version mVersion;
 
     private int mWidth;
     private int mHeight;
@@ -47,6 +48,8 @@ public class WhiteholeRenderer extends EffectRenderer implements Renderer {
 
     public WhiteholeRenderer(Context context) {
         super(context);
+
+        mVersion = GLESContext.getInstance().getVersion();
 
         mWhiteholeObject = new WhiteholeObject();
         mWhiteholeObject.setTransform(new GLESTransform());
@@ -254,7 +257,7 @@ public class WhiteholeRenderer extends EffectRenderer implements Renderer {
             return false;
         }
 
-        if (GLESConfig.GLES_VERSION == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             String attribName = GLESShaderConstant.ATTRIB_POSITION;
             mShaderWhitehole.setVertexAttribIndex(attribName);
 

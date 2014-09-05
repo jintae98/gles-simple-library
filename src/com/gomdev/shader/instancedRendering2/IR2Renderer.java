@@ -29,6 +29,8 @@ public class IR2Renderer extends EffectRenderer implements Renderer {
 
     private GLESObject mObject;
     private GLESShader mShader;
+    
+    private Version mVersion;
 
     private boolean mIsTouchDown = false;
 
@@ -48,13 +50,14 @@ public class IR2Renderer extends EffectRenderer implements Renderer {
 
     public IR2Renderer(Context context) {
         super(context);
+        
+        mVersion = GLESContext.getInstance().getVersion();
 
         mObject = GLESSceneManager.createObject();
         mObject.setTransform(new GLESTransform());
         mObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
 
-        Version version = GLESContext.getInstance().getVersion();
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             mObject.setRenderType(RenderType.DRAW_ELEMENTS);
         } else {
             mObject.setRenderType(RenderType.DRAW_ELEMENTS_INSTANCED);
@@ -84,9 +87,7 @@ public class IR2Renderer extends EffectRenderer implements Renderer {
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-        Version version = GLESContext.getInstance().getVersion();
-
-        if (version == Version.GLES_30) {
+        if (mVersion == Version.GLES_30) {
             GLESTransform transform = mObject.getTransform();
             transform.setIdentity();
             transform.rotate(mMoveX * 0.2f, 0f, 1f, 0f);
@@ -127,8 +128,7 @@ public class IR2Renderer extends EffectRenderer implements Renderer {
 
         updateInstanceUniform();
 
-        Version version = GLESContext.getInstance().getVersion();
-        if (version == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(0.1f,
                     false, false, true);
             mObject.setVertexInfo(vertexInfo, true, true);
@@ -278,7 +278,7 @@ public class IR2Renderer extends EffectRenderer implements Renderer {
             return false;
         }
 
-        if (GLESConfig.GLES_VERSION == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             String attribName = GLESShaderConstant.ATTRIB_POSITION;
             mShader.setVertexAttribIndex(attribName);
 

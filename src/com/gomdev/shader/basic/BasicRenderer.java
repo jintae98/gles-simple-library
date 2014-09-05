@@ -22,6 +22,7 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
 
     private GLESObject mBasicObject;
     private GLESShader mBasicShader;
+    private Version mVersion;
 
     private boolean mIsTouchDown = false;
 
@@ -33,6 +34,8 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
 
     public BasicRenderer(Context context) {
         super(context);
+
+        mVersion = GLESContext.getInstance().getVersion();
 
         mBasicObject = GLESSceneManager.createObject();
         mBasicObject.setTransform(new GLESTransform());
@@ -189,7 +192,7 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
             return false;
         }
 
-        if (GLESConfig.GLES_VERSION == Version.GLES_20) {
+        if (mVersion == Version.GLES_20) {
             String attribName = GLESShaderConstant.ATTRIB_POSITION;
             mBasicShader.setVertexAttribIndex(attribName);
 
