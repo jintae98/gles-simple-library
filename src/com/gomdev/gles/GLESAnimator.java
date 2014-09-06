@@ -25,6 +25,7 @@ public class GLESAnimator {
     private boolean mIsFinished = false;
     private boolean mIsSetValue = false;
     private boolean mIsStarted = false;
+    private boolean mIsRepeat = false;
 
     private long mStartOffset = 0L;
     private long mStartTick = 0L;
@@ -92,7 +93,12 @@ public class GLESAnimator {
 
         if (normalizedDuration >= 1.0F) {
             normalizedDuration = 1.0F;
-            mIsFinished = true;
+
+            if (mIsRepeat == true) {
+                mStartTick = System.currentTimeMillis();
+            } else {
+                mIsFinished = true;
+            }
         }
 
         if (mInterpolator == null) {
@@ -173,6 +179,10 @@ public class GLESAnimator {
 
     public void setInterpolator(Interpolator paramInterpolator) {
         mInterpolator = paramInterpolator;
+    }
+
+    public void setRepeat(boolean isRepeat) {
+        mIsRepeat = isRepeat;
     }
 
     public void start() {

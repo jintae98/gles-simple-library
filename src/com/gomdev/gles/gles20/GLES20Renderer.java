@@ -270,6 +270,15 @@ public class GLES20Renderer extends GLESRenderer {
         case TRIANGLE_STRIP:
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, numOfVertex);
             break;
+        case LINES:
+            GLES20.glDrawArrays(GLES20.GL_LINES, 0, numOfVertex);
+            break;
+        case LINE_STRIP:
+            GLES20.glDrawArrays(GLES20.GL_LINE_STRIP, 0, numOfVertex);
+            break;
+        case LINE_LOOP:
+            GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, numOfVertex);
+            break;
         default:
             Log.d(TAG, "drawArrays() mode is invalid. mode=" + mode);
             break;
@@ -302,6 +311,21 @@ public class GLES20Renderer extends GLESRenderer {
                         indexBuffer.capacity(),
                         GLES20.GL_UNSIGNED_SHORT, 0);
                 break;
+            case LINES:
+                GLES20.glDrawElements(GLES20.GL_LINES,
+                        indexBuffer.capacity(),
+                        GLES20.GL_UNSIGNED_SHORT, 0);
+                break;
+            case LINE_STRIP:
+                GLES20.glDrawElements(GLES20.GL_LINE_STRIP,
+                        indexBuffer.capacity(),
+                        GLES20.GL_UNSIGNED_SHORT, 0);
+                break;
+            case LINE_LOOP:
+                GLES20.glDrawElements(GLES20.GL_LINE_LOOP,
+                        indexBuffer.capacity(),
+                        GLES20.GL_UNSIGNED_SHORT, 0);
+                break;
             default:
                 Log.d(TAG, "drawElements() mode is invalid. mode=" + mode);
                 break;
@@ -323,6 +347,21 @@ public class GLES20Renderer extends GLESRenderer {
                 break;
             case TRIANGLE_STRIP:
                 GLES20.glDrawElements(GLES20.GL_TRIANGLE_FAN,
+                        indexBuffer.capacity(),
+                        GLES20.GL_UNSIGNED_SHORT, indexBuffer);
+                break;
+            case LINES:
+                GLES20.glDrawElements(GLES20.GL_LINES,
+                        indexBuffer.capacity(),
+                        GLES20.GL_UNSIGNED_SHORT, indexBuffer);
+                break;
+            case LINE_STRIP:
+                GLES20.glDrawElements(GLES20.GL_LINE_STRIP,
+                        indexBuffer.capacity(),
+                        GLES20.GL_UNSIGNED_SHORT, indexBuffer);
+                break;
+            case LINE_LOOP:
+                GLES20.glDrawElements(GLES20.GL_LINE_LOOP,
                         indexBuffer.capacity(),
                         GLES20.GL_UNSIGNED_SHORT, indexBuffer);
                 break;

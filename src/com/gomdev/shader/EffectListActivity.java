@@ -11,6 +11,7 @@ import com.gomdev.shader.basic.BasicConfig;
 import com.gomdev.shader.instancedRendering.IRConfig;
 import com.gomdev.shader.instancedRendering2.IR2Config;
 import com.gomdev.shader.occlusionQuery.OQConfig;
+import com.gomdev.shader.perVertexLighting.PVLConfig;
 import com.gomdev.shader.texture.TextureConfig;
 import com.gomdev.shader.whitehole.WhiteholeConfig;
 import com.gomdev.gles.GLESConfig;
@@ -105,6 +106,7 @@ public class EffectListActivity extends Activity implements DialogListener {
         Version version = GLESContext.getInstance().getVersion();
 
         setupBasic(version);
+        setupPVL(version);
         setupOQ(version);
         setupTexture(version);
         setupIR(version);
@@ -218,6 +220,35 @@ public class EffectListActivity extends Activity implements DialogListener {
         };
 
         mEffectMap.put(BasicConfig.EFFECT_NAME, info);
+    }
+    
+    private void setupPVL(Version version) {
+        EffectInfo info = new EffectInfo();
+        info.mIntent = new Intent(this,
+                com.gomdev.shader.perVertexLighting.PVLActivity.class);
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[] {
+                    R.raw.pvl_20_vs,
+                    R.raw.pvl_20_fs,
+                    R.raw.pvl_light_20_vs,
+                    R.raw.pvl_light_20_fs
+            };
+        } else {
+            info.mShaderResIDs = new int[] {
+                    R.raw.pvl_30_vs,
+                    R.raw.pvl_30_fs,
+                    R.raw.pvl_light_30_vs,
+                    R.raw.pvl_light_30_fs
+            };
+        }
+        info.mShaderTitle = new String[] {
+                "Per Vertex Lighting VS",
+                "Per Vertex Lighting FS",
+                "Per Vertex Lighting Light VS",
+                "Per Vertex Lighting Light FS"
+        };
+
+        mEffectMap.put(PVLConfig.EFFECT_NAME, info);
     }
 
     private void setupOQ(Version version) {

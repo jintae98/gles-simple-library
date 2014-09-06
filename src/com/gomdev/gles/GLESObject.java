@@ -5,7 +5,10 @@ public class GLESObject {
     public enum PrimitiveMode {
         TRIANGLES,
         TRIANGLE_STRIP,
-        TRIANGLE_FAN
+        TRIANGLE_FAN,
+        LINES,
+        LINE_STRIP,
+        LINE_LOOP
     }
 
     public enum RenderType {
@@ -41,6 +44,8 @@ public class GLESObject {
             boolean useVAO) {
         mVertexInfo = vertexInfo;
         mUseVBO = useVBO;
+
+        mShader.useProgram();
 
         GLESRenderer renderer = GLESContext.getInstance().getRenderer();
         if (useVBO == true) {
@@ -89,6 +94,10 @@ public class GLESObject {
 
     public void setCamera(GLESCamera camera) {
         mCamera = camera;
+    }
+
+    public GLESCamera getCamera() {
+        return mCamera;
     }
 
     public void setTexture(GLESTexture texture) {

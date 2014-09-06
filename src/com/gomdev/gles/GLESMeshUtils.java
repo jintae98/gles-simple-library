@@ -382,6 +382,8 @@ public class GLESMeshUtils {
         float normalZ = 0f;
 
         GLESVertexInfo vertexInfo = new GLESVertexInfo();
+        
+        numOfVerticalLine--;
 
         int numOfVertex = (numOfVerticalLine + 1) * (numOfHorizontalLine + 1);
         float[] vertices = new float[numOfVertex * 3];
@@ -416,10 +418,10 @@ public class GLESMeshUtils {
                 vertices[vertexStride + k * 3 + 1] = (float) (normalY * radius);
                 vertices[vertexStride + k * 3 + 2] = (float) (normalZ * radius);
 
-                color[colorStride + k * 4 + 0] = 0xff;
-                color[colorStride + k * 4 + 1] = 0x0;
-                color[colorStride + k * 4 + 2] = 0x0;
-                color[colorStride + k * 4 + 3] = 0xff;
+                color[colorStride + k * 4 + 0] = 1f;
+                color[colorStride + k * 4 + 1] = 0f;
+                color[colorStride + k * 4 + 2] = 0f;
+                color[colorStride + k * 4 + 3] = 1f;
 
                 texCoord[texCoordStride + k * 2 + 0] = (float) (1 - (j / (double) numOfHorizontalLine));
                 texCoord[texCoordStride + k * 2 + 1] = (float) (i / (double) numOfVerticalLine);

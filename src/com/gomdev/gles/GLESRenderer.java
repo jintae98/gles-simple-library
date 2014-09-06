@@ -46,6 +46,7 @@ public abstract class GLESRenderer {
 
     public void updateObjects() {
         for (GLESObject object : mObjects) {
+            object.getShader().useProgram();
             object.update();
             updateTransform(object.getShader(), object.getTransform());
         }
@@ -53,6 +54,7 @@ public abstract class GLESRenderer {
 
     public void drawObjects() {
         for (GLESObject object : mObjects) {
+            object.getShader().useProgram();
             setGLState(object);
             bindTexture(object);
             drawPrimitive(object);
