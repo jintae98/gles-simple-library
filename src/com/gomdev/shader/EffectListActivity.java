@@ -1,10 +1,6 @@
 package com.gomdev.shader;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import com.gomdev.shader.R;
 import com.gomdev.shader.basic.BasicConfig;
@@ -45,7 +41,7 @@ public class EffectListActivity extends Activity implements DialogListener {
 
     private GLSurfaceView mView;
     private DummyRenderer mRenderer;
-    private Map<String, EffectInfo> mEffectMap = new HashMap<String, EffectInfo>();
+    private ArrayList<EffectInfo> mEffects = new ArrayList<EffectInfo>();
 
     protected Handler mHandler = new Handler(Looper.getMainLooper()) {
 
@@ -59,10 +55,10 @@ public class EffectListActivity extends Activity implements DialogListener {
             default:
             }
         }
-
     };
 
     class EffectInfo {
+        String mEffectName;
         Intent mIntent = null;
         int[] mShaderResIDs;
         String[] mShaderTitle;
@@ -101,30 +97,29 @@ public class EffectListActivity extends Activity implements DialogListener {
     }
 
     private void setupEffectInfos() {
-        mEffectMap.clear();
+        mEffects.clear();
 
         Version version = GLESContext.getInstance().getVersion();
 
         setupBasic(version);
+        setupTexture(version);
         setupPVL(version);
         setupOQ(version);
-        setupTexture(version);
         setupIR(version);
         setupIR2(version);
         setupWhitehole(version);
 
         if (DEBUG) {
-            Log.d(TAG, "onCreate() map<String, EffectInfo>");
-            Set<Entry<String, EffectInfo>> entrySet = mEffectMap.entrySet();
-
-            for (Entry<String, EffectInfo> entry : entrySet) {
-                Log.d(TAG, "\t Item=" + entry.getKey());
+            Log.d(TAG, "onCreate() Effects");
+            for (EffectInfo effectInfo : mEffects) {
+                Log.d(TAG, "\t " + effectInfo.mEffectName);
             }
         }
     }
 
     private void setupIR(Version version) {
         EffectInfo info = new EffectInfo();
+        info.mEffectName = IRConfig.EFFECT_NAME;
         info.mIntent = new Intent(this,
                 com.gomdev.shader.instancedRendering.IRActivity.class);
 
@@ -144,11 +139,12 @@ public class EffectListActivity extends Activity implements DialogListener {
                 "IR FS",
         };
 
-        mEffectMap.put(IRConfig.EFFECT_NAME, info);
+        mEffects.add(info);
     }
 
     private void setupIR2(Version version) {
         EffectInfo info = new EffectInfo();
+        info.mEffectName = IR2Config.EFFECT_NAME;
         info.mIntent = new Intent(this,
                 com.gomdev.shader.instancedRendering2.IR2Activity.class);
 
@@ -168,11 +164,12 @@ public class EffectListActivity extends Activity implements DialogListener {
                 "IR2 FS",
         };
 
-        mEffectMap.put(IR2Config.EFFECT_NAME, info);
+        mEffects.add(info);
     }
 
     private void setupTexture(Version version) {
         EffectInfo info = new EffectInfo();
+        info.mEffectName = TextureConfig.EFFECT_NAME;
         info.mIntent = new Intent(this,
                 com.gomdev.shader.texture.TextureActivity.class);
 
@@ -192,11 +189,12 @@ public class EffectListActivity extends Activity implements DialogListener {
                 "Texture FS",
         };
 
-        mEffectMap.put(TextureConfig.EFFECT_NAME, info);
+        mEffects.add(info);
     }
 
     private void setupBasic(Version version) {
         EffectInfo info = new EffectInfo();
+        info.mEffectName = BasicConfig.EFFECT_NAME;
         info.mIntent = new Intent(this,
                 com.gomdev.shader.basic.BasicActivity.class);
         if (version == Version.GLES_20) {
@@ -219,11 +217,12 @@ public class EffectListActivity extends Activity implements DialogListener {
                 "Basic overlay FS"
         };
 
-        mEffectMap.put(BasicConfig.EFFECT_NAME, info);
+        mEffects.add(info);
     }
-    
+
     private void setupPVL(Version version) {
         EffectInfo info = new EffectInfo();
+        info.mEffectName = PVLConfig.EFFECT_NAME;
         info.mIntent = new Intent(this,
                 com.gomdev.shader.perVertexLighting.PVLActivity.class);
         if (version == Version.GLES_20) {
@@ -248,11 +247,12 @@ public class EffectListActivity extends Activity implements DialogListener {
                 "Per Vertex Lighting Light FS"
         };
 
-        mEffectMap.put(PVLConfig.EFFECT_NAME, info);
+        mEffects.add(info);
     }
 
     private void setupOQ(Version version) {
         EffectInfo info = new EffectInfo();
+        info.mEffectName = OQConfig.EFFECT_NAME;
         info.mIntent = new Intent(this,
                 com.gomdev.shader.occlusionQuery.OQActivity.class);
         if (version == Version.GLES_20) {
@@ -271,11 +271,12 @@ public class EffectListActivity extends Activity implements DialogListener {
                 "Occlusion Query FS",
         };
 
-        mEffectMap.put(OQConfig.EFFECT_NAME, info);
+        mEffects.add(info);
     }
 
     private void setupWhitehole(Version version) {
         EffectInfo info = new EffectInfo();
+        info.mEffectName = WhiteholeConfig.EFFECT_NAME;
         info.mIntent = new Intent(this,
                 com.gomdev.shader.whitehole.WhiteholeActivity.class);
         if (version == Version.GLES_20) {
@@ -298,15 +299,13 @@ public class EffectListActivity extends Activity implements DialogListener {
                 "Whitehole overlay FS"
         };
 
-        mEffectMap.put(WhiteholeConfig.EFFECT_NAME, info);
+        mEffects.add(info);
     }
 
     private void makeEffectList() {
         ArrayList<String> effectList = new ArrayList<String>();
-        Set<String> effectSet = mEffectMap.keySet();
-
-        for (String str : effectSet) {
-            effectList.add(str);
+        for (EffectInfo effectInfo : mEffects) {
+            effectList.add(effectInfo.mEffectName);
         }
 
         if (DEBUG) {
@@ -331,7 +330,7 @@ public class EffectListActivity extends Activity implements DialogListener {
                 long id) {
             String effectName = parent.getItemAtPosition(position).toString();
 
-            EffectInfo info = mEffectMap.get(effectName);
+            EffectInfo info = getEffectInfo(effectName);
             int numOfShader = info.mShaderResIDs.length;
 
             EffectContext context = EffectContext.getInstance();
@@ -356,6 +355,16 @@ public class EffectListActivity extends Activity implements DialogListener {
             startActivity(info.mIntent);
         }
     };
+
+    EffectInfo getEffectInfo(String effectName) {
+        for (EffectInfo effectInfo : mEffects) {
+            if (effectName.compareTo(effectInfo.mEffectName) == 0) {
+                return effectInfo;
+            }
+        }
+
+        return null;
+    }
 
     @Override
     protected void onResume() {
