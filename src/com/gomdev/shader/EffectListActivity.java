@@ -228,23 +228,17 @@ public class EffectListActivity extends Activity implements DialogListener {
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
                     R.raw.pvl_20_vs,
-                    R.raw.pvl_20_fs,
-                    R.raw.pvl_light_20_vs,
-                    R.raw.pvl_light_20_fs
+                    R.raw.pvl_20_fs
             };
         } else {
             info.mShaderResIDs = new int[] {
                     R.raw.pvl_30_vs,
-                    R.raw.pvl_30_fs,
-                    R.raw.pvl_light_30_vs,
-                    R.raw.pvl_light_30_fs
+                    R.raw.pvl_30_fs
             };
         }
         info.mShaderTitle = new String[] {
                 "Per Vertex Lighting VS",
-                "Per Vertex Lighting FS",
-                "Per Vertex Lighting Light VS",
-                "Per Vertex Lighting Light FS"
+                "Per Vertex Lighting FS"
         };
 
         mEffects.add(info);
