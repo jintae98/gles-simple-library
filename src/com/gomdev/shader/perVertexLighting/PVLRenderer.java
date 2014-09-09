@@ -72,8 +72,8 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
             mCubeObject.setTransform(new GLESTransform());
             mCubeObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
             mCubeObject.setRenderType(RenderType.DRAW_ELEMENTS);
-
             mCubeObject.setGLState(state);
+            mCubeObject.setListener(mCubeObjectListener);
 
             mRenderer.addObject(mCubeObject);
         }
@@ -169,39 +169,10 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
             mView.requestRender();
         }
 
-        updateCube();
-
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
         mRenderer.updateObjects();
         mRenderer.drawObjects();
-    }
-
-    private void updateCube() {
-        mCubeShader.useProgram();
-
-        GLESTransform transform = mCubeObject.getTransform();
-
-        transform.setIdentity();
-        transform.rotate(mMoveX * 0.2f, 0f, 1f, 0f);
-        transform.rotate(mMoveY * 0.2f, 1f, 0f, 0f);
-
-        GLESCamera camera = mCubeObject.getCamera();
-        float[] vMatrix = camera.getViewMatrix();
-        float[] mMatrix = transform.getMatrix();
-
-        float[] vmMatrix = new float[16];
-        Matrix.multiplyMM(vmMatrix, 0, vMatrix, 0, mMatrix, 0);
-        float[] normalMatrix = new float[9];
-
-        for (int i = 0; i < 3; i++) {
-            normalMatrix[i * 3 + 0] = vmMatrix[i * 4 + 0];
-            normalMatrix[i * 3 + 1] = vmMatrix[i * 4 + 1];
-            normalMatrix[i * 3 + 2] = vmMatrix[i * 4 + 2];
-        }
-
-        GLES20.glUniformMatrix3fv(mCubeNormalMatrixHandle, 1, false,
-                normalMatrix, 0);
     }
 
     @Override
@@ -429,4 +400,43 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
             mLightShader.setColorAttribIndex(attribName);
         }
     }
+    
+    private GLESObjectListener mCubeObjectListener = new GLESObjectListener() {
+        
+        @Override
+        public void update(GLESObject object) {
+            GLESTransform transform = object.getTransform();
+
+            transform.setIdentity();
+            transform.rotate(mMoveX * 0.2f, 0f, 1f, 0f);
+            transform.rotate(mMoveY * 0.2f, 1f, 0f, 0f);
+            
+        }
+        
+        @Override
+        public void apply(GLESObject object) {
+            GLESShader shader = object.getShader();
+            GLESTransform transform = object.getTransform();
+            
+            GLESCamera camera = object.getCamera();
+            float[] vMatrix = camera.getViewMatrix();
+            float[] mMatrix = transform.getMatrix();
+
+            float[] vmMatrix = new float[16];
+            Matrix.multiplyMM(vmMatrix, 0, vMatrix, 0, mMatrix, 0);
+            float[] normalMatrix = new float[9];
+
+            for (int i = 0; i < 3; i++) {
+                normalMatrix[i * 3 + 0] = vmMatrix[i * 4 + 0];
+                normalMatrix[i * 3 + 1] = vmMatrix[i * 4 + 1];
+                normalMatrix[i * 3 + 2] = vmMatrix[i * 4 + 2];
+            }
+
+            shader.useProgram();
+            
+            GLES20.glUniformMatrix3fv(mCubeNormalMatrixHandle, 1, false,
+                    normalMatrix, 0);
+            
+        }
+    };
 }

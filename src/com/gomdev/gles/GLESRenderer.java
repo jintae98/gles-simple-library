@@ -48,16 +48,35 @@ public abstract class GLESRenderer {
         for (GLESObject object : mObjects) {
             object.getShader().useProgram();
             object.update();
-            updateTransform(object.getShader(), object.getTransform());
+            
+            update(object);
+        }
+    }
+
+    private void update(GLESObject object) {
+        GLESObjectListener listener;
+        listener = object.getListener();
+        if (listener != null) {
+            listener.update(object);
         }
     }
 
     public void drawObjects() {
         for (GLESObject object : mObjects) {
             object.getShader().useProgram();
+            applyTransform(object);
+            apply(object);
             setGLState(object);
             bindTexture(object);
             drawPrimitive(object);
+        }
+    }
+
+    private void apply(GLESObject object) {
+        GLESObjectListener listener;
+        listener = object.getListener();
+        if (listener != null) {
+            listener.apply(object);
         }
     }
 
@@ -89,8 +108,7 @@ public abstract class GLESRenderer {
 
     public abstract void setupVBO(GLESVertexInfo vertexInfo);
 
-    protected abstract void updateTransform(GLESShader shader,
-            GLESTransform transform);
+    protected abstract void applyTransform(GLESObject object);
 
     protected abstract void setGLState(GLESObject object);
 

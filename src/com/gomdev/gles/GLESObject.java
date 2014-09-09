@@ -24,6 +24,7 @@ public class GLESObject {
     protected GLESCamera mCamera;
     protected GLESTransform mTransform;
     protected GLESGLState mGLState;
+    protected GLESObjectListener mListener = null;
 
     protected PrimitiveMode mPrimitiveMode = PrimitiveMode.TRIANGLES;
     protected RenderType mRenderType = RenderType.DRAW_ELEMENTS;
@@ -134,6 +135,14 @@ public class GLESObject {
 
     public GLESGLState getGLState() {
         return mGLState;
+    }
+    
+    public void setListener(GLESObjectListener listener) {
+        mListener = listener;
+    }
+    
+    public GLESObjectListener getListener() {
+        return mListener;
     }
 
     public void show() {

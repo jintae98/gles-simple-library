@@ -92,7 +92,10 @@ public class GLES20Renderer extends GLESRenderer {
     }
 
     @Override
-    protected void updateTransform(GLESShader shader, GLESTransform transform) {
+    protected void applyTransform(GLESObject object) {
+        GLESShader shader = object.getShader(); 
+        GLESTransform transform = object.getTransform();
+        
         float[] matrix = transform.getMatrix();
         String uniformName = GLESShaderConstant.UNIFORM_MODEL_MATRIX;
         GLES20.glUniformMatrix4fv(shader.getUniformLocation(uniformName),
