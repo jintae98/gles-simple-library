@@ -23,8 +23,7 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
 
     private GLESObject mCubeObject;
     private GLESObject mLightObject;
-    private GLESShader mCubeShader;
-    private GLESShader mLightShader;
+    private GLESShader mShader;
     private Version mVersion;
 
     private boolean mIsTouchDown = false;
@@ -37,11 +36,8 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
 
     private float mScreenRatio = 0f;
 
-    private int mCubeNormalMatrixHandle = -1;
-    private int mCubeLightPosHandle = -1;
-
-    private int mLightNormalMatrixHandle = -1;
-    private int mLightLightPosHandle = -1;
+    private int mNormalMatrixHandle = -1;
+    private int mLightPosHandle = -1;
 
     private float mCubeLightX = 0f;
     private float mCubeLightY = 0f;
@@ -53,8 +49,6 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
     private float mLightLightY = 0f;
     private float mLightLightZ = 0f;
     private float mLightLightW = 1f;
-
-    private GLESAnimator mAnimator;
 
     public PVLRenderer(Context context) {
         super(context);
@@ -83,8 +77,8 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
             mLightObject.setTransform(new GLESTransform());
             mLightObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
             mLightObject.setRenderType(RenderType.DRAW_ELEMENTS);
-
             mLightObject.setGLState(state);
+            mLightObject.setListener(mLightObjectListener);
 
             mRenderer.addObject(mLightObject);
         }
@@ -93,64 +87,8 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
     }
 
     private void createAnimator() {
-        mAnimator = new GLESAnimator(new GLESAnimatorCallback() {
-
-            @Override
-            public void onFinished() {
-
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onAnimation(GLESVector vector) {
-                mCubeLightX = (float) (Math.cos(vector.mX) * mRadius);
-                mCubeLightY = (float) (Math.sin(vector.mX) * mRadius);
-                mCubeLightZ = 0f;
-
-                updateLight();
-
-                mCubeShader.useProgram();
-
-                GLES20.glUniform4f(mCubeLightPosHandle,
-                        mCubeLightX,
-                        mCubeLightY,
-                        mCubeLightZ,
-                        mCubeLightW);
-            }
-        });
-
         mAnimator.setDuration(0, 5000);
         mAnimator.setRepeat(true);
-    }
-
-    private void updateLight() {
-        mLightShader.useProgram();
-
-        GLESTransform transform = mLightObject.getTransform();
-
-        transform.setIdentity();
-        transform.translate(mCubeLightX, mCubeLightY, mCubeLightZ);
-
-        GLESCamera camera = mLightObject.getCamera();
-        float[] vMatrix = camera.getViewMatrix();
-        float[] mMatrix = transform.getMatrix();
-
-        float[] vmMatrix = new float[16];
-        Matrix.multiplyMM(vmMatrix, 0, vMatrix, 0, mMatrix, 0);
-        float[] normalMatrix = new float[9];
-
-        for (int i = 0; i < 3; i++) {
-            normalMatrix[i * 3 + 0] = vmMatrix[i * 4 + 0];
-            normalMatrix[i * 3 + 1] = vmMatrix[i * 4 + 1];
-            normalMatrix[i * 3 + 2] = vmMatrix[i * 4 + 2];
-        }
-
-        GLES20.glUniformMatrix3fv(mLightNormalMatrixHandle, 1, false,
-                normalMatrix, 0);
     }
 
     public void destroy() {
@@ -203,14 +141,6 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
             GLESVertexInfo vertexInfo = GLESMeshUtils.createSphere(0.1f, 10,
                     10, false, true, true);
             mLightObject.setVertexInfo(vertexInfo, true, false);
-
-            mLightShader.useProgram();
-
-            GLES20.glUniform4f(mLightLightPosHandle,
-                    mLightLightX,
-                    mLightLightY,
-                    mLightLightZ,
-                    mLightLightW);
         }
 
         mAnimator.start(0f, (float) (Math.PI * 2f));
@@ -227,29 +157,15 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
         camera.setFrustum(fovy, mScreenRatio, 1f, 400f);
 
         {
-            mCubeShader.useProgram();
+            mShader.useProgram();
 
             String uniformName = GLESShaderConstant.UNIFORM_PROJ_MATRIX;
-            int handle = mCubeShader.getUniformLocation(uniformName);
+            int handle = mShader.getUniformLocation(uniformName);
             GLES20.glUniformMatrix4fv(handle, 1, false,
                     camera.getProjectionMatrix(), 0);
 
             uniformName = GLESShaderConstant.UNIFORM_VIEW_MATRIX;
-            handle = mCubeShader.getUniformLocation(uniformName);
-            GLES20.glUniformMatrix4fv(handle, 1, false, camera.getViewMatrix(),
-                    0);
-        }
-
-        {
-            mLightShader.useProgram();
-
-            String uniformName = GLESShaderConstant.UNIFORM_PROJ_MATRIX;
-            int handle = mLightShader.getUniformLocation(uniformName);
-            GLES20.glUniformMatrix4fv(handle, 1, false,
-                    camera.getProjectionMatrix(), 0);
-
-            uniformName = GLESShaderConstant.UNIFORM_VIEW_MATRIX;
-            handle = mLightShader.getUniformLocation(uniformName);
+            handle = mShader.getUniformLocation(uniformName);
             GLES20.glUniformMatrix4fv(handle, 1, false, camera.getViewMatrix(),
                     0);
         }
@@ -263,29 +179,16 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
 
         createShader();
 
-        {
-            mCubeShader.useProgram();
+        mShader.useProgram();
 
-            mCubeObject.setShader(mCubeShader);
+        mCubeObject.setShader(mShader);
+        mLightObject.setShader(mShader);
 
-            int program = mCubeShader.getProgram();
-            mCubeNormalMatrixHandle = GLES20.glGetUniformLocation(program,
-                    "uNormalMatrix");
-            mCubeLightPosHandle = GLES20.glGetUniformLocation(program,
-                    "uLightPos");
-        }
-
-        {
-            mLightShader.useProgram();
-
-            mLightObject.setShader(mLightShader);
-
-            int program = mLightShader.getProgram();
-            mLightNormalMatrixHandle = GLES20.glGetUniformLocation(program,
-                    "uNormalMatrix");
-            mLightLightPosHandle = GLES20
-                    .glGetUniformLocation(program, "uLightPos");
-        }
+        int program = mShader.getProgram();
+        mNormalMatrixHandle = GLES20.glGetUniformLocation(program,
+                "uNormalMatrix");
+        mLightPosHandle = GLES20.glGetUniformLocation(program,
+                "uLightPos");
     }
 
     public void touchDown(float x, float y) {
@@ -347,62 +250,53 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
     private boolean createShader() {
         Log.d(TAG, "createShader()");
 
-        createCubeShader();
-        createLightShader();
-
-        return true;
-    }
-
-    private void createCubeShader() {
-        mCubeShader = new GLESShader(mContext);
+        mShader = new GLESShader(mContext);
 
         String vsSource = EffectUtils.getShaderSource(mContext, 0);
         String fsSource = EffectUtils.getShaderSource(mContext, 1);
 
-        mCubeShader.setShaderSource(vsSource, fsSource);
-        if (mCubeShader.load() == false) {
+        mShader.setShaderSource(vsSource, fsSource);
+        if (mShader.load() == false) {
             mHandler.sendEmptyMessage(EffectRenderer.COMPILE_OR_LINK_ERROR);
-            return;
+            return false;
         }
 
         if (mVersion == Version.GLES_20) {
             String attribName = GLESShaderConstant.ATTRIB_POSITION;
-            mCubeShader.setVertexAttribIndex(attribName);
+            mShader.setVertexAttribIndex(attribName);
 
             attribName = GLESShaderConstant.ATTRIB_NORMAL;
-            mCubeShader.setNormalAttribIndex(attribName);
+            mShader.setNormalAttribIndex(attribName);
 
             attribName = GLESShaderConstant.ATTRIB_COLOR;
-            mCubeShader.setColorAttribIndex(attribName);
-        }
-    }
-
-    private void createLightShader() {
-        mLightShader = new GLESShader(mContext);
-
-        String vsSource = EffectUtils.getShaderSource(mContext, 2);
-        String fsSource = EffectUtils.getShaderSource(mContext, 3);
-
-        mLightShader.setShaderSource(vsSource, fsSource);
-        if (mLightShader.load() == false) {
-            mHandler.sendEmptyMessage(EffectRenderer.COMPILE_OR_LINK_ERROR);
-            return;
+            mShader.setColorAttribIndex(attribName);
         }
 
-        if (mVersion == Version.GLES_20) {
-            String attribName = GLESShaderConstant.ATTRIB_POSITION;
-            mLightShader.setVertexAttribIndex(attribName);
-
-            attribName = GLESShaderConstant.ATTRIB_NORMAL;
-            mLightShader.setNormalAttribIndex(attribName);
-
-            attribName = GLESShaderConstant.ATTRIB_COLOR;
-            mLightShader.setColorAttribIndex(attribName);
-        }
+        return true;
     }
     
+    private GLESAnimator mAnimator = new GLESAnimator(new GLESAnimatorCallback() {
+
+        @Override
+        public void onFinished() {
+
+        }
+
+        @Override
+        public void onCancel() {
+
+        }
+
+        @Override
+        public void onAnimation(GLESVector vector) {
+            mCubeLightX = (float) (Math.cos(vector.mX) * mRadius);
+            mCubeLightY = (float) (Math.sin(vector.mX) * mRadius);
+            mCubeLightZ = 0f;
+        }
+    });
+
     private GLESObjectListener mCubeObjectListener = new GLESObjectListener() {
-        
+
         @Override
         public void update(GLESObject object) {
             GLESTransform transform = object.getTransform();
@@ -410,14 +304,14 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
             transform.setIdentity();
             transform.rotate(mMoveX * 0.2f, 0f, 1f, 0f);
             transform.rotate(mMoveY * 0.2f, 1f, 0f, 0f);
-            
+
         }
-        
+
         @Override
         public void apply(GLESObject object) {
             GLESShader shader = object.getShader();
             GLESTransform transform = object.getTransform();
-            
+
             GLESCamera camera = object.getCamera();
             float[] vMatrix = camera.getViewMatrix();
             float[] mMatrix = transform.getMatrix();
@@ -433,10 +327,59 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
             }
 
             shader.useProgram();
-            
-            GLES20.glUniformMatrix3fv(mCubeNormalMatrixHandle, 1, false,
+
+            GLES20.glUniformMatrix3fv(mNormalMatrixHandle, 1, false,
                     normalMatrix, 0);
-            
+
+            GLES20.glUniform4f(mLightPosHandle,
+                    mCubeLightX,
+                    mCubeLightY,
+                    mCubeLightZ,
+                    mCubeLightW);
+
+        }
+    };
+
+    GLESObjectListener mLightObjectListener = new GLESObjectListener() {
+
+        @Override
+        public void update(GLESObject object) {
+            GLESTransform transform = object.getTransform();
+
+            transform.setIdentity();
+            transform.translate(mCubeLightX, mCubeLightY, mCubeLightZ);
+
+        }
+
+        @Override
+        public void apply(GLESObject object) {
+            GLESShader shader = object.getShader();
+            GLESTransform transform = object.getTransform();
+            GLESCamera camera = object.getCamera();
+
+            float[] vMatrix = camera.getViewMatrix();
+            float[] mMatrix = transform.getMatrix();
+
+            float[] vmMatrix = new float[16];
+            Matrix.multiplyMM(vmMatrix, 0, vMatrix, 0, mMatrix, 0);
+            float[] normalMatrix = new float[9];
+
+            for (int i = 0; i < 3; i++) {
+                normalMatrix[i * 3 + 0] = vmMatrix[i * 4 + 0];
+                normalMatrix[i * 3 + 1] = vmMatrix[i * 4 + 1];
+                normalMatrix[i * 3 + 2] = vmMatrix[i * 4 + 2];
+            }
+
+            shader.useProgram();
+
+            GLES20.glUniformMatrix3fv(mNormalMatrixHandle, 1, false,
+                    normalMatrix, 0);
+
+            GLES20.glUniform4f(mLightPosHandle,
+                    mLightLightX,
+                    mLightLightY,
+                    mLightLightZ,
+                    mLightLightW);
         }
     };
 }
