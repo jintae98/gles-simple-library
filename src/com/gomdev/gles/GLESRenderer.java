@@ -35,6 +35,10 @@ public abstract class GLESRenderer {
     protected GLESRenderer() {
         GLESContext.getInstance().setRenderer(this);
     }
+    
+    public void reset() {
+        mCurrentGLState = null;
+    }
 
     public void setListener(GLESRendererListener listener) {
         mListener = listener;

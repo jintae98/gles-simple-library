@@ -35,7 +35,7 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
 
     public TextureRenderer(Context context) {
         super(context);
-        
+
         mVersion = GLESContext.getInstance().getVersion();
 
         mTextureObject = GLESSceneManager.createObject();
@@ -85,6 +85,8 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         if (DEBUG)
             Log.d(TAG, "onSurfaceChanged()");
+
+        mRenderer.reset();
 
         GLES20.glViewport(0, 0, width, height);
 

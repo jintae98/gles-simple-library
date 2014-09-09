@@ -85,6 +85,8 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
         if (DEBUG)
             Log.d(TAG, "onSurfaceChanged()");
 
+        mRenderer.reset();
+
         GLES20.glViewport(0, 0, width, height);
 
         GLESCamera camera = setupCamera(width, height);

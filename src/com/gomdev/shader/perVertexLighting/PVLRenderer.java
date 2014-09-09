@@ -117,6 +117,8 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
         mScreenRatio = (float) width / height;
         mRadius = mScreenRatio;
 
+        mRenderer.reset();
+
         GLES20.glViewport(0, 0, width, height);
 
         GLESCamera camera = setupCamera(width, height);
@@ -270,26 +272,27 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
 
         return true;
     }
-    
-    private GLESAnimator mAnimator = new GLESAnimator(new GLESAnimatorCallback() {
 
-        @Override
-        public void onFinished() {
+    private GLESAnimator mAnimator = new GLESAnimator(
+            new GLESAnimatorCallback() {
 
-        }
+                @Override
+                public void onFinished() {
 
-        @Override
-        public void onCancel() {
+                }
 
-        }
+                @Override
+                public void onCancel() {
 
-        @Override
-        public void onAnimation(GLESVector vector) {
-            mCubeLightX = (float) (Math.cos(vector.mX) * mRadius);
-            mCubeLightY = (float) (Math.sin(vector.mX) * mRadius);
-            mCubeLightZ = 0f;
-        }
-    });
+                }
+
+                @Override
+                public void onAnimation(GLESVector vector) {
+                    mCubeLightX = (float) (Math.cos(vector.mX) * mRadius);
+                    mCubeLightY = (float) (Math.sin(vector.mX) * mRadius);
+                    mCubeLightZ = 0f;
+                }
+            });
 
     private GLESObjectListener mCubeObjectListener = new GLESObjectListener() {
 

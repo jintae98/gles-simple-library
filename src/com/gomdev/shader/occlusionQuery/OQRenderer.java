@@ -151,6 +151,8 @@ public class OQRenderer extends EffectRenderer implements Renderer {
 
         mScreenRatio = (float) width / height;
 
+        mRenderer.reset();
+
         GLES20.glViewport(0, 0, width, height);
 
         GLESCamera camera = setupCamera(width, height);
@@ -210,7 +212,8 @@ public class OQRenderer extends EffectRenderer implements Renderer {
 
         mObject.setShader(mShader);
 
-        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.gradient);
+        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(),
+                R.drawable.gradient);
         GLESTexture texture = new GLESTexture(bitmap);
         mObject.setTexture(texture);
 

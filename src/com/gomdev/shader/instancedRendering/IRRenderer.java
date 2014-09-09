@@ -32,7 +32,7 @@ public class IRRenderer extends EffectRenderer implements Renderer,
 
     private GLESObject mObject;
     private GLESShader mShader;
-    
+
     private Version mVersion;
 
     private boolean mIsTouchDown = false;
@@ -52,7 +52,7 @@ public class IRRenderer extends EffectRenderer implements Renderer,
 
     public IRRenderer(Context context) {
         super(context);
-        
+
         mVersion = GLESContext.getInstance().getVersion();
 
         mObject = GLESSceneManager.createObject();
@@ -122,6 +122,8 @@ public class IRRenderer extends EffectRenderer implements Renderer,
             Log.d(TAG, "onSurfaceChanged()");
 
         mScreenRatio = (float) width / height;
+
+        mRenderer.reset();
 
         GLES20.glViewport(0, 0, width, height);
 
