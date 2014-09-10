@@ -39,16 +39,10 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
     private int mNormalMatrixHandle = -1;
     private int mLightPosHandle = -1;
 
-    private float mCubeLightX = 0f;
-    private float mCubeLightY = 0f;
-    private float mCubeLightZ = 0f;
-    private float mCubeLightW = 0f;
+    private GLESVector4 mCubeLight = new GLESVector4();
     private float mRadius = 0f;
 
-    private float mLightLightX = 0f;
-    private float mLightLightY = 0f;
-    private float mLightLightZ = 0f;
-    private float mLightLightW = 1f;
+    private GLESVector4 mLightLight = new GLESVector4(0f, 0f, 0f, 1f);
 
     public PVLRenderer(Context context) {
         super(context);
@@ -287,10 +281,13 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
                 }
 
                 @Override
-                public void onAnimation(GLESVector vector) {
-                    mCubeLightX = (float) (Math.cos(vector.mX) * mRadius);
-                    mCubeLightY = (float) (Math.sin(vector.mX) * mRadius);
-                    mCubeLightZ = 0f;
+                public void onAnimation(GLESVector3 vector) {
+                    float x = (float) (Math.cos(vector.mX) * mRadius);
+                    float y = (float) (Math.sin(vector.mX) * mRadius);
+                    float z = 0f;
+                    float w = 0f;
+
+                    mCubeLight.set(x, y, z, w);
                 }
             });
 
@@ -331,10 +328,10 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
                     normalMatrix, 0);
 
             GLES20.glUniform4f(mLightPosHandle,
-                    mCubeLightX,
-                    mCubeLightY,
-                    mCubeLightZ,
-                    mCubeLightW);
+                    mCubeLight.mX,
+                    mCubeLight.mY,
+                    mCubeLight.mZ,
+                    mCubeLight.mW);
 
         }
     };
@@ -346,7 +343,7 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
             GLESTransform transform = object.getTransform();
 
             transform.setIdentity();
-            transform.translate(mCubeLightX, mCubeLightY, mCubeLightZ);
+            transform.translate(mCubeLight.mX, mCubeLight.mY, mCubeLight.mZ);
 
         }
 
@@ -375,10 +372,10 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
                     normalMatrix, 0);
 
             GLES20.glUniform4f(mLightPosHandle,
-                    mLightLightX,
-                    mLightLightY,
-                    mLightLightZ,
-                    mLightLightW);
+                    mLightLight.mX,
+                    mLightLight.mY,
+                    mLightLight.mZ,
+                    mLightLight.mW);
         }
     };
 }

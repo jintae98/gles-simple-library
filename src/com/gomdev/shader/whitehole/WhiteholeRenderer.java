@@ -274,7 +274,7 @@ public class WhiteholeRenderer extends EffectRenderer implements Renderer {
         mCallback = new GLESAnimatorCallback() {
 
             @Override
-            public void onAnimation(GLESVector currentValue) {
+            public void onAnimation(GLESVector3 currentValue) {
                 mRadius = currentValue.mX;
                 mWhiteholeObject.setRadius(mRadius);
             }

@@ -11,13 +11,13 @@ public class GLESAnimator {
     private GLESAnimatorCallback mCallback;
     private Interpolator mInterpolator = null;
 
-    private GLESVector mCurrent;
-    private GLESVector mDistance;
+    private GLESVector3 mCurrent;
+    private GLESVector3 mDistance;
 
     private long mDuration = 1000L;
 
-    private GLESVector mFrom;
-    private GLESVector mTo;
+    private GLESVector3 mFrom;
+    private GLESVector3 mTo;
 
     private float mFromValue;
     private float mToValue;
@@ -43,13 +43,13 @@ public class GLESAnimator {
     }
 
     public GLESAnimator(GLESAnimatorCallback callback) {
-        mCurrent = new GLESVector(0f, 0f, 0f);
-        mDistance = new GLESVector(0f, 0f, 0f);
+        mCurrent = new GLESVector3(0f, 0f, 0f);
+        mDistance = new GLESVector3(0f, 0f, 0f);
         mIsSetValue = false;
         mCallback = callback;
     }
 
-    public GLESAnimator(GLESVector from, GLESVector to,
+    public GLESAnimator(GLESVector3 from, GLESVector3 to,
             GLESAnimatorCallback callback) {
         mFrom = from;
         mTo = to;
@@ -123,7 +123,7 @@ public class GLESAnimator {
         return true;
     }
 
-    public GLESVector getCurrentValue() {
+    public GLESVector3 getCurrentValue() {
         if (mIsFinished == true) {
             return null;
         }
@@ -210,7 +210,7 @@ public class GLESAnimator {
         mStartTick = System.currentTimeMillis();
     }
 
-    public void start(GLESVector from, GLESVector to) {
+    public void start(GLESVector3 from, GLESVector3 to) {
         mUseVector = true;
 
         mFrom = from;
