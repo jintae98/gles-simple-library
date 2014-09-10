@@ -21,6 +21,20 @@ public class PFLRenderer extends EffectRenderer implements Renderer {
     private static final String TAG = PFLConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = PFLConfig.DEBUG;
 
+    private final float[] AMBIENT_COLOR = new float[] {
+            0.3f, 0.3f, 0.3f, 1.0f
+    };
+
+    private final float[] DIFFUSE_COLOR = new float[] {
+            0.5f, 0.5f, 0.5f, 1.0f
+    };
+
+    private final float[] SPECULAR_COLOR = new float[] {
+            1.0f, 1.0f, 1.0f, 1.0f
+    };
+
+    private final float SPECULAR_EXPONENT = 16f;
+
     private GLESObject mCubeObject;
     private GLESObject mLightObject;
     private GLESShader mShader;
@@ -179,6 +193,18 @@ public class PFLRenderer extends EffectRenderer implements Renderer {
                 "uNormalMatrix");
         mLightPosHandle = GLES20.glGetUniformLocation(program,
                 "uLightPos");
+
+        int location = GLES20.glGetUniformLocation(program, "uAmbientColor");
+        GLES20.glUniform4fv(location, 1, AMBIENT_COLOR, 0);
+
+        location = GLES20.glGetUniformLocation(program, "uDiffuseColor");
+        GLES20.glUniform4fv(location, 1, DIFFUSE_COLOR, 0);
+
+        location = GLES20.glGetUniformLocation(program, "uSpecularColor");
+        GLES20.glUniform4fv(location, 1, SPECULAR_COLOR, 0);
+
+        location = GLES20.glGetUniformLocation(program, "uSpecularExponent");
+        GLES20.glUniform1f(location, SPECULAR_EXPONENT);
     }
 
     public void touchDown(float x, float y) {

@@ -11,10 +11,14 @@ uniform highp mat4 uMMatrix;
 uniform highp mat4 uVMatrix;
 uniform highp mat3 uNormalMatrix;
 
-const vec4 ambientColor = vec4(0.3, 0.3, 0.3, 1.0);
-const vec4 diffuseColor = vec4(0.5, 0.5, 0.5, 1.0);
-const vec4 specularColor = vec4(1.0, 1.0, 1.0, 1.0);
-const float specularExponent = 16.0;
+uniform highp float uSpecularExponent;
+
+layout (std140) uniform LightInfo {
+    highp vec4 uAmbientColor;
+    highp vec4 uDiffuseColor;
+    highp vec4 uSpecularColor;
+//    highp float uSpecularExponent;
+};
 
 uniform highp vec4 uLightPos;
 
@@ -41,10 +45,10 @@ void main() {
 
     float diffuse = max(0.0, dot(normalES, lightDirES));
     float specular = max(0.0, dot(normalES, halfPlane));
-    specular = pow(specular, specularExponent);
+    specular = pow(specular, uSpecularExponent);
 
-    vec4 lightColor = ambientColor + diffuseColor * diffuse
-            + specularColor * specular;
+    vec4 lightColor = uAmbientColor + uDiffuseColor * diffuse
+            + uSpecularColor * specular;
     lightColor.w = 1.0;
 
     vColor = aColor * lightColor;

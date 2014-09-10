@@ -11,10 +11,10 @@ layout(location=0) out vec4 fragColor;
 
 uniform highp mat3 uNormalMatrix;
 
-const vec4 ambientColor = vec4(0.3, 0.3, 0.3, 1.0);
-const vec4 diffuseColor = vec4(0.5, 0.5, 0.5, 1.0);
-const vec4 specularColor = vec4(1.0, 1.0, 1.0, 1.0);
-const float specularExponent = 16.0;
+uniform highp vec4 uAmbientColor;
+uniform highp vec4 uDiffuseColor;
+uniform highp vec4 uSpecularColor;
+uniform highp float uSpecularExponent;
 
 void main() {
 
@@ -34,10 +34,10 @@ void main() {
 
     float diffuse = max(0.0, dot(normalES, lightDirES));
     float specular = max(0.0, dot(normalES, halfPlane));
-    specular = pow(specular, specularExponent);
+    specular = pow(specular, uSpecularExponent);
 
-    vec4 lightColor = ambientColor + diffuseColor * diffuse
-            + specularColor * specular;
+    vec4 lightColor = uAmbientColor + uDiffuseColor * diffuse
+            + uSpecularColor * specular;
     lightColor.w = 1.0;
 
     fragColor = vColor * lightColor;
