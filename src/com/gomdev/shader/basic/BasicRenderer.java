@@ -92,7 +92,6 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
         GLESCamera camera = setupCamera(width, height);
 
         mBasicObject.setCamera(camera);
-        mBasicObject.show();
 
         GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(width,
                 false, false, true);
@@ -167,18 +166,6 @@ public class BasicRenderer extends EffectRenderer implements Renderer {
     }
 
     public void touchCancel(float x, float y) {
-    }
-
-    public void showAll() {
-        if (mBasicObject != null) {
-            mBasicObject.show();
-        }
-    }
-
-    public void hideAll() {
-        if (mBasicObject != null) {
-            mBasicObject.hide();
-        }
     }
 
     private boolean createShader() {

@@ -130,7 +130,6 @@ public class IRRenderer extends EffectRenderer implements Renderer,
         GLESCamera camera = setupCamera(width, height);
 
         mObject.setCamera(camera);
-        mObject.show();
 
         makeTransBuffer();
 
@@ -215,18 +214,6 @@ public class IRRenderer extends EffectRenderer implements Renderer,
     }
 
     public void touchCancel(float x, float y) {
-    }
-
-    public void showAll() {
-        if (mObject != null) {
-            mObject.show();
-        }
-    }
-
-    public void hideAll() {
-        if (mObject != null) {
-            mObject.hide();
-        }
     }
 
     private boolean createShader() {

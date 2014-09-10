@@ -93,7 +93,6 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
         GLESCamera camera = setupCamera(width, height);
 
         mTextureObject.setCamera(camera);
-        mTextureObject.show();
 
         GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(width,
                 false, true, false);
@@ -179,18 +178,6 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
     }
 
     public void touchCancel(float x, float y) {
-    }
-
-    public void showAll() {
-        if (mTextureObject != null) {
-            mTextureObject.show();
-        }
-    }
-
-    public void hideAll() {
-        if (mTextureObject != null) {
-            mTextureObject.hide();
-        }
     }
 
     private boolean createShader() {

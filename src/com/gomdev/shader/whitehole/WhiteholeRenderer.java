@@ -117,7 +117,6 @@ public class WhiteholeRenderer extends EffectRenderer implements Renderer {
 
         mWhiteholeObject.setCamera(camera);
         mWhiteholeObject.setScreenSize(width, height);
-        mWhiteholeObject.show();
 
         GLESVertexInfo vertexInfo = GLESMeshUtils.createPlaneMesh(mWidth,
                 mHeight, WhiteholeConfig.MESH_RESOLUTION, true, false);
@@ -226,18 +225,6 @@ public class WhiteholeRenderer extends EffectRenderer implements Renderer {
 
     public void touchCancel(float x, float y) {
 
-    }
-
-    public void showAll() {
-        if (mWhiteholeObject != null) {
-            mWhiteholeObject.show();
-        }
-    }
-
-    public void hideAll() {
-        if (mWhiteholeObject != null) {
-            mWhiteholeObject.hide();
-        }
     }
 
     public void setImage(Bitmap bitmap) {

@@ -119,7 +119,6 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
 
         {
             mCubeObject.setCamera(camera);
-            mCubeObject.show();
 
             GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(
                     mScreenRatio * 0.5f, true, false, true);
@@ -128,7 +127,6 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
 
         {
             mLightObject.setCamera(camera);
-            mLightObject.show();
 
             GLESVertexInfo vertexInfo = GLESMeshUtils.createSphere(0.1f, 10,
                     10, false, true, true);
@@ -217,26 +215,6 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
     }
 
     public void touchCancel(float x, float y) {
-    }
-
-    public void showAll() {
-        if (mCubeObject != null) {
-            mCubeObject.show();
-        }
-
-        if (mLightObject != null) {
-            mLightObject.show();
-        }
-    }
-
-    public void hideAll() {
-        if (mCubeObject != null) {
-            mCubeObject.hide();
-        }
-
-        if (mLightObject != null) {
-            mLightObject.hide();
-        }
     }
 
     private boolean createShader() {

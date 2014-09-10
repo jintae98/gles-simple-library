@@ -32,7 +32,7 @@ public class GLESObject {
     protected GLESVertexInfo mVertexInfo = null;
     protected boolean mUseVBO = true;
 
-    protected boolean mIsVisible = false;
+    protected boolean mIsVisible = true;
 
     public GLESObject() {
     }
