@@ -7,6 +7,7 @@ import com.gomdev.shader.basic.BasicConfig;
 import com.gomdev.shader.instancedRendering.IRConfig;
 import com.gomdev.shader.instancedRendering2.IR2Config;
 import com.gomdev.shader.occlusionQuery.OQConfig;
+import com.gomdev.shader.perFragmentLighting.PFLConfig;
 import com.gomdev.shader.perVertexLighting.PVLConfig;
 import com.gomdev.shader.texture.TextureConfig;
 import com.gomdev.shader.whitehole.WhiteholeConfig;
@@ -104,6 +105,7 @@ public class EffectListActivity extends Activity implements DialogListener {
         setupBasic(version);
         setupTexture(version);
         setupPVL(version);
+        setupPFL(version);
         setupOQ(version);
         setupIR(version);
         setupIR2(version);
@@ -239,6 +241,30 @@ public class EffectListActivity extends Activity implements DialogListener {
         info.mShaderTitle = new String[] {
                 "Per Vertex Lighting VS",
                 "Per Vertex Lighting FS"
+        };
+
+        mEffects.add(info);
+    }
+
+    private void setupPFL(Version version) {
+        EffectInfo info = new EffectInfo();
+        info.mEffectName = PFLConfig.EFFECT_NAME;
+        info.mIntent = new Intent(this,
+                com.gomdev.shader.perFragmentLighting.PFLActivity.class);
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[] {
+                    R.raw.pfl_20_vs,
+                    R.raw.pfl_20_fs
+            };
+        } else {
+            info.mShaderResIDs = new int[] {
+                    R.raw.pfl_30_vs,
+                    R.raw.pfl_30_fs
+            };
+        }
+        info.mShaderTitle = new String[] {
+                "Per Fragment Lighting VS",
+                "Per Fragment Lighting FS"
         };
 
         mEffects.add(info);

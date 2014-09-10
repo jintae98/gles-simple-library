@@ -24,11 +24,12 @@ void main() {
     vec4 lightPosES = uVMatrix * uLightPos;
 
     vec3 lightDirES;
-    // if uLightPos.w == 0, directional light
-    // if uLightPos.w == 1, point light
+
     if (lightPosES.w == 0.0) {
+        // directional light
         lightDirES = normalize(lightPosES.xyz);
     } else {
+        // point light
         lightDirES = vec3(normalize(lightPosES - posES));
     }
 
@@ -40,7 +41,8 @@ void main() {
     float specular = max(0.0, dot(normalES, halfPlane));
     specular = pow(specular, specularExponent);
 
-    vec4 lightColor = ambientColor + diffuseColor * diffuse + specularColor * specular;
+    vec4 lightColor = ambientColor + diffuseColor * diffuse
+            + specularColor * specular;
     lightColor.w = 1.0;
 
     vColor = aColor * lightColor;
