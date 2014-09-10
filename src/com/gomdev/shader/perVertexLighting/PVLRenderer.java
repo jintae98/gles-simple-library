@@ -77,7 +77,7 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
             mRenderer.addObject(mLightObject);
         }
 
-        mAnimator.setDuration(0, 5000);
+        mAnimator.setDuration(0, 10000);
         mAnimator.setRepeat(true);
     }
 
