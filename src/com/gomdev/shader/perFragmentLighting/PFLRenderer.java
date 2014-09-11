@@ -27,7 +27,7 @@ public class PFLRenderer extends EffectRenderer implements Renderer {
     private final float[] LIGHT_INFO = new float[] {
             0.3f, 0.3f, 0.3f, 1.0f, // ambient
             0.5f, 0.5f, 0.5f, 1.0f, // diffuse
-            1.0f, 1.0f, 1.0f, 16.0f, // specular
+            1.0f, 1.0f, 1.0f, 1.0f, // specular
             16f, // specular exponent
     };
 

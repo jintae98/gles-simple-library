@@ -16,6 +16,7 @@ import com.gomdev.shader.EffectUtils;
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
+import android.opengl.Matrix;
 import android.opengl.GLSurfaceView.Renderer;
 import android.util.Log;
 
@@ -26,6 +27,18 @@ public class IR2Renderer extends EffectRenderer implements Renderer {
 
     private final static int NUM_OF_INSTANCE = 1000;
     private final static int NUM_OF_ELEMENT = 4;
+
+    private final float[] LIGHT_INFO = new float[] {
+            0.3f, 0.3f, 0.3f, 1.0f, // ambient
+            0.5f, 0.5f, 0.5f, 1.0f, // diffuse
+            1.0f, 1.0f, 1.0f, 1.0f, // specular
+            16f, // specular exponent
+    };
+
+    private final int AMBIENT_OFFSET = 0;
+    private final int DIFFUSE_OFFSET = 4;
+    private final int SPECULAR_OFFSET = 8;
+    private final int SPECULAR_EXPONENT_OFFSET = 12;
 
     private GLESObject mObject;
     private GLESShader mShader;
@@ -47,6 +60,9 @@ public class IR2Renderer extends EffectRenderer implements Renderer {
     private FloatBuffer mInstanceBuffer = null;
 
     private Random mRandom = new Random();
+
+    private int mNormalMatrixHandle = -1;
+    private GLESVector4 mLightPos = new GLESVector4(1f, 1f, 1f, 0f);
 
     public IR2Renderer(Context context) {
         super(context);
@@ -70,6 +86,8 @@ public class IR2Renderer extends EffectRenderer implements Renderer {
         state.setDepthState(true);
         state.setDepthFunc(GLES20.GL_LEQUAL);
         mObject.setGLState(state);
+
+        mObject.setListener(mObjListener);
 
         mRenderer.addObject(mObject);
     }
@@ -131,11 +149,11 @@ public class IR2Renderer extends EffectRenderer implements Renderer {
 
         if (mVersion == Version.GLES_20) {
             GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(0.1f,
-                    false, false, true);
+                    true, false, true);
             mObject.setVertexInfo(vertexInfo, true, true);
         } else {
             GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(0.1f,
-                    false, false, false);
+                    true, false, false);
             mObject.setVertexInfo(vertexInfo, true, true);
         }
     }
@@ -206,7 +224,9 @@ public class IR2Renderer extends EffectRenderer implements Renderer {
 
         long[] sizes = new long[1];
         GLES30.glGetInteger64v(GLES30.GL_MAX_UNIFORM_BLOCK_SIZE, sizes, 0);
-        Log.d(TAG, "updateTransUniform() max uniform block size=" + sizes[0]);
+        if (DEBUG) {
+            Log.d(TAG, "updateTransUniform() max uniform block size=" + sizes[0]);
+        }
     }
 
     @Override
@@ -216,6 +236,28 @@ public class IR2Renderer extends EffectRenderer implements Renderer {
         createShader();
 
         mObject.setShader(mShader);
+
+        int program = mShader.getProgram();
+        mNormalMatrixHandle = GLES20.glGetUniformLocation(program,
+                "uNormalMatrix");
+        int location = GLES20.glGetUniformLocation(program, "uLightPos");
+        GLES20.glUniform4f(location,
+                mLightPos.mX,
+                mLightPos.mY,
+                mLightPos.mZ,
+                mLightPos.mW);
+
+        location = GLES20.glGetUniformLocation(program, "uAmbientColor");
+        GLES20.glUniform4fv(location, 1, LIGHT_INFO, AMBIENT_OFFSET);
+
+        location = GLES20.glGetUniformLocation(program, "uDiffuseColor");
+        GLES20.glUniform4fv(location, 1, LIGHT_INFO, DIFFUSE_OFFSET);
+
+        location = GLES20.glGetUniformLocation(program, "uSpecularColor");
+        GLES20.glUniform4fv(location, 1, LIGHT_INFO, SPECULAR_OFFSET);
+
+        location = GLES20.glGetUniformLocation(program, "uSpecularExponent");
+        GLES20.glUniform1f(location, LIGHT_INFO[SPECULAR_EXPONENT_OFFSET]);
     }
 
     public void touchDown(float x, float y) {
@@ -255,7 +297,6 @@ public class IR2Renderer extends EffectRenderer implements Renderer {
     }
 
     private boolean createShader() {
-        Log.d(TAG, "createShader()");
         mShader = new GLESShader(mContext);
 
         String vsSource = EffectUtils.getShaderSource(mContext, 0);
@@ -271,10 +312,45 @@ public class IR2Renderer extends EffectRenderer implements Renderer {
             String attribName = GLESShaderConstant.ATTRIB_POSITION;
             mShader.setVertexAttribIndex(attribName);
 
+            attribName = GLESShaderConstant.ATTRIB_NORMAL;
+            mShader.setNormalAttribIndex(attribName);
+
             attribName = GLESShaderConstant.ATTRIB_COLOR;
             mShader.setColorAttribIndex(attribName);
         }
 
         return true;
     }
+
+    GLESObjectListener mObjListener = new GLESObjectListener() {
+
+        @Override
+        public void update(GLESObject object) {
+        }
+
+        @Override
+        public void apply(GLESObject object) {
+            GLESShader shader = object.getShader();
+            GLESTransform transform = object.getTransform();
+
+            GLESCamera camera = object.getCamera();
+            float[] vMatrix = camera.getViewMatrix();
+            float[] mMatrix = transform.getMatrix();
+
+            float[] vmMatrix = new float[16];
+            Matrix.multiplyMM(vmMatrix, 0, vMatrix, 0, mMatrix, 0);
+            float[] normalMatrix = new float[9];
+
+            for (int i = 0; i < 3; i++) {
+                normalMatrix[i * 3 + 0] = vmMatrix[i * 4 + 0];
+                normalMatrix[i * 3 + 1] = vmMatrix[i * 4 + 1];
+                normalMatrix[i * 3 + 2] = vmMatrix[i * 4 + 2];
+            }
+
+            shader.useProgram();
+
+            GLES20.glUniformMatrix3fv(mNormalMatrixHandle, 1, false,
+                    normalMatrix, 0);
+        }
+    };
 }
