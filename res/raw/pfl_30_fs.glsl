@@ -7,17 +7,20 @@ in vec3 vNormal;
 in vec4 vPositionES;
 in vec4 vLightPosES;
 
-layout(location=0) out vec4 fragColor;
+layout( location = 0) out vec4 fragColor;
 
 uniform highp mat3 uNormalMatrix;
 
-uniform highp vec4 uAmbientColor;
-uniform highp vec4 uDiffuseColor;
-uniform highp vec4 uSpecularColor;
 uniform highp float uSpecularExponent;
 
-void main() {
+layout (std140) uniform LightInfo {
+    highp vec4 uAmbientColor;
+    highp vec4 uDiffuseColor;
+    highp vec4 uSpecularColor;
+//    highp float uSpecularExponent;
+};
 
+vec4 calcLightColor() {
     vec3 lightDirES;
     if (vLightPosES.w == 0.0) {
         // directional light
@@ -39,6 +42,13 @@ void main() {
     vec4 lightColor = uAmbientColor + uDiffuseColor * diffuse
             + uSpecularColor * specular;
     lightColor.w = 1.0;
+
+    return lightColor;
+}
+
+void main() {
+
+    vec4 lightColor = calcLightColor();
 
     fragColor = vColor * lightColor;
 }

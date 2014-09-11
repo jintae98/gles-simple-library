@@ -12,8 +12,7 @@ uniform highp vec4 uDiffuseColor;
 uniform highp vec4 uSpecularColor;
 uniform highp float uSpecularExponent;
 
-void main() {
-
+vec4 calcLightColor() {
     vec3 lightDirES;
     if (vLightPosES.w == 0.0) {
         // directional light
@@ -35,6 +34,12 @@ void main() {
     vec4 lightColor = uAmbientColor + uDiffuseColor * diffuse
             + uSpecularColor * specular;
     lightColor.w = 1.0;
+
+    return lightColor;
+}
+
+void main() {
+    vec4 lightColor = calcLightColor();
 
     gl_FragColor = vColor * lightColor;
 }

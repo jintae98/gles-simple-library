@@ -22,10 +22,7 @@ layout (std140) uniform LightInfo {
 
 uniform highp vec4 uLightPos;
 
-void main() {
-    vec4 posES = uVMatrix * uMMatrix * aPosition;
-    vec4 pos = uPMatrix * posES;
-
+vec4 calcLightColor(vec4 posES) {
     // light position in eye space
     vec4 lightPosES = uVMatrix * uLightPos;
 
@@ -50,6 +47,15 @@ void main() {
     vec4 lightColor = uAmbientColor + uDiffuseColor * diffuse
             + uSpecularColor * specular;
     lightColor.w = 1.0;
+
+    return lightColor;
+}
+
+void main() {
+    vec4 posES = uVMatrix * uMMatrix * aPosition;
+    vec4 pos = uPMatrix * posES;
+
+    vec4 lightColor = calcLightColor(posES);
 
     vColor = aColor * lightColor;
 

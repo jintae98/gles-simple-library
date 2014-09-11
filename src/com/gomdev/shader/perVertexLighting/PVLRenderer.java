@@ -25,10 +25,10 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
     private static final boolean DEBUG = PVLConfig.DEBUG;
 
     private final float[] LIGHT_INFO = new float[] {
-            0.3f, 0.3f, 0.3f, 1.0f,
-            0.5f, 0.5f, 0.5f, 1.0f,
-            1.0f, 1.0f, 1.0f, 16.0f,
-            16f
+            0.3f, 0.3f, 0.3f, 1.0f, // ambient
+            0.5f, 0.5f, 0.5f, 1.0f, // diffuse
+            1.0f, 1.0f, 1.0f, 16.0f, // specular
+            16f, // specular exponent
     };
 
     private final int AMBIENT_OFFSET = 0;
