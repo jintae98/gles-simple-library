@@ -1,16 +1,26 @@
-varying vec2 vTexCoord;
-
 attribute vec4 aPosition;
 attribute vec2 aTexCoord;
+attribute vec3 aNormal;
+
+varying vec2 vTexCoord;
+varying vec3 vNormal;
+varying vec4 vPositionES;
+varying vec4 vLightPosES;
 
 uniform highp mat4 uPMatrix;
 uniform highp mat4 uMMatrix;
 uniform highp mat4 uVMatrix;
 
-void main() {
-    vec4 pos = uPMatrix * uVMatrix * uMMatrix * aPosition;
+uniform highp vec4 uLightPos;
 
+void main() {
+    vec4 posES = uVMatrix * uMMatrix * aPosition;
+    vec4 pos = uPMatrix * posES;
+
+    vPositionES = posES;
+    vLightPosES = uVMatrix * uLightPos;
     vTexCoord = aTexCoord;
+    vNormal = aNormal;
 
     gl_Position = pos;
 }
