@@ -11,13 +11,13 @@ layout( location = 0) out vec4 fragColor;
 
 uniform highp mat3 uNormalMatrix;
 
-uniform highp float uSpecularExponent;
+//uniform highp float uSpecularExponent;
 
 layout (std140) uniform LightInfo {
-    highp vec4 uAmbientColor;
-    highp vec4 uDiffuseColor;
-    highp vec4 uSpecularColor;
-//    highp float uSpecularExponent;
+    vec4 uAmbientColor;
+    vec4 uDiffuseColor;
+    vec4 uSpecularColor;
+    float uSpecularExponent;
 };
 
 vec4 calcLightColor() {

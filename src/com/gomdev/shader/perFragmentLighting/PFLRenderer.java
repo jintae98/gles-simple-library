@@ -214,7 +214,7 @@ public class PFLRenderer extends EffectRenderer implements Renderer {
         } else {
             int location = GLES30
                     .glGetUniformLocation(program, "uSpecularExponent");
-            GLES20.glUniform1f(location, LIGHT_INFO[SPECULAR_EXPONENT_OFFSET]);
+            GLES30.glUniform1f(location, LIGHT_INFO[SPECULAR_EXPONENT_OFFSET]);
 
             updateUniformBuffer();
         }
@@ -237,6 +237,10 @@ public class PFLRenderer extends EffectRenderer implements Renderer {
         GLES30.glGetActiveUniformBlockiv(program, location,
                 GLES30.GL_UNIFORM_BLOCK_DATA_SIZE, blockSizes, 0);
         blockSize = blockSizes[0];
+        
+        if (DEBUG) {
+            Log.d(TAG, "updateUniformBuffer() uniform block size=" + blockSize);
+        }
 
         String[] uniformNames = new String[] {
                 "uAmbientColor",
@@ -244,17 +248,27 @@ public class PFLRenderer extends EffectRenderer implements Renderer {
                 "uSpecularColor",
                 // "uSpecularExponent"
         };
-        int[] indices = new int[4];
-        int[] offsets = new int[4];
+
+        int numOfElement = uniformNames.length;
+
+        int[] indices = new int[numOfElement];
         GLES30.glGetUniformIndices(program, uniformNames, indices, 0);
-        GLES30.glGetActiveUniformsiv(program, 4, indices, 0,
+
+        int[] offsets = new int[numOfElement];
+        GLES30.glGetActiveUniformsiv(program, numOfElement, indices, 0,
                 GLES30.GL_UNIFORM_OFFSET, offsets, 0);
+
+        int[] strides = new int[numOfElement];
+        GLES30.glGetActiveUniformsiv(program, numOfElement, indices, 0,
+                GLES30.GL_UNIFORM_ARRAY_STRIDE, strides, 0);
 
         if (DEBUG) {
             Log.d(TAG, "updateUniformBuffer()");
-            for (int i = 0; i < 4; i++) {
-                Log.d(TAG, "\ti=" + i + " index=" + indices[i] + " offset="
-                        + offsets[i]);
+            for (int i = 0; i < numOfElement; i++) {
+                Log.d(TAG, "\ti=" + i +
+                        " index=" + indices[i] +
+                        " offset=" + offsets[i] +
+                        " stride=" + strides[i]);
             }
         }
 
