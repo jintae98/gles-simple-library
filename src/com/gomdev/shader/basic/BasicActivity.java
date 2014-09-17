@@ -17,6 +17,7 @@
 package com.gomdev.shader.basic;
 
 import com.gomdev.shader.EffectActivity;
+import com.gomdev.shader.R;
 
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
@@ -30,11 +31,10 @@ public class BasicActivity extends EffectActivity {
         super.onCreate(icicle);
 
         mRenderer = new BasicRenderer(this);
-        mView = new GLSurfaceView(this);
+        mView = (GLSurfaceView) findViewById(R.id.effect_surfaceview);
         mRenderer.setSurfaceView(mView);
 
         setGLESVersion();
-        addSurfaceView();
 
         mView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
 

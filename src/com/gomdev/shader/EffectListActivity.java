@@ -33,7 +33,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.google.android.gms.ads.*;
@@ -55,8 +54,7 @@ public class EffectListActivity extends Activity implements DialogListener {
         public void handleMessage(Message msg) {
             switch (msg.what) {
             case GET_EXTENSIONS:
-                FrameLayout layout = (FrameLayout) findViewById(R.id.layout);
-                layout.removeView(mView);
+                mView.setVisibility(View.INVISIBLE);
                 break;
             default:
             }
@@ -117,16 +115,13 @@ public class EffectListActivity extends Activity implements DialogListener {
     private void setupGLRendererForExtensions() {
         mRenderer = new DummyRenderer();
         mRenderer.setHandler(mHandler);
-        mView = new GLSurfaceView(this);
+        mView = (GLSurfaceView) findViewById(R.id.glsurfaceview);
         mView.setEGLContextClientVersion(2);
         mView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         mView.setRenderer(mRenderer);
         mView.setZOrderOnTop(true);
         mView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         mView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-
-        FrameLayout layout = (FrameLayout) findViewById(R.id.layout);
-        layout.addView(mView);
     }
 
     private void optionChanged() {

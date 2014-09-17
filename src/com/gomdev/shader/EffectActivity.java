@@ -26,13 +26,11 @@ import com.gomdev.shader.EffectContext.ShaderInfo;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,18 +46,12 @@ public class EffectActivity extends Activity {
         setContentView(R.layout.effect_main);
 
         boolean showInfo = EffectContext.getInstance().showInfo();
+        LinearLayout layout = (LinearLayout) findViewById(R.id.layout_info);
         if (showInfo == true) {
-            FrameLayout frameLayout = (FrameLayout) findViewById(R.id.layout);
-
-            LayoutInflater inflater = (LayoutInflater) getSystemService
-                    (Context.LAYOUT_INFLATER_SERVICE);
-            LinearLayout layout = (LinearLayout) inflater.inflate(
-                    R.layout.effect_info, null);
-
-            frameLayout.addView(layout);
-
+            layout.setVisibility(View.VISIBLE);
             showGLESVersion();
-
+        } else {
+            layout.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -140,10 +132,5 @@ public class EffectActivity extends Activity {
         default:
             mView.setEGLContextClientVersion(2);
         }
-    }
-
-    protected void addSurfaceView() {
-        FrameLayout layout = (FrameLayout) findViewById(R.id.layout_surface);
-        layout.addView(mView);
     }
 }
