@@ -2,14 +2,13 @@ package com.gomdev.shader;
 
 import com.gomdev.shader.R;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class ShaderViewActivity extends Activity {
+public class ShaderViewActivity extends ShaderActivity {
 
     private TextView mTextView = null;
     private String mShaderSource = null;
@@ -20,6 +19,11 @@ public class ShaderViewActivity extends Activity {
         setContentView(R.layout.shader_view);
 
         mTextView = (TextView) findViewById(R.id.shader_view);
+    }
+
+    @Override
+    int getLayoutID() {
+        return R.layout.fragment_shader_view;
     }
 
     @Override

@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <include layout="@layout/fragment_container" />
-
     <android.opengl.GLSurfaceView
-        android:id="@+id/glsurfaceview"
+        android:id="@+id/effect_surfaceview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <include layout="@layout/effect_info" />
 
 </FrameLayout>

@@ -25,7 +25,6 @@ import com.gomdev.shader.R;
 import com.gomdev.shader.EffectContext.ShaderInfo;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.Menu;
@@ -35,7 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class EffectActivity extends Activity {
+public class EffectActivity extends ShaderActivity {
     protected GLSurfaceView mView;
 
     @SuppressLint("InflateParams")
@@ -132,5 +131,10 @@ public class EffectActivity extends Activity {
         default:
             mView.setEGLContextClientVersion(2);
         }
+    }
+
+    @Override
+    int getLayoutID() {
+        return R.layout.fragment_effect;
     }
 }

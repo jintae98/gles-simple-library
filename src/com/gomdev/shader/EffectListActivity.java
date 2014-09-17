@@ -15,9 +15,7 @@ import com.gomdev.gles.GLESConfig;
 import com.gomdev.gles.GLESContext;
 import com.gomdev.gles.GLESConfig.Version;
 
-import android.app.Activity;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
@@ -26,18 +24,15 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.google.android.gms.ads.*;
-
-public class EffectListActivity extends Activity implements DialogListener {
+public class EffectListActivity extends ShaderActivity implements
+        DialogListener {
     private static final String CLASS = "EffectListActivity";
     private static final String TAG = GLESConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = GLESConfig.DEBUG;
@@ -68,41 +63,8 @@ public class EffectListActivity extends Activity implements DialogListener {
         String[] mShaderTitle;
     }
 
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_list, container,
-                    false);
-            return rootView;
-        }
-    }
-
-    public static class AdFragment extends Fragment {
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            return inflater.inflate(R.layout.fragment_ad, container, false);
-        }
-
-        @Override
-        public void onActivityCreated(Bundle bundle) {
-            super.onActivityCreated(bundle);
-            AdView mAdView = (AdView) getView().findViewById(R.id.adView);
-            AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice("770EADBDA1863A7B24B3991C3D00B573")
-                    .build();
-            mAdView.loadAd(adRequest);
-        }
-    }
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.effect_list);
 
         EffectContext.newInstance();
@@ -416,6 +378,11 @@ public class EffectListActivity extends Activity implements DialogListener {
         }
 
         return null;
+    }
+
+    @Override
+    int getLayoutID() {
+        return R.layout.fragment_list;
     }
 
     @Override
