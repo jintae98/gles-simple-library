@@ -14,5 +14,6 @@
     <string name="effect_list_device_info">Device Informations</string>
     <string name="effect_list_version">OpenGL ES Version</string>
     <string name="effect_list_extensions">Extensions</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3690892451265954/9103186220</string>
 
 </resources>
