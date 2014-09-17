@@ -12,12 +12,10 @@ import com.gomdev.gles.GLESObject.PrimitiveMode;
 import com.gomdev.gles.GLESObject.RenderType;
 import com.gomdev.shader.EffectRenderer;
 import com.gomdev.shader.EffectUtils;
-import com.gomdev.shader.R;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
@@ -71,7 +69,6 @@ public class OQRenderer extends EffectRenderer implements Renderer {
     private boolean mIsVisibilityChecked = false;
 
     private int mNormalMatrixHandle = -1;
-    private int mLightPosHandle = -1;
 
     private FloatBuffer mLightInfoBuffer = null;
 
