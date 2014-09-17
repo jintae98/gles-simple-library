@@ -37,7 +37,7 @@ public class EffectRenderer {
                         Toast.LENGTH_SHORT).show();
                 break;
             case UPDATE_FPS:
-                EffectContext context = EffectContext.getInstance();
+                ShaderContext context = ShaderContext.getInstance();
                 boolean showInfo = context.showInfo();
                 boolean showFPS = context.showFPS();
                 if (showInfo == true) {

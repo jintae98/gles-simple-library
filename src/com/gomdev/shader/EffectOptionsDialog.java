@@ -2,7 +2,7 @@ package com.gomdev.shader;
 
 import java.util.ArrayList;
 
-import com.gomdev.shader.EffectConfig.Options;
+import com.gomdev.shader.ShaderConfig.Options;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,15 +26,15 @@ public class EffectOptionsDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final EffectContext context = EffectContext.getInstance();
+        final ShaderContext context = ShaderContext.getInstance();
 
-        final int numOfOptions = EffectConfig.EFFECT_OPTIONS.length;
+        final int numOfOptions = ShaderConfig.EFFECT_OPTIONS.length;
         if (context.showInfo() == true) {
             for (int i = 0; i < numOfOptions; i++) {
-                mOptions.add(EffectConfig.EFFECT_OPTIONS[i].getOption());
+                mOptions.add(ShaderConfig.EFFECT_OPTIONS[i].getOption());
             }
         } else {
-            mOptions.add(EffectConfig.EFFECT_OPTIONS[Options.SHOW_INFO
+            mOptions.add(ShaderConfig.EFFECT_OPTIONS[Options.SHOW_INFO
                     .getIndex()].getOption());
         }
 
@@ -49,7 +49,7 @@ public class EffectOptionsDialog extends DialogFragment {
 
         Options option = null;
         for (int i = 0; i < numOfOptions; i++) {
-            option = EffectConfig.EFFECT_OPTIONS[i];
+            option = ShaderConfig.EFFECT_OPTIONS[i];
             switch (option) {
             case SHOW_INFO:
                 mCheckedItem[i] = context.showInfo();
@@ -85,7 +85,7 @@ public class EffectOptionsDialog extends DialogFragment {
 
                         Options option = null;
                         for (int i = 0; i < numOfOptions; i++) {
-                            option = EffectConfig.EFFECT_OPTIONS[i];
+                            option = ShaderConfig.EFFECT_OPTIONS[i];
                             switch (option) {
                             case SHOW_INFO:
                                 context.setShowInfo(mCheckedItem[i]);
@@ -115,7 +115,7 @@ public class EffectOptionsDialog extends DialogFragment {
     }
 
     private ListView makeMultipleChoiceList(final int numOfOptions) {
-        final EffectContext context = EffectContext.getInstance();
+        final ShaderContext context = ShaderContext.getInstance();
 
         Activity activity = getActivity();
         final ListView listView = new ListView(activity);
@@ -133,12 +133,12 @@ public class EffectOptionsDialog extends DialogFragment {
         return listView;
     }
 
-    private void setupOptionsMenu(final EffectContext context,
+    private void setupOptionsMenu(final ShaderContext context,
             final int numOfOptions, final ListView listView) {
         SparseBooleanArray sb = listView.getCheckedItemPositions();
         boolean showInfo = context.showInfo();
         if (sb.size() != 0) {
-            int startIndex = EffectConfig.Options.SHOW_INFO.getIndex() + 1;
+            int startIndex = ShaderConfig.Options.SHOW_INFO.getIndex() + 1;
             if (sb.get(0) == false) {
                 if (showInfo == true) {
                     
@@ -152,7 +152,7 @@ public class EffectOptionsDialog extends DialogFragment {
             } else {
                 if (showInfo == false) {
                     for (int i = startIndex; i < numOfOptions; i++) {
-                        mOptions.add(EffectConfig.EFFECT_OPTIONS[i]
+                        mOptions.add(ShaderConfig.EFFECT_OPTIONS[i]
                                 .getOption());
                     }
                     context.setShowInfo(true);

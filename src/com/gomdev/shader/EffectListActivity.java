@@ -67,7 +67,7 @@ public class EffectListActivity extends ShaderActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.effect_list);
 
-        EffectContext.newInstance();
+        ShaderContext.newInstance();
 
         setupGLRendererForExtensions();
 
@@ -347,7 +347,7 @@ public class EffectListActivity extends ShaderActivity implements
             EffectInfo info = getEffectInfo(effectName);
             int numOfShader = info.mShaderResIDs.length;
 
-            EffectContext context = EffectContext.getInstance();
+            ShaderContext context = ShaderContext.getInstance();
             context.setEffetName(effectName);
             context.setNumOfShaders(numOfShader);
 

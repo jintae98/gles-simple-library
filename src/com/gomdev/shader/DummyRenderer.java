@@ -19,7 +19,7 @@ public class DummyRenderer implements Renderer {
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         String extensions = GLES20.glGetString(GLES20.GL_EXTENSIONS);
         extensions.replace(' ', '\n');
-        EffectContext.getInstance().setExtensions(extensions);
+        ShaderContext.getInstance().setExtensions(extensions);
         mHandler.sendEmptyMessage(EffectListActivity.GET_EXTENSIONS);
     }
 

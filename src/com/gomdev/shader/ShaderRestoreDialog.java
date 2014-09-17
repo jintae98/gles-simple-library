@@ -3,7 +3,7 @@ package com.gomdev.shader;
 import java.util.ArrayList;
 
 import com.gomdev.gles.GLESFileUtils;
-import com.gomdev.shader.EffectContext.ShaderInfo;
+import com.gomdev.shader.ShaderContext.ShaderInfo;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,7 +25,7 @@ public class ShaderRestoreDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Activity activity = getActivity();
-        EffectContext context = EffectContext.getInstance();
+        ShaderContext context = ShaderContext.getInstance();
         
         ArrayList<ShaderInfo> shaderInfos = context.getShaderInfoList();
         

@@ -70,7 +70,7 @@ public class DeviceInfoDialog extends DialogFragment {
 
         TextView extensionView = (TextView) layout
                 .findViewById(R.id.extensions);
-        String extensions = EffectContext.getInstance().getExtensions();
+        String extensions = ShaderContext.getInstance().getExtensions();
         extensionView.setText(extensions);
 
         return layout;

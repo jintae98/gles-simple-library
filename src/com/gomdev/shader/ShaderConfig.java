@@ -1,6 +1,6 @@
 package com.gomdev.shader;
 
-public class EffectConfig {
+public class ShaderConfig {
     static final boolean DEBUG = false;
     static final String TAG = "gomdev";
 

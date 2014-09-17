@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import com.gomdev.gles.GLESFileUtils;
 import com.gomdev.gles.GLESUtils;
-import com.gomdev.shader.EffectContext.ShaderInfo;
+import com.gomdev.shader.ShaderContext.ShaderInfo;
 
 import android.content.Context;
 
@@ -22,7 +22,7 @@ public class EffectUtils {
     }
 
     public static String getShaderSource(Context context) {
-        EffectContext effectContext = EffectContext.getInstance();
+        ShaderContext effectContext = ShaderContext.getInstance();
         ShaderInfo savedShaderInfo = effectContext.getSavedShaderInfo();
 
         String savedFileName = savedShaderInfo.mFilePath;
@@ -40,7 +40,7 @@ public class EffectUtils {
     }
 
     public static String getShaderSource(Context context, int i) {
-        EffectContext effectContext = EffectContext.getInstance();
+        ShaderContext effectContext = ShaderContext.getInstance();
 
         ArrayList<ShaderInfo> shaderInfos = effectContext.getShaderInfoList();
         ShaderInfo shaderInfo = shaderInfos.get(i);
@@ -60,7 +60,7 @@ public class EffectUtils {
     }
 
     public static String getFragmentShaderSource(Context context, int i) {
-        EffectContext effectContext = EffectContext.getInstance();
+        ShaderContext effectContext = ShaderContext.getInstance();
 
         ArrayList<ShaderInfo> shaderInfos = effectContext.getShaderInfoList();
         ShaderInfo shaderInfo = shaderInfos.get(i);

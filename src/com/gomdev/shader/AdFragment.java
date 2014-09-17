@@ -15,7 +15,7 @@ public class AdFragment extends Fragment {
             Bundle savedInstanceState) {
         View view = null;
 
-        if (EffectConfig.ENABLE_AD) {
+        if (ShaderConfig.ENABLE_AD) {
             view = inflater.inflate(R.layout.fragment_ad, container, false);
         } else {
             view = inflater.inflate(R.layout.fragment_dummy, container, false);
@@ -28,7 +28,7 @@ public class AdFragment extends Fragment {
     public void onActivityCreated(Bundle bundle) {
         super.onActivityCreated(bundle);
 
-        if (EffectConfig.ENABLE_AD) {
+        if (ShaderConfig.ENABLE_AD) {
             AdView mAdView = (AdView) getView().findViewById(R.id.adView);
             AdRequest adRequest = new AdRequest.Builder()
                     .addTestDevice("770EADBDA1863A7B24B3991C3D00B573")

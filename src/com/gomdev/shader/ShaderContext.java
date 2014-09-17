@@ -6,8 +6,8 @@ import com.gomdev.gles.GLESConfig;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESContext;
 
-public class EffectContext {
-    private static EffectContext sEffectContext = null;
+public class ShaderContext {
+    private static ShaderContext sEffectContext = null;
 
     class ShaderInfo {
         String mTitle;
@@ -27,16 +27,16 @@ public class EffectContext {
 
     private String mExtensions = null;
 
-    public static EffectContext getInstance() {
+    public static ShaderContext getInstance() {
         return sEffectContext;
     }
 
-    public static EffectContext newInstance() {
-        sEffectContext = new EffectContext();
+    public static ShaderContext newInstance() {
+        sEffectContext = new ShaderContext();
         return sEffectContext;
     }
 
-    private EffectContext() {
+    private ShaderContext() {
         mShaderInfos = new ArrayList<ShaderInfo>();
     }
 

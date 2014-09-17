@@ -22,7 +22,7 @@ import com.gomdev.gles.GLESContext;
 import com.gomdev.gles.GLESFileUtils;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.shader.R;
-import com.gomdev.shader.EffectContext.ShaderInfo;
+import com.gomdev.shader.ShaderContext.ShaderInfo;
 
 import android.annotation.SuppressLint;
 import android.opengl.GLSurfaceView;
@@ -44,7 +44,7 @@ public class EffectActivity extends ShaderActivity {
 
         setContentView(R.layout.effect_main);
 
-        boolean showInfo = EffectContext.getInstance().showInfo();
+        boolean showInfo = ShaderContext.getInstance().showInfo();
         LinearLayout layout = (LinearLayout) findViewById(R.id.layout_info);
         if (showInfo == true) {
             layout.setVisibility(View.VISIBLE);
@@ -102,7 +102,7 @@ public class EffectActivity extends ShaderActivity {
     }
 
     private boolean isEmptySavedFile() {
-        EffectContext context = EffectContext.getInstance();
+        ShaderContext context = ShaderContext.getInstance();
 
         ArrayList<ShaderInfo> shaders = context.getShaderInfoList();
         for (ShaderInfo shaderInfo : shaders) {

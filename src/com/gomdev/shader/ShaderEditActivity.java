@@ -49,7 +49,7 @@ public class ShaderEditActivity extends ShaderActivity {
                 return false;
             }
 
-            EffectContext context = EffectContext.getInstance();
+            ShaderContext context = ShaderContext.getInstance();
             String savedFileName = context.getSavedShaderInfo().mFilePath;
 
             GLESFileUtils.write(savedFileName, mEditView.getText().toString());

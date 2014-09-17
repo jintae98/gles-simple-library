@@ -2,7 +2,7 @@ package com.gomdev.shader;
 
 import java.util.ArrayList;
 
-import com.gomdev.shader.EffectContext.ShaderInfo;
+import com.gomdev.shader.ShaderContext.ShaderInfo;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -14,7 +14,7 @@ import android.os.Bundle;
 public class ShaderListDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        EffectContext context = EffectContext.getInstance();
+        ShaderContext context = ShaderContext.getInstance();
         int numOfShaders = context.getNumOfShaders();
         String[] list = new String[numOfShaders];
         
@@ -41,7 +41,7 @@ public class ShaderListDialog extends DialogFragment {
     }
 
     private void saveSelectedShaderInfo(int which) {
-        EffectContext context = EffectContext.getInstance();
+        ShaderContext context = ShaderContext.getInstance();
         ArrayList<ShaderInfo> mShaderInfos = context.getShaderInfoList();
         
         ShaderInfo info = mShaderInfos.get(which);
