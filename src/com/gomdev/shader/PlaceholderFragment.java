@@ -23,7 +23,7 @@ public class PlaceholderFragment extends Fragment {
 
     @Override
     public void onAttach(Activity activity) {
-        mFragmentLayoutID = ((ShaderActivity) activity).getLayoutID();
+        mFragmentLayoutID = ((Ad) activity).getLayoutID();
         super.onAttach(activity);
     }
 

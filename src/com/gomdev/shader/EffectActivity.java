@@ -24,7 +24,7 @@ import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.shader.R;
 import com.gomdev.shader.ShaderContext.ShaderInfo;
 
-import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.Menu;
@@ -34,15 +34,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class EffectActivity extends ShaderActivity {
+public class EffectActivity extends Activity implements Ad {
     protected GLSurfaceView mView;
 
-    @SuppressLint("InflateParams")
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        setContentView(R.layout.effect_main);
+        setContentView(R.layout.common_main);
 
         boolean showInfo = ShaderContext.getInstance().showInfo();
         LinearLayout layout = (LinearLayout) findViewById(R.id.layout_info);
@@ -68,6 +67,11 @@ public class EffectActivity extends ShaderActivity {
         default:
 
         }
+    }
+
+    @Override
+    public int getLayoutID() {
+        return R.layout.fragment_effect;
     }
 
     @Override
@@ -131,10 +135,5 @@ public class EffectActivity extends ShaderActivity {
         default:
             mView.setEGLContextClientVersion(2);
         }
-    }
-
-    @Override
-    int getLayoutID() {
-        return R.layout.fragment_effect;
     }
 }

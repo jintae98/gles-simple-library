@@ -3,13 +3,14 @@ package com.gomdev.shader;
 import com.gomdev.shader.R;
 import com.gomdev.gles.GLESFileUtils;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class ShaderEditActivity extends ShaderActivity {
+public class ShaderEditActivity extends Activity implements Ad {
 
     private EditText mEditView = null;
 
@@ -18,7 +19,7 @@ public class ShaderEditActivity extends ShaderActivity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        setContentView(R.layout.shader_edit);
+        setContentView(R.layout.common_main);
 
         mEditView = (EditText) findViewById(R.id.shader_edit);
 
@@ -28,7 +29,7 @@ public class ShaderEditActivity extends ShaderActivity {
     }
 
     @Override
-    int getLayoutID() {
+    public int getLayoutID() {
         return R.layout.fragment_shader_edit;
     }
 
