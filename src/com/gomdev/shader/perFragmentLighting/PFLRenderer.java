@@ -1,7 +1,5 @@
 package com.gomdev.shader.perFragmentLighting;
 
-import java.nio.FloatBuffer;
-
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -14,7 +12,6 @@ import com.gomdev.shader.EffectUtils;
 
 import android.content.Context;
 import android.opengl.GLES20;
-import android.opengl.GLES30;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.Matrix;
 import android.util.Log;
@@ -23,18 +20,6 @@ public class PFLRenderer extends EffectRenderer implements Renderer {
     private static final String CLASS = "PVLRenderer";
     private static final String TAG = PFLConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = PFLConfig.DEBUG;
-
-    private final float[] LIGHT_INFO = new float[] {
-            0.3f, 0.3f, 0.3f, 1.0f, // ambient
-            0.5f, 0.5f, 0.5f, 1.0f, // diffuse
-            1.0f, 1.0f, 1.0f, 1.0f, // specular
-            16f, // specular exponent
-    };
-
-    private final int AMBIENT_OFFSET = 0;
-    private final int DIFFUSE_OFFSET = 4;
-    private final int SPECULAR_OFFSET = 8;
-    private final int SPECULAR_EXPONENT_OFFSET = 12;
 
     private GLESObject mCubeObject;
     private GLESObject mLightObject;
@@ -53,8 +38,6 @@ public class PFLRenderer extends EffectRenderer implements Renderer {
 
     private int mNormalMatrixHandle = -1;
     private int mLightPosHandle = -1;
-
-    private FloatBuffer mLightInfoBuffer = null;
 
     private GLESVector4 mCubeLight = new GLESVector4();
     private float mRadius = 0f;
@@ -196,92 +179,6 @@ public class PFLRenderer extends EffectRenderer implements Renderer {
                 "uNormalMatrix");
         mLightPosHandle = GLES20.glGetUniformLocation(program,
                 "uLightPos");
-
-        if (mVersion == Version.GLES_20) {
-            int location = GLES20
-                    .glGetUniformLocation(program, "uAmbientColor");
-            GLES20.glUniform4fv(location, 1, LIGHT_INFO, AMBIENT_OFFSET);
-
-            location = GLES20.glGetUniformLocation(program, "uDiffuseColor");
-            GLES20.glUniform4fv(location, 1, LIGHT_INFO, DIFFUSE_OFFSET);
-
-            location = GLES20.glGetUniformLocation(program, "uSpecularColor");
-            GLES20.glUniform4fv(location, 1, LIGHT_INFO, SPECULAR_OFFSET);
-
-            location = GLES20
-                    .glGetUniformLocation(program, "uSpecularExponent");
-            GLES20.glUniform1f(location, LIGHT_INFO[SPECULAR_EXPONENT_OFFSET]);
-        } else {
-            int location = GLES30
-                    .glGetUniformLocation(program, "uSpecularExponent");
-            GLES30.glUniform1f(location, LIGHT_INFO[SPECULAR_EXPONENT_OFFSET]);
-
-            updateUniformBuffer();
-        }
-    }
-
-    private void updateUniformBuffer() {
-
-        mLightInfoBuffer = GLESUtils.makeFloatBuffer(LIGHT_INFO);
-
-        int bindingPoint = 1;
-        int blockSize = -1;
-        int uBufferID = -1;
-        int program = mShader.getProgram();
-
-        int location = GLES30.glGetUniformBlockIndex(program, "LightInfo");
-
-        GLES30.glUniformBlockBinding(program, location, bindingPoint);
-
-        int[] blockSizes = new int[1];
-        GLES30.glGetActiveUniformBlockiv(program, location,
-                GLES30.GL_UNIFORM_BLOCK_DATA_SIZE, blockSizes, 0);
-        blockSize = blockSizes[0];
-        
-        if (DEBUG) {
-            Log.d(TAG, "updateUniformBuffer() uniform block size=" + blockSize);
-        }
-
-        String[] uniformNames = new String[] {
-                "uAmbientColor",
-                "uDiffuseColor",
-                "uSpecularColor",
-                // "uSpecularExponent"
-        };
-
-        int numOfElement = uniformNames.length;
-
-        int[] indices = new int[numOfElement];
-        GLES30.glGetUniformIndices(program, uniformNames, indices, 0);
-
-        int[] offsets = new int[numOfElement];
-        GLES30.glGetActiveUniformsiv(program, numOfElement, indices, 0,
-                GLES30.GL_UNIFORM_OFFSET, offsets, 0);
-
-        int[] strides = new int[numOfElement];
-        GLES30.glGetActiveUniformsiv(program, numOfElement, indices, 0,
-                GLES30.GL_UNIFORM_ARRAY_STRIDE, strides, 0);
-
-        if (DEBUG) {
-            Log.d(TAG, "updateUniformBuffer()");
-            for (int i = 0; i < numOfElement; i++) {
-                Log.d(TAG, "\ti=" + i +
-                        " index=" + indices[i] +
-                        " offset=" + offsets[i] +
-                        " stride=" + strides[i]);
-            }
-        }
-
-        int[] uniformBufIDs = new int[1];
-        GLES30.glGenBuffers(1, uniformBufIDs, 0);
-        GLES30.glBindBuffer(GLES30.GL_UNIFORM_BUFFER, uniformBufIDs[0]);
-        uBufferID = uniformBufIDs[0];
-        GLES30.glBufferData(GLES30.GL_UNIFORM_BUFFER,
-                blockSize,
-                mLightInfoBuffer,
-                GLES30.GL_DYNAMIC_DRAW);
-        GLES30.glBindBufferBase(GLES30.GL_UNIFORM_BUFFER, bindingPoint,
-                uBufferID);
     }
 
     public void touchDown(float x, float y) {

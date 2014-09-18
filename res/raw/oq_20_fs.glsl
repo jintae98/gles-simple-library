@@ -9,10 +9,29 @@ uniform sampler2D uTexture;
 
 uniform highp mat3 uNormalMatrix;
 
-uniform highp vec4 uAmbientColor;
-uniform highp vec4 uDiffuseColor;
-uniform highp vec4 uSpecularColor;
-uniform highp float uSpecularExponent;
+struct LightInfo {
+    highp vec4 ambient;
+    highp vec4 diffuse;
+    highp vec4 specular;
+};
+
+struct MeterialInfo {
+    highp vec4 ambient;
+    highp vec4 diffuse;
+    highp vec4 specular;
+    highp float specularExponent;
+};
+
+const LightInfo lightInfo = LightInfo(
+        vec4(1.0, 1.0, 1.0, 1.0),
+        vec4(1.0, 1.0, 1.0, 1.0),
+        vec4(1.0, 1.0, 1.0, 1.0));
+
+const MeterialInfo materialInfo = MeterialInfo(
+        vec4(0.3, 0.3, 0.3, 1.0),
+        vec4(0.5, 0.5, 0.5, 1.0),
+        vec4(1.0, 1.0, 1.0, 1.0),
+        16.0);
 
 vec4 calcLightColor() {
     vec3 lightDirES;
@@ -31,10 +50,11 @@ vec4 calcLightColor() {
 
     float diffuse = max(0.0, dot(normalES, lightDirES));
     float specular = max(0.0, dot(normalES, halfPlane));
-    specular = pow(specular, uSpecularExponent);
+    specular = pow(specular, materialInfo.specularExponent);
 
-    vec4 lightColor = uAmbientColor + uDiffuseColor * diffuse
-            + uSpecularColor * specular;
+    vec4 lightColor = lightInfo.ambient * materialInfo.ambient
+            + lightInfo.diffuse * materialInfo.diffuse * diffuse
+            + lightInfo.specular * materialInfo.specular * specular;
     lightColor.w = 1.0;
 
     return lightColor;

@@ -1,6 +1,5 @@
 package com.gomdev.shader.occlusionQuery;
 
-import java.nio.FloatBuffer;
 import java.util.Random;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -32,18 +31,6 @@ public class OQRenderer extends EffectRenderer implements Renderer {
     private final static int NUM_OF_ELEMENT = 3;
     private static final int MAX_NUM_OF_FRAMES = 5;
 
-    private final float[] LIGHT_INFO = new float[] {
-            0.3f, 0.3f, 0.3f, 1.0f, // ambient
-            0.5f, 0.5f, 0.5f, 1.0f, // diffuse
-            1.0f, 1.0f, 1.0f, 1.0f, // specular
-            16f, // specular exponent
-    };
-
-    private final int AMBIENT_OFFSET = 0;
-    private final int DIFFUSE_OFFSET = 4;
-    private final int SPECULAR_OFFSET = 8;
-    private final int SPECULAR_EXPONENT_OFFSET = 12;
-
     private Version mVersion;
     private GLESObject mObject;
     private GLESShader mShader;
@@ -69,8 +56,6 @@ public class OQRenderer extends EffectRenderer implements Renderer {
     private boolean mIsVisibilityChecked = false;
 
     private int mNormalMatrixHandle = -1;
-
-    private FloatBuffer mLightInfoBuffer = null;
 
     private GLESVector4 mLightPos = new GLESVector4(1f, 1f, 1f, 0f);
 
@@ -233,17 +218,18 @@ public class OQRenderer extends EffectRenderer implements Renderer {
 
         mObject.setShader(mShader);
 
-        Bitmap bitmap = GLESUtils.makeBitmap(512, 512, Config.ARGB_8888, Color.GREEN);
+        Bitmap bitmap = GLESUtils.makeBitmap(512, 512, Config.ARGB_8888,
+                Color.GREEN);
         GLESTexture texture = new GLESTexture(bitmap);
         mObject.setTexture(texture);
 
         mIsVisibilityChecked = false;
         mNumOfFrames = 0;
-        
+
         int program = mShader.getProgram();
         mNormalMatrixHandle = GLES20.glGetUniformLocation(program,
                 "uNormalMatrix");
-        
+
         int location = GLES20.glGetUniformLocation(program,
                 "uLightPos");
         GLES20.glUniform4f(location,
@@ -252,77 +238,6 @@ public class OQRenderer extends EffectRenderer implements Renderer {
                 mLightPos.mZ,
                 mLightPos.mW);
 
-        if (mVersion == Version.GLES_20) {
-            location = GLES20
-                    .glGetUniformLocation(program, "uAmbientColor");
-            GLES20.glUniform4fv(location, 1, LIGHT_INFO, AMBIENT_OFFSET);
-
-            location = GLES20.glGetUniformLocation(program, "uDiffuseColor");
-            GLES20.glUniform4fv(location, 1, LIGHT_INFO, DIFFUSE_OFFSET);
-
-            location = GLES20.glGetUniformLocation(program, "uSpecularColor");
-            GLES20.glUniform4fv(location, 1, LIGHT_INFO, SPECULAR_OFFSET);
-
-            location = GLES20
-                    .glGetUniformLocation(program, "uSpecularExponent");
-            GLES20.glUniform1f(location, LIGHT_INFO[SPECULAR_EXPONENT_OFFSET]);
-        } else {
-            location = GLES30
-                    .glGetUniformLocation(program, "uSpecularExponent");
-            GLES20.glUniform1f(location, LIGHT_INFO[SPECULAR_EXPONENT_OFFSET]);
-
-            updateUniformBuffer();
-        }
-    }
-
-    private void updateUniformBuffer() {
-
-        mLightInfoBuffer = GLESUtils.makeFloatBuffer(LIGHT_INFO);
-
-        int bindingPoint = 1;
-        int blockSize = -1;
-        int uBufferID = -1;
-        int program = mShader.getProgram();
-
-        int location = GLES30.glGetUniformBlockIndex(program, "LightInfo");
-
-        GLES30.glUniformBlockBinding(program, location, bindingPoint);
-
-        int[] blockSizes = new int[1];
-        GLES30.glGetActiveUniformBlockiv(program, location,
-                GLES30.GL_UNIFORM_BLOCK_DATA_SIZE, blockSizes, 0);
-        blockSize = blockSizes[0];
-
-        String[] uniformNames = new String[] {
-                "uAmbientColor",
-                "uDiffuseColor",
-                "uSpecularColor",
-                // "uSpecularExponent"
-        };
-        int[] indices = new int[4];
-        int[] offsets = new int[4];
-        GLES30.glGetUniformIndices(program, uniformNames, indices, 0);
-        GLES30.glGetActiveUniformsiv(program, 4, indices, 0,
-                GLES30.GL_UNIFORM_OFFSET, offsets, 0);
-
-        if (DEBUG) {
-            Log.d(TAG, "updateUniformBuffer()");
-            for (int i = 0; i < 4; i++) {
-                Log.d(TAG, "\ti=" + i + " index=" + indices[i] + " offset="
-                        + offsets[i]);
-            }
-        }
-
-        int[] uniformBufIDs = new int[1];
-        GLES30.glGenBuffers(1, uniformBufIDs, 0);
-        GLES30.glBindBuffer(GLES30.GL_UNIFORM_BUFFER, uniformBufIDs[0]);
-        uBufferID = uniformBufIDs[0];
-        GLES30.glBufferData(GLES30.GL_UNIFORM_BUFFER,
-                blockSize,
-                mLightInfoBuffer,
-                GLES30.GL_DYNAMIC_DRAW);
-        GLES30.glBindBufferBase(GLES30.GL_UNIFORM_BUFFER, bindingPoint,
-                uBufferID);
     }
 
     public void touchDown(float x, float y) {
@@ -380,7 +295,7 @@ public class OQRenderer extends EffectRenderer implements Renderer {
 
             attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
             mShader.setTexCoordAttribIndex(attribName);
-            
+
             attribName = GLESShaderConstant.ATTRIB_NORMAL;
             mShader.setNormalAttribIndex(attribName);
         }

@@ -28,18 +28,6 @@ public class IR2Renderer extends EffectRenderer implements Renderer {
     private final static int NUM_OF_INSTANCE = 1000;
     private final static int NUM_OF_ELEMENT = 4;
 
-    private final float[] LIGHT_INFO = new float[] {
-            0.3f, 0.3f, 0.3f, 1.0f, // ambient
-            0.5f, 0.5f, 0.5f, 1.0f, // diffuse
-            1.0f, 1.0f, 1.0f, 1.0f, // specular
-            16f, // specular exponent
-    };
-
-    private final int AMBIENT_OFFSET = 0;
-    private final int DIFFUSE_OFFSET = 4;
-    private final int SPECULAR_OFFSET = 8;
-    private final int SPECULAR_EXPONENT_OFFSET = 12;
-
     private GLESObject mObject;
     private GLESShader mShader;
 
@@ -246,18 +234,6 @@ public class IR2Renderer extends EffectRenderer implements Renderer {
                 mLightPos.mY,
                 mLightPos.mZ,
                 mLightPos.mW);
-
-        location = GLES20.glGetUniformLocation(program, "uAmbientColor");
-        GLES20.glUniform4fv(location, 1, LIGHT_INFO, AMBIENT_OFFSET);
-
-        location = GLES20.glGetUniformLocation(program, "uDiffuseColor");
-        GLES20.glUniform4fv(location, 1, LIGHT_INFO, DIFFUSE_OFFSET);
-
-        location = GLES20.glGetUniformLocation(program, "uSpecularColor");
-        GLES20.glUniform4fv(location, 1, LIGHT_INFO, SPECULAR_OFFSET);
-
-        location = GLES20.glGetUniformLocation(program, "uSpecularExponent");
-        GLES20.glUniform1f(location, LIGHT_INFO[SPECULAR_EXPONENT_OFFSET]);
     }
 
     public void touchDown(float x, float y) {
