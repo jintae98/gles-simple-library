@@ -2,6 +2,8 @@ package com.gomdev.shader;
 
 import java.util.ArrayList;
 
+import com.gomdev.gles.GLESConfig;
+import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.shader.ShaderConfig.Options;
 
 import android.app.Activity;
@@ -10,6 +12,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.View;
@@ -24,12 +27,25 @@ public class EffectOptionsDialog extends DialogFragment {
     private ArrayAdapter<String> mAdapter = null;
     private DialogListener mListener = null;
 
+    private SharedPreferences mPref = null;
+    private SharedPreferences.Editor mPrefEditor = null;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        mPref = getActivity().getSharedPreferences(ShaderConfig.PREF_NAME, 0);
+        mPrefEditor = mPref.edit();
+        
         final ShaderContext context = ShaderContext.getInstance();
 
+        boolean showInfo = mPref.getBoolean(ShaderConfig.PREF_SHOW_INFO, true);
+        context.setShowInfo(showInfo);
+        boolean showFPS = mPref.getBoolean(ShaderConfig.PREF_SHOW_FPS, true);
+        context.setShowFPS(showFPS);
+        boolean useGLES30 = mPref.getBoolean(ShaderConfig.PREF_USE_GLES_30, GLESConfig.GLES_VERSION == Version.GLES_30);
+        context.setUseGLES30(useGLES30);
+
         final int numOfOptions = ShaderConfig.EFFECT_OPTIONS.length;
-        if (context.showInfo() == true) {
+        if (showInfo == true) {
             for (int i = 0; i < numOfOptions; i++) {
                 mOptions.add(ShaderConfig.EFFECT_OPTIONS[i].getOption());
             }
@@ -56,7 +72,7 @@ public class EffectOptionsDialog extends DialogFragment {
                 listView.setItemChecked(i, context.showInfo());
                 break;
             case SHOW_FPS:
-                mCheckedItem[i] = context.showFPS();
+                mCheckedItem[i] = context.showFPS();;
                 listView.setItemChecked(i, context.showFPS());
                 break;
             case USE_GLES30:
@@ -89,18 +105,23 @@ public class EffectOptionsDialog extends DialogFragment {
                             switch (option) {
                             case SHOW_INFO:
                                 context.setShowInfo(mCheckedItem[i]);
+                                mPrefEditor.putBoolean(ShaderConfig.PREF_SHOW_INFO, mCheckedItem[i]);
                                 break;
                             case SHOW_FPS:
                                 context.setShowFPS(mCheckedItem[i]);
+                                mPrefEditor.putBoolean(ShaderConfig.PREF_SHOW_FPS, mCheckedItem[i]);
                                 break;
                             case USE_GLES30:
                                 context.setUseGLES30(mCheckedItem[i]);
+                                mPrefEditor.putBoolean(ShaderConfig.PREF_USE_GLES_30, mCheckedItem[i]);
                                 break;
                             default:
                                 break;
                             }
                         }
-                        mListener.onDialogPositiveClick(EffectOptionsDialog.this);
+                        mPrefEditor.commit();
+                        mListener
+                                .onDialogPositiveClick(EffectOptionsDialog.this);
                     }
                 })
                 .setNegativeButton("Cancel", new OnClickListener() {
@@ -108,7 +129,8 @@ public class EffectOptionsDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog,
                             int which) {
-                        mListener.onDialogPositiveClick(EffectOptionsDialog.this);
+                        mListener
+                                .onDialogPositiveClick(EffectOptionsDialog.this);
                     }
                 });
         return builder.create();
@@ -141,7 +163,7 @@ public class EffectOptionsDialog extends DialogFragment {
             int startIndex = ShaderConfig.Options.SHOW_INFO.getIndex() + 1;
             if (sb.get(0) == false) {
                 if (showInfo == true) {
-                    
+
                     for (int i = listView.getCount() - 1; i >= startIndex; i--) {
                         mOptions.remove(i);
                     }

@@ -6,6 +6,11 @@ public class ShaderConfig {
 
     public static final String APP_DIRECTORY_NAME = "gomdev";
     
+    public static final String PREF_NAME = "shader pref";
+    public static final String PREF_SHOW_INFO = "show informations";
+    public static final String PREF_USE_GLES_30 = "use gles 3.0";
+    public static final String PREF_SHOW_FPS = "show fps";
+    
     public static final boolean ENABLE_AD = true; 
 
     public enum Options {
