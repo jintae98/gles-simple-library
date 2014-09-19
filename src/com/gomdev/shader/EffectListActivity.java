@@ -135,16 +135,22 @@ public class EffectListActivity extends Activity implements
                     R.raw.ir_20_vs,
                     R.raw.ir_20_fs,
             };
+
+            info.mShaderTitle = new String[] {
+                    "IR 20 VS",
+                    "IR 20 FS",
+            };
         } else {
             info.mShaderResIDs = new int[] {
                     R.raw.ir_30_vs,
                     R.raw.ir_30_fs,
             };
+
+            info.mShaderTitle = new String[] {
+                    "IR 30 VS",
+                    "IR 30 FS",
+            };
         }
-        info.mShaderTitle = new String[] {
-                "IR VS",
-                "IR FS",
-        };
 
         mEffects.add(info);
     }
@@ -160,16 +166,22 @@ public class EffectListActivity extends Activity implements
                     R.raw.ir2_20_vs,
                     R.raw.ir2_20_fs,
             };
+
+            info.mShaderTitle = new String[] {
+                    "IR2 20 VS",
+                    "IR2 20 FS",
+            };
         } else {
             info.mShaderResIDs = new int[] {
                     R.raw.ir2_30_vs,
                     R.raw.ir2_30_fs,
             };
+
+            info.mShaderTitle = new String[] {
+                    "IR2 30 VS",
+                    "IR2 30 FS",
+            };
         }
-        info.mShaderTitle = new String[] {
-                "IR2 VS",
-                "IR2 FS",
-        };
 
         mEffects.add(info);
     }
@@ -185,16 +197,22 @@ public class EffectListActivity extends Activity implements
                     R.raw.texture_20_vs,
                     R.raw.texture_20_fs,
             };
+
+            info.mShaderTitle = new String[] {
+                    "Texture 20 VS",
+                    "Texture 20 FS",
+            };
         } else {
             info.mShaderResIDs = new int[] {
                     R.raw.texture_30_vs,
                     R.raw.texture_30_fs,
             };
+
+            info.mShaderTitle = new String[] {
+                    "Texture 30 VS",
+                    "Texture 30 FS",
+            };
         }
-        info.mShaderTitle = new String[] {
-                "Texture VS",
-                "Texture FS",
-        };
 
         mEffects.add(info);
     }
@@ -208,21 +226,23 @@ public class EffectListActivity extends Activity implements
             info.mShaderResIDs = new int[] {
                     R.raw.basic_20_vs,
                     R.raw.basic_20_fs,
-                    R.raw.basic_20_vs,
-                    R.raw.basic_20_fs
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Basic 20 VS",
+                    "Basic 20 FS",
             };
         } else {
             info.mShaderResIDs = new int[] {
                     R.raw.basic_30_vs,
                     R.raw.basic_30_fs
             };
+
+            info.mShaderTitle = new String[] {
+                    "Basic 30 VS",
+                    "Basic 30 FS",
+            };
         }
-        info.mShaderTitle = new String[] {
-                "Basic main VS",
-                "Basic main FS",
-                "Basic overlay VS",
-                "Basic overlay FS"
-        };
 
         mEffects.add(info);
     }
@@ -237,16 +257,22 @@ public class EffectListActivity extends Activity implements
                     R.raw.pvl_20_vs,
                     R.raw.pvl_20_fs
             };
+
+            info.mShaderTitle = new String[] {
+                    "Per Vertex Lighting 20 VS",
+                    "Per Vertex Lighting 20 FS"
+            };
         } else {
             info.mShaderResIDs = new int[] {
                     R.raw.pvl_30_vs,
                     R.raw.pvl_30_fs
             };
+
+            info.mShaderTitle = new String[] {
+                    "Per Vertex Lighting 30 VS",
+                    "Per Vertex Lighting 30 FS"
+            };
         }
-        info.mShaderTitle = new String[] {
-                "Per Vertex Lighting VS",
-                "Per Vertex Lighting FS"
-        };
 
         mEffects.add(info);
     }
@@ -261,16 +287,22 @@ public class EffectListActivity extends Activity implements
                     R.raw.pfl_20_vs,
                     R.raw.pfl_20_fs
             };
+
+            info.mShaderTitle = new String[] {
+                    "Per Fragment Lighting 20 VS",
+                    "Per Fragment Lighting 20 FS"
+            };
         } else {
             info.mShaderResIDs = new int[] {
                     R.raw.pfl_30_vs,
                     R.raw.pfl_30_fs
             };
+
+            info.mShaderTitle = new String[] {
+                    "Per Fragment Lighting 30 VS",
+                    "Per Fragment Lighting 30 FS"
+            };
         }
-        info.mShaderTitle = new String[] {
-                "Per Fragment Lighting VS",
-                "Per Fragment Lighting FS"
-        };
 
         mEffects.add(info);
     }
@@ -285,16 +317,22 @@ public class EffectListActivity extends Activity implements
                     R.raw.oq_20_vs,
                     R.raw.oq_20_fs,
             };
+
+            info.mShaderTitle = new String[] {
+                    "Occlusion Query 20 VS",
+                    "Occlusion Query 20 FS",
+            };
         } else {
             info.mShaderResIDs = new int[] {
                     R.raw.oq_30_vs,
                     R.raw.oq_30_fs
             };
+
+            info.mShaderTitle = new String[] {
+                    "Occlusion Query 30 VS",
+                    "Occlusion Query 30 FS",
+            };
         }
-        info.mShaderTitle = new String[] {
-                "Occlusion Query VS",
-                "Occlusion Query FS",
-        };
 
         mEffects.add(info);
     }
@@ -308,21 +346,23 @@ public class EffectListActivity extends Activity implements
             info.mShaderResIDs = new int[] {
                     R.raw.whitehole_20_vs,
                     R.raw.whitehole_20_fs,
-                    R.raw.whitehole_20_vs,
-                    R.raw.whitehole_20_fs
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Whitehole 20 VS",
+                    "Whitehole 20 FS",
             };
         } else {
             info.mShaderResIDs = new int[] {
                     R.raw.whitehole_30_vs,
                     R.raw.whitehole_30_fs
             };
+
+            info.mShaderTitle = new String[] {
+                    "Whitehole 30 VS",
+                    "Whitehole 30 FS",
+            };
         }
-        info.mShaderTitle = new String[] {
-                "Whitehole main VS",
-                "Whitehole main FS",
-                "Whitehole overlay VS",
-                "Whitehole overlay FS"
-        };
 
         mEffects.add(info);
     }
