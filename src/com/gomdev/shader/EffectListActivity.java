@@ -18,6 +18,7 @@ import com.gomdev.gles.GLESConfig.Version;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
@@ -70,13 +71,22 @@ public class EffectListActivity extends Activity implements
 
         ShaderContext.newInstance();
 
-        setupGLRendererForExtensions();
+        SharedPreferences pref = getSharedPreferences(ShaderConfig.PREF_NAME, 0);
+        String extensions = pref
+                .getString(ShaderConfig.PREF_GLES_EXTENSION, "");
+        if (extensions.compareTo("") != 0) {
+            ShaderContext.getInstance().setExtensions(extensions);
+            mView = (GLSurfaceView) findViewById(R.id.glsurfaceview);
+            mView.setVisibility(View.INVISIBLE);
+        } else {
+            setupGLRendererForExtensions();
+        }
 
         optionChanged();
     }
 
     private void setupGLRendererForExtensions() {
-        mRenderer = new DummyRenderer();
+        mRenderer = new DummyRenderer(this);
         mRenderer.setHandler(mHandler);
         mView = (GLSurfaceView) findViewById(R.id.glsurfaceview);
         mView.setEGLContextClientVersion(2);
@@ -384,24 +394,6 @@ public class EffectListActivity extends Activity implements
     @Override
     public int getLayoutID() {
         return R.layout.fragment_list;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mView.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        mView.onPause();
-        super.onPause();
-
     }
 
     @Override
