@@ -25,8 +25,10 @@ public class GLESShader {
     private int mTexCoordIndex = -1;
     private int mColorIndex = -1;
     private int mNormalIndex = -1;
-    
+
     private Map<String, Integer> mUniforms = new HashMap<String, Integer>();
+
+    private StringBuilder mCompileLog = new StringBuilder();
 
     public GLESShader(Context context) {
         mContext = context;
@@ -38,7 +40,7 @@ public class GLESShader {
             throw new IllegalStateException("glCreateProgram() error="
                     + GLES20.glGetError());
         }
-        
+
         useProgram();
     }
 
@@ -98,20 +100,31 @@ public class GLESShader {
     }
 
     private boolean compileAndLink() {
+        GLESContext context = GLESContext.getInstance();
+        context.setShaderErrorLog(null);
+
         if (mVertexShaderSource == null || mFragmentShaderSource == null) {
             Log.e(TAG, "compileAndLink() shader source is not set!!!");
             return false;
         }
-        
+
+        boolean result = true;
         if (setShaderFromString(GLES20.GL_VERTEX_SHADER, mVertexShaderSource) == false) {
-            return false;
+            result = false;
         }
-        
-        if (setShaderFromString(GLES20.GL_FRAGMENT_SHADER, mFragmentShaderSource) == false) {
+
+        if (setShaderFromString(GLES20.GL_FRAGMENT_SHADER,
+                mFragmentShaderSource) == false) {
+            result = false;
+        }
+
+        if (result == false) {
+            GLESContext.getInstance().setShaderErrorLog(mCompileLog.toString());
             return false;
         }
 
         if (linkProgram() == false) {
+            GLESContext.getInstance().setShaderErrorLog(mCompileLog.toString());
             return false;
         }
 
@@ -152,7 +165,11 @@ public class GLESShader {
             GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, compiled, 0);
             if (compiled[0] == 0) {
                 Log.e(TAG, "Could not compile shader " + shaderType + ":");
-                Log.e(TAG, GLES20.glGetShaderInfoLog(shader));
+
+                String log = GLES20.glGetShaderInfoLog(shader);
+                Log.e(TAG, log);
+                mCompileLog.append(log);
+
                 GLES20.glDeleteShader(shader);
                 shader = 0;
                 return false;
@@ -171,7 +188,11 @@ public class GLESShader {
         GLES20.glGetProgramiv(mProgram, GLES20.GL_LINK_STATUS, linkStatus, 0);
         if (linkStatus[0] != GLES20.GL_TRUE) {
             Log.e(TAG, "Could not link program: ");
-            Log.e(TAG, GLES20.glGetProgramInfoLog(mProgram));
+
+            String log = GLES20.glGetProgramInfoLog(mProgram);
+            Log.e(TAG, log);
+            mCompileLog.append(log);
+
             GLES20.glDeleteProgram(mProgram);
             mProgram = 0;
             return false;

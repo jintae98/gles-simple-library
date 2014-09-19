@@ -43,8 +43,8 @@ public class EffectActivity extends Activity implements Ad {
 
         setContentView(R.layout.common_main);
 
-        boolean showInfo = ShaderContext.getInstance().showInfo();
         LinearLayout layout = (LinearLayout) findViewById(R.id.layout_info);
+        boolean showInfo = ShaderContext.getInstance().showInfo();
         if (showInfo == true) {
             layout.setVisibility(View.VISIBLE);
             showGLESVersion();

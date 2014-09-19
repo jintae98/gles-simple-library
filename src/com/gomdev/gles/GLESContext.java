@@ -10,6 +10,7 @@ public class GLESContext {
     private GLESRenderer mRenderer = null;
     private Context mContext = null;
     private Version mGLESVersion = GLESConfig.GLES_VERSION;
+    private String mShaderErrorLog = null;
 
     public static GLESContext getInstance() {
         return sContext;
@@ -41,5 +42,13 @@ public class GLESContext {
 
     public Version getVersion() {
         return mGLESVersion;
+    }
+
+    public void setShaderErrorLog(String log) {
+        mShaderErrorLog = log;
+    }
+
+    public String getShaderErrorLog() {
+        return mShaderErrorLog;
     }
 }

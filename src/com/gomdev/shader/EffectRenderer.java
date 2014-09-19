@@ -43,6 +43,8 @@ public abstract class EffectRenderer implements Renderer {
             case COMPILE_OR_LINK_ERROR:
                 Toast.makeText(mContext, "Compile or Link fails",
                         Toast.LENGTH_SHORT).show();
+
+                showCompileLog();
                 break;
             case UPDATE_FPS:
                 ShaderContext context = ShaderContext.getInstance();
@@ -68,6 +70,24 @@ public abstract class EffectRenderer implements Renderer {
                 }
                 mFPS.setText("" + msg.arg1);
                 break;
+            }
+        }
+
+        private void showCompileLog() {
+            TextView view = (TextView) ((Activity) mContext)
+                    .findViewById(R.id.error_log);
+            LinearLayout layout = (LinearLayout) ((Activity) mContext)
+                    .findViewById(R.id.layout_info);
+
+            String compileLog = GLESContext.getInstance()
+                    .getShaderErrorLog();
+            if (compileLog != null) {
+                view.setText(compileLog);
+                view.setVisibility(View.VISIBLE);
+                layout.setVisibility(View.INVISIBLE);
+            } else {
+                view.setVisibility(View.INVISIBLE);
+                layout.setVisibility(View.VISIBLE);
             }
         }
 
