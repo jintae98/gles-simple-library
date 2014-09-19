@@ -124,12 +124,6 @@ public class TextureRenderer extends EffectRenderer {
     protected void onSurfaceCreated() {
         GLES20.glClearColor(0.7f, 0.7f, 0.7f, 0.0f);
 
-        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
-        GLES20.glDepthFunc(GLES20.GL_LEQUAL);
-
-        GLES20.glEnable(GLES20.GL_CULL_FACE);
-        GLES20.glCullFace(GLES20.GL_BACK);
-
         mTextureObject.setShader(mTextureShader);
 
         Bitmap bitmap = GLESUtils.makeCheckerboard(512, 512, 32);
