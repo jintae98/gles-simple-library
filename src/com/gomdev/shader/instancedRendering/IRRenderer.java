@@ -3,9 +3,6 @@ package com.gomdev.shader.instancedRendering;
 import java.nio.FloatBuffer;
 import java.util.Random;
 
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
-
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESObject.PrimitiveMode;
@@ -17,11 +14,9 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.opengl.Matrix;
-import android.opengl.GLSurfaceView.Renderer;
 import android.util.Log;
 
-public class IRRenderer extends EffectRenderer implements Renderer,
-        GLESRendererListener {
+public class IRRenderer extends EffectRenderer implements GLESRendererListener {
     private static final String CLASS = "IRRenderer";
     private static final String TAG = IRConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = IRConfig.DEBUG;
@@ -88,7 +83,7 @@ public class IRRenderer extends EffectRenderer implements Renderer,
     }
 
     @Override
-    public void onDrawFrame(GL10 gl) {
+    protected void onDrawFrame() {
         if (DEBUG)
             Log.d(TAG, "onDrawFrame()");
 
@@ -122,7 +117,7 @@ public class IRRenderer extends EffectRenderer implements Renderer,
     }
 
     @Override
-    public void onSurfaceChanged(GL10 gl, int width, int height) {
+    protected void onSurfaceChanged(int width, int height) {
         if (DEBUG)
             Log.d(TAG, "onSurfaceChanged()");
 
@@ -177,10 +172,8 @@ public class IRRenderer extends EffectRenderer implements Renderer,
     }
 
     @Override
-    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+    protected void onSurfaceCreated() {
         GLES20.glClearColor(0.7f, 0.7f, 0.7f, 0.0f);
-
-        createShader();
 
         mObject.setShader(mShader);
 
@@ -193,6 +186,33 @@ public class IRRenderer extends EffectRenderer implements Renderer,
                 mLightPos.mY,
                 mLightPos.mZ,
                 mLightPos.mW);
+    }
+
+    @Override
+    protected boolean createShader() {
+        mShader = new GLESShader(mContext);
+
+        String vsSource = EffectUtils.getShaderSource(mContext, 0);
+        String fsSource = EffectUtils.getShaderSource(mContext, 1);
+
+        mShader.setShaderSource(vsSource, fsSource);
+        if (mShader.load() == false) {
+            mHandler.sendEmptyMessage(EffectRenderer.COMPILE_OR_LINK_ERROR);
+            return false;
+        }
+
+        if (mVersion == Version.GLES_20) {
+            String attribName = GLESShaderConstant.ATTRIB_POSITION;
+            mShader.setVertexAttribIndex(attribName);
+
+            attribName = GLESShaderConstant.ATTRIB_NORMAL;
+            mShader.setNormalAttribIndex(attribName);
+
+            attribName = GLESShaderConstant.ATTRIB_COLOR;
+            mShader.setColorAttribIndex(attribName);
+        }
+
+        return true;
     }
 
     public void touchDown(float x, float y) {
@@ -229,32 +249,6 @@ public class IRRenderer extends EffectRenderer implements Renderer,
     }
 
     public void touchCancel(float x, float y) {
-    }
-
-    private boolean createShader() {
-        mShader = new GLESShader(mContext);
-
-        String vsSource = EffectUtils.getShaderSource(mContext, 0);
-        String fsSource = EffectUtils.getShaderSource(mContext, 1);
-
-        mShader.setShaderSource(vsSource, fsSource);
-        if (mShader.load() == false) {
-            mHandler.sendEmptyMessage(EffectRenderer.COMPILE_OR_LINK_ERROR);
-            return false;
-        }
-
-        if (mVersion == Version.GLES_20) {
-            String attribName = GLESShaderConstant.ATTRIB_POSITION;
-            mShader.setVertexAttribIndex(attribName);
-
-            attribName = GLESShaderConstant.ATTRIB_NORMAL;
-            mShader.setNormalAttribIndex(attribName);
-
-            attribName = GLESShaderConstant.ATTRIB_COLOR;
-            mShader.setColorAttribIndex(attribName);
-        }
-
-        return true;
     }
 
     @Override

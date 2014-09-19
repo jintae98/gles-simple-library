@@ -1,8 +1,12 @@
 package com.gomdev.shader;
 
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
+
 import android.app.Activity;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import android.opengl.GLSurfaceView.Renderer;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -15,7 +19,7 @@ import com.gomdev.gles.GLESContext;
 import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESUtils;
 
-public class EffectRenderer {
+public abstract class EffectRenderer implements Renderer {
     protected static final int COMPILE_OR_LINK_ERROR = 1;
     protected static final int UPDATE_FPS = 2;
 
@@ -26,7 +30,11 @@ public class EffectRenderer {
     protected Context mContext;
     protected GLSurfaceView mView;
     protected GLESRenderer mRenderer;
+
     protected TextView mFPS = null;
+
+    private boolean mIsShaderCompiled = false;
+
     protected Handler mHandler = new Handler(Looper.getMainLooper()) {
 
         @Override
@@ -84,4 +92,36 @@ public class EffectRenderer {
         msg.arg1 = fps;
         mHandler.sendMessage(msg);
     }
+
+    @Override
+    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+        mIsShaderCompiled = createShader();
+
+        if (mIsShaderCompiled == true) {
+            onSurfaceCreated();
+        }
+    }
+
+    @Override
+    public void onSurfaceChanged(GL10 gl, int width, int height) {
+        if (mIsShaderCompiled == true) {
+            onSurfaceChanged(width, height);
+        }
+    }
+
+    @Override
+    public void onDrawFrame(GL10 gl) {
+        if (mIsShaderCompiled == true) {
+            onDrawFrame();
+        }
+
+    }
+
+    protected abstract void onSurfaceCreated();
+
+    protected abstract void onSurfaceChanged(int width, int height);
+
+    protected abstract void onDrawFrame();
+
+    protected abstract boolean createShader();
 }

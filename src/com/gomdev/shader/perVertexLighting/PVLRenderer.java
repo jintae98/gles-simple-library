@@ -1,9 +1,5 @@
 package com.gomdev.shader.perVertexLighting;
 
-
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
-
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESObject.PrimitiveMode;
@@ -13,11 +9,10 @@ import com.gomdev.shader.EffectUtils;
 
 import android.content.Context;
 import android.opengl.GLES20;
-import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.Matrix;
 import android.util.Log;
 
-public class PVLRenderer extends EffectRenderer implements Renderer {
+public class PVLRenderer extends EffectRenderer {
     private static final String CLASS = "PVLRenderer";
     private static final String TAG = PVLConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = PVLConfig.DEBUG;
@@ -88,9 +83,11 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
     }
 
     @Override
-    public void onDrawFrame(GL10 gl) {
+    protected void onDrawFrame() {
         if (DEBUG)
             Log.d(TAG, "onDrawFrame()");
+
+        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
         super.updateFPS();
 
@@ -98,14 +95,12 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
             mView.requestRender();
         }
 
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
-
         mRenderer.updateObjects();
         mRenderer.drawObjects();
     }
 
     @Override
-    public void onSurfaceChanged(GL10 gl, int width, int height) {
+    protected void onSurfaceChanged(int width, int height) {
         if (DEBUG)
             Log.d(TAG, "onSurfaceChanged()");
 
@@ -165,10 +160,8 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
     }
 
     @Override
-    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+    protected void onSurfaceCreated() {
         GLES20.glClearColor(0.7f, 0.7f, 0.7f, 0.0f);
-
-        createShader();
 
         mShader.useProgram();
 
@@ -180,6 +173,35 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
                 "uNormalMatrix");
         mLightPosHandle = GLES20.glGetUniformLocation(program,
                 "uLightPos");
+    }
+
+    @Override
+    protected boolean createShader() {
+        Log.d(TAG, "createShader()");
+
+        mShader = new GLESShader(mContext);
+
+        String vsSource = EffectUtils.getShaderSource(mContext, 0);
+        String fsSource = EffectUtils.getShaderSource(mContext, 1);
+
+        mShader.setShaderSource(vsSource, fsSource);
+        if (mShader.load() == false) {
+            mHandler.sendEmptyMessage(EffectRenderer.COMPILE_OR_LINK_ERROR);
+            return false;
+        }
+
+        if (mVersion == Version.GLES_20) {
+            String attribName = GLESShaderConstant.ATTRIB_POSITION;
+            mShader.setVertexAttribIndex(attribName);
+
+            attribName = GLESShaderConstant.ATTRIB_NORMAL;
+            mShader.setNormalAttribIndex(attribName);
+
+            attribName = GLESShaderConstant.ATTRIB_COLOR;
+            mShader.setColorAttribIndex(attribName);
+        }
+
+        return true;
     }
 
     public void touchDown(float x, float y) {
@@ -216,34 +238,6 @@ public class PVLRenderer extends EffectRenderer implements Renderer {
     }
 
     public void touchCancel(float x, float y) {
-    }
-
-    private boolean createShader() {
-        Log.d(TAG, "createShader()");
-
-        mShader = new GLESShader(mContext);
-
-        String vsSource = EffectUtils.getShaderSource(mContext, 0);
-        String fsSource = EffectUtils.getShaderSource(mContext, 1);
-
-        mShader.setShaderSource(vsSource, fsSource);
-        if (mShader.load() == false) {
-            mHandler.sendEmptyMessage(EffectRenderer.COMPILE_OR_LINK_ERROR);
-            return false;
-        }
-
-        if (mVersion == Version.GLES_20) {
-            String attribName = GLESShaderConstant.ATTRIB_POSITION;
-            mShader.setVertexAttribIndex(attribName);
-
-            attribName = GLESShaderConstant.ATTRIB_NORMAL;
-            mShader.setNormalAttribIndex(attribName);
-
-            attribName = GLESShaderConstant.ATTRIB_COLOR;
-            mShader.setColorAttribIndex(attribName);
-        }
-
-        return true;
     }
 
     private GLESAnimator mAnimator = new GLESAnimator(

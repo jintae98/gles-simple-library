@@ -2,9 +2,6 @@ package com.gomdev.shader.occlusionQuery;
 
 import java.util.Random;
 
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
-
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESObject.PrimitiveMode;
@@ -19,10 +16,9 @@ import android.graphics.Color;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.opengl.Matrix;
-import android.opengl.GLSurfaceView.Renderer;
 import android.util.Log;
 
-public class OQRenderer extends EffectRenderer implements Renderer {
+public class OQRenderer extends EffectRenderer {
     private static final String CLASS = "OQRenderer";
     private static final String TAG = OQConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = OQConfig.DEBUG;
@@ -87,7 +83,7 @@ public class OQRenderer extends EffectRenderer implements Renderer {
     }
 
     @Override
-    public void onDrawFrame(GL10 gl) {
+    protected void onDrawFrame() {
         if (DEBUG)
             Log.d(TAG, "onDrawFrame()");
 
@@ -152,7 +148,7 @@ public class OQRenderer extends EffectRenderer implements Renderer {
     }
 
     @Override
-    public void onSurfaceChanged(GL10 gl, int width, int height) {
+    protected void onSurfaceChanged(int width, int height) {
         if (DEBUG)
             Log.d(TAG, "onSurfaceChanged()");
 
@@ -211,10 +207,8 @@ public class OQRenderer extends EffectRenderer implements Renderer {
     }
 
     @Override
-    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+    protected void onSurfaceCreated() {
         GLES20.glClearColor(0.7f, 0.7f, 0.7f, 0.0f);
-
-        createShader();
 
         mObject.setShader(mShader);
 
@@ -237,7 +231,34 @@ public class OQRenderer extends EffectRenderer implements Renderer {
                 mLightPos.mY,
                 mLightPos.mZ,
                 mLightPos.mW);
+    }
 
+    @Override
+    protected boolean createShader() {
+        Log.d(TAG, "createShader()");
+        mShader = new GLESShader(mContext);
+
+        String vsSource = EffectUtils.getShaderSource(mContext, 0);
+        String fsSource = EffectUtils.getShaderSource(mContext, 1);
+
+        mShader.setShaderSource(vsSource, fsSource);
+        if (mShader.load() == false) {
+            mHandler.sendEmptyMessage(EffectRenderer.COMPILE_OR_LINK_ERROR);
+            return false;
+        }
+
+        if (mVersion == Version.GLES_20) {
+            String attribName = GLESShaderConstant.ATTRIB_POSITION;
+            mShader.setVertexAttribIndex(attribName);
+
+            attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
+            mShader.setTexCoordAttribIndex(attribName);
+
+            attribName = GLESShaderConstant.ATTRIB_NORMAL;
+            mShader.setNormalAttribIndex(attribName);
+        }
+
+        return true;
     }
 
     public void touchDown(float x, float y) {
@@ -274,33 +295,6 @@ public class OQRenderer extends EffectRenderer implements Renderer {
     }
 
     public void touchCancel(float x, float y) {
-    }
-
-    private boolean createShader() {
-        Log.d(TAG, "createShader()");
-        mShader = new GLESShader(mContext);
-
-        String vsSource = EffectUtils.getShaderSource(mContext, 0);
-        String fsSource = EffectUtils.getShaderSource(mContext, 1);
-
-        mShader.setShaderSource(vsSource, fsSource);
-        if (mShader.load() == false) {
-            mHandler.sendEmptyMessage(EffectRenderer.COMPILE_OR_LINK_ERROR);
-            return false;
-        }
-
-        if (mVersion == Version.GLES_20) {
-            String attribName = GLESShaderConstant.ATTRIB_POSITION;
-            mShader.setVertexAttribIndex(attribName);
-
-            attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
-            mShader.setTexCoordAttribIndex(attribName);
-
-            attribName = GLESShaderConstant.ATTRIB_NORMAL;
-            mShader.setNormalAttribIndex(attribName);
-        }
-
-        return true;
     }
 
     GLESObjectListener mObjListener = new GLESObjectListener() {

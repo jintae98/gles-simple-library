@@ -1,8 +1,5 @@
 package com.gomdev.shader.texture;
 
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
-
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESObject.PrimitiveMode;
@@ -13,10 +10,9 @@ import com.gomdev.shader.EffectUtils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.opengl.GLES20;
-import android.opengl.GLSurfaceView.Renderer;
 import android.util.Log;
 
-public class TextureRenderer extends EffectRenderer implements Renderer {
+public class TextureRenderer extends EffectRenderer {
     private static final String CLASS = "TextureRenderer";
     private static final String TAG = TextureConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = TextureConfig.DEBUG;
@@ -58,7 +54,7 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
     }
 
     @Override
-    public void onDrawFrame(GL10 gl) {
+    protected void onDrawFrame() {
         if (DEBUG)
             Log.d(TAG, "onDrawFrame()");
 
@@ -82,7 +78,7 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
     }
 
     @Override
-    public void onSurfaceChanged(GL10 gl, int width, int height) {
+    protected void onSurfaceChanged(int width, int height) {
         if (DEBUG)
             Log.d(TAG, "onSurfaceChanged()");
 
@@ -125,7 +121,7 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
     }
 
     @Override
-    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+    protected void onSurfaceCreated() {
         GLES20.glClearColor(0.7f, 0.7f, 0.7f, 0.0f);
 
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
@@ -134,14 +130,37 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
         GLES20.glEnable(GLES20.GL_CULL_FACE);
         GLES20.glCullFace(GLES20.GL_BACK);
 
-        createShader();
-
         mTextureObject.setShader(mTextureShader);
 
         Bitmap bitmap = GLESUtils.makeCheckerboard(512, 512, 32);
         GLESTexture texture = new GLESTexture(bitmap);
         bitmap.recycle();
         mTextureObject.setTexture(texture);
+    }
+
+    @Override
+    protected boolean createShader() {
+        Log.d(TAG, "createShader()");
+        mTextureShader = new GLESShader(mContext);
+
+        String vsSource = EffectUtils.getShaderSource(mContext, 0);
+        String fsSource = EffectUtils.getShaderSource(mContext, 1);
+
+        mTextureShader.setShaderSource(vsSource, fsSource);
+        if (mTextureShader.load() == false) {
+            mHandler.sendEmptyMessage(EffectRenderer.COMPILE_OR_LINK_ERROR);
+            return false;
+        }
+
+        if (mVersion == Version.GLES_20) {
+            String attribName = GLESShaderConstant.ATTRIB_POSITION;
+            mTextureShader.setVertexAttribIndex(attribName);
+
+            attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
+            mTextureShader.setTexCoordAttribIndex(attribName);
+        }
+
+        return true;
     }
 
     public void touchDown(float x, float y) {
@@ -178,29 +197,5 @@ public class TextureRenderer extends EffectRenderer implements Renderer {
     }
 
     public void touchCancel(float x, float y) {
-    }
-
-    private boolean createShader() {
-        Log.d(TAG, "createShader()");
-        mTextureShader = new GLESShader(mContext);
-
-        String vsSource = EffectUtils.getShaderSource(mContext, 0);
-        String fsSource = EffectUtils.getShaderSource(mContext, 1);
-
-        mTextureShader.setShaderSource(vsSource, fsSource);
-        if (mTextureShader.load() == false) {
-            mHandler.sendEmptyMessage(EffectRenderer.COMPILE_OR_LINK_ERROR);
-            return false;
-        }
-
-        if (mVersion == Version.GLES_20) {
-            String attribName = GLESShaderConstant.ATTRIB_POSITION;
-            mTextureShader.setVertexAttribIndex(attribName);
-
-            attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
-            mTextureShader.setTexCoordAttribIndex(attribName);
-        }
-
-        return true;
     }
 }

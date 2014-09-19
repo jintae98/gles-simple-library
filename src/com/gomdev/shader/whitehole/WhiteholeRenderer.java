@@ -2,9 +2,6 @@ package com.gomdev.shader.whitehole;
 
 import java.util.ArrayList;
 
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
-
 import com.gomdev.shader.R;
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
@@ -17,10 +14,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
-import android.opengl.GLSurfaceView.Renderer;
 import android.util.Log;
 
-public class WhiteholeRenderer extends EffectRenderer implements Renderer {
+public class WhiteholeRenderer extends EffectRenderer {
     private static final String CLASS = "WhiteholeRenderer";
     private static final String TAG = WhiteholeConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = WhiteholeConfig.DEBUG;
@@ -72,7 +68,7 @@ public class WhiteholeRenderer extends EffectRenderer implements Renderer {
     }
 
     @Override
-    public void onDrawFrame(GL10 gl) {
+    protected void onDrawFrame() {
         if (DEBUG)
             Log.d(TAG, "onDrawFrame()");
 
@@ -102,7 +98,7 @@ public class WhiteholeRenderer extends EffectRenderer implements Renderer {
     }
 
     @Override
-    public void onSurfaceChanged(GL10 gl, int width, int height) {
+    protected void onSurfaceChanged(int width, int height) {
         mWidth = width;
         mHeight = height;
 
@@ -149,10 +145,8 @@ public class WhiteholeRenderer extends EffectRenderer implements Renderer {
     }
 
     @Override
-    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+    protected void onSurfaceCreated() {
         GLES20.glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
-
-        createShader();
 
         createAnimation();
 
@@ -169,6 +163,31 @@ public class WhiteholeRenderer extends EffectRenderer implements Renderer {
                 GLESUtils.getHeightPixels(mContext));
         mBoundaryRingSize = GLESUtils.getPixelFromDpi(mContext,
                 WhiteholeConfig.BOUNDARY_RING_SIZE);
+    }
+
+    @Override
+    protected boolean createShader() {
+        Log.d(TAG, "createShader()");
+        mShaderWhitehole = new GLESShader(mContext);
+
+        String vsSource = EffectUtils.getShaderSource(mContext, 0);
+        String fsSource = EffectUtils.getShaderSource(mContext, 1);
+
+        mShaderWhitehole.setShaderSource(vsSource, fsSource);
+        if (mShaderWhitehole.load() == false) {
+            mHandler.sendEmptyMessage(COMPILE_OR_LINK_ERROR);
+            return false;
+        }
+
+        if (mVersion == Version.GLES_20) {
+            String attribName = GLESShaderConstant.ATTRIB_POSITION;
+            mShaderWhitehole.setVertexAttribIndex(attribName);
+
+            attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
+            mShaderWhitehole.setTexCoordAttribIndex(attribName);
+        }
+
+        return true;
     }
 
     public void touchDown(float x, float y) {
@@ -231,30 +250,6 @@ public class WhiteholeRenderer extends EffectRenderer implements Renderer {
         if (mWhiteholeObject != null) {
             mWhiteholeObject.setImage(bitmap);
         }
-    }
-
-    private boolean createShader() {
-        Log.d(TAG, "createShader()");
-        mShaderWhitehole = new GLESShader(mContext);
-
-        String vsSource = EffectUtils.getShaderSource(mContext, 0);
-        String fsSource = EffectUtils.getShaderSource(mContext, 1);
-
-        mShaderWhitehole.setShaderSource(vsSource, fsSource);
-        if (mShaderWhitehole.load() == false) {
-            mHandler.sendEmptyMessage(COMPILE_OR_LINK_ERROR);
-            return false;
-        }
-
-        if (mVersion == Version.GLES_20) {
-            String attribName = GLESShaderConstant.ATTRIB_POSITION;
-            mShaderWhitehole.setVertexAttribIndex(attribName);
-
-            attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
-            mShaderWhitehole.setTexCoordAttribIndex(attribName);
-        }
-
-        return true;
     }
 
     private void createAnimation() {
