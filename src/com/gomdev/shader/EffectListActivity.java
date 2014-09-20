@@ -105,7 +105,19 @@ public class EffectListActivity extends Activity implements
     private void setupEffectInfos() {
         mEffects.clear();
 
-        Version version = GLESContext.getInstance().getVersion();
+        // Version version = GLESContext.getInstance().getVersion();
+        SharedPreferences pref = getSharedPreferences(ShaderConfig.PREF_NAME, 0);
+        boolean useGLES30 = pref.getBoolean(ShaderConfig.PREF_USE_GLES_30,
+                GLESConfig.GLES_VERSION == Version.GLES_30);
+
+        Version version = Version.GLES_20;
+        if (useGLES30 == true) {
+            GLESContext.getInstance().setVersion(Version.GLES_30);
+            version = Version.GLES_30;
+        } else {
+            GLESContext.getInstance().setVersion(Version.GLES_20);
+            version = Version.GLES_20;
+        }
 
         setupBasic(version);
         setupTexture(version);
