@@ -275,7 +275,7 @@ public class PVLRenderer extends EffectRenderer {
             GLESTransform transform = object.getTransform();
 
             transform.setIdentity();
-            transform.rotate(mMoveX * 0.2f, 0f, 1f, 0f);
+            transform.setRotate(mMoveX * 0.2f, 0f, 1f, 0f);
             transform.rotate(mMoveY * 0.2f, 1f, 0f, 0f);
 
         }
@@ -320,7 +320,7 @@ public class PVLRenderer extends EffectRenderer {
             GLESTransform transform = object.getTransform();
 
             transform.setIdentity();
-            transform.translate(mCubeLight.mX, mCubeLight.mY, mCubeLight.mZ);
+            transform.setTranslate(mCubeLight.mX, mCubeLight.mY, mCubeLight.mZ);
 
         }
 

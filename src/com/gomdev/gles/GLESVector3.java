@@ -105,6 +105,12 @@ public class GLESVector3 {
         mZ = z;
     }
 
+    public void set(GLESVector3 vec) {
+        mX = vec.mX;
+        mY = vec.mY;
+        mZ = vec.mZ;
+    }
+
     public GLESVector3 subtract(GLESVector3 vector) {
         mX -= vector.mX;
         mY -= vector.mY;

@@ -98,7 +98,7 @@ public class IRRenderer extends EffectRenderer implements GLESRendererListener {
         if (mVersion == Version.GLES_30) {
             GLESTransform transform = mObject.getTransform();
             transform.setIdentity();
-            transform.rotate(mMoveX * 0.2f, 0f, 1f, 0f);
+            transform.setRotate(mMoveX * 0.2f, 0f, 1f, 0f);
             transform.rotate(mMoveY * 0.2f, 1f, 0f, 0f);
 
             mRenderer.updateScene(mSM);
@@ -107,11 +107,11 @@ public class IRRenderer extends EffectRenderer implements GLESRendererListener {
             for (int i = 0; i < NUM_OF_INSTANCE; i++) {
                 GLESTransform transform = mObject.getTransform();
                 transform.setIdentity();
-                transform.translate(
+                transform.setTranslate(
                         mTrans[i * NUM_OF_ELEMENT + 0],
                         mTrans[i * NUM_OF_ELEMENT + 1],
                         mTrans[i * NUM_OF_ELEMENT + 2]);
-                transform.rotate(mMoveX * 0.2f, 0f, 1f, 0f);
+                transform.setRotate(mMoveX * 0.2f, 0f, 1f, 0f);
                 transform.rotate(mMoveY * 0.2f, 1f, 0f, 0f);
 
                 mRenderer.updateScene(mSM);

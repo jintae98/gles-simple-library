@@ -74,6 +74,8 @@ public class MultiLightingRenderer extends EffectRenderer {
             mNode = mSM.createNode("Node");
             mNode.setListener(mNodeListener);
 
+            root.addChild(mNode);
+
             {
                 mLight = mSM.createObject("Light");
                 mLight.setPrimitiveMode(PrimitiveMode.TRIANGLES);
@@ -274,7 +276,7 @@ public class MultiLightingRenderer extends EffectRenderer {
     public void touchCancel(float x, float y) {
     }
 
-    private float mRadian = 0f;
+    private float mDegree = 0f;
     private GLESAnimator mAnimator = new GLESAnimator(
             new GLESAnimatorCallback() {
 
@@ -290,7 +292,7 @@ public class MultiLightingRenderer extends EffectRenderer {
 
                 @Override
                 public void onAnimation(GLESVector3 vector) {
-                    mRadian = (float) Math.toDegrees(vector.mX);
+                    mDegree = (float) Math.toDegrees(vector.mX);
 
                     float cos = (float) Math.cos(vector.mX);
                     float sin = (float) Math.sin(vector.mX);
@@ -318,7 +320,7 @@ public class MultiLightingRenderer extends EffectRenderer {
             GLESTransform transform = object.getTransform();
 
             transform.setIdentity();
-            transform.rotate(mMoveX * 0.2f, 0f, 1f, 0f);
+            transform.setRotate(mMoveX * 0.2f, 0f, 1f, 0f);
             transform.rotate(mMoveY * 0.2f, 1f, 0f, 0f);
 
         }
@@ -401,7 +403,8 @@ public class MultiLightingRenderer extends EffectRenderer {
             GLESTransform transform = object.getTransform();
 
             transform.setIdentity();
-            transform.translate(mLightLight.mX, mLightLight.mY, mLightLight.mZ);
+            transform.setTranslate(mLightLight.mX, mLightLight.mY,
+                    mLightLight.mZ);
 
         }
 
@@ -444,9 +447,8 @@ public class MultiLightingRenderer extends EffectRenderer {
             GLESTransform transform = node.getTransform();
 
             transform.setIdentity();
-            transform.rotate(mRadian, 0f, 0f, 1f);
-            transform.translate(mRadius, 0f, 0f);
-
+            transform.setRotate(mDegree, 0f, 0f, 1f);
+            transform.setPreTranslate(mRadius, 0f, 0f);
         }
     };
 }

@@ -75,7 +75,7 @@ public class BasicRenderer extends EffectRenderer {
 
         transform.setIdentity();
 
-        transform.rotate(mMoveX * 0.2f, 0f, 1f, 0f);
+        transform.setRotate(mMoveX * 0.2f, 0f, 1f, 0f);
         transform.rotate(mMoveY * 0.2f, 1f, 0f, 0f);
     }
 

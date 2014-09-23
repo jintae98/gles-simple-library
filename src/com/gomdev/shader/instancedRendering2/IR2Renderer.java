@@ -95,7 +95,7 @@ public class IR2Renderer extends EffectRenderer {
         if (mVersion == Version.GLES_30) {
             GLESTransform transform = mObject.getTransform();
             transform.setIdentity();
-            transform.rotate(mMoveX * 0.2f, 0f, 1f, 0f);
+            transform.setRotate(mMoveX * 0.2f, 0f, 1f, 0f);
             transform.rotate(mMoveY * 0.2f, 1f, 0f, 0f);
 
             mRenderer.updateScene(mSM);
@@ -104,11 +104,11 @@ public class IR2Renderer extends EffectRenderer {
             for (int i = 0; i < NUM_OF_INSTANCE; i++) {
                 GLESTransform transform = mObject.getTransform();
                 transform.setIdentity();
-                transform.translate(
+                transform.setTranslate(
                         mInstanceDatas[i * NUM_OF_ELEMENT + 0],
                         mInstanceDatas[i * NUM_OF_ELEMENT + 1],
                         mInstanceDatas[i * NUM_OF_ELEMENT + 2]);
-                transform.rotate(mMoveX * 0.2f, 0f, 1f, 0f);
+                transform.setRotate(mMoveX * 0.2f, 0f, 1f, 0f);
                 transform.rotate(mMoveY * 0.2f, 1f, 0f, 0f);
 
                 mRenderer.updateScene(mSM);

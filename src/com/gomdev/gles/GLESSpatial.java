@@ -1,6 +1,5 @@
 package com.gomdev.gles;
 
-import android.opengl.Matrix;
 import android.util.Log;
 
 public abstract class GLESSpatial {
@@ -15,7 +14,6 @@ public abstract class GLESSpatial {
     private boolean mNeedToUpdate = true;
 
     private String mName = null;
-    private float[] mTempMatrix = new float[16];
 
     public GLESSpatial() {
         init();
@@ -42,12 +40,79 @@ public abstract class GLESSpatial {
         }
 
         if (mParent != null) {
-            Matrix.multiplyMM(mTempMatrix, 0, mParent.getWorldTransform()
-                    .getMatrix(), 0,
-                    mLocalTransform.getMatrix(), 0);
-            mWorldTransform.setMatrix(mTempMatrix);
+            GLESTransform parentWT = mParent.getWorldTransform();
+
+            // translate
+            if (parentWT.isSetTranslate() == true) {
+                mWorldTransform.setTranslate(parentWT.getTranslate());
+
+                if (mLocalTransform.isSetTranslate() == true) {
+                    mWorldTransform.translate(mLocalTransform.getTranslate());
+                }
+            } else {
+                if (mLocalTransform.isSetTranslate() == true) {
+                    mWorldTransform
+                            .setTranslate(mLocalTransform.getTranslate());
+                }
+            }
+
+            // preTranslate
+            if (parentWT.isSetPreTranslate() == true) {
+                mWorldTransform.setPreTranslate(parentWT.getPreTranslate());
+
+                if (mLocalTransform.isSetPreTranslate() == true) {
+                    mWorldTransform.preTranslate(mLocalTransform
+                            .getPreTranslate());
+                }
+            } else {
+                if (mLocalTransform.isSetPreTranslate() == true) {
+                    mWorldTransform.setPreTranslate(mLocalTransform
+                            .getPreTranslate());
+                }
+            }
+
+            // scale
+            if (parentWT.isSetScale() == true) {
+                mWorldTransform.setScale(parentWT.getScale());
+                if (mLocalTransform.isSetScale() == true) {
+                    mWorldTransform.scale(mLocalTransform.getScale());
+                }
+            } else {
+                if (mLocalTransform.isSetScale() == true) {
+                    mWorldTransform.setScale(mLocalTransform.getScale());
+                }
+            }
+
+            // rotate
+            if (mLocalTransform.isSetRotate() == true) {
+                mWorldTransform.setRotate(parentWT.getRotate());
+                if (mLocalTransform.isSetRotate() == true) {
+                    mWorldTransform.rotate(mLocalTransform.getRotate());
+                }
+            } else {
+                if (mLocalTransform.isSetRotate() == true) {
+                    mWorldTransform.setRotate(mLocalTransform.getRotate());
+                }
+            }
+
         } else {
-            mWorldTransform.setMatrix(mLocalTransform.getMatrix());
+
+            if (mLocalTransform.isSetTranslate() == true) {
+                mWorldTransform.setTranslate(mLocalTransform.getTranslate());
+            }
+
+            if (mLocalTransform.isSetPreTranslate() == true) {
+                mWorldTransform.setPreTranslate(mLocalTransform
+                        .getPreTranslate());
+            }
+
+            if (mLocalTransform.isSetScale() == true) {
+                mWorldTransform.setScale(mLocalTransform.getScale());
+            }
+
+            if (mLocalTransform.isSetRotate() == true) {
+                mWorldTransform.setRotate(mLocalTransform.getRotate());
+            }
         }
 
         mNeedToUpdate = false;

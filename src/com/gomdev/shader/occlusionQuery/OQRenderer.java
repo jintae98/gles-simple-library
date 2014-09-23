@@ -28,9 +28,9 @@ public class OQRenderer extends EffectRenderer {
     private static final int MAX_NUM_OF_FRAMES = 5;
 
     private Version mVersion;
-    
+
     private GLESSceneManager mSM = null;
-    
+
     private GLESObject mObject = null;
     private GLESShader mShader = null;
 
@@ -45,7 +45,7 @@ public class OQRenderer extends EffectRenderer {
     private float mScreenRatio = 0f;
 
     private float[] mTrans = new float[NUM_OF_ELEMENT * NUM_OF_INSTANCE];
-    private float[] mScales = new float[NUM_OF_ELEMENT * NUM_OF_INSTANCE];
+    private float[] mScales = new float[NUM_OF_INSTANCE];
     private Random mRandom = new Random();
 
     private int mQueryID[] = new int[NUM_OF_INSTANCE];
@@ -62,7 +62,7 @@ public class OQRenderer extends EffectRenderer {
         super(context);
 
         mVersion = GLESContext.getInstance().getVersion();
-        
+
         mSM = GLESSceneManager.createSceneManager();
         GLESNode root = mSM.createRootNode("Root");
 
@@ -137,18 +137,17 @@ public class OQRenderer extends EffectRenderer {
     private void drawObjects(int index) {
         GLESTransform transform = mObject.getTransform();
         transform.setIdentity();
-        transform.translate(
+        transform.setTranslate(
                 mTrans[index * NUM_OF_ELEMENT + 0],
                 mTrans[index * NUM_OF_ELEMENT + 1],
                 mTrans[index * NUM_OF_ELEMENT + 2]);
-        transform.rotate(mMoveX * 0.2f, 0f, 1f, 0f);
+
+        transform.setRotate(mMoveX * 0.2f, 0f, 1f, 0f);
         transform.rotate(mMoveY * 0.2f, 1f, 0f, 0f);
-        transform.scale(
-                mScales[index * NUM_OF_ELEMENT + 0],
-                mScales[index * NUM_OF_ELEMENT + 1],
-                mScales[index * NUM_OF_ELEMENT + 2]);
-        
-        mRenderer.updateScene(mSM );
+
+        transform.setScale(mScales[index]);
+
+        mRenderer.updateScene(mSM);
         mRenderer.drawScene(mSM);
     }
 
@@ -197,17 +196,13 @@ public class OQRenderer extends EffectRenderer {
     }
 
     private void makeTransformInfo() {
-        float scale = 0f;
         for (int i = 0; i < NUM_OF_INSTANCE; i++) {
             mTrans[i * NUM_OF_ELEMENT + 0] = (mRandom.nextFloat() - 0.5f)
                     * mScreenRatio * 2f;
             mTrans[i * NUM_OF_ELEMENT + 1] = (mRandom.nextFloat() - 0.5f) * 2f;
             mTrans[i * NUM_OF_ELEMENT + 2] = (mRandom.nextFloat() - 0.5f) * 4f;
 
-            scale = (mRandom.nextFloat() + 0.1f) * 6f;
-            mScales[i * NUM_OF_ELEMENT + 0] = scale;
-            mScales[i * NUM_OF_ELEMENT + 1] = scale;
-            mScales[i * NUM_OF_ELEMENT + 2] = scale;
+            mScales[i] = 1f;// (mRandom.nextFloat() + 0.1f) * 6f;
         }
     }
 

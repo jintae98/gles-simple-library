@@ -10,7 +10,20 @@ public class GLESTransform {
 
     private GLESSpatial mOwner = null;
 
+    private GLESVector3 mTranslate = new GLESVector3(0f, 0f, 0f);
+    private GLESVector3 mPreTranslate = new GLESVector3(0f, 0f, 0f);
+    private float mScale = 1f;
+    private float[] mRotate = new float[16];
+
+    private float[] mTempMatrix = new float[16];
     private float[] mMMatrix = new float[16];
+
+    private boolean mIsPreTranslate = false;
+    private boolean mIsTranslate = false;
+    private boolean mIsScale = false;
+    private boolean mIsRotate = false;
+
+    private boolean mNeedToUpdate = false;
 
     public GLESTransform() {
         init();
@@ -23,11 +36,22 @@ public class GLESTransform {
     }
 
     private void init() {
+        mIsTranslate = false;
+        mTranslate.set(0f, 0f, 0f);
+
+        mIsPreTranslate = false;
+        mPreTranslate.set(0f, 0f, 0f);
+
+        mIsScale = false;
+        mScale = 1f;
+
+        mIsRotate = false;
+        Matrix.setIdentityM(mRotate, 0);
+
         Matrix.setIdentityM(mMMatrix, 0);
     }
 
     public void destroy() {
-        mMMatrix = null;
     }
 
     public GLESSpatial getOwner() {
@@ -35,35 +59,168 @@ public class GLESTransform {
     }
 
     public void setIdentity() {
-        Matrix.setIdentityM(mMMatrix, 0);
+        init();
+    }
+
+    public void setTranslate(float x, float y, float z) {
+        mTranslate.set(x, y, z);
+        mIsTranslate = true;
+        mNeedToUpdate = true;
+    }
+
+    public void setTranslate(GLESVector3 vec) {
+        mTranslate.set(vec);
+        mIsTranslate = true;
+        mNeedToUpdate = true;
     }
 
     public void translate(float x, float y, float z) {
-        Matrix.translateM(mMMatrix, 0, x, y, z);
+        mTranslate.mX += x;
+        mTranslate.mY += y;
+        mTranslate.mZ += z;
+
+        mIsTranslate = true;
+        mNeedToUpdate = true;
+    }
+
+    public void translate(GLESVector3 vec) {
+        mTranslate.mX += vec.mX;
+        mTranslate.mY += vec.mY;
+        mTranslate.mZ += vec.mZ;
+
+        mIsTranslate = true;
+        mNeedToUpdate = true;
+    }
+
+    public GLESVector3 getTranslate() {
+        return mTranslate;
+    }
+
+    public boolean isSetTranslate() {
+        return mIsTranslate;
+    }
+
+    public void setPreTranslate(float x, float y, float z) {
+        mPreTranslate.set(x, y, z);
+        mIsPreTranslate = true;
+        mNeedToUpdate = true;
+    }
+
+    public void setPreTranslate(GLESVector3 vec) {
+        mPreTranslate.set(vec);
+        mIsPreTranslate = true;
+        mNeedToUpdate = true;
+    }
+
+    public void preTranslate(float x, float y, float z) {
+        mPreTranslate.mX += x;
+        mPreTranslate.mY += y;
+        mPreTranslate.mZ += z;
+
+        mIsPreTranslate = true;
+        mNeedToUpdate = true;
+    }
+
+    public void preTranslate(GLESVector3 vec) {
+        mPreTranslate.mX += vec.mX;
+        mPreTranslate.mY += vec.mY;
+        mPreTranslate.mZ += vec.mZ;
+
+        mIsPreTranslate = true;
+        mNeedToUpdate = true;
+    }
+
+    public GLESVector3 getPreTranslate() {
+        return mPreTranslate;
+    }
+
+    public boolean isSetPreTranslate() {
+        return mIsPreTranslate;
+    }
+
+    public void setRotate(float angle, float x, float y, float z) {
+        Matrix.setRotateM(mRotate, 0, angle, x, y, z);
+        mIsRotate = true;
+        mNeedToUpdate = true;
+    }
+
+    public void setRotate(float[] rotate) {
+        System.arraycopy(rotate, 0, mRotate, 0, mRotate.length);
+        mIsRotate = true;
+        mNeedToUpdate = true;
     }
 
     public void rotate(float angle, float x, float y, float z) {
-        Matrix.rotateM(mMMatrix, 0, angle, x, y, z);
+        Matrix.rotateM(mRotate, 0, angle, x, y, z);
+        mIsRotate = true;
+        mNeedToUpdate = true;
     }
 
-    public void scale(float x, float y, float z) {
-        Matrix.scaleM(mMMatrix, 0, x, y, z);
+    public void rotate(float[] rotate) {
+        Matrix.multiplyMM(mTempMatrix, 0, mRotate, 0, rotate, 0);
+        System.arraycopy(mTempMatrix, 0, mRotate, 0, mRotate.length);
+        mIsRotate = true;
+        mNeedToUpdate = true;
     }
 
-    public void setMatrix(float[] matrix) {
-        System.arraycopy(matrix, 0, mMMatrix, 0, matrix.length);
+    public float[] getRotate() {
+        return mRotate;
+    }
+
+    public boolean isSetRotate() {
+        return mIsRotate;
+    }
+
+    public void setScale(float scale) {
+        mScale = scale;
+        mIsScale = true;
+        mNeedToUpdate = true;
+    }
+
+    public void scale(float scale) {
+        mScale *= scale;
+        mIsScale = true;
+        mNeedToUpdate = true;
+    }
+
+    public float getScale() {
+        return mScale;
+    }
+
+    public boolean isSetScale() {
+        return mIsScale;
     }
 
     public float[] getMatrix() {
-        float[] matrix = new float[16];
-        System.arraycopy(mMMatrix, 0, matrix, 0, matrix.length);
-        return matrix;
-    }
+        if (mNeedToUpdate == false) {
+            return mMMatrix;
+        }
 
-    public float[] getInverseMatrix() {
-        float[] matrix = new float[16];
-        Matrix.invertM(matrix, 0, mMMatrix, 0);
-        return matrix;
+        Matrix.setIdentityM(mMMatrix, 0);
+
+        if (mIsTranslate == true) {
+            Matrix.translateM(mMMatrix, 0, mTranslate.mX, mTranslate.mY,
+                    mTranslate.mZ);
+        }
+
+        if (mIsScale == true) {
+            Matrix.scaleM(mMMatrix, 0, mScale, mScale, mScale);
+        }
+
+        if (mIsRotate == true) {
+            System.arraycopy(mMMatrix, 0, mTempMatrix, 0, mMMatrix.length);
+            Matrix.multiplyMM(mMMatrix, 0, mTempMatrix, 0, mRotate, 0);
+        }
+
+        if (mIsPreTranslate == true) {
+            Matrix.translateM(mMMatrix, 0, mPreTranslate.mX,
+                    mPreTranslate.mY,
+                    mPreTranslate.mZ);
+        }
+
+        mNeedToUpdate = false;
+
+        return mMMatrix;
     }
 
     public void dump(String str) {
@@ -71,11 +228,9 @@ public class GLESTransform {
             return;
         }
 
-        Log.d(TAG, str + " mMMatrix : ");
-
-        for (int i = 0; i < mMMatrix.length; i += 4) {
-            Log.d(TAG, "\t [ " + mMMatrix[i] + ", " + mMMatrix[i + 1] + ", "
-                    + mMMatrix[i + 2] + ", " + mMMatrix[i + 3] + " ]");
-        }
+        Log.d(TAG, "dump()");
+        Log.d(TAG, "\t Translate " + mTranslate);
+        Log.d(TAG, "\t Scale " + mScale);
+        Log.d(TAG, "\t Rotate " + mRotate);
     }
 }
