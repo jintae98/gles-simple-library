@@ -28,8 +28,11 @@ public class OQRenderer extends EffectRenderer {
     private static final int MAX_NUM_OF_FRAMES = 5;
 
     private Version mVersion;
-    private GLESObject mObject;
-    private GLESShader mShader;
+    
+    private GLESSceneManager mSM = null;
+    
+    private GLESObject mObject = null;
+    private GLESShader mShader = null;
 
     private boolean mIsTouchDown = false;
 
@@ -59,9 +62,11 @@ public class OQRenderer extends EffectRenderer {
         super(context);
 
         mVersion = GLESContext.getInstance().getVersion();
+        
+        mSM = GLESSceneManager.createSceneManager();
+        GLESNode root = mSM.createRootNode("Root");
 
-        mObject = GLESSceneManager.createObject();
-        mObject.setTransform(new GLESTransform());
+        mObject = mSM.createObject("Cube");
         mObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
 
         mObject.setRenderType(RenderType.DRAW_ELEMENTS);
@@ -75,7 +80,7 @@ public class OQRenderer extends EffectRenderer {
 
         mObject.setListener(mObjListener);
 
-        mRenderer.addObject(mObject);
+        root.addChild(mObject);
     }
 
     public void destroy() {
@@ -142,9 +147,9 @@ public class OQRenderer extends EffectRenderer {
                 mScales[index * NUM_OF_ELEMENT + 0],
                 mScales[index * NUM_OF_ELEMENT + 1],
                 mScales[index * NUM_OF_ELEMENT + 2]);
-        mRenderer.updateObjects();
-
-        mRenderer.drawObjects();
+        
+        mRenderer.updateScene(mSM );
+        mRenderer.drawScene(mSM);
     }
 
     @Override

@@ -16,6 +16,7 @@ public class BasicRenderer extends EffectRenderer {
     private static final String TAG = BasicConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = BasicConfig.DEBUG;
 
+    private GLESSceneManager mSM = null;
     private GLESObject mBasicObject;
     private GLESShader mBasicShader;
     private Version mVersion;
@@ -33,8 +34,10 @@ public class BasicRenderer extends EffectRenderer {
 
         mVersion = GLESContext.getInstance().getVersion();
 
-        mBasicObject = GLESSceneManager.createObject();
-        mBasicObject.setTransform(new GLESTransform());
+        mSM = GLESSceneManager.createSceneManager();
+        GLESNode root = mSM.createRootNode("Root");
+
+        mBasicObject = mSM.createObject("BasicObject");
         mBasicObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
         mBasicObject.setRenderType(RenderType.DRAW_ELEMENTS);
 
@@ -45,7 +48,7 @@ public class BasicRenderer extends EffectRenderer {
         state.setDepthFunc(GLES20.GL_LEQUAL);
         mBasicObject.setGLState(state);
 
-        mRenderer.addObject(mBasicObject);
+        root.addChild(mBasicObject);
     }
 
     public void destroy() {
@@ -63,8 +66,8 @@ public class BasicRenderer extends EffectRenderer {
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-        mRenderer.updateObjects();
-        mRenderer.drawObjects();
+        mRenderer.updateScene(mSM);
+        mRenderer.drawScene(mSM);
     }
 
     private void update() {

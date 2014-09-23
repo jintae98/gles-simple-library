@@ -1,17 +1,14 @@
 package com.gomdev.shader.whitehole;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.opengl.GLES20;
 
 import com.gomdev.gles.GLESContext;
 import com.gomdev.gles.GLESObject;
+import com.gomdev.gles.GLESObjectListener;
 import com.gomdev.gles.GLESUtils;
 
 public class WhiteholeObject extends GLESObject {
-
-    private boolean mIsImageChanged;
-    private Bitmap mBitmap;
 
     private int mPositionInVSHandle = -1;
     private int mPositionInFSHandle = -1;
@@ -25,12 +22,13 @@ public class WhiteholeObject extends GLESObject {
     private float mHeight = 0f;
 
     public WhiteholeObject() {
+        super("WhiteholeObject");
+        
+        setListener(mWhiteholeObjectListener);
     }
 
     @Override
     protected void update() {
-        checkImageChanged();
-
         GLES20.glUniform2f(mPositionInVSHandle, mDownPosInVS[0],
                 mDownPosInVS[1]);
         GLES20.glUniform2f(mPositionInFSHandle, mDownPosInFS[0],
@@ -52,11 +50,6 @@ public class WhiteholeObject extends GLESObject {
                 .getPixelFromDpi(context, WhiteholeConfig.BAND_WIDTH));
     }
 
-    public void setImage(Bitmap bitmap) {
-        mBitmap = bitmap;
-        mIsImageChanged = true;
-    }
-    
     public void setScreenSize(float width, float height) {
         mWidth = width;
         mHeight = height;
@@ -74,13 +67,21 @@ public class WhiteholeObject extends GLESObject {
     public void setRadius(float radius) {
         mRadius = radius;
     }
+    
+    private GLESObjectListener mWhiteholeObjectListener = new GLESObjectListener() {
 
-    private void checkImageChanged() {
-        if (mIsImageChanged == true) {
-            mTexture.changeTexture(mBitmap);
-            mBitmap = null;
-            mIsImageChanged = false;
+        @Override
+        public void update(GLESObject object) {
+
         }
-    }
 
+        @Override
+        public void apply(GLESObject object) {
+            GLES20.glUniform2f(mPositionInVSHandle, mDownPosInVS[0],
+                    mDownPosInVS[1]);
+            GLES20.glUniform2f(mPositionInFSHandle, mDownPosInFS[0],
+                    mDownPosInFS[1]);
+            GLES20.glUniform1f(mRadiusHandle, mRadius);
+        }
+    };
 }

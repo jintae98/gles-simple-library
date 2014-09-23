@@ -26,6 +26,8 @@ public class IRRenderer extends EffectRenderer implements GLESRendererListener {
 
     private final static int USER_ATTRIB_LOCATION = 4;
 
+    private GLESSceneManager mSM;
+
     private GLESObject mObject;
     private GLESShader mShader;
 
@@ -54,8 +56,10 @@ public class IRRenderer extends EffectRenderer implements GLESRendererListener {
 
         mVersion = GLESContext.getInstance().getVersion();
 
-        mObject = GLESSceneManager.createObject();
-        mObject.setTransform(new GLESTransform());
+        mSM = GLESSceneManager.createSceneManager();
+        GLESNode root = mSM.createRootNode("Root");
+
+        mObject = mSM.createObject("Cube");
         mObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
 
         if (mVersion == Version.GLES_20) {
@@ -73,7 +77,7 @@ public class IRRenderer extends EffectRenderer implements GLESRendererListener {
         mObject.setGLState(state);
         mObject.setListener(mObjListener);
 
-        mRenderer.addObject(mObject);
+        root.addChild(mObject);
 
         mRenderer.setListener(this);
     }
@@ -97,8 +101,8 @@ public class IRRenderer extends EffectRenderer implements GLESRendererListener {
             transform.rotate(mMoveX * 0.2f, 0f, 1f, 0f);
             transform.rotate(mMoveY * 0.2f, 1f, 0f, 0f);
 
-            mRenderer.updateObjects();
-            mRenderer.drawObjects();
+            mRenderer.updateScene(mSM);
+            mRenderer.drawScene(mSM);
         } else {
             for (int i = 0; i < NUM_OF_INSTANCE; i++) {
                 GLESTransform transform = mObject.getTransform();
@@ -110,8 +114,8 @@ public class IRRenderer extends EffectRenderer implements GLESRendererListener {
                 transform.rotate(mMoveX * 0.2f, 0f, 1f, 0f);
                 transform.rotate(mMoveY * 0.2f, 1f, 0f, 0f);
 
-                mRenderer.updateObjects();
-                mRenderer.drawObjects();
+                mRenderer.updateScene(mSM);
+                mRenderer.drawScene(mSM);
             }
         }
     }

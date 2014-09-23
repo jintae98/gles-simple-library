@@ -17,8 +17,11 @@ public class TextureRenderer extends EffectRenderer {
     private static final String TAG = TextureConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = TextureConfig.DEBUG;
 
-    private GLESObject mTextureObject;
-    private GLESShader mTextureShader;
+    private GLESSceneManager mSM = null;
+    
+    private GLESObject mTextureObject = null;
+    private GLESShader mTextureShader = null;
+    
     private Version mVersion;
 
     private boolean mIsTouchDown = false;
@@ -33,9 +36,11 @@ public class TextureRenderer extends EffectRenderer {
         super(context);
 
         mVersion = GLESContext.getInstance().getVersion();
+        
+        mSM = GLESSceneManager.createSceneManager();
+        GLESNode root = mSM.createRootNode("Root");
 
-        mTextureObject = GLESSceneManager.createObject();
-        mTextureObject.setTransform(new GLESTransform());
+        mTextureObject = mSM.createObject("TextureObject");
         mTextureObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
         mTextureObject.setRenderType(RenderType.DRAW_ELEMENTS);
 
@@ -46,7 +51,7 @@ public class TextureRenderer extends EffectRenderer {
         state.setDepthFunc(GLES20.GL_LEQUAL);
         mTextureObject.setGLState(state);
 
-        mRenderer.addObject(mTextureObject);
+        root.addChild(mTextureObject);
     }
 
     public void destroy() {
@@ -64,8 +69,8 @@ public class TextureRenderer extends EffectRenderer {
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-        mRenderer.updateObjects();
-        mRenderer.drawObjects();
+        mRenderer.updateScene(mSM);
+        mRenderer.drawScene(mSM);
     }
 
     private void update() {

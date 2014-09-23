@@ -21,8 +21,11 @@ public class WhiteholeRenderer extends EffectRenderer {
     private static final String TAG = WhiteholeConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = WhiteholeConfig.DEBUG;
 
-    private WhiteholeObject mWhiteholeObject;
-    private GLESTexture mWhiteholeTexture;
+    private GLESSceneManager mSM = null;
+
+    private WhiteholeObject mWhiteholeObject = null;
+    private GLESTexture mWhiteholeTexture = null;
+
     private Version mVersion;
 
     private int mWidth;
@@ -47,8 +50,10 @@ public class WhiteholeRenderer extends EffectRenderer {
 
         mVersion = GLESContext.getInstance().getVersion();
 
+        mSM = GLESSceneManager.createSceneManager();
+        GLESNode root = mSM.createRootNode("Root");
+
         mWhiteholeObject = new WhiteholeObject();
-        mWhiteholeObject.setTransform(new GLESTransform());
         mWhiteholeObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
         mWhiteholeObject.setRenderType(RenderType.DRAW_ELEMENTS);
 
@@ -59,7 +64,7 @@ public class WhiteholeRenderer extends EffectRenderer {
         state.setDepthFunc(GLES20.GL_LEQUAL);
         mWhiteholeObject.setGLState(state);
 
-        mRenderer.addObject(mWhiteholeObject);
+        root.addChild(mWhiteholeObject);
 
     }
 
@@ -89,8 +94,8 @@ public class WhiteholeRenderer extends EffectRenderer {
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-        mRenderer.updateObjects();
-        mRenderer.drawObjects();
+        mRenderer.updateScene(mSM);
+        mRenderer.drawScene(mSM);
 
         if (count > 0) {
             mView.requestRender();
@@ -244,12 +249,6 @@ public class WhiteholeRenderer extends EffectRenderer {
 
     public void touchCancel(float x, float y) {
 
-    }
-
-    public void setImage(Bitmap bitmap) {
-        if (mWhiteholeObject != null) {
-            mWhiteholeObject.setImage(bitmap);
-        }
     }
 
     private void createAnimation() {

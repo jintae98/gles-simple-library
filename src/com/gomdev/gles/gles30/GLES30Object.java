@@ -8,6 +8,14 @@ public class GLES30Object extends GLESObject {
     private boolean mUseVAO = false;
     private int mNumOfInstance = 1;
 
+    public GLES30Object() {
+        super();
+    }
+
+    public GLES30Object(String name) {
+        super(name);
+    }
+
     @Override
     public void setVertexInfo(GLESVertexInfo vertexInfo, boolean useVBO,
             boolean useVAO) {

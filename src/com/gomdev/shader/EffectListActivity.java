@@ -6,6 +6,7 @@ import com.gomdev.shader.R;
 import com.gomdev.shader.basic.BasicConfig;
 import com.gomdev.shader.instancedRendering.IRConfig;
 import com.gomdev.shader.instancedRendering2.IR2Config;
+import com.gomdev.shader.multiLighting.MultiLightingConfig;
 import com.gomdev.shader.occlusionQuery.OQConfig;
 import com.gomdev.shader.perFragmentLighting.PFLConfig;
 import com.gomdev.shader.perVertexLighting.PVLConfig;
@@ -105,7 +106,6 @@ public class EffectListActivity extends Activity implements
     private void setupEffectInfos() {
         mEffects.clear();
 
-        // Version version = GLESContext.getInstance().getVersion();
         SharedPreferences pref = getSharedPreferences(ShaderConfig.PREF_NAME, 0);
         boolean useGLES30 = pref.getBoolean(ShaderConfig.PREF_USE_GLES_30,
                 GLESConfig.GLES_VERSION == Version.GLES_30);
@@ -126,6 +126,7 @@ public class EffectListActivity extends Activity implements
         setupOQ(version);
         setupIR(version);
         setupIR2(version);
+        setupMultiLighting(version);
         setupWhitehole(version);
 
         if (DEBUG) {
@@ -343,6 +344,36 @@ public class EffectListActivity extends Activity implements
             info.mShaderTitle = new String[] {
                     "Occlusion Query 30 VS",
                     "Occlusion Query 30 FS",
+            };
+        }
+
+        mEffects.add(info);
+    }
+
+    private void setupMultiLighting(Version version) {
+        EffectInfo info = new EffectInfo();
+        info.mEffectName = MultiLightingConfig.EFFECT_NAME;
+        info.mIntent = new Intent(this,
+                com.gomdev.shader.multiLighting.MultiLightingActivity.class);
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[] {
+                    R.raw.multi_lighting_20_vs,
+                    R.raw.multi_lighting_20_fs,
+            };
+
+            info.mShaderTitle = new String[] {
+                    "MultiLighting 20 VS",
+                    "MultiLighting 20 FS",
+            };
+        } else {
+            info.mShaderResIDs = new int[] {
+                    R.raw.multi_lighting_30_vs,
+                    R.raw.multi_lighting_30_fs
+            };
+
+            info.mShaderTitle = new String[] {
+                    "MultiLighting 30 VS",
+                    "MultiLighting 30 FS",
             };
         }
 

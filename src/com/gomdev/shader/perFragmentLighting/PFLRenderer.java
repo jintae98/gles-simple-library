@@ -17,6 +17,8 @@ public class PFLRenderer extends EffectRenderer {
     private static final String TAG = PFLConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = PFLConfig.DEBUG;
 
+    private GLESSceneManager mSM = null;
+
     private GLESObject mCubeObject;
     private GLESObject mLightObject;
     private GLESShader mShader;
@@ -45,6 +47,9 @@ public class PFLRenderer extends EffectRenderer {
 
         mVersion = GLESContext.getInstance().getVersion();
 
+        mSM = GLESSceneManager.createSceneManager();
+        GLESNode root = mSM.createRootNode("Root");
+
         GLESGLState state = new GLESGLState();
         state.setCullFaceState(true);
         state.setCullFace(GLES20.GL_BACK);
@@ -52,25 +57,23 @@ public class PFLRenderer extends EffectRenderer {
         state.setDepthFunc(GLES20.GL_LEQUAL);
 
         {
-            mCubeObject = GLESSceneManager.createObject();
-            mCubeObject.setTransform(new GLESTransform());
+            mCubeObject = mSM.createObject("Cube");
             mCubeObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
             mCubeObject.setRenderType(RenderType.DRAW_ELEMENTS);
             mCubeObject.setGLState(state);
             mCubeObject.setListener(mCubeObjectListener);
 
-            mRenderer.addObject(mCubeObject);
+            root.addChild(mCubeObject);
         }
 
         {
-            mLightObject = GLESSceneManager.createObject();
-            mLightObject.setTransform(new GLESTransform());
+            mLightObject = mSM.createObject("Light");
             mLightObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
             mLightObject.setRenderType(RenderType.DRAW_ELEMENTS);
             mLightObject.setGLState(state);
             mLightObject.setListener(mLightObjectListener);
 
-            mRenderer.addObject(mLightObject);
+            root.addChild(mLightObject);
         }
 
         mAnimator.setDuration(0, 10000);
@@ -95,8 +98,8 @@ public class PFLRenderer extends EffectRenderer {
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-        mRenderer.updateObjects();
-        mRenderer.drawObjects();
+        mRenderer.updateScene(mSM);
+        mRenderer.drawScene(mSM);
     }
 
     @Override

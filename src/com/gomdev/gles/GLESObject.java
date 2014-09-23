@@ -1,6 +1,6 @@
 package com.gomdev.gles;
 
-public class GLESObject {
+public class GLESObject extends GLESSpatial {
 
     public enum PrimitiveMode {
         TRIANGLES,
@@ -22,7 +22,6 @@ public class GLESObject {
 
     protected GLESTexture mTexture;
     protected GLESCamera mCamera;
-    protected GLESTransform mTransform;
     protected GLESGLState mGLState;
     protected GLESObjectListener mListener = null;
 
@@ -35,6 +34,11 @@ public class GLESObject {
     protected boolean mIsVisible = true;
 
     public GLESObject() {
+        super();
+    }
+
+    public GLESObject(String name) {
+        super(name);
     }
 
     public void setVertexInfo(GLESVertexInfo vertexInfo) {
@@ -121,14 +125,6 @@ public class GLESObject {
         mTexture = texture;
     }
 
-    public void setTransform(GLESTransform transform) {
-        mTransform = transform;
-    }
-
-    public GLESTransform getTransform() {
-        return mTransform;
-    }
-
     public void setGLState(GLESGLState state) {
         mGLState = state;
     }
@@ -136,13 +132,9 @@ public class GLESObject {
     public GLESGLState getGLState() {
         return mGLState;
     }
-    
+
     public void setListener(GLESObjectListener listener) {
         mListener = listener;
-    }
-    
-    public GLESObjectListener getListener() {
-        return mListener;
     }
 
     public void show() {
@@ -164,5 +156,29 @@ public class GLESObject {
 
     public int getNumOfInstance() {
         return 0;
+    }
+
+    @Override
+    public void update(double applicationTime, boolean parentHasChanged) {
+        if (parentHasChanged == true) {
+            needToUpdate();
+        }
+
+        if (mListener != null) {
+            mListener.update(this);
+        }
+
+        updateWorldData(applicationTime);
+    }
+
+    @Override
+    public void draw(GLESRenderer renderer) {
+        mShader.useProgram();
+
+        if (mListener != null) {
+            mListener.apply(this);
+        }
+
+        renderer.draw(this);
     }
 }

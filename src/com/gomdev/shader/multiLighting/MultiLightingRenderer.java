@@ -1,4 +1,4 @@
-package com.gomdev.shader.perVertexLighting;
+package com.gomdev.shader.multiLighting;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
@@ -12,18 +12,20 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.util.Log;
 
-public class PVLRenderer extends EffectRenderer {
+public class MultiLightingRenderer extends EffectRenderer {
     private static final String CLASS = "PVLRenderer";
-    private static final String TAG = PVLConfig.TAG + " " + CLASS;
-    private static final boolean DEBUG = PVLConfig.DEBUG;
+    private static final String TAG = MultiLightingConfig.TAG + " " + CLASS;
+    private static final boolean DEBUG = MultiLightingConfig.DEBUG;
+
+    private Version mVersion;
 
     private GLESSceneManager mSM = null;
-    
-    private GLESObject mCubeObject = null;
-    private GLESObject mLightObject = null;
     private GLESShader mShader = null;
-    
-    private Version mVersion;
+
+    private GLESObject mCube = null;
+    private GLESObject mLight = null;
+    private GLESObject mLight2 = null;
+    private GLESNode mNode = null;
 
     private boolean mIsTouchDown = false;
 
@@ -38,16 +40,17 @@ public class PVLRenderer extends EffectRenderer {
     private int mNormalMatrixHandle = -1;
     private int mLightPosHandle = -1;
 
-    private GLESVector4 mCubeLight = new GLESVector4();
     private float mRadius = 0f;
+    private float mRadius2 = 0f;
 
-    private GLESVector4 mLightLight = new GLESVector4(0f, 0f, 0f, 1f);
+    private GLESVector4 mCubeLight = new GLESVector4();
+    private GLESVector4 mLightLight = new GLESVector4();
 
-    public PVLRenderer(Context context) {
+    public MultiLightingRenderer(Context context) {
         super(context);
 
         mVersion = GLESContext.getInstance().getVersion();
-        
+
         mSM = GLESSceneManager.createSceneManager();
         GLESNode root = mSM.createRootNode("Root");
 
@@ -58,23 +61,39 @@ public class PVLRenderer extends EffectRenderer {
         state.setDepthFunc(GLES20.GL_LEQUAL);
 
         {
-            mCubeObject = mSM.createObject("Cube");
-            mCubeObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
-            mCubeObject.setRenderType(RenderType.DRAW_ELEMENTS);
-            mCubeObject.setGLState(state);
-            mCubeObject.setListener(mCubeObjectListener);
+            mCube = mSM.createObject("Cube");
+            mCube.setPrimitiveMode(PrimitiveMode.TRIANGLES);
+            mCube.setRenderType(RenderType.DRAW_ELEMENTS);
+            mCube.setGLState(state);
+            mCube.setListener(mCubeListener);
 
-            root.addChild(mCubeObject);
+            root.addChild(mCube);
         }
 
         {
-            mLightObject = mSM.createObject("Light");
-            mLightObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
-            mLightObject.setRenderType(RenderType.DRAW_ELEMENTS);
-            mLightObject.setGLState(state);
-            mLightObject.setListener(mLightObjectListener);
+            mNode = mSM.createNode("Node");
+            mNode.setListener(mNodeListener);
 
-            root.addChild(mLightObject);
+            {
+                mLight = mSM.createObject("Light");
+                mLight.setPrimitiveMode(PrimitiveMode.TRIANGLES);
+                mLight.setRenderType(RenderType.DRAW_ELEMENTS);
+                mLight.setGLState(state);
+                mLight.setListener(mLightListener);
+
+                mNode.addChild(mLight);
+            }
+
+            {
+                mLight2 = mSM.createObject("Light2");
+                mLight2.setPrimitiveMode(PrimitiveMode.TRIANGLES);
+                mLight2.setRenderType(RenderType.DRAW_ELEMENTS);
+                mLight2.setGLState(state);
+                mLight2.setListener(mLight2Listener);
+
+                mNode.addChild(mLight2);
+
+            }
         }
 
         mAnimator.setDuration(0, 10000);
@@ -82,8 +101,9 @@ public class PVLRenderer extends EffectRenderer {
     }
 
     public void destroy() {
-        mCubeObject = null;
-        mLightObject = null;
+        mCube = null;
+        mLight = null;
+        mLight2 = null;
     }
 
     @Override
@@ -110,6 +130,7 @@ public class PVLRenderer extends EffectRenderer {
 
         mScreenRatio = (float) width / height;
         mRadius = mScreenRatio;
+        mRadius2 = mScreenRatio * 0.4f;
 
         mRenderer.reset();
 
@@ -118,19 +139,27 @@ public class PVLRenderer extends EffectRenderer {
         GLESCamera camera = setupCamera(width, height);
 
         {
-            mCubeObject.setCamera(camera);
+            mCube.setCamera(camera);
 
             GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(
                     mScreenRatio * 0.5f, true, false, true);
-            mCubeObject.setVertexInfo(vertexInfo, true, true);
+            mCube.setVertexInfo(vertexInfo, true, true);
         }
 
         {
-            mLightObject.setCamera(camera);
+            mLight.setCamera(camera);
 
             GLESVertexInfo vertexInfo = GLESMeshUtils.createSphere(0.1f, 10,
                     10, false, true, true);
-            mLightObject.setVertexInfo(vertexInfo, true, false);
+            mLight.setVertexInfo(vertexInfo, true, false);
+        }
+
+        {
+            mLight2.setCamera(camera);
+
+            GLESVertexInfo vertexInfo = GLESMeshUtils.createSphere(0.03f, 10,
+                    10, false, true, true);
+            mLight2.setVertexInfo(vertexInfo, true, false);
         }
 
         mAnimator.start(0f, (float) (Math.PI * 2f));
@@ -169,8 +198,9 @@ public class PVLRenderer extends EffectRenderer {
 
         mShader.useProgram();
 
-        mCubeObject.setShader(mShader);
-        mLightObject.setShader(mShader);
+        mCube.setShader(mShader);
+        mLight.setShader(mShader);
+        mLight2.setShader(mShader);
 
         int program = mShader.getProgram();
         mNormalMatrixHandle = GLES20.glGetUniformLocation(program,
@@ -244,6 +274,7 @@ public class PVLRenderer extends EffectRenderer {
     public void touchCancel(float x, float y) {
     }
 
+    private float mRadian = 0f;
     private GLESAnimator mAnimator = new GLESAnimator(
             new GLESAnimatorCallback() {
 
@@ -259,16 +290,28 @@ public class PVLRenderer extends EffectRenderer {
 
                 @Override
                 public void onAnimation(GLESVector3 vector) {
-                    float x = (float) (Math.cos(vector.mX) * mRadius);
-                    float y = (float) (Math.sin(vector.mX) * mRadius);
+                    mRadian = (float) Math.toDegrees(vector.mX);
+
+                    float cos = (float) Math.cos(vector.mX);
+                    float sin = (float) Math.sin(vector.mX);
+
+                    float x = cos * mRadius;
+                    float y = sin * mRadius;
                     float z = 0f;
-                    float w = 0f;
+                    float w = 1f;
 
                     mCubeLight.set(x, y, z, w);
+
+                    x = cos * mRadius2;
+                    y = sin * mRadius2;
+                    z = 0f;
+                    w = 1f;
+
+                    mLightLight.set(x, y, z, w);
                 }
             });
 
-    private GLESObjectListener mCubeObjectListener = new GLESObjectListener() {
+    private GLESObjectListener mCubeListener = new GLESObjectListener() {
 
         @Override
         public void update(GLESObject object) {
@@ -313,15 +356,10 @@ public class PVLRenderer extends EffectRenderer {
         }
     };
 
-    GLESObjectListener mLightObjectListener = new GLESObjectListener() {
+    GLESObjectListener mLightListener = new GLESObjectListener() {
 
         @Override
         public void update(GLESObject object) {
-            GLESTransform transform = object.getTransform();
-
-            transform.setIdentity();
-            transform.translate(mCubeLight.mX, mCubeLight.mY, mCubeLight.mZ);
-
         }
 
         @Override
@@ -353,6 +391,62 @@ public class PVLRenderer extends EffectRenderer {
                     mLightLight.mY,
                     mLightLight.mZ,
                     mLightLight.mW);
+        }
+    };
+
+    GLESObjectListener mLight2Listener = new GLESObjectListener() {
+
+        @Override
+        public void update(GLESObject object) {
+            GLESTransform transform = object.getTransform();
+
+            transform.setIdentity();
+            transform.translate(mLightLight.mX, mLightLight.mY, mLightLight.mZ);
+
+        }
+
+        @Override
+        public void apply(GLESObject object) {
+            GLESShader shader = object.getShader();
+            GLESTransform transform = object.getTransform();
+            GLESCamera camera = object.getCamera();
+
+            float[] vMatrix = camera.getViewMatrix();
+            float[] mMatrix = transform.getMatrix();
+
+            float[] vmMatrix = new float[16];
+            Matrix.multiplyMM(vmMatrix, 0, vMatrix, 0, mMatrix, 0);
+            float[] normalMatrix = new float[9];
+
+            for (int i = 0; i < 3; i++) {
+                normalMatrix[i * 3 + 0] = vmMatrix[i * 4 + 0];
+                normalMatrix[i * 3 + 1] = vmMatrix[i * 4 + 1];
+                normalMatrix[i * 3 + 2] = vmMatrix[i * 4 + 2];
+            }
+
+            shader.useProgram();
+
+            GLES20.glUniformMatrix3fv(mNormalMatrixHandle, 1, false,
+                    normalMatrix, 0);
+
+            GLES20.glUniform4f(mLightPosHandle,
+                    mCubeLight.mX,
+                    mCubeLight.mY,
+                    mCubeLight.mZ,
+                    mCubeLight.mW);
+        }
+    };
+
+    private GLESNodeListener mNodeListener = new GLESNodeListener() {
+
+        @Override
+        public void update(GLESNode node) {
+            GLESTransform transform = node.getTransform();
+
+            transform.setIdentity();
+            transform.rotate(mRadian, 0f, 0f, 1f);
+            transform.translate(mRadius, 0f, 0f);
+
         }
     };
 }

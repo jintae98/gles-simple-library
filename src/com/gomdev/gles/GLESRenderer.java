@@ -1,7 +1,5 @@
 package com.gomdev.gles;
 
-import java.util.ArrayList;
-
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESObject.RenderType;
 import com.gomdev.gles.gles20.GLES20Renderer;
@@ -13,7 +11,6 @@ public abstract class GLESRenderer {
     private static final String CLASS = "GLESRenderer";
     private static final String TAG = GLESConfig.TAG + " " + CLASS;
 
-    private ArrayList<GLESObject> mObjects = new ArrayList<GLESObject>();
     protected GLESGLState mCurrentGLState = null;
 
     protected GLESRendererListener mListener = null;
@@ -35,7 +32,7 @@ public abstract class GLESRenderer {
     protected GLESRenderer() {
         GLESContext.getInstance().setRenderer(this);
     }
-    
+
     public void reset() {
         mCurrentGLState = null;
     }
@@ -44,44 +41,21 @@ public abstract class GLESRenderer {
         mListener = listener;
     }
 
-    public void addObject(GLESObject object) {
-        mObjects.add(object);
+    public void updateScene(GLESSceneManager sm) {
+        GLESNode root = sm.getRootNode();
+        root.update(0, true);
     }
 
-    public void updateObjects() {
-        for (GLESObject object : mObjects) {
-            object.getShader().useProgram();
-            object.update();
-            
-            update(object);
-        }
+    public void drawScene(GLESSceneManager sm) {
+        GLESNode root = sm.getRootNode();
+        root.draw(this);
     }
 
-    private void update(GLESObject object) {
-        GLESObjectListener listener;
-        listener = object.getListener();
-        if (listener != null) {
-            listener.update(object);
-        }
-    }
-
-    public void drawObjects() {
-        for (GLESObject object : mObjects) {
-            object.getShader().useProgram();
-            applyTransform(object);
-            apply(object);
-            setGLState(object);
-            bindTexture(object);
-            drawPrimitive(object);
-        }
-    }
-
-    private void apply(GLESObject object) {
-        GLESObjectListener listener;
-        listener = object.getListener();
-        if (listener != null) {
-            listener.apply(object);
-        }
+    void draw(GLESObject object) {
+        applyTransform(object);
+        setGLState(object);
+        bindTexture(object);
+        drawPrimitive(object);
     }
 
     private void drawPrimitive(GLESObject object) {

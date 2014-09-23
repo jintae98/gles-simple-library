@@ -3,26 +3,35 @@ package com.gomdev.gles;
 import android.opengl.Matrix;
 import android.util.Log;
 
-import java.util.Vector;
-
 public class GLESTransform {
     private static final String CLASS = "GLESTransform";
     private static final String TAG = GLESConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = GLESConfig.DEBUG;
 
+    private GLESSpatial mOwner = null;
+
     private float[] mMMatrix = new float[16];
 
-    private Vector<float[]> mMatrixStack = new Vector<float[]>();
-
     public GLESTransform() {
-        mMatrixStack.clear();
+        init();
+    }
+
+    public GLESTransform(GLESSpatial owner) {
+        mOwner = owner;
+
+        init();
+    }
+
+    private void init() {
         Matrix.setIdentityM(mMMatrix, 0);
     }
 
     public void destroy() {
-        mMatrixStack.clear();
-        mMatrixStack = null;
         mMMatrix = null;
+    }
+
+    public GLESSpatial getOwner() {
+        return mOwner;
     }
 
     public void setIdentity() {
@@ -55,17 +64,6 @@ public class GLESTransform {
         float[] matrix = new float[16];
         Matrix.invertM(matrix, 0, mMMatrix, 0);
         return matrix;
-    }
-
-    public void push() {
-        float[] matrix = new float[16];
-        System.arraycopy(mMMatrix, 0, matrix, 0, matrix.length);
-        mMatrixStack.add(matrix);
-    }
-
-    public void pop() {
-        int i = -1 + mMatrixStack.size();
-        mMMatrix = ((float[]) mMatrixStack.remove(i));
     }
 
     public void dump(String str) {
