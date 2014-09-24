@@ -114,7 +114,8 @@ public class GLESMeshUtils {
     }
 
     public static GLESVertexInfo createPlane(float width, float height,
-            boolean useNormal, boolean useTexCoord, boolean useColor, boolean useIndex) {
+            boolean useNormal, boolean useTexCoord, boolean useColor,
+            boolean useIndex) {
 
         float right = width * 0.5f;
         float left = -right;
@@ -123,8 +124,8 @@ public class GLESMeshUtils {
         float z = 0.0f;
 
         float[] vertex = {
-                left, bottom, z, 
-                right, bottom, z, 
+                left, bottom, z,
+                right, bottom, z,
                 left, top, z,
                 right, top, z
         };
@@ -135,9 +136,9 @@ public class GLESMeshUtils {
 
         if (useTexCoord == true) {
             float[] texCoord = {
-                    0f, 1f, 
-                    1f, 1f, 
-                    0f, 0f, 
+                    0f, 1f,
+                    1f, 1f,
+                    0f, 0f,
                     1f, 0f
             };
 
@@ -146,19 +147,19 @@ public class GLESMeshUtils {
 
         if (useNormal == true) {
             float[] normal = {
-                    0f, 0f, 1f, 
-                    0f, 0f, 1f, 
-                    0f, 0f, 1f, 
+                    0f, 0f, 1f,
+                    0f, 0f, 1f,
+                    0f, 0f, 1f,
                     0f, 0f, 1f
             };
 
             vertexInfo.setNormalBuffer(normal, 3);
         }
-        
+
         if (useColor == true) {
             float[] color = {
                     1f, 0f, 0f, 1f,
-                    1f, 0f, 0f, 1f, 
+                    1f, 0f, 0f, 1f,
                     1f, 0f, 0f, 1f,
                     1f, 0f, 0f, 1f
             };
@@ -168,7 +169,7 @@ public class GLESMeshUtils {
 
         if (useIndex == true) {
             short[] index = {
-                    0, 1, 2, 
+                    0, 1, 2,
                     2, 1, 3
             };
 
@@ -369,6 +370,15 @@ public class GLESMeshUtils {
             int numOfHorizontalLine, boolean useTexCoord, boolean useNormal,
             boolean useColor)
     {
+        return createSphere(radius, numOfVerticalLine, numOfHorizontalLine,
+                useTexCoord, useNormal, useColor, 1f, 0f, 0f, 1f);
+    }
+
+    public static GLESVertexInfo createSphere(float radius,
+            int numOfVerticalLine,
+            int numOfHorizontalLine, boolean useTexCoord, boolean useNormal,
+            boolean useColor, float r, float g, float b, float a)
+    {
         double theta = 0f;
         double sinTheta = 0f;
         double cosTheta = 0f;
@@ -382,7 +392,7 @@ public class GLESMeshUtils {
         float normalZ = 0f;
 
         GLESVertexInfo vertexInfo = new GLESVertexInfo();
-        
+
         numOfVerticalLine--;
 
         int numOfVertex = (numOfVerticalLine + 1) * (numOfHorizontalLine + 1);
@@ -418,10 +428,10 @@ public class GLESMeshUtils {
                 vertices[vertexStride + k * 3 + 1] = (float) (normalY * radius);
                 vertices[vertexStride + k * 3 + 2] = (float) (normalZ * radius);
 
-                color[colorStride + k * 4 + 0] = 1f;
-                color[colorStride + k * 4 + 1] = 0f;
-                color[colorStride + k * 4 + 2] = 0f;
-                color[colorStride + k * 4 + 3] = 1f;
+                color[colorStride + k * 4 + 0] = r;
+                color[colorStride + k * 4 + 1] = g;
+                color[colorStride + k * 4 + 2] = b;
+                color[colorStride + k * 4 + 3] = a;
 
                 texCoord[texCoordStride + k * 2 + 0] = (float) (1 - (j / (double) numOfHorizontalLine));
                 texCoord[texCoordStride + k * 2 + 1] = (float) (i / (double) numOfVerticalLine);
