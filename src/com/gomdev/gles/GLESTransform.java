@@ -13,9 +13,8 @@ public class GLESTransform {
     private GLESVector3 mTranslate = new GLESVector3(0f, 0f, 0f);
     private GLESVector3 mPreTranslate = new GLESVector3(0f, 0f, 0f);
     private float mScale = 1f;
-    private float[] mRotate = new float[16];
+    private GLESVector3 mRotate = new GLESVector3(0f, 0f, 0f);
 
-    private float[] mTempMatrix = new float[16];
     private float[] mMMatrix = new float[16];
 
     private boolean mIsPreTranslate = false;
@@ -46,7 +45,7 @@ public class GLESTransform {
         mScale = 1f;
 
         mIsRotate = false;
-        Matrix.setIdentityM(mRotate, 0);
+        mRotate.set(0f, 0f, 0f);
 
         Matrix.setIdentityM(mMMatrix, 0);
     }
@@ -68,12 +67,6 @@ public class GLESTransform {
         mNeedToUpdate = true;
     }
 
-    public void setTranslate(GLESVector3 vec) {
-        mTranslate.set(vec);
-        mIsTranslate = true;
-        mNeedToUpdate = true;
-    }
-
     public void translate(float x, float y, float z) {
         mTranslate.mX += x;
         mTranslate.mY += y;
@@ -83,31 +76,13 @@ public class GLESTransform {
         mNeedToUpdate = true;
     }
 
-    public void translate(GLESVector3 vec) {
-        mTranslate.mX += vec.mX;
-        mTranslate.mY += vec.mY;
-        mTranslate.mZ += vec.mZ;
-
-        mIsTranslate = true;
-        mNeedToUpdate = true;
-    }
-
-    public GLESVector3 getTranslate() {
-        return mTranslate;
-    }
-
     public boolean isSetTranslate() {
         return mIsTranslate;
     }
 
     public void setPreTranslate(float x, float y, float z) {
         mPreTranslate.set(x, y, z);
-        mIsPreTranslate = true;
-        mNeedToUpdate = true;
-    }
 
-    public void setPreTranslate(GLESVector3 vec) {
-        mPreTranslate.set(vec);
         mIsPreTranslate = true;
         mNeedToUpdate = true;
     }
@@ -121,50 +96,44 @@ public class GLESTransform {
         mNeedToUpdate = true;
     }
 
-    public void preTranslate(GLESVector3 vec) {
-        mPreTranslate.mX += vec.mX;
-        mPreTranslate.mY += vec.mY;
-        mPreTranslate.mZ += vec.mZ;
-
-        mIsPreTranslate = true;
-        mNeedToUpdate = true;
-    }
-
-    public GLESVector3 getPreTranslate() {
-        return mPreTranslate;
-    }
-
     public boolean isSetPreTranslate() {
         return mIsPreTranslate;
     }
 
     public void setRotate(float angle, float x, float y, float z) {
-        Matrix.setRotateM(mRotate, 0, angle, x, y, z);
-        mIsRotate = true;
-        mNeedToUpdate = true;
-    }
+        if (x == 1f) {
+            mRotate.mX = angle;
+            mRotate.mY = 0f;
+            mRotate.mZ = 0f;
+        } else if (y == 1f) {
+            mRotate.mY = angle;
+            mRotate.mX = 0f;
+            mRotate.mZ = 0f;
+        } else if (z == 1f) {
+            mRotate.mZ = angle;
+            mRotate.mX = 0f;
+            mRotate.mY = 0f;
+        } else {
+            Log.e(TAG, "setRotate() not support");
+        }
 
-    public void setRotate(float[] rotate) {
-        System.arraycopy(rotate, 0, mRotate, 0, mRotate.length);
         mIsRotate = true;
         mNeedToUpdate = true;
     }
 
     public void rotate(float angle, float x, float y, float z) {
-        Matrix.rotateM(mRotate, 0, angle, x, y, z);
+        if (x == 1f) {
+            mRotate.mX += angle;
+        } else if (y == 1f) {
+            mRotate.mY += angle;
+        } else if (z == 1f) {
+            mRotate.mZ += angle;
+        } else {
+            Log.e(TAG, "rotate() not support ");
+        }
+
         mIsRotate = true;
         mNeedToUpdate = true;
-    }
-
-    public void rotate(float[] rotate) {
-        Matrix.multiplyMM(mTempMatrix, 0, mRotate, 0, rotate, 0);
-        System.arraycopy(mTempMatrix, 0, mRotate, 0, mRotate.length);
-        mIsRotate = true;
-        mNeedToUpdate = true;
-    }
-
-    public float[] getRotate() {
-        return mRotate;
     }
 
     public boolean isSetRotate() {
@@ -173,6 +142,7 @@ public class GLESTransform {
 
     public void setScale(float scale) {
         mScale = scale;
+
         mIsScale = true;
         mNeedToUpdate = true;
     }
@@ -181,10 +151,6 @@ public class GLESTransform {
         mScale *= scale;
         mIsScale = true;
         mNeedToUpdate = true;
-    }
-
-    public float getScale() {
-        return mScale;
     }
 
     public boolean isSetScale() {
@@ -208,8 +174,17 @@ public class GLESTransform {
         }
 
         if (mIsRotate == true) {
-            System.arraycopy(mMMatrix, 0, mTempMatrix, 0, mMMatrix.length);
-            Matrix.multiplyMM(mMMatrix, 0, mTempMatrix, 0, mRotate, 0);
+            if (mRotate.mX != 0f) {
+                Matrix.rotateM(mMMatrix, 0, mRotate.mX, 1f, 0f, 0f);
+            }
+
+            if (mRotate.mY != 0f) {
+                Matrix.rotateM(mMMatrix, 0, mRotate.mY, 0f, 1f, 0f);
+            }
+
+            if (mRotate.mZ != 0f) {
+                Matrix.rotateM(mMMatrix, 0, mRotate.mZ, 0f, 0f, 1f);
+            }
         }
 
         if (mIsPreTranslate == true) {
@@ -221,6 +196,10 @@ public class GLESTransform {
         mNeedToUpdate = false;
 
         return mMMatrix;
+    }
+
+    public void setMatrix(float[] matrix) {
+        System.arraycopy(matrix, 0, mMMatrix, 0, mMMatrix.length);
     }
 
     public void dump(String str) {
