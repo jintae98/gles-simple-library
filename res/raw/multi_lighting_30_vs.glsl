@@ -7,25 +7,31 @@ layout(location=2) in vec3 aNormal;
 out vec4 vColor;
 out vec3 vNormal;
 out vec4 vPositionES;
-out vec4 vLightPosES[8];
+out vec4 vLight1PosES;
+out vec4 vLight2PosES;
 
 uniform highp mat4 uPMatrix;
 uniform highp mat4 uMMatrix;
 uniform highp mat4 uVMatrix;
 
-uniform lowp int uLightState[8];
-uniform highp vec4 uLightPos[8];
+uniform highp vec4 uLight1Pos;
+uniform highp vec4 uLight2Pos;
+uniform int uLightState[2];
 
 void main() {
     vec4 posES = uVMatrix * uMMatrix * aPosition;
     vec4 pos = uPMatrix * posES;
 
     vPositionES = posES;
-    for (int i = 0; i < 8; i++) {
-        if (uLightState[i] == 1) {
-            vLightPosES[i] = uVMatrix * uLightPos[i];
-        }
+
+    if (uLightState[0] == 1) {
+        vLight1PosES = uVMatrix * uLight1Pos;
     }
+
+    if (uLightState[1] == 1) {
+        vLight2PosES = uVMatrix * uLight2Pos;
+    }
+
     vColor = aColor;
     vNormal = aNormal;
 

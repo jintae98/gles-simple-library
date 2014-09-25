@@ -9,13 +9,13 @@ import com.gomdev.shader.EffectUtils;
 
 import android.content.Context;
 import android.opengl.GLES20;
+import android.opengl.GLES30;
 import android.opengl.Matrix;
-import android.util.Log;
 
 public class MultiLightingRenderer extends EffectRenderer {
-    private static final String CLASS = "PVLRenderer";
-    private static final String TAG = MultiLightingConfig.TAG + " " + CLASS;
-    private static final boolean DEBUG = MultiLightingConfig.DEBUG;
+    static final String CLASS = "PVLRenderer";
+    static final String TAG = MultiLightingConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = MultiLightingConfig.DEBUG;
 
     private Version mVersion;
 
@@ -23,7 +23,7 @@ public class MultiLightingRenderer extends EffectRenderer {
     private GLESShader mShader = null;
 
     private GLESObject mCube = null;
-    private GLESObject mLight = null;
+    private GLESObject mLight1 = null;
     private GLESObject mLight2 = null;
     private GLESNode mNode = null;
 
@@ -38,13 +38,16 @@ public class MultiLightingRenderer extends EffectRenderer {
     private float mScreenRatio = 0f;
 
     private int mNormalMatrixHandle = -1;
+
     private int mLightPosHandle = -1;
     private int mLightStateHandle = -1;
+    private int mLightPos1Handle = -1;
+    private int mLightPos2Handle = -1;
 
-    private float mRadius = 0f;
-    private float mRadius2 = 0f;
+    private float mLight1Radius = 0f;
+    private float mLight2Radius = 0f;
 
-    private GLESVector4 mLightPos = new GLESVector4();
+    private GLESVector4 mLight1Pos = new GLESVector4();
     private GLESVector4 mLight2Pos = new GLESVector4();
 
     private float mDegree = 0f;
@@ -80,13 +83,13 @@ public class MultiLightingRenderer extends EffectRenderer {
             root.addChild(mNode);
 
             {
-                mLight = mSM.createObject("Light");
-                mLight.setPrimitiveMode(PrimitiveMode.TRIANGLES);
-                mLight.setRenderType(RenderType.DRAW_ELEMENTS);
-                mLight.setGLState(state);
-                mLight.setListener(mLightListener);
+                mLight1 = mSM.createObject("Light");
+                mLight1.setPrimitiveMode(PrimitiveMode.TRIANGLES);
+                mLight1.setRenderType(RenderType.DRAW_ELEMENTS);
+                mLight1.setGLState(state);
+                mLight1.setListener(mLightListener);
 
-                mNode.addChild(mLight);
+                mNode.addChild(mLight1);
             }
 
             {
@@ -106,16 +109,12 @@ public class MultiLightingRenderer extends EffectRenderer {
 
     public void destroy() {
         mCube = null;
-        mLight = null;
+        mLight1 = null;
         mLight2 = null;
     }
 
     @Override
     protected void onDrawFrame() {
-        if (DEBUG) {
-            Log.d(TAG, "onDrawFrame()");
-        }
-
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
         super.updateFPS();
@@ -131,8 +130,8 @@ public class MultiLightingRenderer extends EffectRenderer {
     @Override
     protected void onSurfaceChanged(int width, int height) {
         mScreenRatio = (float) width / height;
-        mRadius = mScreenRatio;
-        mRadius2 = mScreenRatio * 0.3f;
+        mLight1Radius = mScreenRatio;
+        mLight2Radius = mScreenRatio * 0.3f;
 
         mRenderer.reset();
 
@@ -149,11 +148,11 @@ public class MultiLightingRenderer extends EffectRenderer {
         }
 
         {
-            mLight.setCamera(camera);
+            mLight1.setCamera(camera);
 
             GLESVertexInfo vertexInfo = GLESMeshUtils.createSphere(0.1f, 10,
                     10, false, true, true, 1f, 0f, 0f, 1f);
-            mLight.setVertexInfo(vertexInfo, true, false);
+            mLight1.setVertexInfo(vertexInfo, true, false);
         }
 
         {
@@ -201,15 +200,23 @@ public class MultiLightingRenderer extends EffectRenderer {
         mShader.useProgram();
 
         mCube.setShader(mShader);
-        mLight.setShader(mShader);
+        mLight1.setShader(mShader);
         mLight2.setShader(mShader);
 
         int program = mShader.getProgram();
         mNormalMatrixHandle = GLES20.glGetUniformLocation(program,
                 "uNormalMatrix");
 
-        mLightPosHandle = GLES20.glGetUniformLocation(program, "uLightPos");
         mLightStateHandle = GLES20.glGetUniformLocation(program, "uLightState");
+        if (mVersion == Version.GLES_20) {
+            mLightPosHandle = GLES20.glGetUniformLocation(program, "uLightPos");
+
+        } else {
+            mLightPos1Handle = GLES20.glGetUniformLocation(program,
+                    "uLight1Pos");
+            mLightPos2Handle = GLES20.glGetUniformLocation(program,
+                    "uLight2Pos");
+        }
     }
 
     @Override
@@ -240,10 +247,6 @@ public class MultiLightingRenderer extends EffectRenderer {
     }
 
     public void touchDown(float x, float y) {
-        if (DEBUG) {
-            Log.d(TAG, "touchDown() x=" + x + " y=" + y);
-        }
-
         mIsTouchDown = true;
 
         mDownX = x;
@@ -293,15 +296,15 @@ public class MultiLightingRenderer extends EffectRenderer {
                 public void onAnimation(GLESVector3 vector) {
                     mDegree = (float) Math.toDegrees(vector.mX);
 
-                    float x = (float) Math.cos(vector.mX) * mRadius;
-                    float y = (float) Math.sin(vector.mX) * mRadius;
+                    float x = (float) Math.cos(vector.mX) * mLight1Radius;
+                    float y = (float) Math.sin(vector.mX) * mLight1Radius;
                     float z = 0f;
                     float w = 1f;
 
-                    mLightPos.set(x, y, z, w);
+                    mLight1Pos.set(x, y, z, w);
 
-                    x = (float) Math.cos(vector.mX * 2f) * mRadius2 + x;
-                    y = (float) Math.sin(vector.mX * 2f) * mRadius2 + y;
+                    x = (float) Math.cos(vector.mX * 2f) * mLight2Radius + x;
+                    y = (float) Math.sin(vector.mX * 2f) * mLight2Radius + y;
                     z = 0f;
                     w = 1f;
 
@@ -324,7 +327,7 @@ public class MultiLightingRenderer extends EffectRenderer {
         @Override
         public void apply(GLESObject object) {
             GLESShader shader = object.getShader();
-            GLESTransform transform = object.getTransform();
+            GLESTransform transform = object.getWorldTransform();
 
             GLESCamera camera = object.getCamera();
             float[] vMatrix = camera.getViewMatrix();
@@ -345,29 +348,43 @@ public class MultiLightingRenderer extends EffectRenderer {
             GLES20.glUniformMatrix3fv(mNormalMatrixHandle, 1, false,
                     normalMatrix, 0);
 
-            float[] lightPos = new float[] {
-                    mLightPos.mX,
-                    mLightPos.mY,
-                    mLightPos.mZ,
-                    mLightPos.mW,
-                    mLight2Pos.mX,
-                    mLight2Pos.mY,
-                    mLight2Pos.mZ,
-                    mLight2Pos.mW,
-            };
-            GLES20.glUniform4fv(mLightPosHandle, 2, lightPos, 0);
+            if (mVersion == Version.GLES_20) {
+                float[] lightPos = new float[] {
+                        mLight1Pos.mX,
+                        mLight1Pos.mY,
+                        mLight1Pos.mZ,
+                        mLight1Pos.mW,
+                        mLight2Pos.mX,
+                        mLight2Pos.mY,
+                        mLight2Pos.mZ,
+                        mLight2Pos.mW,
+                };
+                GLES20.glUniform4fv(mLightPosHandle, 2, lightPos, 0);
 
-            int[] lightState = new int[] {
-                    1,
-                    1,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0
-            };
-            GLES20.glUniform1iv(mLightStateHandle, 8, lightState, 0);
+                int[] lightState = new int[] {
+                        1,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                };
+                GLES20.glUniform1iv(mLightStateHandle, 8, lightState, 0);
+            } else {
+                GLES30.glUniform4f(mLightPos1Handle, mLight1Pos.mX,
+                        mLight1Pos.mY, mLight1Pos.mZ, mLight1Pos.mW);
+                GLES30.glUniform4f(mLightPos2Handle, mLight2Pos.mX,
+                        mLight2Pos.mY, mLight2Pos.mZ, mLight2Pos.mW);
+
+                int[] lightState = new int[] {
+                        1,
+                        1
+                };
+                GLES30.glUniform1iv(mLightStateHandle, 2, lightState, 0);
+
+            }
         }
     };
 
@@ -401,29 +418,42 @@ public class MultiLightingRenderer extends EffectRenderer {
             GLES20.glUniformMatrix3fv(mNormalMatrixHandle, 1, false,
                     normalMatrix, 0);
 
-            float[] lightPos = new float[] {
-                    mLightPos.mX,
-                    mLightPos.mY,
-                    mLightPos.mZ,
-                    mLightPos.mW,
-                    mLight2Pos.mX,
-                    mLight2Pos.mY,
-                    mLight2Pos.mZ,
-                    mLight2Pos.mW,
-            };
-            GLES20.glUniform4fv(mLightPosHandle, 2, lightPos, 0);
+            if (mVersion == Version.GLES_20) {
+                float[] lightPos = new float[] {
+                        mLight1Pos.mX,
+                        mLight1Pos.mY,
+                        mLight1Pos.mZ,
+                        mLight1Pos.mW,
+                        mLight2Pos.mX,
+                        mLight2Pos.mY,
+                        mLight2Pos.mZ,
+                        mLight2Pos.mW,
+                };
+                GLES20.glUniform4fv(mLightPosHandle, 2, lightPos, 0);
 
-            int[] lightState = new int[] {
-                    0,
-                    1,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0
-            };
-            GLES20.glUniform1iv(mLightStateHandle, 8, lightState, 0);
+                int[] lightState = new int[] {
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                };
+                GLES20.glUniform1iv(mLightStateHandle, 8, lightState, 0);
+            } else {
+                // GLES30.glUniform4f(mLightPos1Handle, mLightPos.mX,
+                // mLightPos.mY, mLightPos.mZ, mLightPos.mW);
+                GLES30.glUniform4f(mLightPos2Handle, mLight2Pos.mX,
+                        mLight2Pos.mY, mLight2Pos.mZ, mLight2Pos.mW);
+
+                int[] lightState = new int[] {
+                        0,
+                        1
+                };
+                GLES30.glUniform1iv(mLightStateHandle, 2, lightState, 0);
+            }
         }
     };
 
@@ -434,7 +464,7 @@ public class MultiLightingRenderer extends EffectRenderer {
             GLESTransform transform = object.getTransform();
 
             transform.setIdentity();
-            transform.setPreTranslate(mRadius2, 0f, 0f);
+            transform.setPreTranslate(mLight2Radius, 0f, 0f);
             transform.setRotate(mDegree, 0f, 0f, 1f);
 
         }
@@ -463,30 +493,43 @@ public class MultiLightingRenderer extends EffectRenderer {
             GLES20.glUniformMatrix3fv(mNormalMatrixHandle, 1, false,
                     normalMatrix, 0);
 
-            float[] lightPos = new float[] {
-                    mLightPos.mX,
-                    mLightPos.mY,
-                    mLightPos.mZ,
-                    mLightPos.mW,
-                    mLight2Pos.mX,
-                    mLight2Pos.mY,
-                    mLight2Pos.mZ,
-                    mLight2Pos.mW
-            };
-            GLES20.glUniform4fv(mLightPosHandle, 2, lightPos, 0);
+            if (mVersion == Version.GLES_20) {
+                float[] lightPos = new float[] {
+                        mLight1Pos.mX,
+                        mLight1Pos.mY,
+                        mLight1Pos.mZ,
+                        mLight1Pos.mW,
+                        mLight2Pos.mX,
+                        mLight2Pos.mY,
+                        mLight2Pos.mZ,
+                        mLight2Pos.mW
+                };
+                GLES20.glUniform4fv(mLightPosHandle, 2, lightPos, 0);
 
-            int[] lightState = new int[] {
-                    1,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0
-            };
+                int[] lightState = new int[] {
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                };
 
-            GLES20.glUniform1iv(mLightStateHandle, 8, lightState, 0);
+                GLES20.glUniform1iv(mLightStateHandle, 8, lightState, 0);
+            } else {
+                GLES30.glUniform4f(mLightPos1Handle, mLight1Pos.mX,
+                        mLight1Pos.mY, mLight1Pos.mZ, mLight1Pos.mW);
+                // GLES30.glUniform4f(mLightPos2Handle, mLight2Pos.mX,
+                // mLight2Pos.mY, mLight2Pos.mZ, mLight2Pos.mW);
+
+                int[] lightState = new int[] {
+                        1,
+                        0
+                };
+                GLES30.glUniform1iv(mLightStateHandle, 2, lightState, 0);
+            }
         }
     };
 
@@ -498,7 +541,7 @@ public class MultiLightingRenderer extends EffectRenderer {
 
             transform.setIdentity();
             transform.setRotate(mDegree, 0f, 0f, 1f);
-            transform.setPreTranslate(mRadius, 0f, 0f);
+            transform.setPreTranslate(mLight1Radius, 0f, 0f);
         }
     };
 }
