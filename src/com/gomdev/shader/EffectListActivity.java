@@ -36,9 +36,9 @@ import android.widget.ListView;
 
 public class EffectListActivity extends Activity implements
         DialogListener, Ad {
-    private static final String CLASS = "EffectListActivity";
-    private static final String TAG = GLESConfig.TAG + " " + CLASS;
-    private static final boolean DEBUG = GLESConfig.DEBUG;
+    static final String CLASS = "EffectListActivity";
+    static final String TAG = ShaderConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = ShaderConfig.DEBUG;
 
     static final int GET_EXTENSIONS = 100;
 

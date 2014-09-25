@@ -3,8 +3,9 @@ package com.gomdev.gles;
 import java.util.ArrayList;
 
 public class GLESNode extends GLESSpatial {
-    protected static final String CLASS = "GLESNode";
-    protected static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final String CLASS = "GLESNode";
+    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = GLESConfig.DEBUG;
 
     protected GLESNodeListener mListener = null;
 

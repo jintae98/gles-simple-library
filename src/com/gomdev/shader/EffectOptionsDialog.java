@@ -22,6 +22,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class EffectOptionsDialog extends DialogFragment {
+    static final String CLASS = "EffectOptionsDialog";
+    static final String TAG = ShaderConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = ShaderConfig.DEBUG;
+
     private boolean[] mCheckedItem = null;
     private ArrayList<String> mOptions = new ArrayList<String>();
     private ArrayAdapter<String> mAdapter = null;

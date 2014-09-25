@@ -10,6 +10,7 @@ import android.opengl.GLSurfaceView.Renderer;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,6 +21,10 @@ import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESUtils;
 
 public abstract class EffectRenderer implements Renderer {
+    static final String CLASS = "EffectRenderer";
+    static final String TAG = ShaderConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = ShaderConfig.DEBUG;
+
     protected static final int COMPILE_OR_LINK_ERROR = 1;
     protected static final int UPDATE_FPS = 2;
 
@@ -115,15 +120,25 @@ public abstract class EffectRenderer implements Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+        if (DEBUG) {
+            Log.d(TAG, "onSurfaceCreated()");
+        }
+
         mIsShaderCompiled = createShader();
 
         if (mIsShaderCompiled == true) {
             onSurfaceCreated();
+        } else {
+            Log.e(TAG, "\t shader compiliation fails");
         }
     }
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
+        if (DEBUG) {
+            Log.d(TAG, "onSurfaceChanged()");
+        }
+
         if (mIsShaderCompiled == true) {
             onSurfaceChanged(width, height);
         }
@@ -131,6 +146,10 @@ public abstract class EffectRenderer implements Renderer {
 
     @Override
     public void onDrawFrame(GL10 gl) {
+        if (DEBUG) {
+            Log.d(TAG, "onDrawFrame()");
+        }
+
         if (mIsShaderCompiled == true) {
             onDrawFrame();
         }

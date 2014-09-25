@@ -6,8 +6,9 @@ import android.opengl.GLUtils;
 import android.util.Log;
 
 public class GLESTexture {
-    private static final String CLASS = "GLESTexture";
-    private static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final String CLASS = "GLESTexture";
+    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = GLESConfig.DEBUG;
 
     private int mTextureID;
 

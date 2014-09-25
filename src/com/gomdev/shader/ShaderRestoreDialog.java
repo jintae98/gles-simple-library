@@ -18,6 +18,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class ShaderRestoreDialog extends DialogFragment {
+    static final String CLASS = "ShaderRestoreDialog";
+    static final String TAG = ShaderConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = ShaderConfig.DEBUG;
+
     private ArrayList<String> mSelectedShaders = new ArrayList<String>();
     private ArrayList<String> mSavedShaders = new ArrayList<String>();
     private ListView mListView = null;

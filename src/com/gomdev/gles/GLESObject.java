@@ -1,6 +1,9 @@
 package com.gomdev.gles;
 
 public class GLESObject extends GLESSpatial {
+    static final String CLASS = "GLESObject";
+    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = GLESConfig.DEBUG;
 
     public enum PrimitiveMode {
         TRIANGLES,

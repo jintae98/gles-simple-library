@@ -4,8 +4,9 @@ import android.opengl.Matrix;
 import android.util.Log;
 
 public abstract class GLESSpatial {
-    protected static final String CLASS = "GLESSpatial";
-    protected static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final String CLASS = "GLESSpatial";
+    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = GLESConfig.DEBUG;
 
     private GLESSpatial mParent = null;
 

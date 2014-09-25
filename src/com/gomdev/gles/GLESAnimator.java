@@ -5,8 +5,9 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
 public class GLESAnimator {
-    private static final String CLASS = "GLESAnimator";
-    private static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final String CLASS = "GLESAnimator";
+    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = GLESConfig.DEBUG;
 
     private GLESAnimatorCallback mCallback;
     private Interpolator mInterpolator = null;

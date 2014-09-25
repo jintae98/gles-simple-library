@@ -35,6 +35,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class EffectActivity extends Activity implements Ad {
+    static final String CLASS = "EffectActivity";
+    static final String TAG = ShaderConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = ShaderConfig.DEBUG;
+
     protected GLSurfaceView mView;
 
     @Override

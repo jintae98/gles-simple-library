@@ -18,8 +18,9 @@ import com.gomdev.gles.GLESVertexInfo;
 import com.gomdev.gles.GLESObject.PrimitiveMode;
 
 public class GLES20Renderer extends GLESRenderer {
-    private static final String CLASS = "GLES20Renderer";
-    private static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final String CLASS = "GLES20Renderer";
+    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = GLESConfig.DEBUG;
 
     public GLES20Renderer() {
 

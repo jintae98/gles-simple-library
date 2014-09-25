@@ -112,8 +112,9 @@ public class MultiLightingRenderer extends EffectRenderer {
 
     @Override
     protected void onDrawFrame() {
-        if (DEBUG)
+        if (DEBUG) {
             Log.d(TAG, "onDrawFrame()");
+        }
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
@@ -129,9 +130,6 @@ public class MultiLightingRenderer extends EffectRenderer {
 
     @Override
     protected void onSurfaceChanged(int width, int height) {
-        if (DEBUG)
-            Log.d(TAG, "onSurfaceChanged()");
-
         mScreenRatio = (float) width / height;
         mRadius = mScreenRatio;
         mRadius2 = mScreenRatio * 0.3f;
@@ -216,8 +214,6 @@ public class MultiLightingRenderer extends EffectRenderer {
 
     @Override
     protected boolean createShader() {
-        Log.d(TAG, "createShader()");
-
         mShader = new GLESShader(mContext);
 
         String vsSource = EffectUtils.getShaderSource(mContext, 0);
@@ -244,8 +240,9 @@ public class MultiLightingRenderer extends EffectRenderer {
     }
 
     public void touchDown(float x, float y) {
-        if (DEBUG)
+        if (DEBUG) {
             Log.d(TAG, "touchDown() x=" + x + " y=" + y);
+        }
 
         mIsTouchDown = true;
 

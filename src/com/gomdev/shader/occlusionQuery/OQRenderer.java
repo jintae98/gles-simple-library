@@ -89,9 +89,6 @@ public class OQRenderer extends EffectRenderer {
 
     @Override
     protected void onDrawFrame() {
-        if (DEBUG)
-            Log.d(TAG, "onDrawFrame()");
-
         super.updateFPS();
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
@@ -116,7 +113,9 @@ public class OQRenderer extends EffectRenderer {
                                 GLES30.GL_QUERY_RESULT, mNumOfPass, i);
 
                         if (mNumOfPass[i] == 0) {
-                            Log.d(TAG, "onDrawFrame() i=" + i + " skipped");
+                            if (DEBUG) {
+                                Log.d(TAG, "\t i=" + i + " skipped");
+                            }
                         }
                     }
 
@@ -153,9 +152,6 @@ public class OQRenderer extends EffectRenderer {
 
     @Override
     protected void onSurfaceChanged(int width, int height) {
-        if (DEBUG)
-            Log.d(TAG, "onSurfaceChanged()");
-
         mScreenRatio = (float) width / height;
 
         mRenderer.reset();
@@ -235,7 +231,10 @@ public class OQRenderer extends EffectRenderer {
 
     @Override
     protected boolean createShader() {
-        Log.d(TAG, "createShader()");
+        if (DEBUG) {
+            Log.d(TAG, "createShader()");
+        }
+
         mShader = new GLESShader(mContext);
 
         String vsSource = EffectUtils.getShaderSource(mContext, 0);
@@ -262,8 +261,9 @@ public class OQRenderer extends EffectRenderer {
     }
 
     public void touchDown(float x, float y) {
-        if (DEBUG)
+        if (DEBUG) {
             Log.d(TAG, "touchDown() x=" + x + " y=" + y);
+        }
 
         mIsTouchDown = true;
 

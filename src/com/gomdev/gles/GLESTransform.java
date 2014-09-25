@@ -4,9 +4,9 @@ import android.opengl.Matrix;
 import android.util.Log;
 
 public class GLESTransform {
-    private static final String CLASS = "GLESTransform";
-    private static final String TAG = GLESConfig.TAG + " " + CLASS;
-    private static final boolean DEBUG = GLESConfig.DEBUG;
+    static final String CLASS = "GLESTransform";
+    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = GLESConfig.DEBUG;
 
     private GLESSpatial mOwner = null;
 

@@ -10,6 +10,9 @@ import android.opengl.GLSurfaceView.Renderer;
 import android.os.Handler;
 
 public class DummyRenderer implements Renderer {
+    static final String CLASS = "DummyRenderer";
+    static final String TAG = ShaderConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = ShaderConfig.DEBUG;
 
     private Context mContext = null;
     private Handler mHandler = null;

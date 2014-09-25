@@ -4,9 +4,9 @@ import android.opengl.Matrix;
 import android.util.Log;
 
 public class GLESCamera {
-    private static final String CLASS = "GLESProjection";
-    private static final String TAG = GLESConfig.TAG + " " + CLASS;
-    private static final boolean DEBUG = GLESConfig.DEBUG;
+    static final String CLASS = "GLESCamera";
+    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = GLESConfig.DEBUG;
 
     private float[] mPMatrix = new float[16];
     private float[] mVMatrix = new float[16];

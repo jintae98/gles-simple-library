@@ -4,6 +4,10 @@ import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.gles30.GLES30Object;
 
 public class GLESSceneManager {
+    static final String CLASS = "GLESSceneManager";
+    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = GLESConfig.DEBUG;
+
     private GLESNode mRootNode = null;
 
     private GLESSceneManager() {

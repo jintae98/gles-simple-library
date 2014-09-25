@@ -12,6 +12,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 public class ShaderListDialog extends DialogFragment {
+    static final String CLASS = "ShaderListDialog";
+    static final String TAG = ShaderConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = ShaderConfig.DEBUG;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         ShaderContext context = ShaderContext.getInstance();

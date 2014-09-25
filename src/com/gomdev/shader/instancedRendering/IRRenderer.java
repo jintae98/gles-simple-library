@@ -88,9 +88,6 @@ public class IRRenderer extends EffectRenderer implements GLESRendererListener {
 
     @Override
     protected void onDrawFrame() {
-        if (DEBUG)
-            Log.d(TAG, "onDrawFrame()");
-
         super.updateFPS();
 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
@@ -122,9 +119,6 @@ public class IRRenderer extends EffectRenderer implements GLESRendererListener {
 
     @Override
     protected void onSurfaceChanged(int width, int height) {
-        if (DEBUG)
-            Log.d(TAG, "onSurfaceChanged()");
-
         mScreenRatio = (float) width / height;
 
         mRenderer.reset();
@@ -220,8 +214,9 @@ public class IRRenderer extends EffectRenderer implements GLESRendererListener {
     }
 
     public void touchDown(float x, float y) {
-        if (DEBUG)
+        if (DEBUG) {
             Log.d(TAG, "touchDown() x=" + x + " y=" + y);
+        }
 
         mIsTouchDown = true;
 

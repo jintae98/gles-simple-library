@@ -57,9 +57,6 @@ public class BasicRenderer extends EffectRenderer {
 
     @Override
     protected void onDrawFrame() {
-        if (DEBUG)
-            Log.d(TAG, "onDrawFrame()");
-
         super.updateFPS();
 
         update();
@@ -81,9 +78,6 @@ public class BasicRenderer extends EffectRenderer {
 
     @Override
     protected void onSurfaceChanged(int width, int height) {
-        if (DEBUG)
-            Log.d(TAG, "onSurfaceChanged()");
-
         mRenderer.reset();
 
         GLES20.glViewport(0, 0, width, height);
@@ -131,7 +125,10 @@ public class BasicRenderer extends EffectRenderer {
 
     @Override
     protected boolean createShader() {
-        Log.d(TAG, "createShader()");
+        if (DEBUG) {
+            Log.d(TAG, "createShader()");
+        }
+
         mBasicShader = new GLESShader(mContext);
 
         String vsSource = EffectUtils.getShaderSource(mContext, 0);
@@ -155,8 +152,9 @@ public class BasicRenderer extends EffectRenderer {
     }
 
     public void touchDown(float x, float y) {
-        if (DEBUG)
+        if (DEBUG) {
             Log.d(TAG, "touchDown() x=" + x + " y=" + y);
+        }
 
         mIsTouchDown = true;
 

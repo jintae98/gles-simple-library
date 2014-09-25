@@ -74,9 +74,6 @@ public class WhiteholeRenderer extends EffectRenderer {
 
     @Override
     protected void onDrawFrame() {
-        if (DEBUG)
-            Log.d(TAG, "onDrawFrame()");
-
         super.updateFPS();
 
         int count = 0;
@@ -106,9 +103,6 @@ public class WhiteholeRenderer extends EffectRenderer {
     protected void onSurfaceChanged(int width, int height) {
         mWidth = width;
         mHeight = height;
-
-        if (DEBUG)
-            Log.d(TAG, "onSurfaceChanged()");
 
         mRenderer.reset();
 
@@ -172,7 +166,10 @@ public class WhiteholeRenderer extends EffectRenderer {
 
     @Override
     protected boolean createShader() {
-        Log.d(TAG, "createShader()");
+        if (DEBUG) {
+            Log.d(TAG, "createShader()");
+        }
+
         mShaderWhitehole = new GLESShader(mContext);
 
         String vsSource = EffectUtils.getShaderSource(mContext, 0);
@@ -196,8 +193,9 @@ public class WhiteholeRenderer extends EffectRenderer {
     }
 
     public void touchDown(float x, float y) {
-        if (DEBUG)
+        if (DEBUG) {
             Log.d(TAG, "touchDown() x=" + x + " y=" + y);
+        }
 
         mIsTouchDown = true;
 

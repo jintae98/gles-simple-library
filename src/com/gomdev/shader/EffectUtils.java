@@ -10,6 +10,9 @@ import com.gomdev.shader.ShaderContext.ShaderInfo;
 import android.content.Context;
 
 public class EffectUtils {
+    static final String CLASS = "EffectUtils";
+    static final String TAG = ShaderConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = ShaderConfig.DEBUG;
 
     public static String getSavedFilePath(Context context, String shaderTitle) {
         File file = context.getExternalFilesDir(null);

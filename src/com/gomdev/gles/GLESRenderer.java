@@ -8,8 +8,9 @@ import com.gomdev.gles.gles30.GLES30Renderer;
 import android.util.Log;
 
 public abstract class GLESRenderer {
-    private static final String CLASS = "GLESRenderer";
-    private static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final String CLASS = "GLESRenderer";
+    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = GLESConfig.DEBUG;
 
     protected GLESGLState mCurrentGLState = null;
 

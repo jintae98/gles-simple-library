@@ -1,10 +1,15 @@
 package com.gomdev.gles.gles30;
 
+import com.gomdev.gles.GLESConfig;
 import com.gomdev.gles.GLESContext;
 import com.gomdev.gles.GLESObject;
 import com.gomdev.gles.GLESVertexInfo;
 
 public class GLES30Object extends GLESObject {
+    static final String CLASS = "GLES30Object";
+    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = GLESConfig.DEBUG;
+    
     private boolean mUseVAO = false;
     private int mNumOfInstance = 1;
 

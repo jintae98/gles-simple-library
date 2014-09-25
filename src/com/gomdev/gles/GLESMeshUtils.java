@@ -3,9 +3,9 @@ package com.gomdev.gles;
 import android.util.Log;
 
 public class GLESMeshUtils {
-    private static final String CLASS = "GLESMeshUtils";
-    private static final String TAG = GLESConfig.TAG + " " + CLASS;
-    private static final boolean DEBUG = GLESConfig.DEBUG;
+    static final String CLASS = "GLESMeshUtils";
+    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = GLESConfig.DEBUG;
 
     private GLESMeshUtils() {
 

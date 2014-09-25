@@ -10,6 +10,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 public class ShaderViewActivity extends Activity implements Ad {
+    static final String CLASS = "ShaderViewActivity";
+    static final String TAG = ShaderConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = ShaderConfig.DEBUG;
 
     private TextView mTextView = null;
     private String mShaderSource = null;

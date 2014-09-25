@@ -21,8 +21,9 @@ import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
 public class GLESUtils {
-    private static final String CLASS = "GLESUtils";
-    private static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final String CLASS = "GLESUtils";
+    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = GLESConfig.DEBUG;
 
     private static final int NUM_OF_FRAME = 4;
 

@@ -9,9 +9,9 @@ import android.opengl.GLES20;
 import android.util.Log;
 
 public class GLESShader {
-    private static final String CLASS = "GLESShader";
-    private static final String TAG = GLESConfig.TAG + " " + CLASS;
-    private static final boolean DEBUG = GLESConfig.DEBUG;
+    static final String CLASS = "GLESShader";
+    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final boolean DEBUG = GLESConfig.DEBUG;
 
     private final Context mContext;
     private final Resources mRes;
