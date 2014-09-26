@@ -32,10 +32,11 @@ public class AdFragment extends Fragment {
     public void onActivityCreated(Bundle bundle) {
         super.onActivityCreated(bundle);
 
+        String testDevice = getActivity().getString(R.string.test_device_id);
         if (ShaderConfig.ENABLE_AD) {
             AdView mAdView = (AdView) getView().findViewById(R.id.adView);
             AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice("770EADBDA1863A7B24B3991C3D00B573")
+                    .addTestDevice(testDevice)
                     .build();
             mAdView.loadAd(adRequest);
         }
