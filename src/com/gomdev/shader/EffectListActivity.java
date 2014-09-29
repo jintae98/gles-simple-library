@@ -7,11 +7,11 @@ import com.gomdev.shader.basic.BasicConfig;
 import com.gomdev.shader.instancedRendering.IRConfig;
 import com.gomdev.shader.instancedRendering2.IR2Config;
 import com.gomdev.shader.multiLighting.MultiLightingConfig;
-import com.gomdev.shader.occlusionQuery.OQConfig;
+//import com.gomdev.shader.occlusionQuery.OQConfig;
 import com.gomdev.shader.perFragmentLighting.PFLConfig;
 import com.gomdev.shader.perVertexLighting.PVLConfig;
 import com.gomdev.shader.texture.TextureConfig;
-import com.gomdev.shader.whitehole.WhiteholeConfig;
+//import com.gomdev.shader.whitehole.WhiteholeConfig;
 import com.gomdev.gles.GLESConfig;
 import com.gomdev.gles.GLESContext;
 import com.gomdev.gles.GLESConfig.Version;
@@ -123,11 +123,11 @@ public class EffectListActivity extends Activity implements
         setupTexture(version);
         setupPVL(version);
         setupPFL(version);
-        setupOQ(version);
+        setupMultiLighting(version);
+//        setupOQ(version);
         setupIR(version);
         setupIR2(version);
-        setupMultiLighting(version);
-        setupWhitehole(version);
+//        setupWhitehole(version);
 
         if (DEBUG) {
             Log.d(TAG, "onCreate() Effects");
@@ -320,35 +320,35 @@ public class EffectListActivity extends Activity implements
         mEffects.add(info);
     }
 
-    private void setupOQ(Version version) {
-        EffectInfo info = new EffectInfo();
-        info.mEffectName = OQConfig.EFFECT_NAME;
-        info.mIntent = new Intent(this,
-                com.gomdev.shader.occlusionQuery.OQActivity.class);
-        if (version == Version.GLES_20) {
-            info.mShaderResIDs = new int[] {
-                    R.raw.oq_20_vs,
-                    R.raw.oq_20_fs,
-            };
-
-            info.mShaderTitle = new String[] {
-                    "Occlusion Query 20 VS",
-                    "Occlusion Query 20 FS",
-            };
-        } else {
-            info.mShaderResIDs = new int[] {
-                    R.raw.oq_30_vs,
-                    R.raw.oq_30_fs
-            };
-
-            info.mShaderTitle = new String[] {
-                    "Occlusion Query 30 VS",
-                    "Occlusion Query 30 FS",
-            };
-        }
-
-        mEffects.add(info);
-    }
+//    private void setupOQ(Version version) {
+//        EffectInfo info = new EffectInfo();
+//        info.mEffectName = OQConfig.EFFECT_NAME;
+//        info.mIntent = new Intent(this,
+//                com.gomdev.shader.occlusionQuery.OQActivity.class);
+//        if (version == Version.GLES_20) {
+//            info.mShaderResIDs = new int[] {
+//                    R.raw.oq_20_vs,
+//                    R.raw.oq_20_fs,
+//            };
+//
+//            info.mShaderTitle = new String[] {
+//                    "Occlusion Query 20 VS",
+//                    "Occlusion Query 20 FS",
+//            };
+//        } else {
+//            info.mShaderResIDs = new int[] {
+//                    R.raw.oq_30_vs,
+//                    R.raw.oq_30_fs
+//            };
+//
+//            info.mShaderTitle = new String[] {
+//                    "Occlusion Query 30 VS",
+//                    "Occlusion Query 30 FS",
+//            };
+//        }
+//
+//        mEffects.add(info);
+//    }
 
     private void setupMultiLighting(Version version) {
         EffectInfo info = new EffectInfo();
@@ -380,35 +380,35 @@ public class EffectListActivity extends Activity implements
         mEffects.add(info);
     }
 
-    private void setupWhitehole(Version version) {
-        EffectInfo info = new EffectInfo();
-        info.mEffectName = WhiteholeConfig.EFFECT_NAME;
-        info.mIntent = new Intent(this,
-                com.gomdev.shader.whitehole.WhiteholeActivity.class);
-        if (version == Version.GLES_20) {
-            info.mShaderResIDs = new int[] {
-                    R.raw.whitehole_20_vs,
-                    R.raw.whitehole_20_fs,
-            };
-
-            info.mShaderTitle = new String[] {
-                    "Whitehole 20 VS",
-                    "Whitehole 20 FS",
-            };
-        } else {
-            info.mShaderResIDs = new int[] {
-                    R.raw.whitehole_30_vs,
-                    R.raw.whitehole_30_fs
-            };
-
-            info.mShaderTitle = new String[] {
-                    "Whitehole 30 VS",
-                    "Whitehole 30 FS",
-            };
-        }
-
-        mEffects.add(info);
-    }
+//    private void setupWhitehole(Version version) {
+//        EffectInfo info = new EffectInfo();
+//        info.mEffectName = WhiteholeConfig.EFFECT_NAME;
+//        info.mIntent = new Intent(this,
+//                com.gomdev.shader.whitehole.WhiteholeActivity.class);
+//        if (version == Version.GLES_20) {
+//            info.mShaderResIDs = new int[] {
+//                    R.raw.whitehole_20_vs,
+//                    R.raw.whitehole_20_fs,
+//            };
+//
+//            info.mShaderTitle = new String[] {
+//                    "Whitehole 20 VS",
+//                    "Whitehole 20 FS",
+//            };
+//        } else {
+//            info.mShaderResIDs = new int[] {
+//                    R.raw.whitehole_30_vs,
+//                    R.raw.whitehole_30_fs
+//            };
+//
+//            info.mShaderTitle = new String[] {
+//                    "Whitehole 30 VS",
+//                    "Whitehole 30 FS",
+//            };
+//        }
+//
+//        mEffects.add(info);
+//    }
 
     private void makeEffectList() {
         ArrayList<String> effectList = new ArrayList<String>();

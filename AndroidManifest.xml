@@ -11,6 +11,9 @@
     <uses-feature
         android:glEsVersion="0x00030000"
         android:required="true" />
+    <uses-feature
+        android:name="“android.hardware.screen.portrait”"
+        android:required="true" />
 
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -28,15 +31,23 @@
 
         <activity
             android:name="com.gomdev.shader.ShaderViewActivity"
-            android:label="@string/app_name" >
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name"
+             >
+
         </activity>
         <activity
             android:name="com.gomdev.shader.ShaderEditActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
         <activity
             android:name="com.gomdev.shader.EffectListActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,38 +57,56 @@
         </activity>
         <activity
             android:name="com.gomdev.shader.whitehole.WhiteholeActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.gomdev.shader.basic.BasicActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.gomdev.shader.texture.TextureActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.gomdev.shader.instancedRendering.IRActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.gomdev.shader.instancedRendering2.IR2Activity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.gomdev.shader.occlusionQuery.OQActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.gomdev.shader.perVertexLighting.PVLActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.gomdev.shader.perFragmentLighting.PFLActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.gomdev.shader.multiLighting.MultiLightingActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
