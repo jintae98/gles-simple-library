@@ -24,6 +24,7 @@ import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.shader.R;
 import com.gomdev.shader.ShaderContext.ShaderInfo;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressLint("Registered")
 public class EffectActivity extends Activity implements Ad {
     static final String CLASS = "EffectActivity";
     static final String TAG = ShaderConfig.TAG + " " + CLASS;
