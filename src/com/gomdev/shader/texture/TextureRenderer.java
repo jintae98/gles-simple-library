@@ -2,8 +2,6 @@ package com.gomdev.shader.texture;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.gles.GLESObject.PrimitiveMode;
-import com.gomdev.gles.GLESObject.RenderType;
 import com.gomdev.shader.EffectRenderer;
 import com.gomdev.shader.EffectUtils;
 
@@ -41,8 +39,6 @@ public class TextureRenderer extends EffectRenderer {
         GLESNode root = mSM.createRootNode("Root");
 
         mTextureObject = mSM.createObject("TextureObject");
-        mTextureObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
-        mTextureObject.setRenderType(RenderType.DRAW_ELEMENTS);
 
         GLESGLState state = new GLESGLState();
         state.setCullFaceState(true);

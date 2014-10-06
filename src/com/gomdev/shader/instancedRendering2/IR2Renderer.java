@@ -5,8 +5,7 @@ import java.util.Random;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.gles.GLESObject.PrimitiveMode;
-import com.gomdev.gles.GLESObject.RenderType;
+import com.gomdev.gles.GLESVertexInfo.RenderType;
 import com.gomdev.shader.EffectRenderer;
 import com.gomdev.shader.EffectUtils;
 
@@ -58,14 +57,6 @@ public class IR2Renderer extends EffectRenderer {
         GLESNode root = mSM.createRootNode("Root");
 
         mObject = mSM.createObject("Cube");
-        mObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
-
-        if (mVersion == Version.GLES_20) {
-            mObject.setRenderType(RenderType.DRAW_ELEMENTS);
-        } else {
-            mObject.setRenderType(RenderType.DRAW_ELEMENTS_INSTANCED);
-            mObject.setNumOfInstance(NUM_OF_INSTANCE);
-        }
 
         GLESGLState state = new GLESGLState();
         state.setCullFaceState(true);
@@ -136,6 +127,9 @@ public class IR2Renderer extends EffectRenderer {
             GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(0.1f,
                     true, false, false);
             mObject.setVertexInfo(vertexInfo, true, true);
+            
+            vertexInfo.setRenderType(RenderType.DRAW_ELEMENTS_INSTANCED);
+            vertexInfo.setNumOfInstance(NUM_OF_INSTANCE);
         }
     }
 

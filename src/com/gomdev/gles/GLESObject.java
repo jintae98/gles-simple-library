@@ -5,31 +5,12 @@ public class GLESObject extends GLESSpatial {
     static final String TAG = GLESConfig.TAG + " " + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
-    public enum PrimitiveMode {
-        TRIANGLES,
-        TRIANGLE_STRIP,
-        TRIANGLE_FAN,
-        LINES,
-        LINE_STRIP,
-        LINE_LOOP
-    }
-
-    public enum RenderType {
-        DRAW_ELEMENTS,
-        DRAW_ARRAYS,
-        DRAW_ELEMENTS_INSTANCED,
-        DRAW_ARRAYS_INSTANCED,
-    }
-
     protected GLESShader mShader;
 
     protected GLESTexture mTexture;
     protected GLESCamera mCamera;
     protected GLESGLState mGLState;
     protected GLESObjectListener mListener = null;
-
-    protected PrimitiveMode mPrimitiveMode = PrimitiveMode.TRIANGLES;
-    protected RenderType mRenderType = RenderType.DRAW_ELEMENTS;
 
     protected GLESVertexInfo mVertexInfo = null;
     protected boolean mUseVBO = true;
@@ -84,22 +65,6 @@ public class GLESObject extends GLESSpatial {
         return mShader;
     }
 
-    public void setPrimitiveMode(PrimitiveMode mode) {
-        mPrimitiveMode = mode;
-    }
-
-    public PrimitiveMode getPrimitiveMode() {
-        return mPrimitiveMode;
-    }
-
-    public void setRenderType(RenderType renderType) {
-        mRenderType = renderType;
-    }
-
-    public RenderType getRenderType() {
-        return mRenderType;
-    }
-
     public void setCamera(GLESCamera camera) {
         mCamera = camera;
     }
@@ -152,13 +117,6 @@ public class GLESObject extends GLESSpatial {
     }
 
     protected void getUniformLocations() {
-    }
-
-    public void setNumOfInstance(int num) {
-    }
-
-    public int getNumOfInstance() {
-        return 0;
     }
 
     @Override

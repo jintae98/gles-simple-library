@@ -2,8 +2,6 @@ package com.gomdev.shader.icon;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.gles.GLESObject.PrimitiveMode;
-import com.gomdev.gles.GLESObject.RenderType;
 import com.gomdev.shader.EffectRenderer;
 import com.gomdev.shader.EffectUtils;
 import com.gomdev.shader.R;
@@ -64,8 +62,6 @@ public class IconRenderer extends EffectRenderer {
 
             {
                 mBG = mSM.createObject("BG");
-                mBG.setPrimitiveMode(PrimitiveMode.TRIANGLE_STRIP);
-                mBG.setRenderType(RenderType.DRAW_ARRAYS);
                 mBG.setListener(mBGListener);
 
                 GLESGLState state = new GLESGLState();
@@ -86,8 +82,6 @@ public class IconRenderer extends EffectRenderer {
 
             {
                 mFront = mSM.createObject("Front");
-                mFront.setPrimitiveMode(PrimitiveMode.TRIANGLE_STRIP);
-                mFront.setRenderType(RenderType.DRAW_ARRAYS);
                 mFront.setListener(mFrontListener);
 
                 GLESGLState state = new GLESGLState();
@@ -102,8 +96,6 @@ public class IconRenderer extends EffectRenderer {
 
             {
                 mLeft = mSM.createObject("Left");
-                mLeft.setPrimitiveMode(PrimitiveMode.TRIANGLE_STRIP);
-                mLeft.setRenderType(RenderType.DRAW_ARRAYS);
                 mLeft.setListener(mLeftListener);
 
                 GLESGLState state = new GLESGLState();
@@ -118,8 +110,6 @@ public class IconRenderer extends EffectRenderer {
 
             {
                 mRight = mSM.createObject("Right");
-                mRight.setPrimitiveMode(PrimitiveMode.TRIANGLE_STRIP);
-                mRight.setRenderType(RenderType.DRAW_ARRAYS);
                 mRight.setListener(mRightListener);
 
                 GLESGLState state = new GLESGLState();
@@ -134,8 +124,6 @@ public class IconRenderer extends EffectRenderer {
 
             {
                 mBack = mSM.createObject("Back");
-                mBack.setPrimitiveMode(PrimitiveMode.TRIANGLE_STRIP);
-                mBack.setRenderType(RenderType.DRAW_ARRAYS);
                 mBack.setListener(mBackListener);
 
                 GLESGLState state = new GLESGLState();
@@ -150,8 +138,6 @@ public class IconRenderer extends EffectRenderer {
 
             {
                 mTop = mSM.createObject("Top");
-                mTop.setPrimitiveMode(PrimitiveMode.TRIANGLE_STRIP);
-                mTop.setRenderType(RenderType.DRAW_ARRAYS);
                 mTop.setListener(mTopListener);
 
                 GLESGLState state = new GLESGLState();
@@ -166,8 +152,6 @@ public class IconRenderer extends EffectRenderer {
 
             {
                 mBottom = mSM.createObject("Bottom");
-                mBottom.setPrimitiveMode(PrimitiveMode.TRIANGLE_STRIP);
-                mBottom.setRenderType(RenderType.DRAW_ARRAYS);
                 mBottom.setListener(mBottomListener);
 
                 GLESGLState state = new GLESGLState();
@@ -223,8 +207,6 @@ public class IconRenderer extends EffectRenderer {
                     mScreenRatio * 2f, 2f, false, true, false, false);
             mBG.setVertexInfo(vertexInfo, true, true);
 
-            // Bitmap bitmap = GLESUtils.makeBitmap(2, 2,
-            // Config.ARGB_8888, Color.GRAY);
             Bitmap bitmap = BitmapFactory.decodeResource(
                     mContext.getResources(), R.drawable.bg);
             GLESTexture texture = new GLESTexture(bitmap);

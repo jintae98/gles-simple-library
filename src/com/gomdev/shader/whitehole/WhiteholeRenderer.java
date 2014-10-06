@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import com.gomdev.shader.R;
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.gles.GLESObject.PrimitiveMode;
-import com.gomdev.gles.GLESObject.RenderType;
 import com.gomdev.shader.EffectRenderer;
 import com.gomdev.shader.EffectUtils;
 
@@ -54,8 +52,6 @@ public class WhiteholeRenderer extends EffectRenderer {
         GLESNode root = mSM.createRootNode("Root");
 
         mWhiteholeObject = new WhiteholeObject();
-        mWhiteholeObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
-        mWhiteholeObject.setRenderType(RenderType.DRAW_ELEMENTS);
 
         GLESGLState state = new GLESGLState();
         state.setCullFaceState(true);

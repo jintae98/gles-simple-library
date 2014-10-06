@@ -2,8 +2,6 @@ package com.gomdev.shader.multiLighting;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.gles.GLESObject.PrimitiveMode;
-import com.gomdev.gles.GLESObject.RenderType;
 import com.gomdev.shader.EffectRenderer;
 import com.gomdev.shader.EffectUtils;
 
@@ -68,8 +66,6 @@ public class MultiLightingRenderer extends EffectRenderer {
 
         {
             mCube = mSM.createObject("Cube");
-            mCube.setPrimitiveMode(PrimitiveMode.TRIANGLES);
-            mCube.setRenderType(RenderType.DRAW_ELEMENTS);
             mCube.setGLState(state);
             mCube.setListener(mCubeListener);
 
@@ -84,8 +80,6 @@ public class MultiLightingRenderer extends EffectRenderer {
 
             {
                 mLight1 = mSM.createObject("Light");
-                mLight1.setPrimitiveMode(PrimitiveMode.TRIANGLES);
-                mLight1.setRenderType(RenderType.DRAW_ELEMENTS);
                 mLight1.setGLState(state);
                 mLight1.setListener(mLightListener);
 
@@ -94,8 +88,6 @@ public class MultiLightingRenderer extends EffectRenderer {
 
             {
                 mLight2 = mSM.createObject("Light2");
-                mLight2.setPrimitiveMode(PrimitiveMode.TRIANGLES);
-                mLight2.setRenderType(RenderType.DRAW_ELEMENTS);
                 mLight2.setGLState(state);
                 mLight2.setListener(mLight2Listener);
 

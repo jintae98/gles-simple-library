@@ -15,7 +15,7 @@ import com.gomdev.gles.GLESShaderConstant;
 import com.gomdev.gles.GLESTexture;
 import com.gomdev.gles.GLESTransform;
 import com.gomdev.gles.GLESVertexInfo;
-import com.gomdev.gles.GLESObject.PrimitiveMode;
+import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
 
 public class GLES20Renderer extends GLESRenderer {
     static final String CLASS = "GLES20Renderer";
@@ -259,7 +259,7 @@ public class GLES20Renderer extends GLESRenderer {
     @Override
     protected void drawArrays(GLESObject object) {
         GLESVertexInfo vertexInfo = object.getVertexInfo();
-        PrimitiveMode mode = object.getPrimitiveMode();
+        PrimitiveMode mode = vertexInfo.getPrimitiveMode();
 
         int numOfVertex = vertexInfo.getVertexBuffer().capacity()
                 / vertexInfo.getNumOfVertexElements();
@@ -292,7 +292,7 @@ public class GLES20Renderer extends GLESRenderer {
     @Override
     protected void drawElements(GLESObject object) {
         GLESVertexInfo vertexInfo = object.getVertexInfo();
-        PrimitiveMode mode = object.getPrimitiveMode();
+        PrimitiveMode mode = vertexInfo.getPrimitiveMode();
 
         if (object.useVBO() == true) {
             int id = vertexInfo.getIndexVBOID();

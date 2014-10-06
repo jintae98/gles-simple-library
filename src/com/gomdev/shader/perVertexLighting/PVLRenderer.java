@@ -2,8 +2,6 @@ package com.gomdev.shader.perVertexLighting;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.gles.GLESObject.PrimitiveMode;
-import com.gomdev.gles.GLESObject.RenderType;
 import com.gomdev.shader.EffectRenderer;
 import com.gomdev.shader.EffectUtils;
 
@@ -59,8 +57,6 @@ public class PVLRenderer extends EffectRenderer {
 
         {
             mCubeObject = mSM.createObject("Cube");
-            mCubeObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
-            mCubeObject.setRenderType(RenderType.DRAW_ELEMENTS);
             mCubeObject.setGLState(state);
             mCubeObject.setListener(mCubeObjectListener);
 
@@ -69,8 +65,6 @@ public class PVLRenderer extends EffectRenderer {
 
         {
             mLightObject = mSM.createObject("Light");
-            mLightObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
-            mLightObject.setRenderType(RenderType.DRAW_ELEMENTS);
             mLightObject.setGLState(state);
             mLightObject.setListener(mLightObjectListener);
 

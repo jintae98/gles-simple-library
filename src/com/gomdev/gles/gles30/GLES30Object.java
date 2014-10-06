@@ -11,7 +11,6 @@ public class GLES30Object extends GLESObject {
     static final boolean DEBUG = GLESConfig.DEBUG;
     
     private boolean mUseVAO = false;
-    private int mNumOfInstance = 1;
 
     public GLES30Object() {
         super();
@@ -39,15 +38,5 @@ public class GLES30Object extends GLESObject {
     @Override
     public boolean useVAO() {
         return mUseVAO;
-    }
-
-    @Override
-    public void setNumOfInstance(int num) {
-        mNumOfInstance = num;
-    }
-
-    @Override
-    public int getNumOfInstance() {
-        return mNumOfInstance;
     }
 }

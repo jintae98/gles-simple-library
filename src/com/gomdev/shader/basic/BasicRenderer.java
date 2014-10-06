@@ -2,8 +2,6 @@ package com.gomdev.shader.basic;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.gles.GLESObject.PrimitiveMode;
-import com.gomdev.gles.GLESObject.RenderType;
 import com.gomdev.shader.EffectRenderer;
 import com.gomdev.shader.EffectUtils;
 
@@ -38,8 +36,6 @@ public class BasicRenderer extends EffectRenderer {
         GLESNode root = mSM.createRootNode("Root");
 
         mBasicObject = mSM.createObject("BasicObject");
-        mBasicObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
-        mBasicObject.setRenderType(RenderType.DRAW_ELEMENTS);
 
         GLESGLState state = new GLESGLState();
         state.setCullFaceState(true);

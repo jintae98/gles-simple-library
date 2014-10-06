@@ -1,7 +1,7 @@
 package com.gomdev.gles;
 
 import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.gles.GLESObject.RenderType;
+import com.gomdev.gles.GLESVertexInfo.RenderType;
 import com.gomdev.gles.gles20.GLES20Renderer;
 import com.gomdev.gles.gles30.GLES30Renderer;
 
@@ -66,7 +66,7 @@ public abstract class GLESRenderer {
 
         enableVertexAttribute(object);
 
-        RenderType renderType = object.getRenderType();
+        RenderType renderType = object.getVertexInfo().getRenderType();
         switch (renderType) {
         case DRAW_ARRAYS:
             drawArrays(object);

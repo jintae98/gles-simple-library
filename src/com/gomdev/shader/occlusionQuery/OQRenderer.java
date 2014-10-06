@@ -4,8 +4,6 @@ import java.util.Random;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.gles.GLESObject.PrimitiveMode;
-import com.gomdev.gles.GLESObject.RenderType;
 import com.gomdev.shader.EffectRenderer;
 import com.gomdev.shader.EffectUtils;
 
@@ -67,9 +65,6 @@ public class OQRenderer extends EffectRenderer {
         GLESNode root = mSM.createRootNode("Root");
 
         mObject = mSM.createObject("Cube");
-        mObject.setPrimitiveMode(PrimitiveMode.TRIANGLES);
-
-        mObject.setRenderType(RenderType.DRAW_ELEMENTS);
 
         GLESGLState state = new GLESGLState();
         state.setCullFaceState(true);

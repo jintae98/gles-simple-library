@@ -1,5 +1,8 @@
 package com.gomdev.gles;
 
+import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
+import com.gomdev.gles.GLESVertexInfo.RenderType;
+
 import android.util.Log;
 
 public class GLESMeshUtils {
@@ -110,6 +113,9 @@ public class GLESMeshUtils {
 
         vertexInfo.setIndexBuffer(indices);
 
+        vertexInfo.setRenderType(RenderType.DRAW_ELEMENTS);
+        vertexInfo.setPrimitiveMode(PrimitiveMode.TRIANGLES);
+
         return vertexInfo;
     }
 
@@ -182,6 +188,12 @@ public class GLESMeshUtils {
             };
 
             vertexInfo.setIndexBuffer(index);
+
+            vertexInfo.setRenderType(RenderType.DRAW_ELEMENTS);
+            vertexInfo.setPrimitiveMode(PrimitiveMode.TRIANGLES);
+        } else {
+            vertexInfo.setRenderType(RenderType.DRAW_ARRAYS);
+            vertexInfo.setPrimitiveMode(PrimitiveMode.TRIANGLE_STRIP);
         }
 
         return vertexInfo;
@@ -370,6 +382,9 @@ public class GLESMeshUtils {
             vertexInfo.setColorBuffer(color, 4);
         }
 
+        vertexInfo.setRenderType(RenderType.DRAW_ELEMENTS);
+        vertexInfo.setPrimitiveMode(PrimitiveMode.TRIANGLES);
+
         return vertexInfo;
     }
 
@@ -486,6 +501,9 @@ public class GLESMeshUtils {
         }
 
         vertexInfo.setIndexBuffer(indices);
+
+        vertexInfo.setRenderType(RenderType.DRAW_ELEMENTS);
+        vertexInfo.setPrimitiveMode(PrimitiveMode.TRIANGLES);
 
         return vertexInfo;
     }

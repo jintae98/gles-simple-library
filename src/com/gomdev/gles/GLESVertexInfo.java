@@ -8,6 +8,26 @@ public class GLESVertexInfo {
     static final String TAG = GLESConfig.TAG + " " + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
+    public enum PrimitiveMode {
+        TRIANGLES,
+        TRIANGLE_STRIP,
+        TRIANGLE_FAN,
+        LINES,
+        LINE_STRIP,
+        LINE_LOOP
+    }
+
+    public enum RenderType {
+        DRAW_ELEMENTS,
+        DRAW_ARRAYS,
+        DRAW_ELEMENTS_INSTANCED,
+        DRAW_ARRAYS_INSTANCED,
+    }
+
+    private PrimitiveMode mPrimitiveMode = PrimitiveMode.TRIANGLES;
+    private RenderType mRenderType = RenderType.DRAW_ELEMENTS;
+    private int mNumOfInstance = 0;
+
     private boolean mUseTexture = false;
     private boolean mUseNormal = false;
     private boolean mUseColor = false;
@@ -36,6 +56,30 @@ public class GLESVertexInfo {
 
     public GLESVertexInfo() {
 
+    }
+
+    public void setPrimitiveMode(PrimitiveMode mode) {
+        mPrimitiveMode = mode;
+    }
+
+    public PrimitiveMode getPrimitiveMode() {
+        return mPrimitiveMode;
+    }
+
+    public void setRenderType(RenderType type) {
+        mRenderType = type;
+    }
+
+    public RenderType getRenderType() {
+        return mRenderType;
+    }
+    
+    public void setNumOfInstance(int num) {
+        mNumOfInstance = num;
+    }
+
+    public int getNumOfInstance() {
+        return mNumOfInstance;
     }
 
     public void setVertexBuffer(float[] vertex, int numOfElements) {
