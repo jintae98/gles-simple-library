@@ -117,6 +117,14 @@ public class GLESMeshUtils {
             boolean useNormal, boolean useTexCoord, boolean useColor,
             boolean useIndex) {
 
+        return createPlane(width, height, useNormal, useTexCoord, useColor,
+                useIndex, 1f, 0f, 0f);
+    }
+
+    public static GLESVertexInfo createPlane(float width, float height,
+            boolean useNormal, boolean useTexCoord, boolean useColor,
+            boolean useIndex, float red, float green, float blue) {
+
         float right = width * 0.5f;
         float left = -right;
         float top = height * 0.5f;
@@ -158,10 +166,10 @@ public class GLESMeshUtils {
 
         if (useColor == true) {
             float[] color = {
-                    1f, 0f, 0f, 1f,
-                    1f, 0f, 0f, 1f,
-                    1f, 0f, 0f, 1f,
-                    1f, 0f, 0f, 1f
+                    red, green, blue, 1f,
+                    red, green, blue, 1f,
+                    red, green, blue, 1f,
+                    red, green, blue, 1f,
             };
 
             vertexInfo.setColorBuffer(color, 4);

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.gomdev.shader.R;
 import com.gomdev.shader.basic.BasicConfig;
+import com.gomdev.shader.icon.IconConfig;
 import com.gomdev.shader.instancedRendering.IRConfig;
 import com.gomdev.shader.instancedRendering2.IR2Config;
 import com.gomdev.shader.multiLighting.MultiLightingConfig;
@@ -120,6 +121,7 @@ public class EffectListActivity extends Activity implements
         }
 
         setupBasic(version);
+        setupIcon(version);
         setupTexture(version);
         setupPVL(version);
         setupPFL(version);
@@ -254,6 +256,44 @@ public class EffectListActivity extends Activity implements
             info.mShaderTitle = new String[] {
                     "Basic 30 VS",
                     "Basic 30 FS",
+            };
+        }
+
+        mEffects.add(info);
+    }
+    
+    private void setupIcon(Version version) {
+        EffectInfo info = new EffectInfo();
+        info.mEffectName = IconConfig.EFFECT_NAME;
+        info.mIntent = new Intent(this,
+                com.gomdev.shader.icon.IconActivity.class);
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[] {
+                    R.raw.icon_20_vs,
+                    R.raw.icon_20_fs,
+                    R.raw.icon_texture_20_vs,
+                    R.raw.icon_texture_20_fs
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Object 20 VS",
+                    "Object 20 FS",
+                    "BG 20 VS",
+                    "BG 20 FS",
+            };
+        } else {
+            info.mShaderResIDs = new int[] {
+                    R.raw.icon_30_vs,
+                    R.raw.icon_30_fs,
+                    R.raw.icon_texture_30_vs,
+                    R.raw.icon_texture_30_fs
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Object 30 VS",
+                    "Object 30 FS",
+                    "BG 30 VS",
+                    "BG 30 FS",
             };
         }
 
