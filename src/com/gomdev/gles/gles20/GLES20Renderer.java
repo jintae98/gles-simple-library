@@ -10,6 +10,7 @@ import com.gomdev.gles.GLESCamera;
 import com.gomdev.gles.GLESConfig;
 import com.gomdev.gles.GLESGLState;
 import com.gomdev.gles.GLESObject;
+import com.gomdev.gles.GLESRect;
 import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESShader;
 import com.gomdev.gles.GLESShaderConstant;
@@ -101,6 +102,10 @@ public class GLES20Renderer extends GLESRenderer {
         if (shader == mCurrentShader && camera == mCurrentCamera) {
             return;
         }
+
+        GLESRect viewport = camera.getViewport();
+        GLES20.glViewport(viewport.mX, viewport.mY,
+                viewport.mWidth, viewport.mHeight);
 
         String uniformName = GLESShaderConstant.UNIFORM_PROJ_MATRIX;
         int handle = shader.getUniformLocation(uniformName);

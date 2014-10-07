@@ -111,8 +111,6 @@ public class IR2Renderer extends EffectRenderer {
 
         mRenderer.reset();
 
-        GLES20.glViewport(0, 0, width, height);
-
         GLESCamera camera = setupCamera(width, height);
 
         mObject.setCamera(camera);
@@ -142,6 +140,8 @@ public class IR2Renderer extends EffectRenderer {
         camera.setLookAt(0f, 0f, eyeZ, 0f, 0f, 0f, 0f, 1f, 0f);
 
         camera.setFrustum(fovy, mScreenRatio, 1f, 400f);
+
+        camera.setViewport(new GLESRect(0, 0, width, height));
 
         return camera;
     }

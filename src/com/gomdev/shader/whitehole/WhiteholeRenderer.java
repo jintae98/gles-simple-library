@@ -102,8 +102,6 @@ public class WhiteholeRenderer extends EffectRenderer {
 
         mRenderer.reset();
 
-        GLES20.glViewport(0, 0, width, height);
-
         GLESCamera camera = setupCamera(width, height);
 
         mWhiteholeObject.setCamera(camera);
@@ -126,6 +124,8 @@ public class WhiteholeRenderer extends EffectRenderer {
         float far = 256f;
 
         camera.setFrustum(left, right, bottom, top, near, far);
+
+        camera.setViewport(new GLESRect(0, 0, width, height));
 
         return camera;
     }

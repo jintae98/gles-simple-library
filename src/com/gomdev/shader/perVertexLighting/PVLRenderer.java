@@ -101,8 +101,6 @@ public class PVLRenderer extends EffectRenderer {
 
         mRenderer.reset();
 
-        GLES20.glViewport(0, 0, width, height);
-
         GLESCamera camera = setupCamera(width, height);
 
         {
@@ -133,6 +131,8 @@ public class PVLRenderer extends EffectRenderer {
         camera.setLookAt(0f, 0f, eyeZ, 0f, 0f, 0f, 0f, 1f, 0f);
 
         camera.setFrustum(fovy, mScreenRatio, 1f, 400f);
+
+        camera.setViewport(new GLESRect(0, 0, width, height));
 
         return camera;
     }

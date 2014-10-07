@@ -196,8 +196,6 @@ public class IconRenderer extends EffectRenderer {
 
         mRenderer.reset();
 
-        GLES20.glViewport(0, 0, width, height);
-
         GLESCamera camera = setupCamera(width, height);
 
         {
@@ -210,12 +208,14 @@ public class IconRenderer extends EffectRenderer {
             Bitmap bitmap = BitmapFactory.decodeResource(
                     mContext.getResources(), R.drawable.bg);
             GLESTexture texture = new GLESTexture(bitmap);
-            
+
             if (mVersion == Version.GLES_30) {
-                GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, texture.getTextureID());
+                GLES30.glBindTexture(GLES30.GL_TEXTURE_2D,
+                        texture.getTextureID());
                 GLES30.glGenerateMipmap(GLES30.GL_TEXTURE_2D);
                 GLES30.glTexParameterf(GLES30.GL_TEXTURE_2D,
-                        GLES30.GL_TEXTURE_MIN_FILTER, GLES30.GL_LINEAR_MIPMAP_LINEAR);
+                        GLES30.GL_TEXTURE_MIN_FILTER,
+                        GLES30.GL_LINEAR_MIPMAP_LINEAR);
             }
             mBG.setTexture(texture);
         }
@@ -290,6 +290,8 @@ public class IconRenderer extends EffectRenderer {
         camera.setLookAt(0f, 0f, eyeZ, 0f, 0f, 0f, 0f, 1f, 0f);
 
         camera.setFrustum(fovy, mScreenRatio, 1f, 400f);
+
+        camera.setViewport(new GLESRect(0, 0, width, height));
 
         {
             mShader.useProgram();

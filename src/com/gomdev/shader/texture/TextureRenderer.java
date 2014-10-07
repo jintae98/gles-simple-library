@@ -79,8 +79,6 @@ public class TextureRenderer extends EffectRenderer {
     protected void onSurfaceChanged(int width, int height) {
         mRenderer.reset();
 
-        GLES20.glViewport(0, 0, width, height);
-
         GLESCamera camera = setupCamera(width, height);
 
         mTextureObject.setCamera(camera);
@@ -102,6 +100,8 @@ public class TextureRenderer extends EffectRenderer {
         float far = 2048f * 2f;
 
         camera.setFrustum(left, right, bottom, top, near, far);
+
+        camera.setViewport(new GLESRect(0, 0, width, height));
 
         return camera;
     }

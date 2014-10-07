@@ -11,6 +11,8 @@ public class GLESCamera {
     private float[] mPMatrix = new float[16];
     private float[] mVMatrix = new float[16];
 
+    private GLESRect mViewport = null;
+
     public GLESCamera() {
     }
 
@@ -66,6 +68,14 @@ public class GLESCamera {
         }
 
         return null;
+    }
+
+    public void setViewport(GLESRect viewport) {
+        mViewport = viewport;
+    }
+
+    public GLESRect getViewport() {
+        return mViewport;
     }
 
     public void dump(String str) {
