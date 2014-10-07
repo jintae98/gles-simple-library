@@ -8,6 +8,8 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.opengl.GLES20;
+import android.opengl.GLUtils;
 import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -59,7 +61,7 @@ public class GLESUtils {
             if (sFrameCount >= NUM_OF_FRAME) {
                 currentTick = System.nanoTime();
                 sTotalTime = currentTick - sStartTick;
-                fps = (float)sFrameCount * 1000000000 / sTotalTime;
+                fps = (float) sFrameCount * 1000000000 / sTotalTime;
 
                 Log.d(TAG, "checkFPS() fps=" + fps);
 
@@ -69,7 +71,7 @@ public class GLESUtils {
             }
         }
     }
-    
+
     public static float getFPS() {
         long currentTick = 0L;
 
@@ -82,14 +84,14 @@ public class GLESUtils {
             if (sFrameCount >= NUM_OF_FRAME) {
                 currentTick = System.nanoTime();
                 sTotalTime = currentTick - sStartTick;
-                sFPS = (float)sFrameCount * 1000000000 / sTotalTime;
+                sFPS = (float) sFrameCount * 1000000000 / sTotalTime;
 
                 sFrameCount = 0;
                 sStartTick = currentTick;
                 sTotalTime = 0L;
             }
         }
-        
+
         return sFPS;
     }
 
@@ -161,9 +163,10 @@ public class GLESUtils {
                 }
             }
         }
-        
-        Bitmap bitmap = Bitmap.createBitmap(data, width, height, Config.ARGB_8888);
-        
+
+        Bitmap bitmap = Bitmap.createBitmap(data, width, height,
+                Config.ARGB_8888);
+
         return bitmap;
     }
 
@@ -238,5 +241,113 @@ public class GLESUtils {
         }
 
         return str;
+    }
+
+    public static void generateMipamp(GLESBitmapInfo src) {
+        int level = 1;
+
+        int width = src.mWidth;
+        int height = src.mHeight;
+        int newWidth;
+        int newHeight;
+
+        GLESBitmapInfo prevMipmap = src;
+        GLESBitmapInfo nextMipmap = new GLESBitmapInfo();
+
+        while (width > 1 && height > 1) {
+            generateNextMipMap(prevMipmap, nextMipmap);
+
+            newWidth = nextMipmap.mWidth;
+            newHeight = nextMipmap.mHeight;
+
+            Bitmap bitmap = Bitmap.createBitmap(nextMipmap.mData,
+                    newWidth, newHeight, Config.ARGB_8888);
+            GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, level, bitmap, 0);
+            bitmap.recycle();
+
+            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
+                    GLES20.GL_TEXTURE_MIN_FILTER,
+                    GLES20.GL_LINEAR_MIPMAP_LINEAR);
+
+            level++;
+
+            prevMipmap.mWidth = newWidth;
+            prevMipmap.mHeight = newHeight;
+            prevMipmap.mData = nextMipmap.mData;
+
+            width = newWidth;
+            height = newHeight;
+        }
+    }
+
+    private static void generateNextMipMap(GLESBitmapInfo src,
+            GLESBitmapInfo dst) {
+        int x, y;
+
+        int dstWidth;
+        int dstHeight;
+        int[] dstData;
+
+        int srcWidth = src.mWidth;
+        int srcHeight = src.mHeight;
+        int[] srcData = src.mData;
+
+        dstWidth = srcWidth / 2;
+
+        if (dstWidth <= 0) {
+            dstWidth = 1;
+        }
+
+        dstHeight = srcHeight / 2;
+
+        if (dstHeight <= 0) {
+            dstHeight = 1;
+        }
+
+        dstData = new int[dstWidth * dstHeight];
+
+        int[] srcIndex = new int[4];
+        byte r = 0;
+        byte g = 0;
+        byte b = 0;
+        int sample;
+        int dstColor;
+        int srcColor;
+        for (y = 0; y < dstHeight; y++) {
+            for (x = 0; x < dstWidth; x++) {
+                r = 0;
+                g = 0;
+                b = 0;
+
+                // Compute the offsets for 2x2 grid of pixels in previous
+                // image to perform box filter
+                srcIndex[0] = (((y * 2) * srcWidth) + (x * 2));
+                srcIndex[1] = (((y * 2) * srcWidth) + (x * 2 + 1));
+                srcIndex[2] = ((((y * 2) + 1) * srcWidth) + (x * 2));
+                srcIndex[3] = ((((y * 2) + 1) * srcWidth) + (x * 2 + 1));
+
+                // Sum all pixels
+                for (sample = 0; sample < 4; sample++) {
+                    srcColor = srcData[srcIndex[sample]];
+                    r += (srcColor & 0x00FF0000 >> 16);
+                    g += (srcColor & 0x0000FF00 >> 8);
+                    b += (srcColor & 0x000000FF);
+                }
+
+                // Average results
+                r /= 4;
+                g /= 4;
+                b /= 4;
+
+                dstColor = 0xFF000000 | (r << 16) | (g << 8) | b;
+
+                // Store resulting pixels
+                dstData[(y * dstWidth + x)] = dstColor;
+            }
+        }
+
+        dst.mWidth = dstWidth;
+        dst.mHeight = dstHeight;
+        dst.mData = dstData;
     }
 }
