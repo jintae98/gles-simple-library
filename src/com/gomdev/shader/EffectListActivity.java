@@ -7,6 +7,7 @@ import com.gomdev.shader.basic.BasicConfig;
 import com.gomdev.shader.icon.IconConfig;
 import com.gomdev.shader.instancedRendering.IRConfig;
 import com.gomdev.shader.instancedRendering2.IR2Config;
+import com.gomdev.shader.mipmap.MipmapConfig;
 import com.gomdev.shader.multiLighting.MultiLightingConfig;
 //import com.gomdev.shader.occlusionQuery.OQConfig;
 import com.gomdev.shader.perFragmentLighting.PFLConfig;
@@ -123,6 +124,7 @@ public class EffectListActivity extends Activity implements
         setupBasic(version);
         setupIcon(version);
         setupTexture(version);
+        setupMipmap(version);
         setupPVL(version);
         setupPFL(version);
         setupMultiLighting(version);
@@ -226,6 +228,37 @@ public class EffectListActivity extends Activity implements
             info.mShaderTitle = new String[] {
                     "Texture 30 VS",
                     "Texture 30 FS",
+            };
+        }
+
+        mEffects.add(info);
+    }
+    
+    private void setupMipmap(Version version) {
+        EffectInfo info = new EffectInfo();
+        info.mEffectName = MipmapConfig.EFFECT_NAME;
+        info.mIntent = new Intent(this,
+                com.gomdev.shader.mipmap.MipmapActivity.class);
+
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[] {
+                    R.raw.mipmap_20_vs,
+                    R.raw.mipmap_20_fs,
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Mipmapping 20 VS",
+                    "Mipmapping 20 FS",
+            };
+        } else {
+            info.mShaderResIDs = new int[] {
+                    R.raw.mipmap_30_vs,
+                    R.raw.mipmap_30_fs,
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Mipmaping 30 VS",
+                    "Mipampping 30 FS",
             };
         }
 
