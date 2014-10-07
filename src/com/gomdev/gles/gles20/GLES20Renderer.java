@@ -6,6 +6,7 @@ import java.nio.ShortBuffer;
 import android.opengl.GLES20;
 import android.util.Log;
 
+import com.gomdev.gles.GLESCamera;
 import com.gomdev.gles.GLESConfig;
 import com.gomdev.gles.GLESGLState;
 import com.gomdev.gles.GLESObject;
@@ -93,15 +94,30 @@ public class GLES20Renderer extends GLESRenderer {
     }
 
     @Override
-    protected void applyTransform(GLESObject object) {
-        GLESShader shader = object.getShader(); 
-        GLESTransform transform = object.getWorldTransform();
+    protected void applyCamera(GLESObject object) {
+        GLESShader shader = object.getShader();
+        GLESCamera camera = object.getCamera();
         
+        String uniformName = GLESShaderConstant.UNIFORM_PROJ_MATRIX;
+        int handle = shader.getUniformLocation(uniformName);
+        GLES20.glUniformMatrix4fv(handle, 1, false,
+                camera.getProjectionMatrix(), 0);
+
+        uniformName = GLESShaderConstant.UNIFORM_VIEW_MATRIX;
+        handle = shader.getUniformLocation(uniformName);
+        GLES20.glUniformMatrix4fv(handle, 1, false, camera.getViewMatrix(),
+                0);
+    }
+
+    @Override
+    protected void applyTransform(GLESObject object) {
+        GLESShader shader = object.getShader();
+        GLESTransform transform = object.getWorldTransform();
+
         float[] matrix = transform.getMatrix();
         String uniformName = GLESShaderConstant.UNIFORM_MODEL_MATRIX;
         GLES20.glUniformMatrix4fv(shader.getUniformLocation(uniformName),
                 1, false, matrix, 0);
-
     }
 
     @Override
@@ -406,7 +422,7 @@ public class GLES20Renderer extends GLESRenderer {
         if (vertexInfo.useColor() == true) {
             GLES20.glDisableVertexAttribArray(shader.getColorAttribIndex());
         }
-        
+
         if (mListener != null) {
             mListener.disableVertexAttribute(object);
         }

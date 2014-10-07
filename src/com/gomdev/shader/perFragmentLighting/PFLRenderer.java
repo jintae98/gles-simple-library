@@ -133,20 +133,6 @@ public class PFLRenderer extends EffectRenderer {
 
         camera.setFrustum(fovy, mScreenRatio, 1f, 400f);
 
-        {
-            mShader.useProgram();
-
-            String uniformName = GLESShaderConstant.UNIFORM_PROJ_MATRIX;
-            int handle = mShader.getUniformLocation(uniformName);
-            GLES20.glUniformMatrix4fv(handle, 1, false,
-                    camera.getProjectionMatrix(), 0);
-
-            uniformName = GLESShaderConstant.UNIFORM_VIEW_MATRIX;
-            handle = mShader.getUniformLocation(uniformName);
-            GLES20.glUniformMatrix4fv(handle, 1, false, camera.getViewMatrix(),
-                    0);
-        }
-
         return camera;
     }
 

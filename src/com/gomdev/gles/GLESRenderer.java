@@ -53,6 +53,7 @@ public abstract class GLESRenderer {
     }
 
     void draw(GLESObject object) {
+        applyCamera(object);
         applyTransform(object);
         setGLState(object);
         bindTexture(object);
@@ -86,6 +87,8 @@ public abstract class GLESRenderer {
     }
 
     public abstract void setupVBO(GLESVertexInfo vertexInfo);
+
+    protected abstract void applyCamera(GLESObject object);
 
     protected abstract void applyTransform(GLESObject object);
 

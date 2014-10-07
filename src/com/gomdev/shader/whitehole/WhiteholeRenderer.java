@@ -127,15 +127,6 @@ public class WhiteholeRenderer extends EffectRenderer {
 
         camera.setFrustum(left, right, bottom, top, near, far);
 
-        String uniformName = GLESShaderConstant.UNIFORM_PROJ_MATRIX;
-        int handle = mShaderWhitehole.getUniformLocation(uniformName);
-        GLES20.glUniformMatrix4fv(handle, 1, false,
-                camera.getProjectionMatrix(), 0);
-
-        uniformName = GLESShaderConstant.UNIFORM_VIEW_MATRIX;
-        handle = mShaderWhitehole.getUniformLocation(uniformName);
-        GLES20.glUniformMatrix4fv(handle, 1, false, camera.getViewMatrix(), 0);
-
         return camera;
     }
 
