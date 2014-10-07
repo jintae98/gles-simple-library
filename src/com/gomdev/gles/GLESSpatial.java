@@ -32,6 +32,10 @@ public abstract class GLESSpatial {
         mLocalTransform = new GLESTransform(this);
     }
 
+    public String getName() {
+        return mName;
+    }
+
     abstract public void update(double applicationTime, boolean parentHasChanged);
 
     abstract public void draw(GLESRenderer renderer);

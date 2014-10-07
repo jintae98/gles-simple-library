@@ -97,7 +97,11 @@ public class GLES20Renderer extends GLESRenderer {
     protected void applyCamera(GLESObject object) {
         GLESShader shader = object.getShader();
         GLESCamera camera = object.getCamera();
-        
+
+        if (shader == mCurrentShader && camera == mCurrentCamera) {
+            return;
+        }
+
         String uniformName = GLESShaderConstant.UNIFORM_PROJ_MATRIX;
         int handle = shader.getUniformLocation(uniformName);
         GLES20.glUniformMatrix4fv(handle, 1, false,
@@ -107,6 +111,9 @@ public class GLES20Renderer extends GLESRenderer {
         handle = shader.getUniformLocation(uniformName);
         GLES20.glUniformMatrix4fv(handle, 1, false, camera.getViewMatrix(),
                 0);
+
+        mCurrentShader = shader;
+        mCurrentCamera = camera;
     }
 
     @Override

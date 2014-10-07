@@ -13,6 +13,8 @@ public abstract class GLESRenderer {
     static final boolean DEBUG = GLESConfig.DEBUG;
 
     protected GLESGLState mCurrentGLState = null;
+    protected GLESShader mCurrentShader = null;
+    protected GLESCamera mCurrentCamera = null;
 
     protected GLESRendererListener mListener = null;
 
