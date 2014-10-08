@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.gomdev.shader.basic;
+package com.gomdev.shader.coloredCube;
 
 import com.gomdev.shader.EffectActivity;
 import com.gomdev.shader.R;
@@ -23,14 +23,14 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
-public class BasicActivity extends EffectActivity {
-    private BasicRenderer mRenderer;
+public class ColoredCubeActivity extends EffectActivity {
+    private ColoredCubeRenderer mRenderer;
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        mRenderer = new BasicRenderer(this);
+        mRenderer = new ColoredCubeRenderer(this);
         mView = (GLSurfaceView) findViewById(R.id.effect_surfaceview);
         mRenderer.setSurfaceView(mView);
 
@@ -66,13 +66,13 @@ public class BasicActivity extends EffectActivity {
 
         switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
-            ((BasicRenderer) mRenderer).touchDown(x, y);
+            ((ColoredCubeRenderer) mRenderer).touchDown(x, y);
             break;
         case MotionEvent.ACTION_UP:
-            ((BasicRenderer) mRenderer).touchUp(x, y);
+            ((ColoredCubeRenderer) mRenderer).touchUp(x, y);
             break;
         case MotionEvent.ACTION_MOVE:
-            ((BasicRenderer) mRenderer).touchMove(x, y);
+            ((ColoredCubeRenderer) mRenderer).touchMove(x, y);
             break;
         }
 

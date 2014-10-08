@@ -1,4 +1,4 @@
-package com.gomdev.shader.basic;
+package com.gomdev.shader.coloredCube;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
@@ -9,10 +9,10 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.util.Log;
 
-public class BasicRenderer extends EffectRenderer {
-    private static final String CLASS = "BasicRenderer";
-    private static final String TAG = BasicConfig.TAG + " " + CLASS;
-    private static final boolean DEBUG = BasicConfig.DEBUG;
+public class ColoredCubeRenderer extends EffectRenderer {
+    private static final String CLASS = "ColoredCubeRenderer";
+    private static final String TAG = ColoredCubeConfig.TAG + " " + CLASS;
+    private static final boolean DEBUG = ColoredCubeConfig.DEBUG;
 
     private GLESSceneManager mSM = null;
     private GLESObject mBasicObject;
@@ -27,7 +27,7 @@ public class BasicRenderer extends EffectRenderer {
     private float mMoveX = 0f;
     private float mMoveY = 0f;
 
-    public BasicRenderer(Context context) {
+    public ColoredCubeRenderer(Context context) {
         super(context);
 
         mVersion = GLESContext.getInstance().getVersion();

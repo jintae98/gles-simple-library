@@ -5,5 +5,5 @@ public class IconConfig {
     static final boolean DEBUG_PERF = false;
     static final String TAG = "gomdev";
 
-    public static final String EFFECT_NAME = "Basic2";
+    public static final String EFFECT_NAME = "Icon Cube";
 }

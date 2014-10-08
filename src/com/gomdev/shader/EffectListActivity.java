@@ -3,7 +3,7 @@ package com.gomdev.shader;
 import java.util.ArrayList;
 
 import com.gomdev.shader.R;
-import com.gomdev.shader.basic.BasicConfig;
+import com.gomdev.shader.coloredCube.ColoredCubeConfig;
 import com.gomdev.shader.icon.IconConfig;
 import com.gomdev.shader.instancedRendering.IRConfig;
 import com.gomdev.shader.instancedRendering2.IR2Config;
@@ -121,7 +121,7 @@ public class EffectListActivity extends Activity implements
             version = Version.GLES_20;
         }
 
-        setupBasic(version);
+        setupColorCube(version);
         setupIcon(version);
         setupTexture(version);
         setupMipmap(version);
@@ -265,30 +265,30 @@ public class EffectListActivity extends Activity implements
         mEffects.add(info);
     }
 
-    private void setupBasic(Version version) {
+    private void setupColorCube(Version version) {
         EffectInfo info = new EffectInfo();
-        info.mEffectName = BasicConfig.EFFECT_NAME;
+        info.mEffectName = ColoredCubeConfig.EFFECT_NAME;
         info.mIntent = new Intent(this,
-                com.gomdev.shader.basic.BasicActivity.class);
+                com.gomdev.shader.coloredCube.ColoredCubeActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
-                    R.raw.basic_20_vs,
-                    R.raw.basic_20_fs,
+                    R.raw.color_cube_20_vs,
+                    R.raw.color_cube_20_fs,
             };
 
             info.mShaderTitle = new String[] {
-                    "Basic 20 VS",
-                    "Basic 20 FS",
+                    "Colored Cube 20 VS",
+                    "Colored Cube FS",
             };
         } else {
             info.mShaderResIDs = new int[] {
-                    R.raw.basic_30_vs,
-                    R.raw.basic_30_fs
+                    R.raw.color_cube_30_vs,
+                    R.raw.color_cube_30_fs
             };
 
             info.mShaderTitle = new String[] {
-                    "Basic 30 VS",
-                    "Basic 30 FS",
+                    "Colored Cube 30 VS",
+                    "Colored Cube 30 FS",
             };
         }
 
