@@ -208,7 +208,8 @@ public class EffectListActivity extends Activity implements
     private void setupTexturePlane(Version version) {
         EffectInfo info = new EffectInfo();
         info.mEffectName = TexturedRectangleConfig.EFFECT_NAME;
-        info.mIntent = new Intent(this,
+        info.mIntent = new Intent(
+                this,
                 com.gomdev.shader.texturedRectangle.TexturedRectangleActivity.class);
 
         if (version == Version.GLES_20) {
@@ -300,7 +301,8 @@ public class EffectListActivity extends Activity implements
     private void setupColoredPlane(Version version) {
         EffectInfo info = new EffectInfo();
         info.mEffectName = ColoredRectangleConfig.EFFECT_NAME;
-        info.mIntent = new Intent(this,
+        info.mIntent = new Intent(
+                this,
                 com.gomdev.shader.coloredRectangle.ColoredRectangleActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
@@ -517,8 +519,10 @@ public class EffectListActivity extends Activity implements
 
     private void makeEffectList() {
         ArrayList<String> effectList = new ArrayList<String>();
-        for (EffectInfo effectInfo : mEffects) {
-            effectList.add(effectInfo.mEffectName);
+
+        for (int i = 0; i < mEffects.size(); i++) {
+            EffectInfo effectInfo = mEffects.get(i);
+            effectList.add((i + 1) + ". " + effectInfo.mEffectName);
         }
 
         if (DEBUG) {
