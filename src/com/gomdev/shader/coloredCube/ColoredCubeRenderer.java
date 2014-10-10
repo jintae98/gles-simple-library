@@ -27,6 +27,8 @@ public class ColoredCubeRenderer extends EffectRenderer {
     private float mMoveX = 0f;
     private float mMoveY = 0f;
 
+    private float mScreenRatio = 0f;
+
     public ColoredCubeRenderer(Context context) {
         super(context);
 
@@ -76,27 +78,28 @@ public class ColoredCubeRenderer extends EffectRenderer {
     protected void onSurfaceChanged(int width, int height) {
         mRenderer.reset();
 
+        mScreenRatio = (float) width / height;
+
+        float cubeSize = mScreenRatio * 0.7f;
+
         GLESCamera camera = setupCamera(width, height);
 
         mBasicObject.setCamera(camera);
 
-        GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(width,
+        GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(cubeSize,
                 false, false, true);
         mBasicObject.setVertexInfo(vertexInfo, true, true);
     }
 
     private GLESCamera setupCamera(int width, int height) {
         GLESCamera camera = new GLESCamera();
-        camera.setLookAt(0f, 0f, 2048f, 0f, 0f, 0f, 0f, 1f, 0f);
 
-        float right = width * 0.5f / 4f;
-        float left = -right;
-        float top = height * 0.5f / 4f;
-        float bottom = -top;
-        float near = 128f;
-        float far = 2048f * 2f;
+        float fovy = 30f;
+        float eyeZ = 1f / (float) Math.tan(Math.toRadians(fovy * 0.5));
 
-        camera.setFrustum(left, right, bottom, top, near, far);
+        camera.setLookAt(0f, 0f, eyeZ, 0f, 0f, 0f, 0f, 1f, 0f);
+
+        camera.setFrustum(fovy, mScreenRatio, 1f, 400f);
 
         camera.setViewport(new GLESRect(0, 0, width, height));
 
