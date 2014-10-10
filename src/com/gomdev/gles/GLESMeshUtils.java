@@ -14,6 +14,82 @@ public class GLESMeshUtils {
 
     }
 
+    public static GLESVertexInfo createTriangle(float width, float height,
+            boolean useNormal, boolean useTexCoord, boolean useColor,
+            boolean useIndex) {
+
+        return createTriangle(width, height, useNormal, useTexCoord, useColor,
+                useIndex, 1f, 0f, 0f);
+    }
+
+    public static GLESVertexInfo createTriangle(float width, float height,
+            boolean useNormal, boolean useTexCoord, boolean useColor,
+            boolean useIndex, float red, float green, float blue) {
+
+        float right = width * 0.5f;
+        float left = -right;
+        float top = height * 0.5f;
+        float bottom = -top;
+        float center = 0f;
+        float z = 0.0f;
+
+        float[] vertex = {
+                left, bottom, z,
+                right, bottom, z,
+                center, top, z,
+        };
+
+        GLESVertexInfo vertexInfo = new GLESVertexInfo();
+
+        vertexInfo.setVertexBuffer(vertex, 3);
+
+        if (useTexCoord == true) {
+            float[] texCoord = {
+                    0f, 1f,
+                    1f, 1f,
+                    0.5f, 0f,
+            };
+
+            vertexInfo.setTexCoordBuffer(texCoord, 2);
+        }
+
+        if (useNormal == true) {
+            float[] normal = {
+                    0f, 0f, 1f,
+                    0f, 0f, 1f,
+                    0f, 0f, 1f,
+            };
+
+            vertexInfo.setNormalBuffer(normal, 3);
+        }
+
+        if (useColor == true) {
+            float[] color = {
+                    red, green, blue, 1f,
+                    red, green, blue, 1f,
+                    red, green, blue, 1f,
+            };
+
+            vertexInfo.setColorBuffer(color, 4);
+        }
+
+        if (useIndex == true) {
+            short[] index = {
+                    0, 1, 2,
+            };
+
+            vertexInfo.setIndexBuffer(index);
+
+            vertexInfo.setRenderType(RenderType.DRAW_ELEMENTS);
+            vertexInfo.setPrimitiveMode(PrimitiveMode.TRIANGLES);
+        } else {
+            vertexInfo.setRenderType(RenderType.DRAW_ARRAYS);
+            vertexInfo.setPrimitiveMode(PrimitiveMode.TRIANGLES);
+        }
+
+        return vertexInfo;
+    }
+
     public static GLESVertexInfo createPlaneMesh(float width, float height,
             int resolution, boolean useTexCoord, boolean useNormal) {
 

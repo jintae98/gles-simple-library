@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.gomdev.shader.texturedPlane;
+package com.gomdev.shader.coloredTriangle;
 
 import com.gomdev.shader.EffectActivity;
 import com.gomdev.shader.R;
@@ -23,14 +23,14 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
-public class TexturedPlaneActivity extends EffectActivity {
-    private TexturedPlaneRenderer mRenderer;
+public class ColoredTriangleActivity extends EffectActivity {
+    private ColoredTriangleRenderer mRenderer;
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        mRenderer = new TexturedPlaneRenderer(this);
+        mRenderer = new ColoredTriangleRenderer(this);
         mView = (GLSurfaceView) findViewById(R.id.effect_surfaceview);
         mRenderer.setSurfaceView(mView);
 
@@ -45,13 +45,13 @@ public class TexturedPlaneActivity extends EffectActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mView.onResume();
+        // mView.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mView.onPause();
+        // mView.onPause();
     }
 
     @Override
@@ -66,13 +66,13 @@ public class TexturedPlaneActivity extends EffectActivity {
 
         switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
-            ((TexturedPlaneRenderer) mRenderer).touchDown(x, y);
+            ((ColoredTriangleRenderer) mRenderer).touchDown(x, y);
             break;
         case MotionEvent.ACTION_UP:
-            ((TexturedPlaneRenderer) mRenderer).touchUp(x, y);
+            ((ColoredTriangleRenderer) mRenderer).touchUp(x, y);
             break;
         case MotionEvent.ACTION_MOVE:
-            ((TexturedPlaneRenderer) mRenderer).touchMove(x, y);
+            ((ColoredTriangleRenderer) mRenderer).touchMove(x, y);
             break;
         }
 

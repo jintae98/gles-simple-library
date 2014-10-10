@@ -1,4 +1,4 @@
-package com.gomdev.shader.texturedPlane;
+package com.gomdev.shader.coloredTriangle;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
@@ -6,20 +6,17 @@ import com.gomdev.shader.EffectRenderer;
 import com.gomdev.shader.EffectUtils;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.opengl.GLES20;
 import android.util.Log;
 
-public class TexturedPlaneRenderer extends EffectRenderer {
-    private static final String CLASS = "TextureRenderer";
-    private static final String TAG = TexturedPlaneConfig.TAG + " " + CLASS;
-    private static final boolean DEBUG = TexturedPlaneConfig.DEBUG;
+public class ColoredTriangleRenderer extends EffectRenderer {
+    private static final String CLASS = "ColoredTriangleRenderer";
+    private static final String TAG = ColoredTriangleConfig.TAG + " " + CLASS;
+    private static final boolean DEBUG = ColoredTriangleConfig.DEBUG;
 
     private GLESSceneManager mSM = null;
-
-    private GLESObject mTextureObject = null;
-    private GLESShader mTextureShader = null;
-
+    private GLESObject mBasicObject;
+    private GLESShader mBasicShader;
     private Version mVersion;
 
     private boolean mIsTouchDown = false;
@@ -32,7 +29,7 @@ public class TexturedPlaneRenderer extends EffectRenderer {
 
     private float mScreenRatio = 0f;
 
-    public TexturedPlaneRenderer(Context context) {
+    public ColoredTriangleRenderer(Context context) {
         super(context);
 
         mVersion = GLESContext.getInstance().getVersion();
@@ -40,20 +37,20 @@ public class TexturedPlaneRenderer extends EffectRenderer {
         mSM = GLESSceneManager.createSceneManager();
         GLESNode root = mSM.createRootNode("Root");
 
-        mTextureObject = mSM.createObject("TextureObject");
+        mBasicObject = mSM.createObject("BasicObject");
 
         GLESGLState state = new GLESGLState();
         state.setCullFaceState(true);
         state.setCullFace(GLES20.GL_BACK);
         state.setDepthState(true);
         state.setDepthFunc(GLES20.GL_LEQUAL);
-        mTextureObject.setGLState(state);
+        mBasicObject.setGLState(state);
 
-        root.addChild(mTextureObject);
+        root.addChild(mBasicObject);
     }
 
     public void destroy() {
-        mTextureObject = null;
+        mBasicObject = null;
     }
 
     @Override
@@ -69,7 +66,7 @@ public class TexturedPlaneRenderer extends EffectRenderer {
     }
 
     private void update() {
-        GLESTransform transform = mTextureObject.getTransform();
+        GLESTransform transform = mBasicObject.getTransform();
 
         transform.setIdentity();
 
@@ -85,12 +82,11 @@ public class TexturedPlaneRenderer extends EffectRenderer {
 
         GLESCamera camera = setupCamera(width, height);
 
-        mTextureObject.setCamera(camera);
+        mBasicObject.setCamera(camera);
 
-        GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(
-                mScreenRatio * 2f, 2f, false, true, false, false);
-
-        mTextureObject.setVertexInfo(vertexInfo, true, true);
+        GLESVertexInfo vertexInfo = GLESMeshUtils.createTriangle(
+                mScreenRatio * 2f, 2f, false, false, true, false, 0f, 0f, 1f);
+        mBasicObject.setVertexInfo(vertexInfo, true, true);
     }
 
     private GLESCamera setupCamera(int width, int height) {
@@ -112,12 +108,7 @@ public class TexturedPlaneRenderer extends EffectRenderer {
     protected void onSurfaceCreated() {
         GLES20.glClearColor(0.7f, 0.7f, 0.7f, 0.0f);
 
-        mTextureObject.setShader(mTextureShader);
-
-        Bitmap bitmap = GLESUtils.makeCheckerboard(512, 512, 32);
-        GLESTexture texture = new GLESTexture(bitmap);
-        bitmap.recycle();
-        mTextureObject.setTexture(texture);
+        mBasicObject.setShader(mBasicShader);
     }
 
     @Override
@@ -126,23 +117,23 @@ public class TexturedPlaneRenderer extends EffectRenderer {
             Log.d(TAG, "createShader()");
         }
 
-        mTextureShader = new GLESShader(mContext);
+        mBasicShader = new GLESShader(mContext);
 
         String vsSource = EffectUtils.getShaderSource(mContext, 0);
         String fsSource = EffectUtils.getShaderSource(mContext, 1);
 
-        mTextureShader.setShaderSource(vsSource, fsSource);
-        if (mTextureShader.load() == false) {
+        mBasicShader.setShaderSource(vsSource, fsSource);
+        if (mBasicShader.load() == false) {
             mHandler.sendEmptyMessage(EffectRenderer.COMPILE_OR_LINK_ERROR);
             return false;
         }
 
         if (mVersion == Version.GLES_20) {
             String attribName = GLESShaderConstant.ATTRIB_POSITION;
-            mTextureShader.setVertexAttribIndex(attribName);
+            mBasicShader.setVertexAttribIndex(attribName);
 
-            attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
-            mTextureShader.setTexCoordAttribIndex(attribName);
+            attribName = GLESShaderConstant.ATTRIB_COLOR;
+            mBasicShader.setColorAttribIndex(attribName);
         }
 
         return true;

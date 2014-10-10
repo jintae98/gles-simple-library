@@ -3,7 +3,8 @@ package com.gomdev.shader;
 import java.util.ArrayList;
 
 import com.gomdev.shader.R;
-import com.gomdev.shader.coloredCube.ColoredCubeConfig;
+import com.gomdev.shader.coloredRectangle.ColoredRectangleConfig;
+import com.gomdev.shader.coloredTriangle.ColoredTriangleConfig;
 import com.gomdev.shader.icon.IconConfig;
 import com.gomdev.shader.instancedRendering.IRConfig;
 import com.gomdev.shader.instancedRendering2.IR2Config;
@@ -12,7 +13,7 @@ import com.gomdev.shader.multiLighting.MultiLightingConfig;
 //import com.gomdev.shader.occlusionQuery.OQConfig;
 import com.gomdev.shader.perFragmentLighting.PFLConfig;
 import com.gomdev.shader.perVertexLighting.PVLConfig;
-import com.gomdev.shader.texturedPlane.TexturedPlaneConfig;
+import com.gomdev.shader.texturedRectangle.TexturedRectangleConfig;
 //import com.gomdev.shader.whitehole.WhiteholeConfig;
 import com.gomdev.gles.GLESConfig;
 import com.gomdev.gles.GLESContext;
@@ -121,8 +122,9 @@ public class EffectListActivity extends Activity implements
             version = Version.GLES_20;
         }
 
-        setupTextureRectangle(version);
-        setupColorCube(version);
+        setupColoredTriangle(version);
+        setupColoredPlane(version);
+        setupTexturePlane(version);
         setupIcon(version);
         setupMipmap(version);
         setupPVL(version);
@@ -203,11 +205,11 @@ public class EffectListActivity extends Activity implements
         mEffects.add(info);
     }
 
-    private void setupTextureRectangle(Version version) {
+    private void setupTexturePlane(Version version) {
         EffectInfo info = new EffectInfo();
-        info.mEffectName = TexturedPlaneConfig.EFFECT_NAME;
+        info.mEffectName = TexturedRectangleConfig.EFFECT_NAME;
         info.mIntent = new Intent(this,
-                com.gomdev.shader.texturedPlane.TexturedPlaneActivity.class);
+                com.gomdev.shader.texturedRectangle.TexturedRectangleActivity.class);
 
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
@@ -216,8 +218,8 @@ public class EffectListActivity extends Activity implements
             };
 
             info.mShaderTitle = new String[] {
-                    "Texture 20 VS",
-                    "Texture 20 FS",
+                    "Texture Rectangle 20 VS",
+                    "Texture Rectangle 20 FS",
             };
         } else {
             info.mShaderResIDs = new int[] {
@@ -226,8 +228,8 @@ public class EffectListActivity extends Activity implements
             };
 
             info.mShaderTitle = new String[] {
-                    "Texture 30 VS",
-                    "Texture 30 FS",
+                    "Texture Rectangle 30 VS",
+                    "Texture Rectangle 30 FS",
             };
         }
 
@@ -265,11 +267,11 @@ public class EffectListActivity extends Activity implements
         mEffects.add(info);
     }
 
-    private void setupColorCube(Version version) {
+    private void setupColoredTriangle(Version version) {
         EffectInfo info = new EffectInfo();
-        info.mEffectName = ColoredCubeConfig.EFFECT_NAME;
+        info.mEffectName = ColoredTriangleConfig.EFFECT_NAME;
         info.mIntent = new Intent(this,
-                com.gomdev.shader.coloredCube.ColoredCubeActivity.class);
+                com.gomdev.shader.coloredTriangle.ColoredTriangleActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
                     R.raw.color_20_vs,
@@ -277,8 +279,8 @@ public class EffectListActivity extends Activity implements
             };
 
             info.mShaderTitle = new String[] {
-                    "Colored Cube 20 VS",
-                    "Colored Cube FS",
+                    "Colored Triangle 20 VS",
+                    "Colored Triangle 20 FS",
             };
         } else {
             info.mShaderResIDs = new int[] {
@@ -287,8 +289,38 @@ public class EffectListActivity extends Activity implements
             };
 
             info.mShaderTitle = new String[] {
-                    "Colored Cube 30 VS",
-                    "Colored Cube 30 FS",
+                    "Colored Triangle 30 VS",
+                    "Colored Triangle 30 FS",
+            };
+        }
+
+        mEffects.add(info);
+    }
+
+    private void setupColoredPlane(Version version) {
+        EffectInfo info = new EffectInfo();
+        info.mEffectName = ColoredRectangleConfig.EFFECT_NAME;
+        info.mIntent = new Intent(this,
+                com.gomdev.shader.coloredRectangle.ColoredRectangleActivity.class);
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[] {
+                    R.raw.color_20_vs,
+                    R.raw.color_20_fs,
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Colored Rectangle 20 VS",
+                    "Colored Rectangle 20 FS",
+            };
+        } else {
+            info.mShaderResIDs = new int[] {
+                    R.raw.color_30_vs,
+                    R.raw.color_30_fs
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Colored Rectangle 30 VS",
+                    "Colored Rectangle 30 FS",
             };
         }
 

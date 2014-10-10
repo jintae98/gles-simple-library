@@ -66,7 +66,13 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="com.gomdev.shader.coloredCube.ColoredCubeActivity"
+            android:name="com.gomdev.shader.coloredTriangle.ColoredTriangleActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.gomdev.shader.coloredRectangle.ColoredRectangleActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >
@@ -78,7 +84,7 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="com.gomdev.shader.texturedPlane.TexturedPlaneActivity"
+            android:name="com.gomdev.shader.texturedRectangle.TexturedRectangleActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >
