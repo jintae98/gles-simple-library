@@ -78,7 +78,7 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="com.gomdev.shader.texture.TextureActivity"
+            android:name="com.gomdev.shader.texturedPlane.TexturedPlaneActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >

@@ -12,7 +12,7 @@ import com.gomdev.shader.multiLighting.MultiLightingConfig;
 //import com.gomdev.shader.occlusionQuery.OQConfig;
 import com.gomdev.shader.perFragmentLighting.PFLConfig;
 import com.gomdev.shader.perVertexLighting.PVLConfig;
-import com.gomdev.shader.texture.TextureConfig;
+import com.gomdev.shader.texturedPlane.TexturedPlaneConfig;
 //import com.gomdev.shader.whitehole.WhiteholeConfig;
 import com.gomdev.gles.GLESConfig;
 import com.gomdev.gles.GLESContext;
@@ -121,17 +121,17 @@ public class EffectListActivity extends Activity implements
             version = Version.GLES_20;
         }
 
+        setupTextureRectangle(version);
         setupColorCube(version);
         setupIcon(version);
-        setupTexture(version);
         setupMipmap(version);
         setupPVL(version);
         setupPFL(version);
         setupMultiLighting(version);
-//        setupOQ(version);
+        // setupOQ(version);
         setupIR(version);
         setupIR2(version);
-//        setupWhitehole(version);
+        // setupWhitehole(version);
 
         if (DEBUG) {
             Log.d(TAG, "onCreate() Effects");
@@ -203,11 +203,11 @@ public class EffectListActivity extends Activity implements
         mEffects.add(info);
     }
 
-    private void setupTexture(Version version) {
+    private void setupTextureRectangle(Version version) {
         EffectInfo info = new EffectInfo();
-        info.mEffectName = TextureConfig.EFFECT_NAME;
+        info.mEffectName = TexturedPlaneConfig.EFFECT_NAME;
         info.mIntent = new Intent(this,
-                com.gomdev.shader.texture.TextureActivity.class);
+                com.gomdev.shader.texturedPlane.TexturedPlaneActivity.class);
 
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
@@ -233,7 +233,7 @@ public class EffectListActivity extends Activity implements
 
         mEffects.add(info);
     }
-    
+
     private void setupMipmap(Version version) {
         EffectInfo info = new EffectInfo();
         info.mEffectName = MipmapConfig.EFFECT_NAME;
@@ -294,7 +294,7 @@ public class EffectListActivity extends Activity implements
 
         mEffects.add(info);
     }
-    
+
     private void setupIcon(Version version) {
         EffectInfo info = new EffectInfo();
         info.mEffectName = IconConfig.EFFECT_NAME;
@@ -393,35 +393,35 @@ public class EffectListActivity extends Activity implements
         mEffects.add(info);
     }
 
-//    private void setupOQ(Version version) {
-//        EffectInfo info = new EffectInfo();
-//        info.mEffectName = OQConfig.EFFECT_NAME;
-//        info.mIntent = new Intent(this,
-//                com.gomdev.shader.occlusionQuery.OQActivity.class);
-//        if (version == Version.GLES_20) {
-//            info.mShaderResIDs = new int[] {
-//                    R.raw.oq_20_vs,
-//                    R.raw.oq_20_fs,
-//            };
-//
-//            info.mShaderTitle = new String[] {
-//                    "Occlusion Query 20 VS",
-//                    "Occlusion Query 20 FS",
-//            };
-//        } else {
-//            info.mShaderResIDs = new int[] {
-//                    R.raw.oq_30_vs,
-//                    R.raw.oq_30_fs
-//            };
-//
-//            info.mShaderTitle = new String[] {
-//                    "Occlusion Query 30 VS",
-//                    "Occlusion Query 30 FS",
-//            };
-//        }
-//
-//        mEffects.add(info);
-//    }
+    // private void setupOQ(Version version) {
+    // EffectInfo info = new EffectInfo();
+    // info.mEffectName = OQConfig.EFFECT_NAME;
+    // info.mIntent = new Intent(this,
+    // com.gomdev.shader.occlusionQuery.OQActivity.class);
+    // if (version == Version.GLES_20) {
+    // info.mShaderResIDs = new int[] {
+    // R.raw.oq_20_vs,
+    // R.raw.oq_20_fs,
+    // };
+    //
+    // info.mShaderTitle = new String[] {
+    // "Occlusion Query 20 VS",
+    // "Occlusion Query 20 FS",
+    // };
+    // } else {
+    // info.mShaderResIDs = new int[] {
+    // R.raw.oq_30_vs,
+    // R.raw.oq_30_fs
+    // };
+    //
+    // info.mShaderTitle = new String[] {
+    // "Occlusion Query 30 VS",
+    // "Occlusion Query 30 FS",
+    // };
+    // }
+    //
+    // mEffects.add(info);
+    // }
 
     private void setupMultiLighting(Version version) {
         EffectInfo info = new EffectInfo();
@@ -453,35 +453,35 @@ public class EffectListActivity extends Activity implements
         mEffects.add(info);
     }
 
-//    private void setupWhitehole(Version version) {
-//        EffectInfo info = new EffectInfo();
-//        info.mEffectName = WhiteholeConfig.EFFECT_NAME;
-//        info.mIntent = new Intent(this,
-//                com.gomdev.shader.whitehole.WhiteholeActivity.class);
-//        if (version == Version.GLES_20) {
-//            info.mShaderResIDs = new int[] {
-//                    R.raw.whitehole_20_vs,
-//                    R.raw.whitehole_20_fs,
-//            };
-//
-//            info.mShaderTitle = new String[] {
-//                    "Whitehole 20 VS",
-//                    "Whitehole 20 FS",
-//            };
-//        } else {
-//            info.mShaderResIDs = new int[] {
-//                    R.raw.whitehole_30_vs,
-//                    R.raw.whitehole_30_fs
-//            };
-//
-//            info.mShaderTitle = new String[] {
-//                    "Whitehole 30 VS",
-//                    "Whitehole 30 FS",
-//            };
-//        }
-//
-//        mEffects.add(info);
-//    }
+    // private void setupWhitehole(Version version) {
+    // EffectInfo info = new EffectInfo();
+    // info.mEffectName = WhiteholeConfig.EFFECT_NAME;
+    // info.mIntent = new Intent(this,
+    // com.gomdev.shader.whitehole.WhiteholeActivity.class);
+    // if (version == Version.GLES_20) {
+    // info.mShaderResIDs = new int[] {
+    // R.raw.whitehole_20_vs,
+    // R.raw.whitehole_20_fs,
+    // };
+    //
+    // info.mShaderTitle = new String[] {
+    // "Whitehole 20 VS",
+    // "Whitehole 20 FS",
+    // };
+    // } else {
+    // info.mShaderResIDs = new int[] {
+    // R.raw.whitehole_30_vs,
+    // R.raw.whitehole_30_fs
+    // };
+    //
+    // info.mShaderTitle = new String[] {
+    // "Whitehole 30 VS",
+    // "Whitehole 30 FS",
+    // };
+    // }
+    //
+    // mEffects.add(info);
+    // }
 
     private void makeEffectList() {
         ArrayList<String> effectList = new ArrayList<String>();

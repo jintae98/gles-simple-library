@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.gomdev.shader.texture;
+package com.gomdev.shader.texturedPlane;
 
 import com.gomdev.shader.EffectActivity;
 import com.gomdev.shader.R;
@@ -23,14 +23,14 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
-public class TextureActivity extends EffectActivity {
-    private TextureRenderer mRenderer;
+public class TexturedPlaneActivity extends EffectActivity {
+    private TexturedPlaneRenderer mRenderer;
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        mRenderer = new TextureRenderer(this);
+        mRenderer = new TexturedPlaneRenderer(this);
         mView = (GLSurfaceView) findViewById(R.id.effect_surfaceview);
         mRenderer.setSurfaceView(mView);
 
@@ -66,13 +66,13 @@ public class TextureActivity extends EffectActivity {
 
         switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
-            ((TextureRenderer) mRenderer).touchDown(x, y);
+            ((TexturedPlaneRenderer) mRenderer).touchDown(x, y);
             break;
         case MotionEvent.ACTION_UP:
-            ((TextureRenderer) mRenderer).touchUp(x, y);
+            ((TexturedPlaneRenderer) mRenderer).touchUp(x, y);
             break;
         case MotionEvent.ACTION_MOVE:
-            ((TextureRenderer) mRenderer).touchMove(x, y);
+            ((TexturedPlaneRenderer) mRenderer).touchMove(x, y);
             break;
         }
 

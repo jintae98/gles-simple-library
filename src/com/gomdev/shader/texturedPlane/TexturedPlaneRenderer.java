@@ -1,4 +1,6 @@
-package com.gomdev.shader.texture;
+package com.gomdev.shader.texturedPlane;
+
+import java.nio.FloatBuffer;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
@@ -10,16 +12,16 @@ import android.graphics.Bitmap;
 import android.opengl.GLES20;
 import android.util.Log;
 
-public class TextureRenderer extends EffectRenderer {
+public class TexturedPlaneRenderer extends EffectRenderer {
     private static final String CLASS = "TextureRenderer";
-    private static final String TAG = TextureConfig.TAG + " " + CLASS;
-    private static final boolean DEBUG = TextureConfig.DEBUG;
+    private static final String TAG = TexturedPlaneConfig.TAG + " " + CLASS;
+    private static final boolean DEBUG = TexturedPlaneConfig.DEBUG;
 
     private GLESSceneManager mSM = null;
-    
+
     private GLESObject mTextureObject = null;
     private GLESShader mTextureShader = null;
-    
+
     private Version mVersion;
 
     private boolean mIsTouchDown = false;
@@ -30,11 +32,13 @@ public class TextureRenderer extends EffectRenderer {
     private float mMoveX = 0f;
     private float mMoveY = 0f;
 
-    public TextureRenderer(Context context) {
+    private float mScreenRatio = 0f;
+
+    public TexturedPlaneRenderer(Context context) {
         super(context);
 
         mVersion = GLESContext.getInstance().getVersion();
-        
+
         mSM = GLESSceneManager.createSceneManager();
         GLESNode root = mSM.createRootNode("Root");
 
@@ -79,27 +83,27 @@ public class TextureRenderer extends EffectRenderer {
     protected void onSurfaceChanged(int width, int height) {
         mRenderer.reset();
 
+        mScreenRatio = (float) width / height;
+
         GLESCamera camera = setupCamera(width, height);
 
         mTextureObject.setCamera(camera);
 
-        GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(width,
-                false, true, false);
+        GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(
+                mScreenRatio * 2f, 2f, false, true, false, false);
+
         mTextureObject.setVertexInfo(vertexInfo, true, true);
     }
 
     private GLESCamera setupCamera(int width, int height) {
         GLESCamera camera = new GLESCamera();
-        camera.setLookAt(0f, 0f, 2048f, 0f, 0f, 0f, 0f, 1f, 0f);
 
-        float right = width * 0.5f / 4f;
-        float left = -right;
-        float top = height * 0.5f / 4f;
-        float bottom = -top;
-        float near = 128f;
-        float far = 2048f * 2f;
+        float fovy = 30f;
+        float eyeZ = 1f / (float) Math.tan(Math.toRadians(fovy * 0.5));
 
-        camera.setFrustum(left, right, bottom, top, near, far);
+        camera.setLookAt(0f, 0f, eyeZ, 0f, 0f, 0f, 0f, 1f, 0f);
+
+        camera.setFrustum(fovy, mScreenRatio, 1f, 400f);
 
         camera.setViewport(new GLESRect(0, 0, width, height));
 
