@@ -206,7 +206,6 @@ public class MultiLightingRenderer extends EffectRenderer {
 
         mShader.setShaderSource(vsSource, fsSource);
         if (mShader.load() == false) {
-            mHandler.sendEmptyMessage(EffectRenderer.COMPILE_OR_LINK_ERROR);
             return false;
         }
 

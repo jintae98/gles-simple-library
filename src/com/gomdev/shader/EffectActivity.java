@@ -32,7 +32,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 @SuppressLint("Registered")
@@ -49,30 +48,12 @@ public class EffectActivity extends Activity implements Ad {
 
         setContentView(R.layout.common_main);
 
-        LinearLayout layout = (LinearLayout) findViewById(R.id.layout_info);
-        boolean showInfo = ShaderContext.getInstance().showInfo();
-        if (showInfo == true) {
-            layout.setVisibility(View.VISIBLE);
-            showGLESVersion();
-        } else {
-            layout.setVisibility(View.INVISIBLE);
-        }
+        hideInfomation();
     }
 
-    private void showGLESVersion() {
-        TextView textView = (TextView) findViewById(R.id.layout_version);
-
-        Version version = GLESContext.getInstance().getVersion();
-        switch (version) {
-        case GLES_20:
-            textView.setText("OpenGL ES 2.0");
-            break;
-        case GLES_30:
-            textView.setText("OpenGL ES 3.0");
-            break;
-        default:
-
-        }
+    private void hideInfomation() {
+        LinearLayout layout = (LinearLayout) findViewById(R.id.layout_info);
+        layout.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -107,6 +88,8 @@ public class EffectActivity extends Activity implements Ad {
             return;
         }
 
+        hideInfomation();
+
         ShaderRestoreDialog dialog = new ShaderRestoreDialog();
         dialog.show(getFragmentManager(), "restore");
     }
@@ -125,6 +108,8 @@ public class EffectActivity extends Activity implements Ad {
     }
 
     private void showShaderListDialog() {
+        hideInfomation();
+
         ShaderListDialog dialog = new ShaderListDialog();
         dialog.show(getFragmentManager(), "shaderlist");
     }

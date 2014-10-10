@@ -164,7 +164,6 @@ public class WhiteholeRenderer extends EffectRenderer {
 
         mShaderWhitehole.setShaderSource(vsSource, fsSource);
         if (mShaderWhitehole.load() == false) {
-            mHandler.sendEmptyMessage(COMPILE_OR_LINK_ERROR);
             return false;
         }
 

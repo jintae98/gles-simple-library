@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.gomdev.gles.GLESContext;
 import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESUtils;
+import com.gomdev.gles.GLESConfig.Version;
 
 public abstract class EffectRenderer implements Renderer {
     static final String CLASS = "EffectRenderer";
@@ -26,7 +27,8 @@ public abstract class EffectRenderer implements Renderer {
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
     protected static final int COMPILE_OR_LINK_ERROR = 1;
-    protected static final int UPDATE_FPS = 2;
+    protected static final int COMPILE_AND_LINK_SUCCESS = 2;
+    protected static final int UPDATE_FPS = 3;
 
     static {
         System.loadLibrary("gomdev");
@@ -39,6 +41,7 @@ public abstract class EffectRenderer implements Renderer {
     protected TextView mFPS = null;
 
     private boolean mIsShaderCompiled = false;
+    private boolean mIsOnSurfaceCreatedCalled = false;
 
     protected Handler mHandler = new Handler(Looper.getMainLooper()) {
 
@@ -50,6 +53,9 @@ public abstract class EffectRenderer implements Renderer {
                         Toast.LENGTH_SHORT).show();
 
                 showCompileLog();
+                break;
+            case COMPILE_AND_LINK_SUCCESS:
+                setupInformation();
                 break;
             case UPDATE_FPS:
                 ShaderContext context = ShaderContext.getInstance();
@@ -75,6 +81,35 @@ public abstract class EffectRenderer implements Renderer {
                 }
                 mFPS.setText("" + msg.arg1);
                 break;
+            }
+        }
+
+        private void setupInformation() {
+            LinearLayout layout = (LinearLayout) ((Activity) mContext)
+                    .findViewById(R.id.layout_info);
+            boolean showInfo = ShaderContext.getInstance().showInfo();
+            if (showInfo == true) {
+                layout.setVisibility(View.VISIBLE);
+                showGLESVersion();
+            } else {
+                layout.setVisibility(View.INVISIBLE);
+            }
+        }
+
+        private void showGLESVersion() {
+            TextView textView = (TextView) ((Activity) mContext)
+                    .findViewById(R.id.layout_version);
+
+            Version version = GLESContext.getInstance().getVersion();
+            switch (version) {
+            case GLES_20:
+                textView.setText("OpenGL ES 2.0");
+                break;
+            case GLES_30:
+                textView.setText("OpenGL ES 3.0");
+                break;
+            default:
+
             }
         }
 
@@ -127,10 +162,14 @@ public abstract class EffectRenderer implements Renderer {
         mIsShaderCompiled = createShader();
 
         if (mIsShaderCompiled == true) {
+            mHandler.sendEmptyMessage(EffectRenderer.COMPILE_AND_LINK_SUCCESS);
             onSurfaceCreated();
         } else {
+            mHandler.sendEmptyMessage(EffectRenderer.COMPILE_OR_LINK_ERROR);
             Log.e(TAG, "\t shader compiliation fails");
         }
+
+        mIsOnSurfaceCreatedCalled = true;
     }
 
     @Override
@@ -139,9 +178,18 @@ public abstract class EffectRenderer implements Renderer {
             Log.d(TAG, "onSurfaceChanged()");
         }
 
-        if (mIsShaderCompiled == true) {
-            onSurfaceChanged(width, height);
+        if (mIsOnSurfaceCreatedCalled == false) {
+            mIsShaderCompiled = createShader();
         }
+
+        if (mIsShaderCompiled == true) {
+            mHandler.sendEmptyMessage(EffectRenderer.COMPILE_AND_LINK_SUCCESS);
+            onSurfaceChanged(width, height);
+        } else {
+            mHandler.sendEmptyMessage(EffectRenderer.COMPILE_OR_LINK_ERROR);
+        }
+
+        mIsOnSurfaceCreatedCalled = false;
     }
 
     @Override

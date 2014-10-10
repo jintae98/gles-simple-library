@@ -133,7 +133,6 @@ public class TexturedRectangleRenderer extends EffectRenderer {
 
         mTextureShader.setShaderSource(vsSource, fsSource);
         if (mTextureShader.load() == false) {
-            mHandler.sendEmptyMessage(EffectRenderer.COMPILE_OR_LINK_ERROR);
             return false;
         }
 

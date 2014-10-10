@@ -124,7 +124,6 @@ public class ColoredTriangleRenderer extends EffectRenderer {
 
         mBasicShader.setShaderSource(vsSource, fsSource);
         if (mBasicShader.load() == false) {
-            mHandler.sendEmptyMessage(EffectRenderer.COMPILE_OR_LINK_ERROR);
             return false;
         }
 
