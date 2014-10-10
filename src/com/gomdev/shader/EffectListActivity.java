@@ -13,6 +13,7 @@ import com.gomdev.shader.multiLighting.MultiLightingConfig;
 //import com.gomdev.shader.occlusionQuery.OQConfig;
 import com.gomdev.shader.perFragmentLighting.PFLConfig;
 import com.gomdev.shader.perVertexLighting.PVLConfig;
+import com.gomdev.shader.texturedCube.TexturedCubeConfig;
 import com.gomdev.shader.texturedRectangle.TexturedRectangleConfig;
 //import com.gomdev.shader.whitehole.WhiteholeConfig;
 import com.gomdev.gles.GLESConfig;
@@ -125,6 +126,7 @@ public class EffectListActivity extends Activity implements
         setupColoredTriangle(version);
         setupColoredPlane(version);
         setupTexturePlane(version);
+        setupTextureCube(version);
         setupIcon(version);
         setupMipmap(version);
         setupPVL(version);
@@ -231,6 +233,38 @@ public class EffectListActivity extends Activity implements
             info.mShaderTitle = new String[] {
                     "Texture Rectangle 30 VS",
                     "Texture Rectangle 30 FS",
+            };
+        }
+
+        mEffects.add(info);
+    }
+
+    private void setupTextureCube(Version version) {
+        EffectInfo info = new EffectInfo();
+        info.mEffectName = TexturedCubeConfig.EFFECT_NAME;
+        info.mIntent = new Intent(
+                this,
+                com.gomdev.shader.texturedCube.TexturedCubeActivity.class);
+
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[] {
+                    R.raw.texture_20_vs,
+                    R.raw.texture_20_fs,
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Texture Cube 20 VS",
+                    "Texture Cube 20 FS",
+            };
+        } else {
+            info.mShaderResIDs = new int[] {
+                    R.raw.texture_30_vs,
+                    R.raw.texture_30_fs,
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Texture Cube 30 VS",
+                    "Texture Cube 30 FS",
             };
         }
 

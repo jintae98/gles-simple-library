@@ -78,6 +78,12 @@
             android:label="@string/app_name" >
         </activity>
         <activity
+            android:name="com.gomdev.shader.texturedCube.TexturedCubeActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
             android:name="com.gomdev.shader.icon.IconActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
