@@ -578,7 +578,9 @@ public class EffectListActivity extends Activity implements
 
     EffectInfo getEffectInfo(String effectName) {
         for (EffectInfo effectInfo : mEffects) {
-            if (effectName.contains(effectInfo.mEffectName) == true) {
+            int index = effectName.indexOf(' ');
+            String name = effectName.substring(index + 1);
+            if (name.compareTo(effectInfo.mEffectName) == 0) {
                 return effectInfo;
             }
         }

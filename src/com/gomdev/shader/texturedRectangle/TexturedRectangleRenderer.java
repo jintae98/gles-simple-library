@@ -88,7 +88,7 @@ public class TexturedRectangleRenderer extends EffectRenderer {
         mTextureObject.setCamera(camera);
 
         GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(
-                mScreenRatio * 2f, 2f, false, true, false, false);
+                mScreenRatio * 2f - 0.1f, 2f - 0.1f, false, true, false, false);
 
         mTextureObject.setVertexInfo(vertexInfo, true, true);
     }
