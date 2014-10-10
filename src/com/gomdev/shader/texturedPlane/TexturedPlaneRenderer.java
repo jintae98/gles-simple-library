@@ -1,7 +1,5 @@
 package com.gomdev.shader.texturedPlane;
 
-import java.nio.FloatBuffer;
-
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.shader.EffectRenderer;

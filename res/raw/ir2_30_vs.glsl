@@ -9,7 +9,7 @@ layout(location=3) in vec4 aColor;
 out vec4 vColor;
 out vec3 vNormal;
 out vec4 vPositionES;
-out vec4 vLightPosES;
+out vec4 vLight1PosES;
 
 uniform highp mat4 uPMatrix;
 uniform highp mat4 uMMatrix;
@@ -30,7 +30,7 @@ void main() {
     vec4 pos = uPMatrix * posES;
 
     vPositionES = posES;
-    vLightPosES = uVMatrix * uLightPos;
+    vLight1PosES = uVMatrix * uLightPos;
     vColor = uColor[gl_InstanceID + NUM_OF_INSTNACE];
     vNormal = aNormal;
 

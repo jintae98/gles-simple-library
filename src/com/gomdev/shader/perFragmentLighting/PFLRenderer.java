@@ -34,6 +34,7 @@ public class PFLRenderer extends EffectRenderer {
 
     private int mNormalMatrixHandle = -1;
     private int mLightPosHandle = -1;
+    private int mLightStateHandle = -1;
 
     private GLESVector4 mCubeLight = new GLESVector4();
     private float mRadius = 0f;
@@ -150,6 +151,7 @@ public class PFLRenderer extends EffectRenderer {
                 "uNormalMatrix");
         mLightPosHandle = GLES20.glGetUniformLocation(program,
                 "uLightPos");
+        mLightStateHandle = GLES20.glGetUniformLocation(program, "uLightState");
     }
 
     @Override
@@ -284,6 +286,18 @@ public class PFLRenderer extends EffectRenderer {
                     mCubeLight.mZ,
                     mCubeLight.mW);
 
+            int[] lightState = new int[] {
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+            };
+            GLES20.glUniform1iv(mLightStateHandle, 8, lightState, 0);
+
         }
     };
 
@@ -327,6 +341,18 @@ public class PFLRenderer extends EffectRenderer {
                     mLightLight.mY,
                     mLightLight.mZ,
                     mLightLight.mW);
+
+            int[] lightState = new int[] {
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+            };
+            GLES20.glUniform1iv(mLightStateHandle, 8, lightState, 0);
         }
     };
 }

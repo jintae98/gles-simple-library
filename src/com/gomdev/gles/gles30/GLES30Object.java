@@ -9,7 +9,7 @@ public class GLES30Object extends GLESObject {
     static final String CLASS = "GLES30Object";
     static final String TAG = GLESConfig.TAG + " " + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
-    
+
     private boolean mUseVAO = false;
 
     public GLES30Object() {

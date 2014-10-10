@@ -149,8 +149,8 @@ public class EffectListActivity extends Activity implements
 
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
-                    R.raw.ir_20_vs,
-                    R.raw.ir_20_fs,
+                    R.raw.pfl_color_20_vs,
+                    R.raw.pfl_color_20_fs,
             };
 
             info.mShaderTitle = new String[] {
@@ -160,7 +160,7 @@ public class EffectListActivity extends Activity implements
         } else {
             info.mShaderResIDs = new int[] {
                     R.raw.ir_30_vs,
-                    R.raw.ir_30_fs,
+                    R.raw.pfl_color_30_fs
             };
 
             info.mShaderTitle = new String[] {
@@ -180,8 +180,8 @@ public class EffectListActivity extends Activity implements
 
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
-                    R.raw.ir2_20_vs,
-                    R.raw.ir2_20_fs,
+                    R.raw.pfl_color_20_vs,
+                    R.raw.pfl_color_20_fs,
             };
 
             info.mShaderTitle = new String[] {
@@ -191,7 +191,7 @@ public class EffectListActivity extends Activity implements
         } else {
             info.mShaderResIDs = new int[] {
                     R.raw.ir2_30_vs,
-                    R.raw.ir2_30_fs,
+                    R.raw.pfl_color_30_fs
             };
 
             info.mShaderTitle = new String[] {
@@ -242,8 +242,8 @@ public class EffectListActivity extends Activity implements
 
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
-                    R.raw.mipmap_20_vs,
-                    R.raw.mipmap_20_fs,
+                    R.raw.texture_20_vs,
+                    R.raw.texture_20_fs,
             };
 
             info.mShaderTitle = new String[] {
@@ -252,8 +252,8 @@ public class EffectListActivity extends Activity implements
             };
         } else {
             info.mShaderResIDs = new int[] {
-                    R.raw.mipmap_30_vs,
-                    R.raw.mipmap_30_fs,
+                    R.raw.texture_30_vs,
+                    R.raw.texture_30_fs,
             };
 
             info.mShaderTitle = new String[] {
@@ -272,8 +272,8 @@ public class EffectListActivity extends Activity implements
                 com.gomdev.shader.coloredCube.ColoredCubeActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
-                    R.raw.color_cube_20_vs,
-                    R.raw.color_cube_20_fs,
+                    R.raw.color_20_vs,
+                    R.raw.color_20_fs,
             };
 
             info.mShaderTitle = new String[] {
@@ -282,8 +282,8 @@ public class EffectListActivity extends Activity implements
             };
         } else {
             info.mShaderResIDs = new int[] {
-                    R.raw.color_cube_30_vs,
-                    R.raw.color_cube_30_fs
+                    R.raw.color_30_vs,
+                    R.raw.color_30_fs
             };
 
             info.mShaderTitle = new String[] {
@@ -302,10 +302,10 @@ public class EffectListActivity extends Activity implements
                 com.gomdev.shader.icon.IconActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
-                    R.raw.icon_20_vs,
-                    R.raw.icon_20_fs,
-                    R.raw.icon_texture_20_vs,
-                    R.raw.icon_texture_20_fs
+                    R.raw.color_20_vs,
+                    R.raw.color_20_fs,
+                    R.raw.texture_20_vs,
+                    R.raw.texture_20_fs
             };
 
             info.mShaderTitle = new String[] {
@@ -316,10 +316,10 @@ public class EffectListActivity extends Activity implements
             };
         } else {
             info.mShaderResIDs = new int[] {
-                    R.raw.icon_30_vs,
-                    R.raw.icon_30_fs,
-                    R.raw.icon_texture_30_vs,
-                    R.raw.icon_texture_30_fs
+                    R.raw.color_30_vs,
+                    R.raw.color_30_fs,
+                    R.raw.texture_30_vs,
+                    R.raw.texture_30_fs
             };
 
             info.mShaderTitle = new String[] {
@@ -340,8 +340,8 @@ public class EffectListActivity extends Activity implements
                 com.gomdev.shader.perVertexLighting.PVLActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
-                    R.raw.pvl_20_vs,
-                    R.raw.pvl_20_fs
+                    R.raw.pvl_color_20_vs,
+                    R.raw.pvl_color_20_fs
             };
 
             info.mShaderTitle = new String[] {
@@ -350,8 +350,8 @@ public class EffectListActivity extends Activity implements
             };
         } else {
             info.mShaderResIDs = new int[] {
-                    R.raw.pvl_30_vs,
-                    R.raw.pvl_30_fs
+                    R.raw.pvl_color_30_vs,
+                    R.raw.pvl_color_30_fs
             };
 
             info.mShaderTitle = new String[] {
@@ -370,8 +370,8 @@ public class EffectListActivity extends Activity implements
                 com.gomdev.shader.perFragmentLighting.PFLActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
-                    R.raw.pfl_20_vs,
-                    R.raw.pfl_20_fs
+                    R.raw.pfl_color_20_vs,
+                    R.raw.pfl_color_20_fs
             };
 
             info.mShaderTitle = new String[] {
@@ -380,8 +380,8 @@ public class EffectListActivity extends Activity implements
             };
         } else {
             info.mShaderResIDs = new int[] {
-                    R.raw.pfl_30_vs,
-                    R.raw.pfl_30_fs
+                    R.raw.pfl_color_30_vs,
+                    R.raw.pfl_color_30_fs
             };
 
             info.mShaderTitle = new String[] {
@@ -430,8 +430,8 @@ public class EffectListActivity extends Activity implements
                 com.gomdev.shader.multiLighting.MultiLightingActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
-                    R.raw.multi_lighting_20_vs,
-                    R.raw.multi_lighting_20_fs,
+                    R.raw.pfl_color_20_vs,
+                    R.raw.pfl_color_20_fs,
             };
 
             info.mShaderTitle = new String[] {
@@ -440,8 +440,8 @@ public class EffectListActivity extends Activity implements
             };
         } else {
             info.mShaderResIDs = new int[] {
-                    R.raw.multi_lighting_30_vs,
-                    R.raw.multi_lighting_30_fs
+                    R.raw.pfl_color_30_vs,
+                    R.raw.pfl_color_30_fs
             };
 
             info.mShaderTitle = new String[] {

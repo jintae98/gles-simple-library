@@ -38,14 +38,15 @@ public class EffectOptionsDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         mPref = getActivity().getSharedPreferences(ShaderConfig.PREF_NAME, 0);
         mPrefEditor = mPref.edit();
-        
+
         final ShaderContext context = ShaderContext.getInstance();
 
         boolean showInfo = mPref.getBoolean(ShaderConfig.PREF_SHOW_INFO, true);
         context.setShowInfo(showInfo);
         boolean showFPS = mPref.getBoolean(ShaderConfig.PREF_SHOW_FPS, true);
         context.setShowFPS(showFPS);
-        boolean useGLES30 = mPref.getBoolean(ShaderConfig.PREF_USE_GLES_30, GLESConfig.GLES_VERSION == Version.GLES_30);
+        boolean useGLES30 = mPref.getBoolean(ShaderConfig.PREF_USE_GLES_30,
+                GLESConfig.GLES_VERSION == Version.GLES_30);
         context.setUseGLES30(useGLES30);
 
         final int numOfOptions = ShaderConfig.EFFECT_OPTIONS.length;
@@ -76,7 +77,8 @@ public class EffectOptionsDialog extends DialogFragment {
                 listView.setItemChecked(i, context.showInfo());
                 break;
             case SHOW_FPS:
-                mCheckedItem[i] = context.showFPS();;
+                mCheckedItem[i] = context.showFPS();
+                ;
                 listView.setItemChecked(i, context.showFPS());
                 break;
             case USE_GLES30:
@@ -109,15 +111,21 @@ public class EffectOptionsDialog extends DialogFragment {
                             switch (option) {
                             case SHOW_INFO:
                                 context.setShowInfo(mCheckedItem[i]);
-                                mPrefEditor.putBoolean(ShaderConfig.PREF_SHOW_INFO, mCheckedItem[i]);
+                                mPrefEditor.putBoolean(
+                                        ShaderConfig.PREF_SHOW_INFO,
+                                        mCheckedItem[i]);
                                 break;
                             case SHOW_FPS:
                                 context.setShowFPS(mCheckedItem[i]);
-                                mPrefEditor.putBoolean(ShaderConfig.PREF_SHOW_FPS, mCheckedItem[i]);
+                                mPrefEditor.putBoolean(
+                                        ShaderConfig.PREF_SHOW_FPS,
+                                        mCheckedItem[i]);
                                 break;
                             case USE_GLES30:
                                 context.setUseGLES30(mCheckedItem[i]);
-                                mPrefEditor.putBoolean(ShaderConfig.PREF_USE_GLES_30, mCheckedItem[i]);
+                                mPrefEditor.putBoolean(
+                                        ShaderConfig.PREF_USE_GLES_30,
+                                        mCheckedItem[i]);
                                 break;
                             default:
                                 break;

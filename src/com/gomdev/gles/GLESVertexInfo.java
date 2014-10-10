@@ -73,7 +73,7 @@ public class GLESVertexInfo {
     public RenderType getRenderType() {
         return mRenderType;
     }
-    
+
     public void setNumOfInstance(int num) {
         mNumOfInstance = num;
     }

@@ -5,20 +5,26 @@ attribute vec3 aNormal;
 varying vec2 vTexCoord;
 varying vec3 vNormal;
 varying vec4 vPositionES;
-varying vec4 vLightPosES;
+varying vec4 vLightPosES[8];
 
 uniform highp mat4 uPMatrix;
 uniform highp mat4 uMMatrix;
 uniform highp mat4 uVMatrix;
 
-uniform highp vec4 uLightPos;
+uniform lowp int uLightState[8];
+uniform highp vec4 uLightPos[8];
 
 void main() {
     vec4 posES = uVMatrix * uMMatrix * aPosition;
     vec4 pos = uPMatrix * posES;
 
     vPositionES = posES;
-    vLightPosES = uVMatrix * uLightPos;
+    vPositionES = posES;
+    for (int i = 0; i < 8; i++) {
+        if (uLightState[i] == 1) {
+            vLightPosES[i] = uVMatrix * uLightPos[i];
+        }
+    }
     vTexCoord = aTexCoord;
     vNormal = aNormal;
 

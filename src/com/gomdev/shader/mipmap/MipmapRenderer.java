@@ -149,8 +149,6 @@ public class MipmapRenderer extends EffectRenderer {
         return camera;
     }
 
-    
-
     @Override
     protected void onSurfaceCreated() {
         GLES20.glClearColor(0.7f, 0.7f, 0.7f, 0.0f);

@@ -17,13 +17,13 @@ public class WhiteholeObject extends GLESObject {
     private float[] mDownPosInVS = new float[2];
     private float[] mDownPosInFS = new float[2];
     private float mRadius = 100.0f;
-    
+
     private float mWidth = 0f;
     private float mHeight = 0f;
 
     public WhiteholeObject() {
         super("WhiteholeObject");
-        
+
         setListener(mWhiteholeObjectListener);
     }
 
@@ -56,7 +56,7 @@ public class WhiteholeObject extends GLESObject {
     }
 
     public void setPosition(float x, float y) {
-        
+
         mDownPosInVS[0] = x - mWidth * 0.5f;
         mDownPosInVS[1] = mHeight * 0.5f - y;
 
@@ -67,7 +67,7 @@ public class WhiteholeObject extends GLESObject {
     public void setRadius(float radius) {
         mRadius = radius;
     }
-    
+
     private GLESObjectListener mWhiteholeObjectListener = new GLESObjectListener() {
 
         @Override

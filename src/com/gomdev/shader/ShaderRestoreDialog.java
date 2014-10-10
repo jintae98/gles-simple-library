@@ -30,9 +30,9 @@ public class ShaderRestoreDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Activity activity = getActivity();
         ShaderContext context = ShaderContext.getInstance();
-        
+
         ArrayList<ShaderInfo> shaderInfos = context.getShaderInfoList();
-        
+
         for (ShaderInfo info : shaderInfos) {
             if (GLESFileUtils.isExist(info.mFilePath) == true) {
                 mSavedShaders.add(info.mTitle);

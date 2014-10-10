@@ -16,11 +16,11 @@ public class PVLRenderer extends EffectRenderer {
     private static final boolean DEBUG = PVLConfig.DEBUG;
 
     private GLESSceneManager mSM = null;
-    
+
     private GLESObject mCubeObject = null;
     private GLESObject mLightObject = null;
     private GLESShader mShader = null;
-    
+
     private Version mVersion;
 
     private boolean mIsTouchDown = false;
@@ -45,7 +45,7 @@ public class PVLRenderer extends EffectRenderer {
         super(context);
 
         mVersion = GLESContext.getInstance().getVersion();
-        
+
         mSM = GLESSceneManager.createSceneManager();
         GLESNode root = mSM.createRootNode("Root");
 

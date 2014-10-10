@@ -27,7 +27,7 @@ public class IconActivity extends EffectActivity {
     static final String CLASS = "IconActivity";
     static final String TAG = IconConfig.TAG + " " + CLASS;
     static final boolean DEBUG = IconConfig.DEBUG;
-    
+
     private IconRenderer mRenderer;
 
     @Override

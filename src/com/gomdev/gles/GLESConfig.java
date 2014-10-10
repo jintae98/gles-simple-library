@@ -3,14 +3,14 @@ package com.gomdev.gles;
 public class GLESConfig {
     public static final boolean DEBUG = false;
     public static final String TAG = "gomdev";
-    
+
     public enum Version {
         GLES_20,
         GLES_30
     }
 
     public static final Version GLES_VERSION = Version.GLES_20;
-    
+
     public static final int POSITION_LOCATION = 0;
     public static final int TEXCOORD_LOCATION = 1;
     public static final int NORMAL_LOCATION = 2;

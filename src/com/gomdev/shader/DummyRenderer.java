@@ -31,7 +31,8 @@ public class DummyRenderer implements Renderer {
     }
 
     private void saveExtensionToPreferences(String extensions) {
-        SharedPreferences pref = mContext.getSharedPreferences(ShaderConfig.PREF_NAME, 0);
+        SharedPreferences pref = mContext.getSharedPreferences(
+                ShaderConfig.PREF_NAME, 0);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(ShaderConfig.PREF_GLES_EXTENSION, extensions);
         editor.commit();

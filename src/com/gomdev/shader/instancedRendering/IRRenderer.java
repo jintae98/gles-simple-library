@@ -48,6 +48,7 @@ public class IRRenderer extends EffectRenderer implements GLESRendererListener {
     private int mVBOID = -1;
 
     private int mNormalMatrixHandle = -1;
+
     private GLESVector4 mLightPos = new GLESVector4(1f, 1f, 1f, 0f);
 
     public IRRenderer(Context context) {
@@ -123,7 +124,7 @@ public class IRRenderer extends EffectRenderer implements GLESRendererListener {
         GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(0.1f,
                 true, false, true);
         mObject.setVertexInfo(vertexInfo, true, true);
-        
+
         if (mVersion == Version.GLES_30) {
             vertexInfo.setRenderType(RenderType.DRAW_ELEMENTS_INSTANCED);
             vertexInfo.setNumOfInstance(NUM_OF_INSTANCE);
@@ -171,6 +172,18 @@ public class IRRenderer extends EffectRenderer implements GLESRendererListener {
                 mLightPos.mY,
                 mLightPos.mZ,
                 mLightPos.mW);
+        location = GLES20.glGetUniformLocation(program, "uLightState");
+        int[] lightState = new int[] {
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+        };
+        GLES20.glUniform1iv(location, 8, lightState, 0);
     }
 
     @Override

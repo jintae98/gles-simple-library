@@ -46,6 +46,7 @@ public class IR2Renderer extends EffectRenderer {
     private Random mRandom = new Random();
 
     private int mNormalMatrixHandle = -1;
+
     private GLESVector4 mLightPos = new GLESVector4(1f, 1f, 1f, 0f);
 
     public IR2Renderer(Context context) {
@@ -125,7 +126,7 @@ public class IR2Renderer extends EffectRenderer {
             GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(0.1f,
                     true, false, false);
             mObject.setVertexInfo(vertexInfo, true, true);
-            
+
             vertexInfo.setRenderType(RenderType.DRAW_ELEMENTS_INSTANCED);
             vertexInfo.setNumOfInstance(NUM_OF_INSTANCE);
         }
@@ -211,6 +212,19 @@ public class IR2Renderer extends EffectRenderer {
                 mLightPos.mY,
                 mLightPos.mZ,
                 mLightPos.mW);
+
+        location = GLES20.glGetUniformLocation(program, "uLightState");
+        int[] lightState = new int[] {
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+        };
+        GLES20.glUniform1iv(location, 8, lightState, 0);
     }
 
     @Override

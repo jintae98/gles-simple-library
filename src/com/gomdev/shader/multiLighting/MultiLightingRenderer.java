@@ -191,7 +191,7 @@ public class MultiLightingRenderer extends EffectRenderer {
 
         } else {
             mLightPos1Handle = GLES20.glGetUniformLocation(program,
-                    "uLight1Pos");
+                    "uLightPos");
             mLightPos2Handle = GLES20.glGetUniformLocation(program,
                     "uLight2Pos");
         }

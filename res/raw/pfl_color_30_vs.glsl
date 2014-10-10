@@ -14,9 +14,9 @@ uniform highp mat4 uPMatrix;
 uniform highp mat4 uMMatrix;
 uniform highp mat4 uVMatrix;
 
-uniform highp vec4 uLight1Pos;
+uniform highp vec4 uLightPos;
 uniform highp vec4 uLight2Pos;
-uniform int uLightState[2];
+uniform int uLightState[8];
 
 void main() {
     vec4 posES = uVMatrix * uMMatrix * aPosition;
@@ -25,7 +25,7 @@ void main() {
     vPositionES = posES;
 
     if (uLightState[0] == 1) {
-        vLight1PosES = uVMatrix * uLight1Pos;
+        vLight1PosES = uVMatrix * uLightPos;
     }
 
     if (uLightState[1] == 1) {

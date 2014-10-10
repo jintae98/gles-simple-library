@@ -21,7 +21,7 @@ public class ShaderListDialog extends DialogFragment {
         ShaderContext context = ShaderContext.getInstance();
         int numOfShaders = context.getNumOfShaders();
         String[] list = new String[numOfShaders];
-        
+
         ArrayList<ShaderInfo> mShaderInfos = context.getShaderInfoList();
 
         for (int i = 0; i < numOfShaders; i++) {
@@ -47,7 +47,7 @@ public class ShaderListDialog extends DialogFragment {
     private void saveSelectedShaderInfo(int which) {
         ShaderContext context = ShaderContext.getInstance();
         ArrayList<ShaderInfo> mShaderInfos = context.getShaderInfoList();
-        
+
         ShaderInfo info = mShaderInfos.get(which);
 
         context.setSavedShaderInfo(info);
