@@ -14,10 +14,13 @@ public class EffectUtils {
     static final String TAG = ShaderConfig.TAG + " " + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
-    public static String getSavedFilePath(Context context, String shaderTitle) {
+    public static String getSavedFilePath(Context context, String prefix,
+            String shaderTitle) {
         File file = context.getExternalFilesDir(null);
         StringBuilder builder = new StringBuilder(file.getAbsolutePath());
         builder.append(File.separatorChar);
+        builder.append(prefix);
+        builder.append("_");
         builder.append(shaderTitle);
         builder.append(".dat");
 

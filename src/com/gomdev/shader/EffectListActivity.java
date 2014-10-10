@@ -1,7 +1,6 @@
 package com.gomdev.shader;
 
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 import com.gomdev.shader.R;
 import com.gomdev.shader.coloredRectangle.ColoredRectangleConfig;
@@ -550,7 +549,7 @@ public class EffectListActivity extends Activity implements
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
             String effectName = parent.getItemAtPosition(position).toString();
-            
+
             EffectInfo info = getEffectInfo(effectName);
             int numOfShader = info.mShaderResIDs.length;
 
@@ -565,8 +564,8 @@ public class EffectListActivity extends Activity implements
             for (int i = 0; i < numOfShader; i++) {
                 title = info.mShaderTitle[i];
                 savedFileName = EffectUtils.getSavedFilePath(
-                        EffectListActivity.this, title);
-                context.setShaderInfo(info.mShaderTitle[i],
+                        EffectListActivity.this, info.mEffectName, title);
+                context.setShaderInfo(info.mEffectName, info.mShaderTitle[i],
                         info.mShaderResIDs[i], savedFileName);
             }
 

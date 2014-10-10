@@ -14,6 +14,7 @@ public class ShaderContext {
     private static ShaderContext sEffectContext = null;
 
     class ShaderInfo {
+        String mEffectName;
         String mTitle;
         int mResID;
         String mFilePath;
@@ -60,8 +61,10 @@ public class ShaderContext {
         return mNumOfShaders;
     }
 
-    public void setShaderInfo(String title, int resID, String filePath) {
+    public void setShaderInfo(String effectName, String title,
+            int resID, String filePath) {
         ShaderInfo shader = new ShaderInfo();
+        shader.mEffectName = effectName;
         shader.mTitle = title;
         shader.mResID = resID;
         shader.mFilePath = filePath;

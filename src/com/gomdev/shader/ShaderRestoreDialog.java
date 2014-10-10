@@ -22,6 +22,7 @@ public class ShaderRestoreDialog extends DialogFragment {
     static final String TAG = ShaderConfig.TAG + " " + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
+    private String mEffectName = null;
     private ArrayList<String> mSelectedShaders = new ArrayList<String>();
     private ArrayList<String> mSavedShaders = new ArrayList<String>();
     private ListView mListView = null;
@@ -32,6 +33,7 @@ public class ShaderRestoreDialog extends DialogFragment {
         ShaderContext context = ShaderContext.getInstance();
 
         ArrayList<ShaderInfo> shaderInfos = context.getShaderInfoList();
+        mEffectName = shaderInfos.get(0).mEffectName;
 
         for (ShaderInfo info : shaderInfos) {
             if (GLESFileUtils.isExist(info.mFilePath) == true) {
@@ -90,9 +92,11 @@ public class ShaderRestoreDialog extends DialogFragment {
         Activity activity = getActivity();
         String savedFileName = null;
         for (String title : mSelectedShaders) {
-            savedFileName = EffectUtils.getSavedFilePath(activity, title);
+            savedFileName = EffectUtils.getSavedFilePath(activity, mEffectName,
+                    title);
             GLESFileUtils.delete(savedFileName);
-            Toast.makeText(activity, title + " is deleted", Toast.LENGTH_SHORT)
+            Toast.makeText(activity, savedFileName + " is deleted",
+                    Toast.LENGTH_SHORT)
                     .show();
         }
     }
