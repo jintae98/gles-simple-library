@@ -67,8 +67,7 @@ public class IconRenderer extends EffectRenderer {
                 GLESGLState state = new GLESGLState();
                 state.setCullFaceState(true);
                 state.setCullFace(GLES20.GL_BACK);
-                state.setDepthState(true);
-                state.setDepthFunc(GLES20.GL_ALWAYS);
+                state.setDepthState(false);
                 mBG.setGLState(state);
             }
 

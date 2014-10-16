@@ -151,8 +151,9 @@ public class GLES20Renderer extends GLESRenderer {
             }
         }
 
-        if (mCurrentGLState == null ||
-                glState.getDepthState() != mCurrentGLState.getDepthState()) {
+        if (mCurrentGLState == null
+                || glState.getDepthState() != mCurrentGLState.getDepthState()
+                || glState.getDepthFunc() != mCurrentGLState.getDepthFunc()) {
             if (glState.getDepthState() == true) {
                 GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 
