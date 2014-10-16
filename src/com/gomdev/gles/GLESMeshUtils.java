@@ -3,6 +3,7 @@ package com.gomdev.gles;
 import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
 import com.gomdev.gles.GLESVertexInfo.RenderType;
 
+import android.opengl.GLES20;
 import android.util.Log;
 
 public class GLESMeshUtils {
@@ -270,6 +271,79 @@ public class GLESMeshUtils {
         } else {
             vertexInfo.setRenderType(RenderType.DRAW_ARRAYS);
             vertexInfo.setPrimitiveMode(PrimitiveMode.TRIANGLE_STRIP);
+        }
+
+        return vertexInfo;
+    }
+
+    public static GLESVertexInfo createPlaneForDebug(float width, float height,
+            boolean useNormal, boolean useTexCoord, boolean useColor,
+            boolean useIndex, float red, float green, float blue) {
+
+        float right = width * 0.5f;
+        float left = -right;
+        float top = height * 0.5f;
+        float bottom = -top;
+        float z = 0.0f;
+
+        float[] vertex = {
+                left, bottom, z,
+                right, bottom, z,
+                right, top, z,
+                left, top, z,
+        };
+
+        GLESVertexInfo vertexInfo = new GLESVertexInfo();
+
+        vertexInfo.setVertexBuffer(vertex, 3);
+
+        if (useTexCoord == true) {
+            float[] texCoord = {
+                    0f, 1f,
+                    1f, 1f,
+                    1f, 0f,
+                    0f, 0f,
+            };
+
+            vertexInfo.setTexCoordBuffer(texCoord, 2);
+        }
+
+        if (useNormal == true) {
+            float[] normal = {
+                    0f, 0f, 1f,
+                    0f, 0f, 1f,
+                    0f, 0f, 1f,
+                    0f, 0f, 1f
+            };
+
+            vertexInfo.setNormalBuffer(normal, 3);
+        }
+
+        if (useColor == true) {
+            float[] color = {
+                    red, green, blue, 1f,
+                    red, green, blue, 1f,
+                    red, green, blue, 1f,
+                    red, green, blue, 1f,
+            };
+
+            vertexInfo.setColorBuffer(color, 4);
+        }
+
+        GLES20.glLineWidth(4.0f);
+
+        if (useIndex == true) {
+            short[] index = {
+                    0, 1, 2, 3
+            };
+
+            vertexInfo.setIndexBuffer(index);
+
+            vertexInfo.setRenderType(RenderType.DRAW_ELEMENTS);
+            vertexInfo.setPrimitiveMode(PrimitiveMode.LINE_LOOP);
+        } else {
+            vertexInfo.setRenderType(RenderType.DRAW_ARRAYS);
+            vertexInfo.setPrimitiveMode(PrimitiveMode.LINE_LOOP);
         }
 
         return vertexInfo;
