@@ -13,13 +13,6 @@ public class ShaderContext {
 
     private static ShaderContext sEffectContext = null;
 
-    class ShaderInfo {
-        String mEffectName;
-        String mTitle;
-        int mResID;
-        String mFilePath;
-    }
-
     private ArrayList<ShaderInfo> mShaderInfos = null;
     private String mEffectName = null;
     private int mNumOfShaders = 0;

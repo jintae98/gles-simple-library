@@ -20,9 +20,21 @@ public class ShaderViewActivity extends Activity implements Ad {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
+        if (icicle != null) {
+            EffectUtils.restoreShaderContext(icicle);
+        }
+
         setContentView(R.layout.common_main);
 
         mTextView = (TextView) findViewById(R.id.shader_view);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        EffectUtils.saveShaderContext(outState);
     }
 
     @Override
