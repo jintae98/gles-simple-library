@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 import com.gomdev.gles.GLESFileUtils;
 import com.gomdev.gles.GLESUtils;
-import com.gomdev.shader.ShaderContext.ShaderInfo;
 
 import android.content.Context;
+import android.os.Bundle;
 
 public class EffectUtils {
     static final String CLASS = "EffectUtils";
@@ -83,5 +83,42 @@ public class EffectUtils {
         }
 
         return shaderSource;
+    }
+
+    public static void restoreShaderContext(Bundle icicle) {
+        ShaderContext context = ShaderContext.getInstance();
+        if (context == null) {
+            context = ShaderContext.newInstance();
+        }
+
+        context.clearShaderInfos();
+        ArrayList<ShaderInfo> shaderInfoList = context.getShaderInfoList();
+
+        ArrayList<ShaderInfo> savedShaderInfoList = icicle
+                .getParcelableArrayList("shaderInfo");
+        for (ShaderInfo info : savedShaderInfoList) {
+            shaderInfoList.add(info);
+        }
+        context.setEffetName(icicle.getString("EffectName"));
+        context.setNumOfShaders(icicle.getInt("numOfShader"));
+        context.setSavedShaderInfo((ShaderInfo) icicle
+                .getParcelable("saveShaderInfo"));
+        context.setShowInfo(icicle.getBoolean("showInfo"));
+        context.setShowFPS(icicle.getBoolean("showFPS"));
+        context.setUseGLES30(icicle.getBoolean("useGLES30"));
+        context.setExtensions(icicle.getString("extension"));
+    }
+
+    public static void saveShaderContext(Bundle outState) {
+        ShaderContext context = ShaderContext.getInstance();
+        outState.putParcelableArrayList("shaderInfo",
+                context.getShaderInfoList());
+        outState.putString("EffectName", context.getEffectName());
+        outState.putInt("numOfShader", context.getNumOfShaders());
+        outState.putParcelable("saveShaderInfo", context.getSavedShaderInfo());
+        outState.putBoolean("showInfo", context.showInfo());
+        outState.putBoolean("showFPS", context.showFPS());
+        outState.putBoolean("useGLES30", context.useGLES30());
+        outState.putString("extension", context.getExtensions());
     }
 }

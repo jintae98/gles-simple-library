@@ -2,8 +2,6 @@ package com.gomdev.shader;
 
 import java.util.ArrayList;
 
-import com.gomdev.shader.ShaderContext.ShaderInfo;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;

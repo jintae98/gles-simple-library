@@ -22,7 +22,6 @@ import com.gomdev.gles.GLESContext;
 import com.gomdev.gles.GLESFileUtils;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.shader.R;
-import com.gomdev.shader.ShaderContext.ShaderInfo;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -46,6 +45,10 @@ public class EffectActivity extends Activity implements Ad {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
+        if (icicle != null) {
+            EffectUtils.restoreShaderContext(icicle);
+        }
+
         setContentView(R.layout.common_main);
 
         hideInfomation();
@@ -54,6 +57,13 @@ public class EffectActivity extends Activity implements Ad {
     private void hideInfomation() {
         LinearLayout layout = (LinearLayout) findViewById(R.id.layout_info);
         layout.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        EffectUtils.saveShaderContext(outState);
     }
 
     @Override
