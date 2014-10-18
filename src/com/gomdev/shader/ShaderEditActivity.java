@@ -22,6 +22,11 @@ public class ShaderEditActivity extends Activity implements Ad {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
+        if (icicle != null) {
+            EffectUtils.restoreShaderContext(icicle);
+        }
+
         setContentView(R.layout.common_main);
 
         mEditView = (EditText) findViewById(R.id.shader_edit);
@@ -29,6 +34,13 @@ public class ShaderEditActivity extends Activity implements Ad {
         mShaderSource = EffectUtils.getShaderSource(this);
 
         mEditView.setText(mShaderSource);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        EffectUtils.saveShaderContext(outState);
     }
 
     @Override
