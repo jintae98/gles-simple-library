@@ -21,8 +21,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class EffectOptionsDialog extends DialogFragment {
-    static final String CLASS = "EffectOptionsDialog";
+public class ShaderOptionsDialog extends DialogFragment {
+    static final String CLASS = "ShaderOptionsDialog";
     static final String TAG = ShaderConfig.TAG + " " + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
@@ -133,7 +133,7 @@ public class EffectOptionsDialog extends DialogFragment {
                         }
                         mPrefEditor.commit();
                         mListener
-                                .onDialogPositiveClick(EffectOptionsDialog.this);
+                                .onDialogPositiveClick(ShaderOptionsDialog.this);
                     }
                 })
                 .setNegativeButton("Cancel", new OnClickListener() {
@@ -142,7 +142,7 @@ public class EffectOptionsDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog,
                             int which) {
                         mListener
-                                .onDialogPositiveClick(EffectOptionsDialog.this);
+                                .onDialogPositiveClick(ShaderOptionsDialog.this);
                     }
                 });
         return builder.create();

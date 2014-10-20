@@ -12,6 +12,15 @@ public class ShaderConfig {
     public static final String PREF_SHOW_FPS = "show fps";
     public static final String PREF_GLES_EXTENSION = "gles extension";
 
+    public static final String STATE_EFFECT_NAME = "effectName";
+    public static final String STATE_SHADER_INFO = "shaderInfo";
+    public static final String STATE_NUM_OF_SHADER = "numOfShader";
+    public static final String STATE_SAVED_SHADER_INFO = "savedShaderInfo";
+    public static final String STATE_SHOW_INFO = "showInfo";
+    public static final String STATE_SHOW_FPS = "showFPS";
+    public static final String STATE_USE_GLES30 = "useGLES30";
+    public static final String STATE_EXTENSIONS = "extensions";
+
     public static final boolean ENABLE_AD = true;
 
     public enum Options {

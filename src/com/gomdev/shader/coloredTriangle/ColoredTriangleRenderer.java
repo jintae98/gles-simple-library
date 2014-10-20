@@ -3,7 +3,7 @@ package com.gomdev.shader.coloredTriangle;
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.shader.EffectRenderer;
-import com.gomdev.shader.EffectUtils;
+import com.gomdev.shader.ShaderUtils;
 
 import android.content.Context;
 import android.opengl.GLES20;
@@ -120,8 +120,8 @@ public class ColoredTriangleRenderer extends EffectRenderer {
 
         mBasicShader = new GLESShader(mContext);
 
-        String vsSource = EffectUtils.getShaderSource(mContext, 0);
-        String fsSource = EffectUtils.getShaderSource(mContext, 1);
+        String vsSource = ShaderUtils.getShaderSource(mContext, 0);
+        String fsSource = ShaderUtils.getShaderSource(mContext, 1);
 
         mBasicShader.setShaderSource(vsSource, fsSource);
         if (mBasicShader.load() == false) {

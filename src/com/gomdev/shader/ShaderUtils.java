@@ -9,8 +9,8 @@ import com.gomdev.gles.GLESUtils;
 import android.content.Context;
 import android.os.Bundle;
 
-public class EffectUtils {
-    static final String CLASS = "EffectUtils";
+public class ShaderUtils {
+    static final String CLASS = "ShaderUtils";
     static final String TAG = ShaderConfig.TAG + " " + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
@@ -95,30 +95,34 @@ public class EffectUtils {
         ArrayList<ShaderInfo> shaderInfoList = context.getShaderInfoList();
 
         ArrayList<ShaderInfo> savedShaderInfoList = icicle
-                .getParcelableArrayList("shaderInfo");
+                .getParcelableArrayList(ShaderConfig.STATE_SHADER_INFO);
         for (ShaderInfo info : savedShaderInfoList) {
             shaderInfoList.add(info);
         }
-        context.setEffetName(icicle.getString("EffectName"));
-        context.setNumOfShaders(icicle.getInt("numOfShader"));
+        context.setEffetName(icicle.getString(ShaderConfig.STATE_EFFECT_NAME));
+        context.setNumOfShaders(icicle.getInt(ShaderConfig.STATE_NUM_OF_SHADER));
         context.setSavedShaderInfo((ShaderInfo) icicle
-                .getParcelable("saveShaderInfo"));
-        context.setShowInfo(icicle.getBoolean("showInfo"));
-        context.setShowFPS(icicle.getBoolean("showFPS"));
-        context.setUseGLES30(icicle.getBoolean("useGLES30"));
-        context.setExtensions(icicle.getString("extension"));
+                .getParcelable(ShaderConfig.STATE_SAVED_SHADER_INFO));
+        context.setShowInfo(icicle.getBoolean(ShaderConfig.STATE_SHOW_INFO));
+        context.setShowFPS(icicle.getBoolean(ShaderConfig.STATE_SHOW_FPS));
+        context.setUseGLES30(icicle.getBoolean(ShaderConfig.STATE_USE_GLES30));
+        context.setExtensions(icicle.getString(ShaderConfig.STATE_EXTENSIONS));
     }
 
     public static void saveShaderContext(Bundle outState) {
         ShaderContext context = ShaderContext.getInstance();
-        outState.putParcelableArrayList("shaderInfo",
+        outState.putParcelableArrayList(ShaderConfig.STATE_SHADER_INFO,
                 context.getShaderInfoList());
-        outState.putString("EffectName", context.getEffectName());
-        outState.putInt("numOfShader", context.getNumOfShaders());
-        outState.putParcelable("saveShaderInfo", context.getSavedShaderInfo());
-        outState.putBoolean("showInfo", context.showInfo());
-        outState.putBoolean("showFPS", context.showFPS());
-        outState.putBoolean("useGLES30", context.useGLES30());
-        outState.putString("extension", context.getExtensions());
+        outState.putString(ShaderConfig.STATE_EFFECT_NAME,
+                context.getEffectName());
+        outState.putInt(ShaderConfig.STATE_NUM_OF_SHADER,
+                context.getNumOfShaders());
+        outState.putParcelable(ShaderConfig.STATE_SAVED_SHADER_INFO,
+                context.getSavedShaderInfo());
+        outState.putBoolean(ShaderConfig.STATE_SHOW_INFO, context.showInfo());
+        outState.putBoolean(ShaderConfig.STATE_SHOW_FPS, context.showFPS());
+        outState.putBoolean(ShaderConfig.STATE_USE_GLES30, context.useGLES30());
+        outState.putString(ShaderConfig.STATE_EXTENSIONS,
+                context.getExtensions());
     }
 }

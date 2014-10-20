@@ -3,7 +3,7 @@ package com.gomdev.shader.mipmap;
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.shader.EffectRenderer;
-import com.gomdev.shader.EffectUtils;
+import com.gomdev.shader.ShaderUtils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -165,8 +165,8 @@ public class MipmapRenderer extends EffectRenderer {
 
         mShader = new GLESShader(mContext);
 
-        String vsSource = EffectUtils.getShaderSource(mContext, 0);
-        String fsSource = EffectUtils.getShaderSource(mContext, 1);
+        String vsSource = ShaderUtils.getShaderSource(mContext, 0);
+        String fsSource = ShaderUtils.getShaderSource(mContext, 1);
 
         mShader.setShaderSource(vsSource, fsSource);
         if (mShader.load() == false) {

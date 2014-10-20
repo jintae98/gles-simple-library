@@ -91,7 +91,7 @@ public class ShaderRestoreDialog extends DialogFragment {
         Activity activity = getActivity();
         String savedFileName = null;
         for (String title : mSelectedShaders) {
-            savedFileName = EffectUtils.getSavedFilePath(activity, mEffectName,
+            savedFileName = ShaderUtils.getSavedFilePath(activity, mEffectName,
                     title);
             GLESFileUtils.delete(savedFileName);
             Toast.makeText(activity, savedFileName + " is deleted",

@@ -22,7 +22,7 @@ public class ShaderViewActivity extends Activity implements Ad {
         super.onCreate(icicle);
 
         if (icicle != null) {
-            EffectUtils.restoreShaderContext(icicle);
+            ShaderUtils.restoreShaderContext(icicle);
         }
 
         setContentView(R.layout.common_main);
@@ -34,7 +34,7 @@ public class ShaderViewActivity extends Activity implements Ad {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        EffectUtils.saveShaderContext(outState);
+        ShaderUtils.saveShaderContext(outState);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class ShaderViewActivity extends Activity implements Ad {
     protected void onStart() {
         super.onStart();
 
-        mShaderSource = EffectUtils.getShaderSource(this);
+        mShaderSource = ShaderUtils.getShaderSource(this);
 
         mTextView.setText(mShaderSource);
     }

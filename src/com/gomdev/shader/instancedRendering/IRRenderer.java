@@ -7,7 +7,7 @@ import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESVertexInfo.RenderType;
 import com.gomdev.shader.EffectRenderer;
-import com.gomdev.shader.EffectUtils;
+import com.gomdev.shader.ShaderUtils;
 
 import android.content.Context;
 import android.opengl.GLES20;
@@ -190,8 +190,8 @@ public class IRRenderer extends EffectRenderer implements GLESRendererListener {
     protected boolean createShader() {
         mShader = new GLESShader(mContext);
 
-        String vsSource = EffectUtils.getShaderSource(mContext, 0);
-        String fsSource = EffectUtils.getShaderSource(mContext, 1);
+        String vsSource = ShaderUtils.getShaderSource(mContext, 0);
+        String fsSource = ShaderUtils.getShaderSource(mContext, 1);
 
         mShader.setShaderSource(vsSource, fsSource);
         if (mShader.load() == false) {

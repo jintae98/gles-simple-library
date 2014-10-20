@@ -3,7 +3,7 @@ package com.gomdev.shader.icon;
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.shader.EffectRenderer;
-import com.gomdev.shader.EffectUtils;
+import com.gomdev.shader.ShaderUtils;
 import com.gomdev.shader.R;
 
 import android.content.Context;
@@ -318,8 +318,8 @@ public class IconRenderer extends EffectRenderer {
         {
             mShader = new GLESShader(mContext);
 
-            String vsSource = EffectUtils.getShaderSource(mContext, 0);
-            String fsSource = EffectUtils.getShaderSource(mContext, 1);
+            String vsSource = ShaderUtils.getShaderSource(mContext, 0);
+            String fsSource = ShaderUtils.getShaderSource(mContext, 1);
 
             mShader.setShaderSource(vsSource, fsSource);
             if (mShader.load() == false) {
@@ -338,8 +338,8 @@ public class IconRenderer extends EffectRenderer {
         {
             mBGShader = new GLESShader(mContext);
 
-            String vsSource = EffectUtils.getShaderSource(mContext, 2);
-            String fsSource = EffectUtils.getShaderSource(mContext, 3);
+            String vsSource = ShaderUtils.getShaderSource(mContext, 2);
+            String fsSource = ShaderUtils.getShaderSource(mContext, 3);
 
             mBGShader.setShaderSource(vsSource, fsSource);
             if (mBGShader.load() == false) {

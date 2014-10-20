@@ -46,7 +46,7 @@ public class EffectActivity extends Activity implements Ad {
         super.onCreate(icicle);
 
         if (icicle != null) {
-            EffectUtils.restoreShaderContext(icicle);
+            ShaderUtils.restoreShaderContext(icicle);
         }
 
         setContentView(R.layout.common_main);
@@ -63,7 +63,7 @@ public class EffectActivity extends Activity implements Ad {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        EffectUtils.saveShaderContext(outState);
+        ShaderUtils.saveShaderContext(outState);
     }
 
     @Override

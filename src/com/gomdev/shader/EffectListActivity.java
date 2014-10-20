@@ -597,7 +597,7 @@ public class EffectListActivity extends Activity implements
             String savedFileName = null;
             for (int i = 0; i < numOfShader; i++) {
                 title = info.mShaderTitle[i];
-                savedFileName = EffectUtils.getSavedFilePath(
+                savedFileName = ShaderUtils.getSavedFilePath(
                         EffectListActivity.this, info.mEffectName, title);
                 context.setShaderInfo(info.mEffectName, info.mShaderTitle[i],
                         info.mShaderResIDs[i], savedFileName);
@@ -648,7 +648,7 @@ public class EffectListActivity extends Activity implements
     }
 
     private void showOptionsDialog() {
-        EffectOptionsDialog dialog = new EffectOptionsDialog();
+        ShaderOptionsDialog dialog = new ShaderOptionsDialog();
         dialog.show(getFragmentManager(), "effect_options");
     }
 
