@@ -278,6 +278,14 @@ public class GLESMeshUtils {
 
     public static GLESVertexInfo createPlaneForDebug(float width, float height,
             boolean useNormal, boolean useTexCoord, boolean useColor,
+            boolean useIndex) {
+
+        return createPlaneForDebug(width, height, useNormal, useTexCoord, useColor,
+                useIndex, 1f, 0f, 0f);
+    }
+
+    public static GLESVertexInfo createPlaneForDebug(float width, float height,
+            boolean useNormal, boolean useTexCoord, boolean useColor,
             boolean useIndex, float red, float green, float blue) {
 
         float right = width * 0.5f;
