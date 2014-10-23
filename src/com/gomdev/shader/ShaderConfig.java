@@ -11,6 +11,9 @@ public class ShaderConfig {
     public static final String PREF_USE_GLES_30 = "use gles 3.0";
     public static final String PREF_SHOW_FPS = "show fps";
     public static final String PREF_GLES_EXTENSION = "gles extension";
+    public static final String PREF_GLES_RENDERER = "gles extension";
+    public static final String PREF_GLES_VENDOR = "gles extension";
+    public static final String PREF_GLES_VERSION = "gles extension";
 
     public static final String STATE_EFFECT_NAME = "effectName";
     public static final String STATE_SHADER_INFO = "shaderInfo";

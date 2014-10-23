@@ -44,7 +44,7 @@ public class EffectListActivity extends Activity implements
     static final String TAG = ShaderConfig.TAG + " " + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
-    static final int GET_EXTENSIONS = 100;
+    static final int REMOVE_DUMMY_GL_SURFACE = 100;
 
     private GLSurfaceView mView;
     private DummyRenderer mRenderer;
@@ -55,8 +55,8 @@ public class EffectListActivity extends Activity implements
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-            case GET_EXTENSIONS:
-                mView.setVisibility(View.INVISIBLE);
+            case REMOVE_DUMMY_GL_SURFACE:
+                mView.setVisibility(View.GONE);
                 break;
             default:
             }
@@ -81,16 +81,29 @@ public class EffectListActivity extends Activity implements
                 .getString(ShaderConfig.PREF_GLES_EXTENSION, "");
         if (extensions.compareTo("") != 0) {
             ShaderContext.getInstance().setExtensions(extensions);
+
+            String renderer = pref
+                    .getString(ShaderConfig.PREF_GLES_RENDERER, "");
+            ShaderContext.getInstance().setRenderer(renderer);
+
+            String vendor = pref
+                    .getString(ShaderConfig.PREF_GLES_VENDOR, "");
+            ShaderContext.getInstance().setVendor(vendor);
+
+            String version = pref
+                    .getString(ShaderConfig.PREF_GLES_VERSION, "");
+            ShaderContext.getInstance().setVersion(version);
+
             mView = (GLSurfaceView) findViewById(R.id.glsurfaceview);
             mView.setVisibility(View.INVISIBLE);
         } else {
-            setupGLRendererForExtensions();
+            setupGLRendererForGPUInfo();
         }
 
         optionChanged();
     }
 
-    private void setupGLRendererForExtensions() {
+    private void setupGLRendererForGPUInfo() {
         mRenderer = new DummyRenderer(this);
         mRenderer.setHandler(mHandler);
         mView = (GLSurfaceView) findViewById(R.id.glsurfaceview);

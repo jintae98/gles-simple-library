@@ -23,18 +23,40 @@ public class DummyRenderer implements Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        String extensions = GLES20.glGetString(GLES20.GL_EXTENSIONS);
-        ShaderContext.getInstance().setExtensions(extensions);
-        mHandler.sendEmptyMessage(EffectListActivity.GET_EXTENSIONS);
+        mHandler.sendEmptyMessage(EffectListActivity.REMOVE_DUMMY_GL_SURFACE);
 
-        saveExtensionToPreferences(extensions);
+        saveGPUInfoToPreferences();
     }
 
-    private void saveExtensionToPreferences(String extensions) {
+    private void saveGPUInfoToPreferences() {
         SharedPreferences pref = mContext.getSharedPreferences(
                 ShaderConfig.PREF_NAME, 0);
         SharedPreferences.Editor editor = pref.edit();
+
+        // extensions
+        String extensions = GLES20.glGetString(GLES20.GL_EXTENSIONS);
+        ShaderContext.getInstance().setExtensions(extensions);
+
         editor.putString(ShaderConfig.PREF_GLES_EXTENSION, extensions);
+
+        // renderer
+        String renderer = GLES20.glGetString(GLES20.GL_RENDERER);
+        ShaderContext.getInstance().setRenderer(renderer);
+
+        editor.putString(ShaderConfig.PREF_GLES_RENDERER, renderer);
+
+        // vendor
+        String vendor = GLES20.glGetString(GLES20.GL_VENDOR);
+        ShaderContext.getInstance().setVendor(vendor);
+
+        editor.putString(ShaderConfig.PREF_GLES_VENDOR, vendor);
+
+        // version
+        String version = GLES20.glGetString(GLES20.GL_VERSION);
+        ShaderContext.getInstance().setVersion(version);
+
+        editor.putString(ShaderConfig.PREF_GLES_VERSION, version);
+
         editor.commit();
     }
 

@@ -24,6 +24,9 @@ public class ShaderContext {
             : false;
 
     private String mExtensions = null;
+    private String mRenderer = null;
+    private String mVendor = null;
+    private String mVersion = null;
 
     public static ShaderContext getInstance() {
         return sEffectContext;
@@ -117,5 +120,29 @@ public class ShaderContext {
 
     public String getExtensions() {
         return mExtensions;
+    }
+
+    public void setRenderer(String renderer) {
+        mRenderer = renderer;
+    }
+
+    public String getRenderer() {
+        return mRenderer;
+    }
+
+    public void setVendor(String vendor) {
+        mVendor = vendor;
+    }
+
+    public String getVendor() {
+        return mVendor;
+    }
+
+    public void setVersion(String version) {
+        mVersion = version;
+    }
+
+    public String getVersion() {
+        return mVersion;
     }
 }

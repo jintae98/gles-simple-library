@@ -53,23 +53,41 @@ public class DeviceInfoDialog extends DialogFragment {
         LinearLayout layout = (LinearLayout) inflater.inflate(
                 R.layout.effect_device_info, null);
 
+        // Vendor
+        TextView vendorView = (TextView) layout.findViewById(R.id.vendor);
+
+        String vendor = ShaderContext.getInstance().getVendor();
+        vendorView.setText(vendor);
+
+        // Renderer
+        TextView rendererView = (TextView) layout.findViewById(R.id.renderer);
+
+        String renderer = ShaderContext.getInstance().getRenderer();
+        rendererView.setText(renderer);
+
         // set GLESVersion
         TextView versionView = (TextView) layout.findViewById(R.id.version);
-        GLES_VERSION version = getGLESVersion();
-        switch (version) {
-        case GLES_31:
-            versionView.setText("OpenGL ES 3.1");
-            break;
-        case GLES_30:
-            versionView.setText("OpenGL ES 3.0");
-            break;
-        case GLES_20:
-            versionView.setText("OpenGL ES 2.0");
-            break;
-        case GLES_10:
-            versionView.setText("OpenGL ES 1.0");
-            break;
-        default:
+
+        String versionStr = ShaderContext.getInstance().getVersion();
+        if (versionStr.compareTo("") != 0) {
+            versionView.setText(versionStr);
+        } else {
+            GLES_VERSION version = getGLESVersion();
+            switch (version) {
+            case GLES_31:
+                versionView.setText("OpenGL ES 3.1");
+                break;
+            case GLES_30:
+                versionView.setText("OpenGL ES 3.0");
+                break;
+            case GLES_20:
+                versionView.setText("OpenGL ES 2.0");
+                break;
+            case GLES_10:
+                versionView.setText("OpenGL ES 1.0");
+                break;
+            default:
+            }
         }
 
         TextView extensionView = (TextView) layout
