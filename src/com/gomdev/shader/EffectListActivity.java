@@ -79,23 +79,27 @@ public class EffectListActivity extends Activity implements
         SharedPreferences pref = getSharedPreferences(ShaderConfig.PREF_NAME, 0);
         String extensions = pref
                 .getString(ShaderConfig.PREF_GLES_EXTENSION, "");
-        if (extensions.compareTo("") != 0) {
+
+        String renderer = pref
+                .getString(ShaderConfig.PREF_GLES_RENDERER, "");
+
+        String vendor = pref
+                .getString(ShaderConfig.PREF_GLES_VENDOR, "");
+
+        String version = pref
+                .getString(ShaderConfig.PREF_GLES_VERSION, "");
+
+        if (extensions.compareTo("") != 0 &&
+                renderer.compareTo("") != 0 &&
+                vendor.compareTo("") != 0 &&
+                version.compareTo("") != 0) {
             ShaderContext.getInstance().setExtensions(extensions);
-
-            String renderer = pref
-                    .getString(ShaderConfig.PREF_GLES_RENDERER, "");
             ShaderContext.getInstance().setRenderer(renderer);
-
-            String vendor = pref
-                    .getString(ShaderConfig.PREF_GLES_VENDOR, "");
             ShaderContext.getInstance().setVendor(vendor);
-
-            String version = pref
-                    .getString(ShaderConfig.PREF_GLES_VERSION, "");
             ShaderContext.getInstance().setVersion(version);
 
             mView = (GLSurfaceView) findViewById(R.id.glsurfaceview);
-            mView.setVisibility(View.INVISIBLE);
+            mView.setVisibility(View.GONE);
         } else {
             setupGLRendererForGPUInfo();
         }
