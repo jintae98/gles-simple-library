@@ -53,6 +53,25 @@ public class DeviceInfoDialog extends DialogFragment {
         LinearLayout layout = (LinearLayout) inflater.inflate(
                 R.layout.effect_device_info, null);
 
+        // Hardware
+        TextView hardwareView = (TextView) layout.findViewById(R.id.hardware);
+
+        String hardware = ShaderContext.getInstance().getHardware();
+        hardwareView.setText(hardware);
+
+        // Architecture
+        TextView architectureView = (TextView) layout
+                .findViewById(R.id.architecture);
+
+        String architecture = ShaderContext.getInstance().getArchitecture();
+        architectureView.setText(architecture);
+
+        // Feature
+        TextView featureView = (TextView) layout.findViewById(R.id.feature);
+
+        String feature = ShaderContext.getInstance().getFeature();
+        featureView.setText(feature);
+
         // Vendor
         TextView vendorView = (TextView) layout.findViewById(R.id.vendor);
 

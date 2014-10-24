@@ -14,6 +14,9 @@ public class ShaderConfig {
     public static final String PREF_GLES_RENDERER = "gles renderer";
     public static final String PREF_GLES_VENDOR = "gles vendor";
     public static final String PREF_GLES_VERSION = "gles version";
+    public static final String PREF_CPU_HARDWARE = "Hardware";
+    public static final String PREF_CPU_ARCHITECTURE = "CPU architecture";
+    public static final String PREF_CPU_FEATURE = "Features";
 
     public static final String STATE_EFFECT_NAME = "effectName";
     public static final String STATE_SHADER_INFO = "shaderInfo";

@@ -28,6 +28,10 @@ public class ShaderContext {
     private String mVendor = null;
     private String mVersion = null;
 
+    private String mHardware = null;
+    private String mArchitecture = null;
+    private String mFeature = null;
+
     public static ShaderContext getInstance() {
         return sEffectContext;
     }
@@ -144,5 +148,29 @@ public class ShaderContext {
 
     public String getVersion() {
         return mVersion;
+    }
+
+    public void setHardware(String hardware) {
+        mHardware = hardware;
+    }
+
+    public String getHardware() {
+        return mHardware;
+    }
+
+    public void setArchitecture(String architecture) {
+        mArchitecture = architecture;
+    }
+
+    public String getArchitecture() {
+        return mArchitecture;
+    }
+
+    public void setFeature(String feature) {
+        mFeature = feature;
+    }
+
+    public String getFeature() {
+        return mFeature;
     }
 }

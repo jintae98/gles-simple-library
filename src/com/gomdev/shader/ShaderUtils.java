@@ -1,18 +1,27 @@
 package com.gomdev.shader;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.gomdev.gles.GLESFileUtils;
 import com.gomdev.gles.GLESUtils;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 public class ShaderUtils {
     static final String CLASS = "ShaderUtils";
     static final String TAG = ShaderConfig.TAG + " " + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
+
+    private static final String CPU_FILE = "/proc/cpuinfo";
 
     public static String getSavedFilePath(Context context, String prefix,
             String shaderTitle) {
@@ -124,5 +133,40 @@ public class ShaderUtils {
         outState.putBoolean(ShaderConfig.STATE_USE_GLES30, context.useGLES30());
         outState.putString(ShaderConfig.STATE_EXTENSIONS,
                 context.getExtensions());
+    }
+
+    public static Map<String, String> getCPUInfo(String[] infos) {
+        Map<String, String> cpuInfos = new HashMap<String, String>();
+        FileReader fstream;
+
+        try {
+            fstream = new FileReader(CPU_FILE);
+        } catch (FileNotFoundException e) {
+            Log.e(TAG, "Could not read " + CPU_FILE);
+            return null;
+        }
+
+        BufferedReader in = new BufferedReader(fstream, 500);
+        String line;
+        try {
+            while ((line = in.readLine()) != null) {
+                for (String str : infos) {
+                    if (line.indexOf(str) >= 0) {
+                        int index = line.indexOf(":");
+                        cpuInfos.put(str, line.substring(index + 2));
+                    }
+                }
+            }
+        } catch (IOException e) {
+            Log.e("readMem", e.toString());
+        } finally {
+            try {
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return cpuInfos;
     }
 }

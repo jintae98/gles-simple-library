@@ -12,8 +12,11 @@
     <string name="view_edit">Edit</string>
     <string name="effect_list_show_info">Show informations</string>
     <string name="effect_list_device_info">Device Informations</string>
-    <string name="effect_list_vendor">Vendor</string>
-    <string name="effect_list_renderer">GPU</string>
+    <string name="effect_list_hardware">Hardware</string>
+    <string name="effect_list_architecture">Architecture</string>
+    <string name="effect_list_feature">Features</string>
+    <string name="effect_list_vendor">GPU Vendor</string>
+    <string name="effect_list_renderer">GPU Renderer</string>
     <string name="effect_list_version">OpenGL ES Version</string>
     <string name="effect_list_extensions">Extensions</string>
     <string name="banner_ad_unit_id">ca-app-pub-3690892451265954/2988627028</string>

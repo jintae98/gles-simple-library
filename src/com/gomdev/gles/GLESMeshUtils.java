@@ -280,7 +280,8 @@ public class GLESMeshUtils {
             boolean useNormal, boolean useTexCoord, boolean useColor,
             boolean useIndex) {
 
-        return createPlaneForDebug(width, height, useNormal, useTexCoord, useColor,
+        return createPlaneForDebug(width, height, useNormal, useTexCoord,
+                useColor,
                 useIndex, 1f, 0f, 0f);
     }
 

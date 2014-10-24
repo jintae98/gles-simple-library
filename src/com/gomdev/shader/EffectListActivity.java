@@ -1,6 +1,7 @@
 package com.gomdev.shader;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.gomdev.shader.R;
 import com.gomdev.shader.coloredRectangle.ColoredRectangleConfig;
@@ -89,14 +90,30 @@ public class EffectListActivity extends Activity implements
         String version = pref
                 .getString(ShaderConfig.PREF_GLES_VERSION, "");
 
+        String hardware = pref
+                .getString(ShaderConfig.PREF_CPU_HARDWARE, "");
+
+        String architecture = pref
+                .getString(ShaderConfig.PREF_CPU_ARCHITECTURE, "");
+
+        String feature = pref
+                .getString(ShaderConfig.PREF_CPU_FEATURE, "");
+
         if (extensions.compareTo("") != 0 &&
                 renderer.compareTo("") != 0 &&
                 vendor.compareTo("") != 0 &&
-                version.compareTo("") != 0) {
+                version.compareTo("") != 0 &&
+                hardware.compareTo("") != 0 &&
+                architecture.compareTo("") != 0 &&
+                feature.compareTo("") != 0) {
             ShaderContext.getInstance().setExtensions(extensions);
             ShaderContext.getInstance().setRenderer(renderer);
             ShaderContext.getInstance().setVendor(vendor);
             ShaderContext.getInstance().setVersion(version);
+
+            ShaderContext.getInstance().setHardware(hardware);
+            ShaderContext.getInstance().setArchitecture(architecture);
+            ShaderContext.getInstance().setFeature(feature);
 
             mView = (GLSurfaceView) findViewById(R.id.glsurfaceview);
             mView.setVisibility(View.GONE);
@@ -104,7 +121,42 @@ public class EffectListActivity extends Activity implements
             setupGLRendererForGPUInfo();
         }
 
+        getCPUInfo();
+
         optionChanged();
+    }
+
+    private void getCPUInfo() {
+        String[] infos = new String[] {
+                ShaderConfig.PREF_CPU_HARDWARE,
+                ShaderConfig.PREF_CPU_ARCHITECTURE,
+                ShaderConfig.PREF_CPU_FEATURE
+        };
+        Map<String, String> cpuInfos = ShaderUtils.getCPUInfo(infos);
+
+        SharedPreferences pref = this.getSharedPreferences(
+                ShaderConfig.PREF_NAME, 0);
+        SharedPreferences.Editor editor = pref.edit();
+
+        // cpu hardware
+        String hardware = cpuInfos.get(ShaderConfig.PREF_CPU_HARDWARE);
+        ShaderContext.getInstance().setHardware(hardware);
+
+        editor.putString(ShaderConfig.PREF_CPU_HARDWARE, hardware);
+
+        // cpu architecture
+        String architecture = cpuInfos.get(ShaderConfig.PREF_CPU_ARCHITECTURE);
+        ShaderContext.getInstance().setArchitecture(architecture);
+
+        editor.putString(ShaderConfig.PREF_CPU_FEATURE, architecture);
+
+        // cpu feature
+        String feature = cpuInfos.get(ShaderConfig.PREF_CPU_FEATURE);
+        ShaderContext.getInstance().setFeature(feature);
+
+        editor.putString(ShaderConfig.PREF_CPU_FEATURE, feature);
+
+        editor.commit();
     }
 
     private void setupGLRendererForGPUInfo() {
