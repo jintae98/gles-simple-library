@@ -72,6 +72,10 @@ public class ShaderContext {
         mShaderInfos.add(shader);
     }
 
+    public void setShaderInfoList(ArrayList<ShaderInfo> list) {
+        mShaderInfos = list;
+    }
+
     public ArrayList<ShaderInfo> getShaderInfoList() {
         return mShaderInfos;
     }

@@ -100,14 +100,19 @@ public class ShaderUtils {
             context = ShaderContext.newInstance();
         }
 
-        context.clearShaderInfos();
-        ArrayList<ShaderInfo> shaderInfoList = context.getShaderInfoList();
+        ArrayList<ShaderInfo> prefShaderInfoList = context.getShaderInfoList();
+        ArrayList<ShaderInfo> shaderInfoList = new ArrayList<ShaderInfo>();
 
         ArrayList<ShaderInfo> savedShaderInfoList = icicle
                 .getParcelableArrayList(ShaderConfig.STATE_SHADER_INFO);
-        for (ShaderInfo info : savedShaderInfoList) {
-            shaderInfoList.add(info);
+
+        int size = savedShaderInfoList.size();
+        for (int i = 0; i < size; i++) {
+            shaderInfoList.add(savedShaderInfoList.get(i));
         }
+        context.setShaderInfoList(shaderInfoList);
+        prefShaderInfoList.clear();
+
         context.setEffetName(icicle.getString(ShaderConfig.STATE_EFFECT_NAME));
         context.setNumOfShaders(icicle.getInt(ShaderConfig.STATE_NUM_OF_SHADER));
         context.setSavedShaderInfo((ShaderInfo) icicle
