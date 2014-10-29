@@ -46,6 +46,7 @@ public class IR2Renderer extends EffectRenderer {
     private Random mRandom = new Random();
 
     private int mNormalMatrixHandle = -1;
+    private int mColorHandle = -1;
 
     private GLESVector4 mLightPos = new GLESVector4(1f, 1f, 1f, 0f);
 
@@ -90,6 +91,7 @@ public class IR2Renderer extends EffectRenderer {
             mRenderer.updateScene(mSM);
             mRenderer.drawScene(mSM);
         } else {
+            int colorOffset = NUM_OF_INSTANCE * NUM_OF_ELEMENT;
             for (int i = 0; i < NUM_OF_INSTANCE; i++) {
                 GLESTransform transform = mObject.getTransform();
                 transform.setIdentity();
@@ -99,6 +101,12 @@ public class IR2Renderer extends EffectRenderer {
                         mInstanceDatas[i * NUM_OF_ELEMENT + 2]);
                 transform.setRotate(mMoveX * 0.2f, 0f, 1f, 0f);
                 transform.rotate(mMoveY * 0.2f, 1f, 0f, 0f);
+
+                GLES20.glUniform4f(mColorHandle,
+                        mInstanceDatas[i * NUM_OF_ELEMENT + colorOffset + 0],
+                        mInstanceDatas[i * NUM_OF_ELEMENT + colorOffset + 1],
+                        mInstanceDatas[i * NUM_OF_ELEMENT + colorOffset + 2],
+                        mInstanceDatas[i * NUM_OF_ELEMENT + colorOffset + 3]);
 
                 mRenderer.updateScene(mSM);
                 mRenderer.drawScene(mSM);
@@ -116,13 +124,15 @@ public class IR2Renderer extends EffectRenderer {
 
         mObject.setCamera(camera);
 
-        updateInstanceUniform();
+        makeInstanceDataBuffer();
 
         if (mVersion == Version.GLES_20) {
             GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(0.1f,
-                    true, false, true);
+                    true, false, false);
             mObject.setVertexInfo(vertexInfo, true, true);
         } else {
+            updateInstanceUniform();
+
             GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(0.1f,
                     true, false, false);
             mObject.setVertexInfo(vertexInfo, true, true);
@@ -147,7 +157,7 @@ public class IR2Renderer extends EffectRenderer {
         return camera;
     }
 
-    private void updateInstanceUniform() {
+    private void makeInstanceDataBuffer() {
         for (int i = 0; i < NUM_OF_INSTANCE; i++) {
             mInstanceDatas[i * NUM_OF_ELEMENT + 0] = (mRandom.nextFloat() - 0.5f)
                     * mScreenRatio * 2f;
@@ -164,36 +174,55 @@ public class IR2Renderer extends EffectRenderer {
         }
 
         mInstanceBuffer = GLESUtils.makeFloatBuffer(mInstanceDatas);
+    }
 
-        int bindingPoint = 1;
-        int blockSize = -1;
-        int uBufferID = -1;
-        int program = mShader.getProgram();
+    private void updateInstanceUniform() {
+        if (mVersion == Version.GLES_30) {
+            // buffer object
+            int uBufferID = -1;
+            int[] uniformBufIDs = new int[1];
+            GLES30.glGenBuffers(1, uniformBufIDs, 0);
+            GLES30.glBindBuffer(GLES30.GL_UNIFORM_BUFFER, uniformBufIDs[0]);
+            uBufferID = uniformBufIDs[0];
+            GLES30.glBufferData(GLES30.GL_UNIFORM_BUFFER,
+                    mInstanceBuffer.capacity() * 4,
+                    mInstanceBuffer,
+                    GLES30.GL_DYNAMIC_DRAW);
 
-        int location = GLES30.glGetUniformBlockIndex(program, "InstanceBlock");
+            int program = mShader.getProgram();
 
-        GLES30.glUniformBlockBinding(program, location, bindingPoint);
+            // translate
+            int bindingPoint1 = 1;
+            int location = GLES30.glGetUniformBlockIndex(program,
+                    "uTranslateBlock");
+            GLES30.glUniformBlockBinding(program, location, bindingPoint1);
 
-        int[] blockSizes = new int[1];
-        GLES30.glGetActiveUniformBlockiv(program, location,
-                GLES30.GL_UNIFORM_BLOCK_DATA_SIZE, blockSizes, 0);
-        blockSize = blockSizes[0];
+            int[] blockSizes = new int[1];
+            GLES30.glGetActiveUniformBlockiv(program, location,
+                    GLES30.GL_UNIFORM_BLOCK_DATA_SIZE, blockSizes, 0);
+            int blockSize = blockSizes[0];
 
-        int[] uniformBufIDs = new int[1];
-        GLES30.glGenBuffers(1, uniformBufIDs, 0);
-        GLES30.glBindBuffer(GLES30.GL_UNIFORM_BUFFER, uniformBufIDs[0]);
-        uBufferID = uniformBufIDs[0];
-        GLES30.glBufferData(GLES30.GL_UNIFORM_BUFFER, blockSize,
-                mInstanceBuffer,
-                GLES30.GL_DYNAMIC_DRAW);
-        GLES30.glBindBufferBase(GLES30.GL_UNIFORM_BUFFER, bindingPoint,
-                uBufferID);
+            GLES30.glBindBufferRange(GLES30.GL_UNIFORM_BUFFER, bindingPoint1,
+                    uBufferID, 0, blockSize);
 
-        long[] sizes = new long[1];
-        GLES30.glGetInteger64v(GLES30.GL_MAX_UNIFORM_BLOCK_SIZE, sizes, 0);
-        if (DEBUG) {
-            Log.d(TAG, "updateTransUniform() max uniform block size="
-                    + sizes[0]);
+            // color
+            int bindingPoint2 = 2;
+            location = GLES30.glGetUniformBlockIndex(program, "uColorBlock");
+            GLES30.glUniformBlockBinding(program, location, bindingPoint2);
+
+            GLES30.glGetActiveUniformBlockiv(program, location,
+                    GLES30.GL_UNIFORM_BLOCK_DATA_SIZE, blockSizes, 0);
+            blockSize = blockSizes[0];
+
+            GLES30.glBindBufferRange(GLES30.GL_UNIFORM_BUFFER, bindingPoint2,
+                    uBufferID, blockSize, blockSize);
+
+            long[] sizes = new long[1];
+            GLES30.glGetInteger64v(GLES30.GL_MAX_UNIFORM_BLOCK_SIZE, sizes, 0);
+            if (DEBUG) {
+                Log.d(TAG, "updateTransUniform() max uniform block size="
+                        + sizes[0]);
+            }
         }
     }
 
@@ -225,6 +254,10 @@ public class IR2Renderer extends EffectRenderer {
                 0
         };
         GLES20.glUniform1iv(location, 8, lightState, 0);
+
+        if (mVersion == Version.GLES_20) {
+            mColorHandle = GLES20.glGetUniformLocation(program, "uColor");
+        }
     }
 
     @Override
@@ -245,9 +278,6 @@ public class IR2Renderer extends EffectRenderer {
 
             attribName = GLESShaderConstant.ATTRIB_NORMAL;
             mShader.setNormalAttribIndex(attribName);
-
-            attribName = GLESShaderConstant.ATTRIB_COLOR;
-            mShader.setColorAttribIndex(attribName);
         }
 
         return true;

@@ -253,7 +253,7 @@ public class EffectListActivity extends Activity implements
 
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
-                    R.raw.pfl_color_20_vs,
+                    R.raw.ir2_20_vs,
                     R.raw.pfl_color_20_fs,
             };
 
