@@ -9,6 +9,12 @@ public class GLESVector3 {
     public float mY = 0.0F;
     public float mZ = 0.0F;
 
+    public GLESVector3() {
+        mX = 0f;
+        mY = 0f;
+        mZ = 0f;
+    }
+
     public GLESVector3(float x, float y, float z) {
         mX = x;
         mY = y;

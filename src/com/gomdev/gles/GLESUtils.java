@@ -1,5 +1,6 @@
 package com.gomdev.gles;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -8,11 +9,14 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
 import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Window;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -350,4 +354,34 @@ public class GLESUtils {
         dst.mHeight = dstHeight;
         dst.mData = dstData;
     }
+
+    private static int sTitleBarHeight = 0;
+    private static int sStatusBarHeight = 0;
+
+    public static int getTitleBarHeight(Activity activity) {
+        if (sTitleBarHeight == 0) {
+            calcTitleBarAndStatusBarHeight(activity);
+        }
+
+        return sTitleBarHeight;
+    }
+
+    public static int getStatusBarHeight(Activity activity) {
+        if (sStatusBarHeight == 0) {
+            calcTitleBarAndStatusBarHeight(activity);
+        }
+
+        return sStatusBarHeight;
+    }
+
+    private static void calcTitleBarAndStatusBarHeight(Activity activity) {
+        Rect rectgle = new Rect();
+        Window window = activity.getWindow();
+        window.getDecorView().getWindowVisibleDisplayFrame(rectgle);
+        sStatusBarHeight = rectgle.top;
+        int contentViewTop = window.findViewById(Window.ID_ANDROID_CONTENT)
+                .getTop();
+        sTitleBarHeight = contentViewTop - sStatusBarHeight;
+    }
+
 }

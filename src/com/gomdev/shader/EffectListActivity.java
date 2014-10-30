@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.gomdev.shader.R;
+import com.gomdev.shader.coloredPoint2.ColoredPoint2Config;
+import com.gomdev.shader.coloredPointBasic.ColoredPointConfig;
 import com.gomdev.shader.coloredRectangle.ColoredRectangleConfig;
 import com.gomdev.shader.coloredTriangle.ColoredTriangleConfig;
 import com.gomdev.shader.icon.IconConfig;
@@ -201,6 +203,8 @@ public class EffectListActivity extends Activity implements
         setupPVL(version);
         setupPFL(version);
         setupMultiLighting(version);
+        setupColoredPointBasic(version);
+        setupColoredPoint(version);
         // setupOQ(version);
         setupIR(version);
         setupIR2(version);
@@ -426,6 +430,68 @@ public class EffectListActivity extends Activity implements
             info.mShaderTitle = new String[] {
                     "Colored Rectangle 30 VS",
                     "Colored Rectangle 30 FS",
+            };
+        }
+
+        mEffects.add(info);
+    }
+
+    private void setupColoredPointBasic(Version version) {
+        EffectInfo info = new EffectInfo();
+        info.mEffectName = ColoredPointConfig.EFFECT_NAME;
+        info.mIntent = new Intent(
+                this,
+                com.gomdev.shader.coloredPointBasic.ColoredPointActivity.class);
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[] {
+                    R.raw.point_color_20_vs,
+                    R.raw.color_20_fs,
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Colored Point 20 VS",
+                    "Colored Point 20 FS",
+            };
+        } else {
+            info.mShaderResIDs = new int[] {
+                    R.raw.point_color_30_vs,
+                    R.raw.color_30_fs
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Colored Point 30 VS",
+                    "Colored Point 30 FS",
+            };
+        }
+
+        mEffects.add(info);
+    }
+
+    private void setupColoredPoint(Version version) {
+        EffectInfo info = new EffectInfo();
+        info.mEffectName = ColoredPoint2Config.EFFECT_NAME;
+        info.mIntent = new Intent(
+                this,
+                com.gomdev.shader.coloredPoint2.ColoredPoint2Activity.class);
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[] {
+                    R.raw.point2_color_20_vs,
+                    R.raw.point2_color_20_fs,
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Colored Point 20 VS",
+                    "Colored Point 20 FS",
+            };
+        } else {
+            info.mShaderResIDs = new int[] {
+                    R.raw.point2_color_30_vs,
+                    R.raw.point2_color_30_fs
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Colored Point 30 VS",
+                    "Colored Point 30 FS",
             };
         }
 

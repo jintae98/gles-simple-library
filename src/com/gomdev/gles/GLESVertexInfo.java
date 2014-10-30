@@ -14,7 +14,8 @@ public class GLESVertexInfo {
         TRIANGLE_FAN,
         LINES,
         LINE_STRIP,
-        LINE_LOOP
+        LINE_LOOP,
+        POINTS
     }
 
     public enum RenderType {
@@ -85,6 +86,10 @@ public class GLESVertexInfo {
     public void setVertexBuffer(float[] vertex, int numOfElements) {
         mVertexBuffer = GLESUtils.makeFloatBuffer(vertex);
         mNumOfVertexElements = numOfElements;
+    }
+
+    public void setVertexBuffer(FloatBuffer buffer) {
+        mVertexBuffer = buffer;
     }
 
     public FloatBuffer getVertexBuffer() {

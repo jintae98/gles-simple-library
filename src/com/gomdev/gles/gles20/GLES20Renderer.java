@@ -312,6 +312,9 @@ public class GLES20Renderer extends GLESRenderer {
         case LINE_LOOP:
             GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, numOfVertex);
             break;
+        case POINTS:
+            GLES20.glDrawArrays(GLES20.GL_POINTS, 0, numOfVertex);
+            break;
         default:
             Log.d(TAG, "drawArrays() mode is invalid. mode=" + mode);
             break;
@@ -359,6 +362,12 @@ public class GLES20Renderer extends GLESRenderer {
                         indexBuffer.capacity(),
                         GLES20.GL_UNSIGNED_SHORT, 0);
                 break;
+            case POINTS:
+                GLES20.glDrawElements(GLES20.GL_POINTS,
+                        indexBuffer.capacity(),
+                        GLES20.GL_UNSIGNED_SHORT, 0);
+                break;
+                
             default:
                 Log.d(TAG, "drawElements() mode is invalid. mode=" + mode);
                 break;
@@ -395,6 +404,11 @@ public class GLES20Renderer extends GLESRenderer {
                 break;
             case LINE_LOOP:
                 GLES20.glDrawElements(GLES20.GL_LINE_LOOP,
+                        indexBuffer.capacity(),
+                        GLES20.GL_UNSIGNED_SHORT, indexBuffer);
+                break;
+            case POINTS:
+                GLES20.glDrawElements(GLES20.GL_POINTS,
                         indexBuffer.capacity(),
                         GLES20.GL_UNSIGNED_SHORT, indexBuffer);
                 break;
