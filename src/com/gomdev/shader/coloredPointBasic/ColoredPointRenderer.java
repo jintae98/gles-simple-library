@@ -153,7 +153,7 @@ public class ColoredPointRenderer extends EffectRenderer {
             color[i * NUM_ELEMENT_OF_COLOR + 2] = b;
             color[i * NUM_ELEMENT_OF_COLOR + 3] = 1.0f;
         }
-        vertexInfo.setVertexBuffer(position, NUM_ELEMENT_OF_POSITION);
+        vertexInfo.setPositionBuffer(position, NUM_ELEMENT_OF_POSITION);
         vertexInfo.setColorBuffer(color, NUM_ELEMENT_OF_COLOR);
 
         vertexInfo.setPrimitiveMode(PrimitiveMode.POINTS);

@@ -32,9 +32,9 @@ public class GLES20Renderer extends GLESRenderer {
     public void setupVBO(GLESVertexInfo vertexInfo) {
         int[] ids = new int[1];
         GLES20.glGenBuffers(1, ids, 0);
-        vertexInfo.setVertexVBOID(ids[0]);
+        vertexInfo.setPositionVBOID(ids[0]);
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, ids[0]);
-        FloatBuffer floatBuffer = vertexInfo.getVertexBuffer();
+        FloatBuffer floatBuffer = vertexInfo.getPositionBuffer();
         GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
                 floatBuffer.capacity() * GLESConfig.FLOAT_SIZE_BYTES,
                 floatBuffer,
@@ -195,10 +195,10 @@ public class GLES20Renderer extends GLESRenderer {
         boolean useVBO = object.useVBO();
 
         if (useVBO == true) {
-            int id = vertexInfo.getVertexVBOID();
+            int id = vertexInfo.getPositionVBOID();
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, id);
 
-            int numOfElements = vertexInfo.getNumOfVertexElements();
+            int numOfElements = vertexInfo.getNumOfPositionElements();
             GLES20.glVertexAttribPointer(shader.getVertexAttribIndex(),
                     numOfElements, GLES20.GL_FLOAT, false,
                     numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
@@ -244,11 +244,11 @@ public class GLES20Renderer extends GLESRenderer {
 
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
         } else {
-            int numOfElements = vertexInfo.getNumOfVertexElements();
+            int numOfElements = vertexInfo.getNumOfPositionElements();
             GLES20.glVertexAttribPointer(shader.getVertexAttribIndex(),
                     numOfElements, GLES20.GL_FLOAT, false,
                     numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
-                    vertexInfo.getVertexBuffer());
+                    vertexInfo.getPositionBuffer());
             GLES20.glEnableVertexAttribArray(shader.getVertexAttribIndex());
 
             if (vertexInfo.useNormal() == true) {
@@ -290,8 +290,8 @@ public class GLES20Renderer extends GLESRenderer {
         GLESVertexInfo vertexInfo = object.getVertexInfo();
         PrimitiveMode mode = vertexInfo.getPrimitiveMode();
 
-        int numOfVertex = vertexInfo.getVertexBuffer().capacity()
-                / vertexInfo.getNumOfVertexElements();
+        int numOfVertex = vertexInfo.getPositionBuffer().capacity()
+                / vertexInfo.getNumOfPositionElements();
 
         switch (mode) {
         case TRIANGLES:

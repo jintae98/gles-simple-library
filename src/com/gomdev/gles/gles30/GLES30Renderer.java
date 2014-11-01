@@ -25,10 +25,10 @@ public class GLES30Renderer extends GLES20Renderer {
     public void setupVBO(GLESVertexInfo vertexInfo) {
         int[] ids = new int[1];
         GLES30.glGenBuffers(1, ids, 0);
-        vertexInfo.setVertexVBOID(ids[0]);
+        vertexInfo.setPositionVBOID(ids[0]);
 
         GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, ids[0]);
-        FloatBuffer floatBuffer = vertexInfo.getVertexBuffer();
+        FloatBuffer floatBuffer = vertexInfo.getPositionBuffer();
         GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER,
                 floatBuffer.capacity() * GLESConfig.FLOAT_SIZE_BYTES,
                 floatBuffer,
@@ -102,12 +102,12 @@ public class GLES30Renderer extends GLES20Renderer {
                     vertexInfo.getIndexVBOID());
         }
 
-        int numOfElements = vertexInfo.getNumOfVertexElements();
+        int numOfElements = vertexInfo.getNumOfPositionElements();
         GLES30.glEnableVertexAttribArray(GLESConfig.POSITION_LOCATION);
 
         if (useVBO == true) {
             GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER,
-                    vertexInfo.getVertexVBOID());
+                    vertexInfo.getPositionVBOID());
             GLES30.glVertexAttribPointer(GLESConfig.POSITION_LOCATION,
                     numOfElements, GLES30.GL_FLOAT, false,
                     numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
@@ -116,7 +116,7 @@ public class GLES30Renderer extends GLES20Renderer {
             GLES30.glVertexAttribPointer(GLESConfig.POSITION_LOCATION,
                     numOfElements, GLES30.GL_FLOAT, false,
                     numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
-                    vertexInfo.getVertexBuffer());
+                    vertexInfo.getPositionBuffer());
         }
 
         if (vertexInfo.useTexCoord() == true) {
@@ -195,10 +195,10 @@ public class GLES30Renderer extends GLES20Renderer {
         }
 
         if (useVBO == true) {
-            int id = vertexInfo.getVertexVBOID();
+            int id = vertexInfo.getPositionVBOID();
             GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, id);
 
-            int numOfElements = vertexInfo.getNumOfVertexElements();
+            int numOfElements = vertexInfo.getNumOfPositionElements();
             GLES30.glVertexAttribPointer(GLESConfig.POSITION_LOCATION,
                     numOfElements, GLES30.GL_FLOAT, false,
                     numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
@@ -243,11 +243,11 @@ public class GLES30Renderer extends GLES20Renderer {
 
             GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0);
         } else {
-            int numOfElements = vertexInfo.getNumOfVertexElements();
+            int numOfElements = vertexInfo.getNumOfPositionElements();
             GLES30.glVertexAttribPointer(GLESConfig.POSITION_LOCATION,
                     numOfElements, GLES30.GL_FLOAT, false,
                     numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
-                    vertexInfo.getVertexBuffer());
+                    vertexInfo.getPositionBuffer());
             GLES30.glEnableVertexAttribArray(GLESConfig.POSITION_LOCATION);
 
             if (vertexInfo.useNormal() == true) {
@@ -318,8 +318,8 @@ public class GLES30Renderer extends GLES20Renderer {
         PrimitiveMode mode = vertexInfo.getPrimitiveMode();
         int instanceCount = vertexInfo.getNumOfInstance();
 
-        int numOfVertex = vertexInfo.getVertexBuffer().capacity()
-                / vertexInfo.getNumOfVertexElements();
+        int numOfVertex = vertexInfo.getPositionBuffer().capacity()
+                / vertexInfo.getNumOfPositionElements();
 
         switch (mode) {
         case TRIANGLES:

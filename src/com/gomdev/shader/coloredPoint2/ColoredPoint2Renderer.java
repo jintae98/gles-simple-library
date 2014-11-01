@@ -157,7 +157,7 @@ public class ColoredPoint2Renderer extends EffectRenderer {
             mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 1, y);
         }
         mPosBuffer.position(0);
-        mVertexInfo.setVertexBuffer(mPosBuffer);
+        mVertexInfo.setPositionBuffer(mPosBuffer);
 
         mView.requestRender();
     }
@@ -268,8 +268,8 @@ public class ColoredPoint2Renderer extends EffectRenderer {
                 texCoord[yTexOffset + xTexOffset + 1] = t;
             }
         }
-        vertexInfo.setVertexBuffer(position, NUM_ELEMENT_OF_POSITION);
-        mPosBuffer = vertexInfo.getVertexBuffer();
+        vertexInfo.setPositionBuffer(position, NUM_ELEMENT_OF_POSITION);
+        mPosBuffer = vertexInfo.getPositionBuffer();
 
         vertexInfo.setTexCoordBuffer(texCoord, NUM_ELEMENT_OF_TEXCOORD);
 

@@ -42,7 +42,7 @@ public class GLESMeshUtils {
 
         GLESVertexInfo vertexInfo = new GLESVertexInfo();
 
-        vertexInfo.setVertexBuffer(vertex, 3);
+        vertexInfo.setPositionBuffer(vertex, 3);
 
         if (useTexCoord == true) {
             float[] texCoord = {
@@ -155,7 +155,7 @@ public class GLESMeshUtils {
 
         GLESVertexInfo vertexInfo = new GLESVertexInfo();
 
-        vertexInfo.setVertexBuffer(vertices, 3);
+        vertexInfo.setPositionBuffer(vertices, 3);
         if (useTexCoord == true) {
             vertexInfo.setTexCoordBuffer(texCoord, 2);
         }
@@ -223,7 +223,7 @@ public class GLESMeshUtils {
 
         GLESVertexInfo vertexInfo = new GLESVertexInfo();
 
-        vertexInfo.setVertexBuffer(vertex, 3);
+        vertexInfo.setPositionBuffer(vertex, 3);
 
         if (useTexCoord == true) {
             float[] texCoord = {
@@ -304,7 +304,7 @@ public class GLESMeshUtils {
 
         GLESVertexInfo vertexInfo = new GLESVertexInfo();
 
-        vertexInfo.setVertexBuffer(vertex, 3);
+        vertexInfo.setPositionBuffer(vertex, 3);
 
         if (useTexCoord == true) {
             float[] texCoord = {
@@ -401,7 +401,7 @@ public class GLESMeshUtils {
         };
 
         GLESVertexInfo vertexInfo = new GLESVertexInfo();
-        vertexInfo.setVertexBuffer(vertex, 3);
+        vertexInfo.setPositionBuffer(vertex, 3);
 
         short[] index = new short[] {
                 0, 1, 3, 1, 2, 3,
@@ -620,7 +620,7 @@ public class GLESMeshUtils {
             }
         }
 
-        vertexInfo.setVertexBuffer(vertices, 3);
+        vertexInfo.setPositionBuffer(vertices, 3);
 
         if (useNormal == true) {
             vertexInfo.setNormalBuffer(normal, 3);

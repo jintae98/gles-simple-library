@@ -34,9 +34,9 @@ public class GLESVertexInfo {
     private boolean mUseColor = false;
     private boolean mUseIndex = false;
 
-    private FloatBuffer mVertexBuffer = null;
-    private int mNumOfVertexElements = 0;
-    private int mVertexVBOID = -1;
+    private FloatBuffer mPositionBuffer = null;
+    private int mNumOfPositionElements = 0;
+    private int mPositionVBOID = -1;
 
     private FloatBuffer mTexCoordBuffer = null;
     private int mNumOfTexCoordElements = 0;
@@ -83,29 +83,29 @@ public class GLESVertexInfo {
         return mNumOfInstance;
     }
 
-    public void setVertexBuffer(float[] vertex, int numOfElements) {
-        mVertexBuffer = GLESUtils.makeFloatBuffer(vertex);
-        mNumOfVertexElements = numOfElements;
+    public void setPositionBuffer(float[] position, int numOfElements) {
+        mPositionBuffer = GLESUtils.makeFloatBuffer(position);
+        mNumOfPositionElements = numOfElements;
     }
 
-    public void setVertexBuffer(FloatBuffer buffer) {
-        mVertexBuffer = buffer;
+    public void setPositionBuffer(FloatBuffer buffer) {
+        mPositionBuffer = buffer;
     }
 
-    public FloatBuffer getVertexBuffer() {
-        return mVertexBuffer;
+    public FloatBuffer getPositionBuffer() {
+        return mPositionBuffer;
     }
 
-    public int getNumOfVertexElements() {
-        return mNumOfVertexElements;
+    public int getNumOfPositionElements() {
+        return mNumOfPositionElements;
     }
 
-    public void setVertexVBOID(int id) {
-        mVertexVBOID = id;
+    public void setPositionVBOID(int id) {
+        mPositionVBOID = id;
     }
 
-    public int getVertexVBOID() {
-        return mVertexVBOID;
+    public int getPositionVBOID() {
+        return mPositionVBOID;
     }
 
     public void setTexCoordBuffer(float[] texCoord, int numOfElements) {
