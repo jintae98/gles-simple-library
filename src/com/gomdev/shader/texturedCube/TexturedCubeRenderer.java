@@ -143,7 +143,7 @@ public class TexturedCubeRenderer extends EffectRenderer {
 
         if (mVersion == Version.GLES_20) {
             String attribName = GLESShaderConstant.ATTRIB_POSITION;
-            mTextureShader.setVertexAttribIndex(attribName);
+            mTextureShader.setPositionAttribIndex(attribName);
 
             attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
             mTextureShader.setTexCoordAttribIndex(attribName);

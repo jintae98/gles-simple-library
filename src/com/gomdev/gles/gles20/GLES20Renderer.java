@@ -199,11 +199,11 @@ public class GLES20Renderer extends GLESRenderer {
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, id);
 
             int numOfElements = vertexInfo.getNumOfPositionElements();
-            GLES20.glVertexAttribPointer(shader.getVertexAttribIndex(),
+            GLES20.glVertexAttribPointer(shader.getPositionAttribIndex(),
                     numOfElements, GLES20.GL_FLOAT, false,
                     numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
                     0);
-            GLES20.glEnableVertexAttribArray(shader.getVertexAttribIndex());
+            GLES20.glEnableVertexAttribArray(shader.getPositionAttribIndex());
 
             if (vertexInfo.useNormal() == true) {
                 id = vertexInfo.getNormalVBOID();
@@ -245,11 +245,11 @@ public class GLES20Renderer extends GLESRenderer {
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
         } else {
             int numOfElements = vertexInfo.getNumOfPositionElements();
-            GLES20.glVertexAttribPointer(shader.getVertexAttribIndex(),
+            GLES20.glVertexAttribPointer(shader.getPositionAttribIndex(),
                     numOfElements, GLES20.GL_FLOAT, false,
                     numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
                     vertexInfo.getPositionBuffer());
-            GLES20.glEnableVertexAttribArray(shader.getVertexAttribIndex());
+            GLES20.glEnableVertexAttribArray(shader.getPositionAttribIndex());
 
             if (vertexInfo.useNormal() == true) {
                 numOfElements = vertexInfo.getNumOfNormalElements();
@@ -436,7 +436,7 @@ public class GLES20Renderer extends GLESRenderer {
         GLESVertexInfo vertexInfo = object.getVertexInfo();
         GLESShader shader = object.getShader();
 
-        GLES20.glDisableVertexAttribArray(shader.getVertexAttribIndex());
+        GLES20.glDisableVertexAttribArray(shader.getPositionAttribIndex());
 
         if (vertexInfo.useNormal() == true) {
             GLES20.glDisableVertexAttribArray(shader.getNormalAttribIndex());

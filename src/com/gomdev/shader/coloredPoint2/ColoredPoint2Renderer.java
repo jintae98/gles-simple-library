@@ -304,7 +304,7 @@ public class ColoredPoint2Renderer extends EffectRenderer {
 
         if (mVersion == Version.GLES_20) {
             String attribName = GLESShaderConstant.ATTRIB_POSITION;
-            mShader.setVertexAttribIndex(attribName);
+            mShader.setPositionAttribIndex(attribName);
 
             attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
             mShader.setTexCoordAttribIndex(attribName);

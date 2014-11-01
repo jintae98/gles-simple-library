@@ -169,7 +169,7 @@ public class WhiteholeRenderer extends EffectRenderer {
 
         if (mVersion == Version.GLES_20) {
             String attribName = GLESShaderConstant.ATTRIB_POSITION;
-            mShaderWhitehole.setVertexAttribIndex(attribName);
+            mShaderWhitehole.setPositionAttribIndex(attribName);
 
             attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
             mShaderWhitehole.setTexCoordAttribIndex(attribName);

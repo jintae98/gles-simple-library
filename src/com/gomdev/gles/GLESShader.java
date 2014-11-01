@@ -21,7 +21,7 @@ public class GLESShader {
     private String mVertexShaderSource = null;
     private String mFragmentShaderSource = null;
 
-    private int mVertexIndex = -1;
+    private int mPositionIndex = -1;
     private int mTexCoordIndex = -1;
     private int mColorIndex = -1;
     private int mNormalIndex = -1;
@@ -46,12 +46,12 @@ public class GLESShader {
         return mProgram;
     }
 
-    public int getVertexAttribIndex() {
-        if (mVertexIndex == -1) {
-            Log.e(TAG, "getVertexAttribIndex() mVertexIndex is not set");
+    public int getPositionAttribIndex() {
+        if (mPositionIndex == -1) {
+            Log.e(TAG, "getPositionAttribIndex() mPositionIndex is not set");
         }
 
-        return mVertexIndex;
+        return mPositionIndex;
     }
 
     public int getColorAttribIndex() {
@@ -293,8 +293,8 @@ public class GLESShader {
         mTexCoordIndex = GLES20.glGetAttribLocation(mProgram, attribname);
     }
 
-    public void setVertexAttribIndex(String attribname) {
-        mVertexIndex = GLES20.glGetAttribLocation(mProgram, attribname);
+    public void setPositionAttribIndex(String attribname) {
+        mPositionIndex = GLES20.glGetAttribLocation(mProgram, attribname);
     }
 
     public void useProgram() {

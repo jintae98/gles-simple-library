@@ -171,7 +171,7 @@ public class PVLRenderer extends EffectRenderer {
 
         if (mVersion == Version.GLES_20) {
             String attribName = GLESShaderConstant.ATTRIB_POSITION;
-            mShader.setVertexAttribIndex(attribName);
+            mShader.setPositionAttribIndex(attribName);
 
             attribName = GLESShaderConstant.ATTRIB_NORMAL;
             mShader.setNormalAttribIndex(attribName);

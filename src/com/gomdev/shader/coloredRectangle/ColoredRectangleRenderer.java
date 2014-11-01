@@ -130,7 +130,7 @@ public class ColoredRectangleRenderer extends EffectRenderer {
 
         if (mVersion == Version.GLES_20) {
             String attribName = GLESShaderConstant.ATTRIB_POSITION;
-            mBasicShader.setVertexAttribIndex(attribName);
+            mBasicShader.setPositionAttribIndex(attribName);
 
             attribName = GLESShaderConstant.ATTRIB_COLOR;
             mBasicShader.setColorAttribIndex(attribName);
