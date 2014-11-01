@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.gomdev.shader.coloredPoint2;
+package com.gomdev.shader.coloredPointAdv;
 
 import com.gomdev.shader.EffectActivity;
 import com.gomdev.shader.R;
@@ -23,14 +23,14 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
-public class ColoredPoint2Activity extends EffectActivity {
-    private ColoredPoint2Renderer mRenderer;
+public class ColoredPointAdvActivity extends EffectActivity {
+    private ColoredPointAdbRenderer mRenderer;
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        mRenderer = new ColoredPoint2Renderer(this);
+        mRenderer = new ColoredPointAdbRenderer(this);
         mView = (GLSurfaceView) findViewById(R.id.effect_surfaceview);
         mRenderer.setSurfaceView(mView);
 
@@ -66,13 +66,13 @@ public class ColoredPoint2Activity extends EffectActivity {
 
         switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
-            ((ColoredPoint2Renderer) mRenderer).touchDown(x, y);
+            ((ColoredPointAdbRenderer) mRenderer).touchDown(x, y);
             break;
         case MotionEvent.ACTION_UP:
-            ((ColoredPoint2Renderer) mRenderer).touchUp(x, y);
+            ((ColoredPointAdbRenderer) mRenderer).touchUp(x, y);
             break;
         case MotionEvent.ACTION_MOVE:
-            ((ColoredPoint2Renderer) mRenderer).touchMove(x, y);
+            ((ColoredPointAdbRenderer) mRenderer).touchMove(x, y);
             break;
         }
 

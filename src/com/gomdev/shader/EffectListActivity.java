@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.gomdev.shader.R;
-import com.gomdev.shader.coloredPoint2.ColoredPoint2Config;
+import com.gomdev.shader.coloredPointAdv.ColoredPointAdvConfig;
 import com.gomdev.shader.coloredPointBasic.ColoredPointConfig;
 import com.gomdev.shader.coloredRectangle.ColoredRectangleConfig;
 import com.gomdev.shader.coloredTriangle.ColoredTriangleConfig;
@@ -469,10 +469,10 @@ public class EffectListActivity extends Activity implements
 
     private void setupColoredPoint(Version version) {
         EffectInfo info = new EffectInfo();
-        info.mEffectName = ColoredPoint2Config.EFFECT_NAME;
+        info.mEffectName = ColoredPointAdvConfig.EFFECT_NAME;
         info.mIntent = new Intent(
                 this,
-                com.gomdev.shader.coloredPoint2.ColoredPoint2Activity.class);
+                com.gomdev.shader.coloredPointAdv.ColoredPointAdvActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
                     R.raw.point2_color_20_vs,

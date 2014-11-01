@@ -1,6 +1,6 @@
-package com.gomdev.shader.coloredPoint2;
+package com.gomdev.shader.coloredPointAdv;
 
-public class ColoredPoint2Config {
+public class ColoredPointAdvConfig {
     static final boolean DEBUG = false;
     static final boolean DEBUG_PERF = false;
     static final String TAG = "gomdev";

@@ -1,4 +1,4 @@
-package com.gomdev.shader.coloredPoint2;
+package com.gomdev.shader.coloredPointAdv;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
@@ -21,10 +21,10 @@ import android.opengl.GLES20;
 import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-public class ColoredPoint2Renderer extends EffectRenderer {
-    private static final String CLASS = "ColoredPointRenderer";
-    private static final String TAG = ColoredPoint2Config.TAG + " " + CLASS;
-    private static final boolean DEBUG = ColoredPoint2Config.DEBUG;
+public class ColoredPointAdbRenderer extends EffectRenderer {
+    private static final String CLASS = "ColoredPointAdbRenderer";
+    private static final String TAG = ColoredPointAdvConfig.TAG + " " + CLASS;
+    private static final boolean DEBUG = ColoredPointAdvConfig.DEBUG;
 
     private static final int NUM_OF_POINT_IN_WIDTH = 100;
     private static final int NUM_ELEMENT_OF_POSITION = 3;
@@ -66,7 +66,7 @@ public class ColoredPoint2Renderer extends EffectRenderer {
     private boolean mIsUpAnimation = false;
     private float mNormalizedTime = 0f;
 
-    public ColoredPoint2Renderer(Context context) {
+    public ColoredPointAdbRenderer(Context context) {
         super(context);
 
         mVersion = GLESContext.getInstance().getVersion();
