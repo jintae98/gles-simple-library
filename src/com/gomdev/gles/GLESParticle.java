@@ -16,7 +16,7 @@ public class GLESParticle {
 
     public void setVelocity(float vel) {
         mVelocity = vel;
-        
+
         if (mVelocity != 1.0f) {
             mNormalizedDuration = 1f / mVelocity;
         }

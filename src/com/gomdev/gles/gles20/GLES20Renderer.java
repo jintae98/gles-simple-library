@@ -367,7 +367,7 @@ public class GLES20Renderer extends GLESRenderer {
                         indexBuffer.capacity(),
                         GLES20.GL_UNSIGNED_SHORT, 0);
                 break;
-                
+
             default:
                 Log.d(TAG, "drawElements() mode is invalid. mode=" + mode);
                 break;
