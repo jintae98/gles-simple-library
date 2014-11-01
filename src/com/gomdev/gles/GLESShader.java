@@ -40,8 +40,6 @@ public class GLESShader {
             throw new IllegalStateException("glCreateProgram() error="
                     + GLES20.glGetError());
         }
-
-        useProgram();
     }
 
     public int getProgram() {
