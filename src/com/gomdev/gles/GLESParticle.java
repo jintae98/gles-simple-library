@@ -5,7 +5,10 @@ public class GLESParticle {
     public float mY = 0f;
     public float mZ = 0f;
 
-    private float mVelocity = 1f;
+    public float mSize = 1f;
+
+    private GLESVector3 mVelocity = new GLESVector3(1f, 1f, 1f);
+
     private float mNormalizedDuration = 1f;
 
     public GLESParticle(float x, float y, float z) {
@@ -14,15 +17,31 @@ public class GLESParticle {
         mZ = z;
     }
 
-    public void setVelocity(float vel) {
-        mVelocity = vel;
+    public void setSize(float size) {
+        mSize = size;
+    }
 
-        if (mVelocity != 1.0f) {
-            mNormalizedDuration = 1f / mVelocity;
+    public float getSize() {
+        return mSize;
+    }
+
+    public void setVelocityX(float vel) {
+        mVelocity.mX = vel;
+
+        if (mVelocity.mX != 1.0f) {
+            mNormalizedDuration = 1f / mVelocity.mX;
         }
     }
 
-    public float getVelocity() {
+    public float getVelocityX() {
+        return mVelocity.mX;
+    }
+
+    public void setVelocity(float x, float y, float z) {
+        mVelocity.set(x, y, z);
+    }
+
+    public GLESVector3 getVelocity() {
         return mVelocity;
     }
 

@@ -10,7 +10,7 @@ void main() {
     vec4 color = vColor;
     vec2 distFromCenter = gl_PointCoord - vec2(0.5, 0.5);
     if (length(distFromCenter) > 0.5) {
-        discard;
+        color.a = 0.0;
     }
     fragColor = color;
 }

@@ -23,14 +23,14 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
-public class ColoredPointActivity extends EffectActivity {
-    private ColoredPointRenderer mRenderer;
+public class ColoredPointBasicActivity extends EffectActivity {
+    private ColoredPointBasicRenderer mRenderer;
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        mRenderer = new ColoredPointRenderer(this);
+        mRenderer = new ColoredPointBasicRenderer(this);
         mView = (GLSurfaceView) findViewById(R.id.effect_surfaceview);
         mRenderer.setSurfaceView(mView);
 
@@ -66,13 +66,13 @@ public class ColoredPointActivity extends EffectActivity {
 
         switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
-            ((ColoredPointRenderer) mRenderer).touchDown(x, y);
+            ((ColoredPointBasicRenderer) mRenderer).touchDown(x, y);
             break;
         case MotionEvent.ACTION_UP:
-            ((ColoredPointRenderer) mRenderer).touchUp(x, y);
+            ((ColoredPointBasicRenderer) mRenderer).touchUp(x, y);
             break;
         case MotionEvent.ACTION_MOVE:
-            ((ColoredPointRenderer) mRenderer).touchMove(x, y);
+            ((ColoredPointBasicRenderer) mRenderer).touchMove(x, y);
             break;
         }
 

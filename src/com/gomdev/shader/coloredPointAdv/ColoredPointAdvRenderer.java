@@ -21,7 +21,7 @@ import android.opengl.GLES20;
 import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-public class ColoredPointAdbRenderer extends EffectRenderer {
+public class ColoredPointAdvRenderer extends EffectRenderer {
     private static final String CLASS = "ColoredPointAdbRenderer";
     private static final String TAG = ColoredPointAdvConfig.TAG + " " + CLASS;
     private static final boolean DEBUG = ColoredPointAdvConfig.DEBUG;
@@ -66,7 +66,7 @@ public class ColoredPointAdbRenderer extends EffectRenderer {
     private boolean mIsUpAnimation = false;
     private float mNormalizedTime = 0f;
 
-    public ColoredPointAdbRenderer(Context context) {
+    public ColoredPointAdvRenderer(Context context) {
         super(context);
 
         mVersion = GLESContext.getInstance().getVersion();
@@ -149,11 +149,11 @@ public class ColoredPointAdbRenderer extends EffectRenderer {
                 particleTime = normalizedTime;
             }
             x = particle.mX + (mDownXInSpace - particle.mX) * particleTime
-                    * particle.getVelocity();
+                    * particle.getVelocityX();
             mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 0, x);
 
             y = particle.mY + (mDownYInSpace - particle.mY) * particleTime
-                    * particle.getVelocity();
+                    * particle.getVelocityX();
             mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 1, y);
         }
         mPosBuffer.position(0);
@@ -219,8 +219,10 @@ public class ColoredPointAdbRenderer extends EffectRenderer {
         float[] position = new float[numOfPoints * NUM_ELEMENT_OF_POSITION];
         float[] texCoord = new float[numOfPoints * NUM_ELEMENT_OF_TEXCOORD];
 
-        float left = -mScreenRatio + mPointSizeInSpace * 0.5f;
-        float bottom = -1 + mPointSizeInSpace * 0.5f;
+        float halfPointSizeInSpace = mPointSizeInSpace * 0.5f;
+
+        float startOffsetPosX = -mScreenRatio + halfPointSizeInSpace;
+        float startOffsetPosY = -1 + halfPointSizeInSpace;
 
         int yPosOffset = 0;
         int xPosOffset = 0;
@@ -236,6 +238,9 @@ public class ColoredPointAdbRenderer extends EffectRenderer {
         float s = 0f;
         float t = 0f;
 
+        float startOffsetTexCoordX = halfPointSizeInSpace / (mScreenRatio * 2f);
+        float startOffsetTexCoordY = 1.0f - halfPointSizeInSpace / 2f;
+
         mParticles.clear();
         for (int i = 0; i < numOfPointInHeight; i++) {
             yPosOffset = i * NUM_OF_POINT_IN_WIDTH * NUM_ELEMENT_OF_POSITION;
@@ -244,8 +249,8 @@ public class ColoredPointAdbRenderer extends EffectRenderer {
                 xPosOffset = j * NUM_ELEMENT_OF_POSITION;
                 xTexOffset = j * NUM_ELEMENT_OF_TEXCOORD;
 
-                posX = left + mPointSizeInSpace * j;
-                posY = bottom + mPointSizeInSpace * i;
+                posX = startOffsetPosX + mPointSizeInSpace * j;
+                posY = startOffsetPosY + mPointSizeInSpace * i;
                 posZ = mRandom.nextFloat() * 0.01f;
 
                 position[yPosOffset + xPosOffset + 0] = posX;
@@ -255,15 +260,14 @@ public class ColoredPointAdbRenderer extends EffectRenderer {
                 velocity = mRandom.nextFloat() * 0.5f + 1f;
 
                 GLESParticle particle = new GLESParticle(posX, posY, posZ);
-                particle.setVelocity(velocity);
+                particle.setVelocityX(velocity);
 
                 mParticles.add(particle);
 
-                s = (posX + mScreenRatio) / (mScreenRatio * 2f);
-                t = (1f - posY) / 2f;
-                if (t < 0f) {
-                    t = 0f;
-                }
+                s = startOffsetTexCoordX +
+                        (mPointSizeInSpace * j) / (mScreenRatio * 2f);
+                t = startOffsetTexCoordY - mPointSizeInSpace * i / 2f;
+
                 texCoord[yTexOffset + xTexOffset + 0] = s;
                 texCoord[yTexOffset + xTexOffset + 1] = t;
             }

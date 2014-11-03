@@ -31,7 +31,7 @@ public class GLESUtils {
     static final String TAG = GLESConfig.TAG + " " + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
-    private static final int NUM_OF_FRAME = 4;
+    private static final int NUM_OF_FRAME = 16;
 
     private static float sDpiConvertUnit = 0f;
 

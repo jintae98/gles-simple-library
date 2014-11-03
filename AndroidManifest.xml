@@ -102,13 +102,25 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="com.gomdev.shader.coloredPointBasic.ColoredPointActivity"
+            android:name="com.gomdev.shader.coloredPointBasic.ColoredPointBasicActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.gomdev.shader.coloredPointAdv.ColoredPointAdvActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.gomdev.shader.texturedPointBasic.TexturedPointBasicActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.gomdev.shader.texturedPointAdv.TexturedPointAdvActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >

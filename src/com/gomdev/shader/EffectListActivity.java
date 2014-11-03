@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.gomdev.shader.R;
 import com.gomdev.shader.coloredPointAdv.ColoredPointAdvConfig;
-import com.gomdev.shader.coloredPointBasic.ColoredPointConfig;
+import com.gomdev.shader.coloredPointBasic.ColoredPointBasicConfig;
 import com.gomdev.shader.coloredRectangle.ColoredRectangleConfig;
 import com.gomdev.shader.coloredTriangle.ColoredTriangleConfig;
 import com.gomdev.shader.icon.IconConfig;
@@ -17,6 +17,8 @@ import com.gomdev.shader.multiLighting.MultiLightingConfig;
 import com.gomdev.shader.perFragmentLighting.PFLConfig;
 import com.gomdev.shader.perVertexLighting.PVLConfig;
 import com.gomdev.shader.texturedCube.TexturedCubeConfig;
+import com.gomdev.shader.texturedPointAdv.TexturedPointAdvConfig;
+import com.gomdev.shader.texturedPointBasic.TexturedPointBasicConfig;
 import com.gomdev.shader.texturedRectangle.TexturedRectangleConfig;
 //import com.gomdev.shader.whitehole.WhiteholeConfig;
 import com.gomdev.gles.GLESConfig;
@@ -204,7 +206,9 @@ public class EffectListActivity extends Activity implements
         setupPFL(version);
         setupMultiLighting(version);
         setupColoredPointBasic(version);
-        setupColoredPoint(version);
+        setupColoredPointAdv(version);
+        setupTexturedPointBasic(version);
+        setupTexturedPointAdv(version);
         // setupOQ(version);
         setupIR(version);
         setupIR2(version);
@@ -438,10 +442,10 @@ public class EffectListActivity extends Activity implements
 
     private void setupColoredPointBasic(Version version) {
         EffectInfo info = new EffectInfo();
-        info.mEffectName = ColoredPointConfig.EFFECT_NAME;
+        info.mEffectName = ColoredPointBasicConfig.EFFECT_NAME;
         info.mIntent = new Intent(
                 this,
-                com.gomdev.shader.coloredPointBasic.ColoredPointActivity.class);
+                com.gomdev.shader.coloredPointBasic.ColoredPointBasicActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
                     R.raw.point_color_20_vs,
@@ -467,7 +471,7 @@ public class EffectListActivity extends Activity implements
         mEffects.add(info);
     }
 
-    private void setupColoredPoint(Version version) {
+    private void setupColoredPointAdv(Version version) {
         EffectInfo info = new EffectInfo();
         info.mEffectName = ColoredPointAdvConfig.EFFECT_NAME;
         info.mIntent = new Intent(
@@ -492,6 +496,68 @@ public class EffectListActivity extends Activity implements
             info.mShaderTitle = new String[] {
                     "Colored Point 30 VS",
                     "Colored Point 30 FS",
+            };
+        }
+
+        mEffects.add(info);
+    }
+    
+    private void setupTexturedPointBasic(Version version) {
+        EffectInfo info = new EffectInfo();
+        info.mEffectName = TexturedPointBasicConfig.EFFECT_NAME;
+        info.mIntent = new Intent(
+                this,
+                com.gomdev.shader.texturedPointBasic.TexturedPointBasicActivity.class);
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[] {
+                    R.raw.point_texture_20_vs,
+                    R.raw.point_texture_20_fs,
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Textured Point 20 VS",
+                    "Textured Point 20 FS",
+            };
+        } else {
+            info.mShaderResIDs = new int[] {
+                    R.raw.point_texture_30_vs,
+                    R.raw.point_texture_30_fs
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Textured Point 30 VS",
+                    "Textured Point 30 FS",
+            };
+        }
+
+        mEffects.add(info);
+    }
+    
+    private void setupTexturedPointAdv(Version version) {
+        EffectInfo info = new EffectInfo();
+        info.mEffectName = TexturedPointAdvConfig.EFFECT_NAME;
+        info.mIntent = new Intent(
+                this,
+                com.gomdev.shader.texturedPointAdv.TexturedPointAdvActivity.class);
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[] {
+                    R.raw.point2_texture_20_vs,
+                    R.raw.point2_texture_20_fs,
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Textured Point 20 VS",
+                    "Textured Point 20 FS",
+            };
+        } else {
+            info.mShaderResIDs = new int[] {
+                    R.raw.point2_texture_30_vs,
+                    R.raw.point2_texture_30_fs
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Textured Point 30 VS",
+                    "Textured Point 30 FS",
             };
         }
 

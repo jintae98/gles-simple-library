@@ -13,10 +13,10 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.util.Log;
 
-public class ColoredPointRenderer extends EffectRenderer {
+public class ColoredPointBasicRenderer extends EffectRenderer {
     private static final String CLASS = "ColoredPointRenderer";
-    private static final String TAG = ColoredPointConfig.TAG + " " + CLASS;
-    private static final boolean DEBUG = ColoredPointConfig.DEBUG;
+    private static final String TAG = ColoredPointBasicConfig.TAG + " " + CLASS;
+    private static final boolean DEBUG = ColoredPointBasicConfig.DEBUG;
 
     private static final int NUM_OF_PARTICLES = 1500;
     private static final int NUM_ELEMENT_OF_POSITION = 3;
@@ -38,7 +38,7 @@ public class ColoredPointRenderer extends EffectRenderer {
 
     private float mScreenRatio = 0f;
 
-    public ColoredPointRenderer(Context context) {
+    public ColoredPointBasicRenderer(Context context) {
         super(context);
 
         mVersion = GLESContext.getInstance().getVersion();
