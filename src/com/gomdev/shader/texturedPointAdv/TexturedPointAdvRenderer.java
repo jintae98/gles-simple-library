@@ -213,7 +213,7 @@ public class TexturedPointAdvRenderer extends EffectRenderer implements
         GLES20.glUniform1f(location, mPointSize);
 
         location = GLES20.glGetUniformLocation(mShader.getProgram(),
-                "uTexCoordFactor");
+                "uPointSizeInTexCoord");
         float texCoordFactorX = mPointSizeInSpace / (mScreenRatio * 2f);
         float texCoordFactorY = mPointSizeInSpace / 2f;
         GLES20.glUniform2f(location, texCoordFactorX, texCoordFactorY);
