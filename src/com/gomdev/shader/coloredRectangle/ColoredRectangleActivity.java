@@ -45,13 +45,13 @@ public class ColoredRectangleActivity extends EffectActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // mView.onResume();
+        mView.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        // mView.onPause();
+        mView.onPause();
     }
 
     @Override
