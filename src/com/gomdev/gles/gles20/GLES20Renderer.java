@@ -175,7 +175,11 @@ public class GLES20Renderer extends GLESRenderer {
             }
         }
 
-        mCurrentGLState = glState;
+        if (mCurrentGLState == null) {
+            mCurrentGLState = new GLESGLState();
+        }
+
+        mCurrentGLState.set(glState);
     }
 
     @Override

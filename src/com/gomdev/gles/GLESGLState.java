@@ -89,4 +89,26 @@ public class GLESGLState {
     public int getCullFace() {
         return mCullFace;
     }
+
+    public void set(GLESGLState state) {
+        mBlendState = state.getBlendState();
+
+        BlendFunc blendFunc = state.getBlendFunc();
+        if (blendFunc != null) {
+            if (mBlendFunc == null) {
+                mBlendFunc = new BlendFunc();
+            }
+
+            mBlendFunc.mSrcColor = blendFunc.mSrcColor;
+            mBlendFunc.mDstColor = blendFunc.mDstColor;
+            mBlendFunc.mSrcAlpha = blendFunc.mSrcAlpha;
+            mBlendFunc.mDstAlpha = blendFunc.mDstAlpha;
+        }
+
+        mDepthState = state.getDepthState();
+        mDepthFunc = state.getDepthFunc();
+
+        mCullFaceState = state.getCullFaceState();
+        mCullFace = state.getCullFace();
+    }
 }
