@@ -29,9 +29,6 @@ void main() {
     vec4 transPos = (uMMatrix * aPosition) + vec4(uTranslate[gl_InstanceID], 0.0);
     transPos.w = 1.0;
 
-    vColor = uColor[gl_InstanceID];
-
-
     vec4 posES = uVMatrix * transPos;
     vec4 pos = uPMatrix * posES;
 

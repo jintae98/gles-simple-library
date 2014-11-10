@@ -39,9 +39,12 @@ public class IR2Renderer extends EffectRenderer {
 
     private float mScreenRatio = 0f;
 
-    private float[] mInstanceDatas = new float[NUM_OF_ELEMENT * NUM_OF_INSTANCE
-            * 2];
-    private FloatBuffer mInstanceBuffer = null;
+    private float[] mTranslateDatas = new float[NUM_OF_ELEMENT
+            * NUM_OF_INSTANCE];
+    private float[] mColorDatas = new float[NUM_OF_ELEMENT * NUM_OF_INSTANCE];
+    private FloatBuffer mTranslateBuffer = null;
+    private FloatBuffer mColorBuffer = null;
+    private int mUniformBufferOffsetAlignment = 1;
 
     private Random mRandom = new Random();
 
@@ -91,22 +94,21 @@ public class IR2Renderer extends EffectRenderer {
             mRenderer.updateScene(mSM);
             mRenderer.drawScene(mSM);
         } else {
-            int colorOffset = NUM_OF_INSTANCE * NUM_OF_ELEMENT;
             for (int i = 0; i < NUM_OF_INSTANCE; i++) {
                 GLESTransform transform = mObject.getTransform();
                 transform.setIdentity();
                 transform.setTranslate(
-                        mInstanceDatas[i * NUM_OF_ELEMENT + 0],
-                        mInstanceDatas[i * NUM_OF_ELEMENT + 1],
-                        mInstanceDatas[i * NUM_OF_ELEMENT + 2]);
+                        mTranslateDatas[i * NUM_OF_ELEMENT + 0],
+                        mTranslateDatas[i * NUM_OF_ELEMENT + 1],
+                        mTranslateDatas[i * NUM_OF_ELEMENT + 2]);
                 transform.setRotate(mMoveX * 0.2f, 0f, 1f, 0f);
                 transform.rotate(mMoveY * 0.2f, 1f, 0f, 0f);
 
                 GLES20.glUniform4f(mColorHandle,
-                        mInstanceDatas[i * NUM_OF_ELEMENT + colorOffset + 0],
-                        mInstanceDatas[i * NUM_OF_ELEMENT + colorOffset + 1],
-                        mInstanceDatas[i * NUM_OF_ELEMENT + colorOffset + 2],
-                        mInstanceDatas[i * NUM_OF_ELEMENT + colorOffset + 3]);
+                        mColorDatas[i * NUM_OF_ELEMENT + 0],
+                        mColorDatas[i * NUM_OF_ELEMENT + 1],
+                        mColorDatas[i * NUM_OF_ELEMENT + 2],
+                        mColorDatas[i * NUM_OF_ELEMENT + 3]);
 
                 mRenderer.updateScene(mSM);
                 mRenderer.drawScene(mSM);
@@ -159,39 +161,52 @@ public class IR2Renderer extends EffectRenderer {
 
     private void makeInstanceDataBuffer() {
         for (int i = 0; i < NUM_OF_INSTANCE; i++) {
-            mInstanceDatas[i * NUM_OF_ELEMENT + 0] = (mRandom.nextFloat() - 0.5f)
+            mTranslateDatas[i * NUM_OF_ELEMENT + 0] = (mRandom.nextFloat() - 0.5f)
                     * mScreenRatio * 2f;
-            mInstanceDatas[i * NUM_OF_ELEMENT + 1] = (mRandom.nextFloat() - 0.5f) * 2f;
-            mInstanceDatas[i * NUM_OF_ELEMENT + 2] = (mRandom.nextFloat() - 0.5f);
-            mInstanceDatas[i * NUM_OF_ELEMENT + 3] = 0f;
+            mTranslateDatas[i * NUM_OF_ELEMENT + 1] = (mRandom.nextFloat() - 0.5f) * 2f;
+            mTranslateDatas[i * NUM_OF_ELEMENT + 2] = (mRandom.nextFloat() - 0.5f);
+            mTranslateDatas[i * NUM_OF_ELEMENT + 3] = 0f;
         }
 
-        for (int i = NUM_OF_INSTANCE; i < NUM_OF_INSTANCE * 2; i++) {
-            mInstanceDatas[i * NUM_OF_ELEMENT + 0] = mRandom.nextFloat();
-            mInstanceDatas[i * NUM_OF_ELEMENT + 1] = mRandom.nextFloat();
-            mInstanceDatas[i * NUM_OF_ELEMENT + 2] = mRandom.nextFloat();
-            mInstanceDatas[i * NUM_OF_ELEMENT + 3] = 1f;
+        mTranslateBuffer = GLESUtils.makeFloatBuffer(mTranslateDatas);
+
+        for (int i = 0; i < NUM_OF_INSTANCE; i++) {
+            mColorDatas[i * NUM_OF_ELEMENT + 0] = mRandom.nextFloat();
+            mColorDatas[i * NUM_OF_ELEMENT + 1] = mRandom.nextFloat();
+            mColorDatas[i * NUM_OF_ELEMENT + 2] = mRandom.nextFloat();
+            mColorDatas[i * NUM_OF_ELEMENT + 3] = 1f;
         }
 
-        mInstanceBuffer = GLESUtils.makeFloatBuffer(mInstanceDatas);
+        mColorBuffer = GLESUtils.makeFloatBuffer(mColorDatas);
     }
 
     private void updateInstanceUniform() {
         if (mVersion == Version.GLES_30) {
             // buffer object
-            int uBufferID = -1;
-            int[] uniformBufIDs = new int[1];
-            GLES30.glGenBuffers(1, uniformBufIDs, 0);
-            GLES30.glBindBuffer(GLES30.GL_UNIFORM_BUFFER, uniformBufIDs[0]);
-            uBufferID = uniformBufIDs[0];
+            int uBufferID1 = -1;
+            int uBufferID2 = -1;
+            int[] uniformBufIDs = new int[2];
+            GLES30.glGenBuffers(2, uniformBufIDs, 0);
+            uBufferID1 = uniformBufIDs[0];
+            uBufferID2 = uniformBufIDs[1];
+
+            GLES30.glBindBuffer(GLES30.GL_UNIFORM_BUFFER, uBufferID1);
             GLES30.glBufferData(GLES30.GL_UNIFORM_BUFFER,
-                    mInstanceBuffer.capacity() * 4,
-                    mInstanceBuffer,
+                    mTranslateBuffer.capacity() * 4,
+                    mTranslateBuffer,
+                    GLES30.GL_DYNAMIC_DRAW);
+
+            GLES30.glBindBuffer(GLES30.GL_UNIFORM_BUFFER, uBufferID2);
+            GLES30.glBufferData(GLES30.GL_UNIFORM_BUFFER,
+                    mColorBuffer.capacity() * 4,
+                    mColorBuffer,
                     GLES30.GL_DYNAMIC_DRAW);
 
             int program = mShader.getProgram();
 
             // translate
+            GLES30.glBindBuffer(GLES30.GL_UNIFORM_BUFFER, uBufferID1);
+
             int bindingPoint1 = 1;
             int location = GLES30.glGetUniformBlockIndex(program,
                     "uTranslateBlock");
@@ -203,9 +218,11 @@ public class IR2Renderer extends EffectRenderer {
             int blockSize = blockSizes[0];
 
             GLES30.glBindBufferRange(GLES30.GL_UNIFORM_BUFFER, bindingPoint1,
-                    uBufferID, 0, blockSize);
+                    uBufferID1, 0, blockSize);
 
             // color
+            GLES30.glBindBuffer(GLES30.GL_UNIFORM_BUFFER, uBufferID2);
+
             int bindingPoint2 = 2;
             location = GLES30.glGetUniformBlockIndex(program, "uColorBlock");
             GLES30.glUniformBlockBinding(program, location, bindingPoint2);
@@ -215,7 +232,7 @@ public class IR2Renderer extends EffectRenderer {
             blockSize = blockSizes[0];
 
             GLES30.glBindBufferRange(GLES30.GL_UNIFORM_BUFFER, bindingPoint2,
-                    uBufferID, blockSize, blockSize);
+                    uBufferID2, 0, blockSize);
 
             long[] sizes = new long[1];
             GLES30.glGetInteger64v(GLES30.GL_MAX_UNIFORM_BLOCK_SIZE, sizes, 0);
@@ -257,6 +274,15 @@ public class IR2Renderer extends EffectRenderer {
 
         if (mVersion == Version.GLES_20) {
             mColorHandle = GLES20.glGetUniformLocation(program, "uColor");
+        }
+
+        if (DEBUG) {
+            int[] res = new int[1];
+            GLES30.glGetIntegerv(GLES30.GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT,
+                    res, 0);
+            mUniformBufferOffsetAlignment = res[0];
+            Log.d(TAG, "mUniformBufferOffsetAlignment="
+                    + mUniformBufferOffsetAlignment);
         }
     }
 

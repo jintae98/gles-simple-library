@@ -12,7 +12,7 @@ layout( location = 0) out vec4 fragColor;
 
 uniform highp mat3 uNormalMatrix;
 
-uniform int uLightState[8];
+uniform lowp int uLightState[8];
 
 struct LightInfo {
     highp vec4 ambient;

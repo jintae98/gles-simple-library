@@ -89,11 +89,12 @@ public class TexturedPointAdvRenderer extends EffectRenderer implements
         GLESGLState state = new GLESGLState();
         state.setCullFaceState(true);
         state.setCullFace(GLES20.GL_BACK);
-        state.setDepthState(true);
-        state.setDepthFunc(GLES20.GL_LEQUAL);
+        state.setDepthState(false);
         state.setBlendState(true);
-        state.setBlendFuncSeperate(GLES20.GL_SRC_ALPHA,
-                GLES20.GL_ONE_MINUS_SRC_ALPHA, GLES20.GL_ONE,
+        state.setBlendFuncSeperate(
+                GLES20.GL_SRC_ALPHA,
+                GLES20.GL_ONE_MINUS_SRC_ALPHA,
+                GLES20.GL_SRC_ALPHA,
                 GLES20.GL_ONE_MINUS_SRC_ALPHA);
         mObject.setGLState(state);
 
@@ -194,7 +195,7 @@ public class TexturedPointAdvRenderer extends EffectRenderer implements
         GLESCamera camera = setupCamera(width, height);
         mObject.setCamera(camera);
 
-        mMaxDepth = mScreenRatio * 0.1f;
+        mMaxDepth = mScreenRatio * 0.05f;
         mMaxRadius = mScreenRatio * 0.5f;
 
         mPointSize = ((float) width) / NUM_OF_POINT_IN_WIDTH;
@@ -247,7 +248,8 @@ public class TexturedPointAdvRenderer extends EffectRenderer implements
 
         float[] position = new float[numOfPoints * NUM_ELEMENT_OF_POSITION];
         float[] texCoord = new float[numOfPoints * NUM_ELEMENT_OF_TEXCOORD];
-        float[] normalizedDist = new float[numOfPoints * NUM_ELEMENT_OF_USER_ATTRIB];
+        float[] normalizedDist = new float[numOfPoints
+                * NUM_ELEMENT_OF_USER_ATTRIB];
 
         float halfPointSizeInSpace = mPointSizeInSpace * 0.5f;
 

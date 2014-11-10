@@ -14,7 +14,7 @@ uniform sampler2D uTexture;
 
 uniform highp mat3 uNormalMatrix;
 
-uniform int uLightState[8];
+uniform lowp int uLightState[8];
 
 struct LightInfo {
     highp vec4 ambient;
