@@ -126,6 +126,12 @@
             android:label="@string/app_name" >
         </activity>
         <activity
+            android:name="com.gomdev.shader.coloredPointBlending.ColoredPointBlendingActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
             android:name="com.gomdev.shader.instancedRendering.IRActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"

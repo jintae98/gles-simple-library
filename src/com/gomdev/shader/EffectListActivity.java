@@ -6,6 +6,7 @@ import java.util.Map;
 import com.gomdev.shader.R;
 import com.gomdev.shader.coloredPointAdv.ColoredPointAdvConfig;
 import com.gomdev.shader.coloredPointBasic.ColoredPointBasicConfig;
+import com.gomdev.shader.coloredPointBlending.ColoredPointBlendingConfig;
 import com.gomdev.shader.coloredRectangle.ColoredRectangleConfig;
 import com.gomdev.shader.coloredTriangle.ColoredTriangleConfig;
 import com.gomdev.shader.icon.IconConfig;
@@ -209,6 +210,7 @@ public class EffectListActivity extends Activity implements
         setupColoredPointAdv(version);
         setupTexturedPointBasic(version);
         setupTexturedPointAdv(version);
+        setupColoredPointBlending(version);
         // setupOQ(version);
         setupIR(version);
         setupIR2(version);
@@ -501,7 +503,7 @@ public class EffectListActivity extends Activity implements
 
         mEffects.add(info);
     }
-    
+
     private void setupTexturedPointBasic(Version version) {
         EffectInfo info = new EffectInfo();
         info.mEffectName = TexturedPointBasicConfig.EFFECT_NAME;
@@ -532,7 +534,7 @@ public class EffectListActivity extends Activity implements
 
         mEffects.add(info);
     }
-    
+
     private void setupTexturedPointAdv(Version version) {
         EffectInfo info = new EffectInfo();
         info.mEffectName = TexturedPointAdvConfig.EFFECT_NAME;
@@ -558,6 +560,45 @@ public class EffectListActivity extends Activity implements
             info.mShaderTitle = new String[] {
                     "Textured Point 30 VS",
                     "Textured Point 30 FS",
+            };
+        }
+
+        mEffects.add(info);
+    }
+
+    private void setupColoredPointBlending(Version version) {
+        EffectInfo info = new EffectInfo();
+        info.mEffectName = ColoredPointBlendingConfig.EFFECT_NAME;
+        info.mIntent = new Intent(
+                this,
+                com.gomdev.shader.coloredPointBlending.ColoredPointBlendingActivity.class);
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[] {
+                    R.raw.point_cs_20_vs,
+                    R.raw.custom_point_c_20_fs,
+                    R.raw.color_20_vs,
+                    R.raw.color_20_fs
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Colored Point 20 VS",
+                    "Colored Point 20 FS",
+                    "Cube 20 VS", 
+                    "Cube 20 FS"
+            };
+        } else {
+            info.mShaderResIDs = new int[] {
+                    R.raw.point_cs_30_vs,
+                    R.raw.custom_point_c_30_fs,
+                    R.raw.color_30_vs,
+                    R.raw.color_30_fs
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Colored Point 30 VS",
+                    "Colored Point 30 FS",
+                    "Cube 30 VS", 
+                    "Cube 30 FS"
             };
         }
 

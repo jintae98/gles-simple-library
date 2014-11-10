@@ -14,7 +14,7 @@
     <LinearLayout
         android:id="@+id/layout_fps"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
         <TextView
@@ -29,5 +29,5 @@
             android:layout_height="wrap_content"
             android:textColor="#FFFFFFFF" />
     </LinearLayout>
-
+    
 </LinearLayout>

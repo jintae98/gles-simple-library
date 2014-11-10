@@ -15,6 +15,7 @@ public class GLESConfig {
     public static final int TEXCOORD_LOCATION = 1;
     public static final int NORMAL_LOCATION = 2;
     public static final int COLOR_LOCATION = 3;
+    public static final int POINTSIZE_LOCATION = 4;
 
     public static final int NUM_OF_VERTEX_ELEMENT = 3;
     public static final int NUM_OF_VERTEX_ELEMENT_WITH_W = 4;
