@@ -78,9 +78,7 @@ GLESRendererListener {
         mState.setCullFace(GLES20.GL_BACK);
         mState.setDepthState(true);
         mState.setBlendState(false);
-        mState.setBlendFuncSeperate(
-                GLES20.GL_SRC_ALPHA,
-                GLES20.GL_ONE_MINUS_SRC_ALPHA,
+        mState.setBlendFunc(
                 GLES20.GL_SRC_ALPHA,
                 GLES20.GL_ONE_MINUS_SRC_ALPHA);
         mParticleObject.setGLState(mState);
@@ -91,9 +89,7 @@ GLESRendererListener {
         state.setDepthState(true);
         state.setDepthFunc(GLES20.GL_LEQUAL);
         state.setBlendState(true);
-        state.setBlendFuncSeperate(
-                GLES20.GL_SRC_ALPHA,
-                GLES20.GL_ONE_MINUS_SRC_ALPHA,
+        state.setBlendFunc(
                 GLES20.GL_SRC_ALPHA,
                 GLES20.GL_ONE_MINUS_SRC_ALPHA);
         mCubeObject.setGLState(state);
@@ -262,7 +258,7 @@ GLESRendererListener {
             r = mRandom.nextFloat();
             g = mRandom.nextFloat();
             b = mRandom.nextFloat();
-            a = 1f;
+            a = mRandom.nextFloat() * 0.5f + 0.3f;
 
             color[i * NUM_ELEMENT_OF_COLOR + 0] = r;
             color[i * NUM_ELEMENT_OF_COLOR + 1] = g;
@@ -424,9 +420,7 @@ GLESRendererListener {
         case 0:
             mState.setDepthState(true);
             mState.setBlendState(true);
-            mState.setBlendFuncSeperate(
-                    GLES20.GL_SRC_ALPHA,
-                    GLES20.GL_ONE_MINUS_SRC_ALPHA,
+            mState.setBlendFunc(
                     GLES20.GL_SRC_ALPHA,
                     GLES20.GL_ONE_MINUS_SRC_ALPHA);
             mIsParticlesSorted = false;
@@ -436,19 +430,15 @@ GLESRendererListener {
             builder.append("Sorting : false\n");
             builder.append("Blending : true\n");
             builder.append("BlendFunc : \n");
-            builder.append("\tSrcColor : GL_SRC_ALPHA\n");
-            builder.append("\tDstColor : GL_ONE_MINUS_SRC_ALPHA\n");
-            builder.append("\tSrcAlpha : GL_SRC_ALPHA\n");
-            builder.append("\tDstAlpha : GL_ONE_MINUS_SRC_ALPHA\n");
+            builder.append("\tSrcFactor : GL_SRC_ALPHA\n");
+            builder.append("\tDstFactor : GL_ONE_MINUS_SRC_ALPHA\n");
 
             mBlendingInfoView.setText(builder.toString());
             break;
         case 1:
             mState.setDepthState(false);
             mState.setBlendState(true);
-            mState.setBlendFuncSeperate(
-                    GLES20.GL_SRC_ALPHA,
-                    GLES20.GL_ONE_MINUS_SRC_ALPHA,
+            mState.setBlendFunc(
                     GLES20.GL_SRC_ALPHA,
                     GLES20.GL_ONE_MINUS_SRC_ALPHA);
             mIsParticlesSorted = false;
@@ -458,19 +448,15 @@ GLESRendererListener {
             builder.append("Sorting : false\n");
             builder.append("Blending : enable\n");
             builder.append("BlendFunc : \n");
-            builder.append("\tSrcColor : GL_SRC_ALPHA\n");
-            builder.append("\tDstColor : GL_ONE_MINUS_SRC_ALPHA\n");
-            builder.append("\tSrcAlpha : GL_SRC_ALPHA\n");
-            builder.append("\tDstAlpha : GL_ONE_MINUS_SRC_ALPHA\n");
+            builder.append("\tSrcFactor : GL_SRC_ALPHA\n");
+            builder.append("\tDstFactor : GL_ONE_MINUS_SRC_ALPHA\n");
 
             mBlendingInfoView.setText(builder.toString());
             break;
         case 2:
             mState.setDepthState(true);
             mState.setBlendState(true);
-            mState.setBlendFuncSeperate(
-                    GLES20.GL_SRC_ALPHA,
-                    GLES20.GL_ONE_MINUS_SRC_ALPHA,
+            mState.setBlendFunc(
                     GLES20.GL_SRC_ALPHA,
                     GLES20.GL_ONE_MINUS_SRC_ALPHA);
             mIsParticlesSorted = true;
@@ -480,10 +466,8 @@ GLESRendererListener {
             builder.append("Sorting : true\n");
             builder.append("Blending : enable\n");
             builder.append("BlendFunc : \n");
-            builder.append("\tSrcColor : GL_SRC_ALPHA\n");
-            builder.append("\tDstColor : GL_ONE_MINUS_SRC_ALPHA\n");
-            builder.append("\tSrcAlpha : GL_SRC_ALPHA\n");
-            builder.append("\tDstAlpha : GL_ONE_MINUS_SRC_ALPHA\n");
+            builder.append("\tSrcFactor : GL_SRC_ALPHA\n");
+            builder.append("\tDstFactor : GL_ONE_MINUS_SRC_ALPHA\n");
 
             mBlendingInfoView.setText(builder.toString());
             break;

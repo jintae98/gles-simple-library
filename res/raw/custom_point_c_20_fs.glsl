@@ -11,8 +11,9 @@ void main() {
     vec2 distFromCenter = gl_PointCoord - vec2(0.5, 0.5);
     float length = length(distFromCenter);
 
-    float alpha = smoothstep(START_OFFSET, END_OFFSET, length);
-    color.a = 1.0 - alpha;
+    if (length > 0.5) {
+        color.a = 0.0;
+    }
 
     gl_FragColor = color;
 }
