@@ -428,7 +428,7 @@ GLESRendererListener {
             builder = new StringBuilder();
             builder.append("DepthTest : enable\n");
             builder.append("Sorting : false\n");
-            builder.append("Blending : true\n");
+            builder.append("Blending : enable\n");
             builder.append("BlendFunc : \n");
             builder.append("\tSrcFactor : GL_SRC_ALPHA\n");
             builder.append("\tDstFactor : GL_ONE_MINUS_SRC_ALPHA\n");
@@ -479,7 +479,7 @@ GLESRendererListener {
             builder = new StringBuilder();
             builder.append("DepthTest : enable\n");
             builder.append("Sorting : false\n");
-            builder.append("Blending : diable\n");
+            builder.append("Blending : disable\n");
 
             mBlendingInfoView.setText(builder.toString());
             break;
