@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 public class DeviceInfoDialog extends DialogFragment {
     static final String CLASS = "DeviceInfoDialog";
-    static final String TAG = ShaderConfig.TAG + " " + CLASS;
+    static final String TAG = ShaderConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
     enum GLES_VERSION {

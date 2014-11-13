@@ -23,7 +23,7 @@ import com.gomdev.gles.GLESConfig.Version;
 
 public abstract class EffectRenderer implements Renderer {
     static final String CLASS = "EffectRenderer";
-    static final String TAG = ShaderConfig.TAG + " " + CLASS;
+    static final String TAG = ShaderConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
     protected static final int COMPILE_OR_LINK_ERROR = 1;

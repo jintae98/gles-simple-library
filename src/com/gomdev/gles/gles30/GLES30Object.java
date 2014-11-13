@@ -7,7 +7,7 @@ import com.gomdev.gles.GLESVertexInfo;
 
 public class GLES30Object extends GLESObject {
     static final String CLASS = "GLES30Object";
-    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
     private boolean mUseVAO = false;

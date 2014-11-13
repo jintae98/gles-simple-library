@@ -8,7 +8,7 @@ import android.util.Log;
 
 public class GLESMeshUtils {
     static final String CLASS = "GLESMeshUtils";
-    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
     private GLESMeshUtils() {

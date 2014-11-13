@@ -2,7 +2,7 @@ package com.gomdev.gles;
 
 public class GLESObject extends GLESSpatial {
     static final String CLASS = "GLESObject";
-    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
     protected GLESShader mShader;

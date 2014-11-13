@@ -18,7 +18,7 @@ import android.util.Log;
 
 public class ShaderUtils {
     static final String CLASS = "ShaderUtils";
-    static final String TAG = ShaderConfig.TAG + " " + CLASS;
+    static final String TAG = ShaderConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
     private static final String CPU_FILE = "/proc/cpuinfo";

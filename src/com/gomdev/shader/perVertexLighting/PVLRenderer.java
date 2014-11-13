@@ -12,7 +12,7 @@ import android.util.Log;
 
 public class PVLRenderer extends EffectRenderer {
     private static final String CLASS = "PVLRenderer";
-    private static final String TAG = PVLConfig.TAG + " " + CLASS;
+    private static final String TAG = PVLConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = PVLConfig.DEBUG;
 
     private GLESSceneManager mSM = null;

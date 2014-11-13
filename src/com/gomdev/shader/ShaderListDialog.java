@@ -11,7 +11,7 @@ import android.os.Bundle;
 
 public class ShaderListDialog extends DialogFragment {
     static final String CLASS = "ShaderListDialog";
-    static final String TAG = ShaderConfig.TAG + " " + CLASS;
+    static final String TAG = ShaderConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
     @Override

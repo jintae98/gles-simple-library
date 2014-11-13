@@ -17,7 +17,7 @@ import android.util.Log;
 
 public class IRRenderer extends EffectRenderer implements GLESRendererListener {
     private static final String CLASS = "IRRenderer";
-    private static final String TAG = IRConfig.TAG + " " + CLASS;
+    private static final String TAG = IRConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = IRConfig.DEBUG;
 
     private final static int NUM_OF_INSTANCE = 1000;

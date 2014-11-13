@@ -11,7 +11,7 @@ import android.util.Log;
 
 public class ColoredTriangleRenderer extends EffectRenderer {
     private static final String CLASS = "ColoredTriangleRenderer";
-    private static final String TAG = ColoredTriangleConfig.TAG + " " + CLASS;
+    private static final String TAG = ColoredTriangleConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = ColoredTriangleConfig.DEBUG;
 
     private GLESSceneManager mSM = null;

@@ -18,7 +18,7 @@ import android.util.Log;
 
 public class OQRenderer extends EffectRenderer {
     private static final String CLASS = "OQRenderer";
-    private static final String TAG = OQConfig.TAG + " " + CLASS;
+    private static final String TAG = OQConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = OQConfig.DEBUG;
 
     private final static int NUM_OF_INSTANCE = 1000;

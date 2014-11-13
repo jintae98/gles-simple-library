@@ -16,7 +16,7 @@ import android.util.Log;
 
 public class WhiteholeRenderer extends EffectRenderer {
     private static final String CLASS = "WhiteholeRenderer";
-    private static final String TAG = WhiteholeConfig.TAG + " " + CLASS;
+    private static final String TAG = WhiteholeConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = WhiteholeConfig.DEBUG;
 
     private GLESSceneManager mSM = null;

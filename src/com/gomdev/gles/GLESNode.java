@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class GLESNode extends GLESSpatial {
     static final String CLASS = "GLESNode";
-    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
     protected GLESNodeListener mListener = null;

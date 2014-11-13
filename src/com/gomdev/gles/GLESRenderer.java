@@ -9,7 +9,7 @@ import android.util.Log;
 
 public abstract class GLESRenderer {
     static final String CLASS = "GLESRenderer";
-    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
     protected GLESGLState mCurrentGLState = null;

@@ -5,7 +5,7 @@ import android.util.Log;
 
 public class GLESTransform {
     static final String CLASS = "GLESTransform";
-    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
     private GLESSpatial mOwner = null;

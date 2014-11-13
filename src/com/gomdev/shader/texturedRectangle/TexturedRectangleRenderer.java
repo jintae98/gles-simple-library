@@ -12,7 +12,7 @@ import android.util.Log;
 
 public class TexturedRectangleRenderer extends EffectRenderer {
     private static final String CLASS = "TextureRenderer";
-    private static final String TAG = TexturedRectangleConfig.TAG + " " + CLASS;
+    private static final String TAG = TexturedRectangleConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = TexturedRectangleConfig.DEBUG;
 
     private GLESSceneManager mSM = null;

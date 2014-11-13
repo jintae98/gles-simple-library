@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 public class PlaceholderFragment extends Fragment {
     static final String CLASS = "PlaceholderFragment";
-    static final String TAG = ShaderConfig.TAG + " " + CLASS;
+    static final String TAG = ShaderConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
     private int mFragmentLayoutID = -1;

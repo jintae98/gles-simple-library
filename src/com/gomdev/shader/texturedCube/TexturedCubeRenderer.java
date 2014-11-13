@@ -12,7 +12,7 @@ import android.util.Log;
 
 public class TexturedCubeRenderer extends EffectRenderer {
     private static final String CLASS = "TexturedCubeRenderer";
-    private static final String TAG = TexturedCubeConfig.TAG + " " + CLASS;
+    private static final String TAG = TexturedCubeConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = TexturedCubeConfig.DEBUG;
 
     private GLESSceneManager mSM = null;

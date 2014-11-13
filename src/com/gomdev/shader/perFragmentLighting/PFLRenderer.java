@@ -12,7 +12,7 @@ import android.util.Log;
 
 public class PFLRenderer extends EffectRenderer {
     private static final String CLASS = "PVLRenderer";
-    private static final String TAG = PFLConfig.TAG + " " + CLASS;
+    private static final String TAG = PFLConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = PFLConfig.DEBUG;
 
     private GLESSceneManager mSM = null;

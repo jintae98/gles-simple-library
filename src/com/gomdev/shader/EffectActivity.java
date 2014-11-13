@@ -36,7 +36,7 @@ import android.widget.Toast;
 @SuppressLint("Registered")
 public class EffectActivity extends Activity implements Ad {
     static final String CLASS = "EffectActivity";
-    static final String TAG = ShaderConfig.TAG + " " + CLASS;
+    static final String TAG = ShaderConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
     protected GLSurfaceView mView;

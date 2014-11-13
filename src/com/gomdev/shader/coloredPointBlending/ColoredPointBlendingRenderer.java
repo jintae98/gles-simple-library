@@ -25,9 +25,9 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 public class ColoredPointBlendingRenderer extends EffectRenderer implements
-GLESRendererListener {
+        GLESRendererListener {
     private static final String CLASS = "ColoredPointBlendingRenderer";
-    private static final String TAG = ColoredPointBlendingConfig.TAG + " "
+    private static final String TAG = ColoredPointBlendingConfig.TAG + "_"
             + CLASS;
     private static final boolean DEBUG = ColoredPointBlendingConfig.DEBUG;
 
@@ -151,11 +151,11 @@ GLESRendererListener {
             for (int i = 0; i < NUM_OF_PARTICLES; i++) {
                 GLESParticle particle = mSortedParticles.get(i);
                 positionBuffer
-                .put(i * NUM_ELEMENT_OF_POSITION + 0, particle.mX);
+                        .put(i * NUM_ELEMENT_OF_POSITION + 0, particle.mX);
                 positionBuffer
-                .put(i * NUM_ELEMENT_OF_POSITION + 1, particle.mY);
+                        .put(i * NUM_ELEMENT_OF_POSITION + 1, particle.mY);
                 positionBuffer
-                .put(i * NUM_ELEMENT_OF_POSITION + 2, particle.mZ);
+                        .put(i * NUM_ELEMENT_OF_POSITION + 2, particle.mZ);
 
                 colorBuffer.put(i * NUM_ELEMENT_OF_COLOR + 0, particle.mR);
                 colorBuffer.put(i * NUM_ELEMENT_OF_COLOR + 1, particle.mG);
@@ -168,11 +168,11 @@ GLESRendererListener {
             for (int i = 0; i < NUM_OF_PARTICLES; i++) {
                 GLESParticle particle = mParticles.get(i);
                 positionBuffer
-                .put(i * NUM_ELEMENT_OF_POSITION + 0, particle.mX);
+                        .put(i * NUM_ELEMENT_OF_POSITION + 0, particle.mX);
                 positionBuffer
-                .put(i * NUM_ELEMENT_OF_POSITION + 1, particle.mY);
+                        .put(i * NUM_ELEMENT_OF_POSITION + 1, particle.mY);
                 positionBuffer
-                .put(i * NUM_ELEMENT_OF_POSITION + 2, particle.mZ);
+                        .put(i * NUM_ELEMENT_OF_POSITION + 2, particle.mZ);
 
                 colorBuffer.put(i * NUM_ELEMENT_OF_COLOR + 0, particle.mR);
                 colorBuffer.put(i * NUM_ELEMENT_OF_COLOR + 1, particle.mG);
@@ -342,6 +342,10 @@ GLESRendererListener {
 
     @Override
     protected void onSurfaceCreated() {
+        if (DEBUG) {
+            Log.d(TAG, "onSurfaceCreated()");
+        }
+
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         mParticleObject.setShader(mParticleShader);

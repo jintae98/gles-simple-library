@@ -13,7 +13,7 @@ import android.util.Log;
 
 public class MipmapRenderer extends EffectRenderer {
     private static final String CLASS = "MipmapRenderer";
-    private static final String TAG = MipmapConfig.TAG + " " + CLASS;
+    private static final String TAG = MipmapConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = MipmapConfig.DEBUG;
 
     private GLESSceneManager mSM = null;

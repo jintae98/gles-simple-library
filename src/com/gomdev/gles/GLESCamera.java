@@ -5,7 +5,7 @@ import android.util.Log;
 
 public class GLESCamera {
     static final String CLASS = "GLESCamera";
-    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
     private float[] mPMatrix = new float[16];

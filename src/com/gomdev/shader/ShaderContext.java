@@ -8,7 +8,7 @@ import com.gomdev.gles.GLESContext;
 
 public class ShaderContext {
     static final String CLASS = "ShaderContext";
-    static final String TAG = ShaderConfig.TAG + " " + CLASS;
+    static final String TAG = ShaderConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
     private static ShaderContext sEffectContext = null;

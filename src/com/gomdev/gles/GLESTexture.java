@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class GLESTexture {
     static final String CLASS = "GLESTexture";
-    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
     private int mTextureID;

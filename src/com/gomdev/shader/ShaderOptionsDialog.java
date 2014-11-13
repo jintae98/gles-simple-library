@@ -23,7 +23,7 @@ import android.widget.ListView;
 
 public class ShaderOptionsDialog extends DialogFragment {
     static final String CLASS = "ShaderOptionsDialog";
-    static final String TAG = ShaderConfig.TAG + " " + CLASS;
+    static final String TAG = ShaderConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
     private boolean[] mCheckedItem = null;

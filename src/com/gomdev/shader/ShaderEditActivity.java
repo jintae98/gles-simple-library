@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 public class ShaderEditActivity extends Activity implements Ad {
     static final String CLASS = "ShaderEditActivity";
-    static final String TAG = ShaderConfig.TAG + " " + CLASS;
+    static final String TAG = ShaderConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
     private EditText mEditView = null;

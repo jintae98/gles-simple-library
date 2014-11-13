@@ -2,7 +2,7 @@ package com.gomdev.gles;
 
 public class GLESRect {
     static final String CLASS = "GLESRect";
-    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
     public int mX = 0;

@@ -17,7 +17,7 @@ import android.util.Log;
 
 public class IR2Renderer extends EffectRenderer {
     private static final String CLASS = "IR2Renderer";
-    private static final String TAG = IR2Config.TAG + " " + CLASS;
+    private static final String TAG = IR2Config.TAG + "_" + CLASS;
     private static final boolean DEBUG = IR2Config.DEBUG;
 
     private final static int NUM_OF_INSTANCE = 1000;

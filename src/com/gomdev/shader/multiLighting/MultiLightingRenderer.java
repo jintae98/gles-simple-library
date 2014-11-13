@@ -12,7 +12,7 @@ import android.opengl.Matrix;
 
 public class MultiLightingRenderer extends EffectRenderer {
     static final String CLASS = "PVLRenderer";
-    static final String TAG = MultiLightingConfig.TAG + " " + CLASS;
+    static final String TAG = MultiLightingConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = MultiLightingConfig.DEBUG;
 
     private Version mVersion;

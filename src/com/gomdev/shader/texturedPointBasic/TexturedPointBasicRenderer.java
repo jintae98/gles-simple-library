@@ -21,7 +21,7 @@ import android.util.Log;
 public class TexturedPointBasicRenderer extends EffectRenderer implements
         GLESRendererListener {
     private static final String CLASS = "TexturedPointBasicRenderer";
-    private static final String TAG = TexturedPointBasicConfig.TAG + " "
+    private static final String TAG = TexturedPointBasicConfig.TAG + "_"
             + CLASS;
     private static final boolean DEBUG = TexturedPointBasicConfig.DEBUG;
 

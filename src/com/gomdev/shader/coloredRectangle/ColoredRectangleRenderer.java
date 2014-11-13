@@ -11,7 +11,7 @@ import android.util.Log;
 
 public class ColoredRectangleRenderer extends EffectRenderer {
     private static final String CLASS = "ColoredCubeRenderer";
-    private static final String TAG = ColoredRectangleConfig.TAG + " " + CLASS;
+    private static final String TAG = ColoredRectangleConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = ColoredRectangleConfig.DEBUG;
 
     private GLESSceneManager mSM = null;

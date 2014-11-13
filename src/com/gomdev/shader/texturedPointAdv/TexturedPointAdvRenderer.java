@@ -23,7 +23,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 public class TexturedPointAdvRenderer extends EffectRenderer implements
         GLESRendererListener {
     private static final String CLASS = "TexturedPointAdvRenderer";
-    private static final String TAG = TexturedPointAdvConfig.TAG + " " + CLASS;
+    private static final String TAG = TexturedPointAdvConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = TexturedPointAdvConfig.DEBUG;
 
     private static final int NUM_OF_POINT_IN_WIDTH = 40;

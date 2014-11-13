@@ -5,7 +5,7 @@ import java.nio.ShortBuffer;
 
 public class GLESVertexInfo {
     static final String CLASS = "GLESVertexInfo";
-    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
     public enum PrimitiveMode {

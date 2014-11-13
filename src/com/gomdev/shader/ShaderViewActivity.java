@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 public class ShaderViewActivity extends Activity implements Ad {
     static final String CLASS = "ShaderViewActivity";
-    static final String TAG = ShaderConfig.TAG + " " + CLASS;
+    static final String TAG = ShaderConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
     private TextView mTextView = null;

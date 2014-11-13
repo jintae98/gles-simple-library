@@ -15,7 +15,7 @@ import android.util.Log;
 
 public class ColoredPointBasicRenderer extends EffectRenderer {
     private static final String CLASS = "ColoredPointRenderer";
-    private static final String TAG = ColoredPointBasicConfig.TAG + " " + CLASS;
+    private static final String TAG = ColoredPointBasicConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = ColoredPointBasicConfig.DEBUG;
 
     private static final int NUM_OF_PARTICLES = 1500;

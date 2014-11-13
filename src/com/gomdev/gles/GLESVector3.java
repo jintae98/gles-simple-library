@@ -2,7 +2,7 @@ package com.gomdev.gles;
 
 public class GLESVector3 {
     static final String CLASS = "GLESVector3";
-    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
     public float mX = 0.0F;

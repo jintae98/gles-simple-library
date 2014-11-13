@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 public class ShaderRestoreDialog extends DialogFragment {
     static final String CLASS = "ShaderRestoreDialog";
-    static final String TAG = ShaderConfig.TAG + " " + CLASS;
+    static final String TAG = ShaderConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
     private String mEffectName = null;

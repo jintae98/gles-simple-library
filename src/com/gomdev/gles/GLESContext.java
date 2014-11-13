@@ -6,7 +6,7 @@ import android.content.Context;
 
 public class GLESContext {
     static final String CLASS = "GLESContext";
-    static final String TAG = GLESConfig.TAG + " " + CLASS;
+    static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
     private static GLESContext sContext = new GLESContext();

@@ -23,7 +23,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 
 public class ColoredPointAdvRenderer extends EffectRenderer {
     private static final String CLASS = "ColoredPointAdbRenderer";
-    private static final String TAG = ColoredPointAdvConfig.TAG + " " + CLASS;
+    private static final String TAG = ColoredPointAdvConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = ColoredPointAdvConfig.DEBUG;
 
     private static final int NUM_OF_POINT_IN_WIDTH = 100;
