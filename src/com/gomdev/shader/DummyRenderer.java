@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView.Renderer;
 import android.os.Handler;
+import android.util.Log;
 
 public class DummyRenderer implements Renderer {
     static final String CLASS = "DummyRenderer";
@@ -23,7 +24,11 @@ public class DummyRenderer implements Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        mHandler.sendEmptyMessage(EffectListActivity.REMOVE_DUMMY_GL_SURFACE);
+        if (DEBUG) {
+            Log.d(TAG, "onSurfaceCrated()");
+        }
+
+        mHandler.sendEmptyMessage(MainActivity.REMOVE_DUMMY_GL_SURFACE);
 
         saveGPUInfoToPreferences();
     }
@@ -62,11 +67,19 @@ public class DummyRenderer implements Renderer {
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
+        if (DEBUG) {
+            Log.d(TAG, "onSurfaceChanged() width=" + width + " height="
+                    + height);
+        }
 
+        GLES20.glViewport(0, 0, 1, 1);
     }
 
     @Override
     public void onDrawFrame(GL10 gl) {
+        if (DEBUG) {
+            Log.d(TAG, "onDrawFrame()");
+        }
     }
 
     public void setHandler(Handler handler) {

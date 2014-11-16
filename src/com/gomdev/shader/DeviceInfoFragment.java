@@ -3,21 +3,20 @@ package com.gomdev.shader;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.pm.ConfigurationInfo;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class DeviceInfoDialog extends DialogFragment {
-    static final String CLASS = "DeviceInfoDialog";
+public class DeviceInfoFragment extends MainFragment {
+    static final String CLASS = "DeviceInfoFragment";
     static final String TAG = ShaderConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
@@ -28,67 +27,70 @@ public class DeviceInfoDialog extends DialogFragment {
         GLES_31
     }
 
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = makeInfoView();
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.effect_list_device_info)
-                .setView(view)
-                .setPositiveButton("OK", new OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-        return builder.create();
-    }
+    private FrameLayout mLayout = null;
+    private ProgressBar mProgressBar = null;
 
     @SuppressLint("InflateParams")
-    private View makeInfoView() {
-        Activity activity = getActivity();
-        LayoutInflater inflater = (LayoutInflater) activity.getSystemService
-                (Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout layout = (LinearLayout) inflater.inflate(
-                R.layout.effect_device_info, null);
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+            @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (DEBUG) {
+            Log.d(TAG, "onCreateView() " + this);
+        }
+
+        FrameLayout layout = (FrameLayout) inflater.inflate(
+                R.layout.fragment_device_info, null);
+        mLayout = layout;
+
+        mProgressBar = (ProgressBar) mLayout.findViewById(R.id.progressBar);
+        mProgressBar.setVisibility(View.VISIBLE);
+
+        setDeviceInfo();
+
+        return layout;
+    }
+
+    private void setDeviceInfo() {
+        if (DEBUG) {
+            Log.d(TAG, "setDeviceInfo()");
+        }
 
         // Hardware
-        TextView hardwareView = (TextView) layout.findViewById(R.id.hardware);
+        TextView hardwareView = (TextView) mLayout.findViewById(R.id.hardware);
 
         String hardware = ShaderContext.getInstance().getHardware();
         hardwareView.setText(hardware);
 
         // Architecture
-        TextView architectureView = (TextView) layout
+        TextView architectureView = (TextView) mLayout
                 .findViewById(R.id.architecture);
 
         String architecture = ShaderContext.getInstance().getArchitecture();
         architectureView.setText(architecture);
 
         // Feature
-        TextView featureView = (TextView) layout.findViewById(R.id.feature);
+        TextView featureView = (TextView) mLayout.findViewById(R.id.feature);
 
         String feature = ShaderContext.getInstance().getFeature();
         featureView.setText(feature);
 
         // Vendor
-        TextView vendorView = (TextView) layout.findViewById(R.id.vendor);
+        TextView vendorView = (TextView) mLayout.findViewById(R.id.vendor);
 
         String vendor = ShaderContext.getInstance().getVendor();
         vendorView.setText(vendor);
 
         // Renderer
-        TextView rendererView = (TextView) layout.findViewById(R.id.renderer);
+        TextView rendererView = (TextView) mLayout.findViewById(R.id.renderer);
 
         String renderer = ShaderContext.getInstance().getRenderer();
         rendererView.setText(renderer);
 
         // set GLESVersion
-        TextView versionView = (TextView) layout.findViewById(R.id.version);
+        TextView versionView = (TextView) mLayout.findViewById(R.id.version);
 
         String versionStr = ShaderContext.getInstance().getVersion();
-        if (versionStr.compareTo("") != 0) {
+        if (versionStr != null) {
             versionView.setText(versionStr);
         } else {
             GLES_VERSION version = getGLESVersion();
@@ -109,12 +111,14 @@ public class DeviceInfoDialog extends DialogFragment {
             }
         }
 
-        TextView extensionView = (TextView) layout
+        TextView extensionView = (TextView) mLayout
                 .findViewById(R.id.extensions);
         String extensions = ShaderContext.getInstance().getExtensions();
         extensionView.setText(extensions);
 
-        return layout;
+        if (extensions != null) {
+            mProgressBar.setVisibility(View.GONE);
+        }
     }
 
     private GLES_VERSION getGLESVersion() {
@@ -134,5 +138,18 @@ public class DeviceInfoDialog extends DialogFragment {
             return GLES_VERSION.GLES_10;
         }
         return GLES_VERSION.GLES_10;
+    }
+
+    void updateDeviceInfo() {
+        if (DEBUG) {
+            Log.d(TAG, "updateDeviceInfo()");
+        }
+
+        setDeviceInfo();
+    }
+
+    @Override
+    int getFragmentPosition() {
+        return MainActivity.TAB_DEVICEINFO_POSITION;
     }
 }

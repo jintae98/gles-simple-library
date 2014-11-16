@@ -30,5 +30,4 @@ public class PlaceholderFragment extends Fragment {
         mFragmentLayoutID = ((Ad) activity).getLayoutID();
         super.onAttach(activity);
     }
-
 }

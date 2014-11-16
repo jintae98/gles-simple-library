@@ -1,9 +1,20 @@
 package com.gomdev.shader;
 
 import java.util.ArrayList;
-import java.util.Map;
 
-import com.gomdev.shader.R;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import com.gomdev.gles.GLESConfig;
+import com.gomdev.gles.GLESContext;
+import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.shader.coloredPointAdv.ColoredPointAdvConfig;
 import com.gomdev.shader.coloredPointBasic.ColoredPointBasicConfig;
 import com.gomdev.shader.coloredPointBlending.ColoredPointBlendingConfig;
@@ -14,177 +25,30 @@ import com.gomdev.shader.instancedRendering.IRConfig;
 import com.gomdev.shader.instancedRendering2.IR2Config;
 import com.gomdev.shader.mipmap.MipmapConfig;
 import com.gomdev.shader.multiLighting.MultiLightingConfig;
-//import com.gomdev.shader.occlusionQuery.OQConfig;
 import com.gomdev.shader.perFragmentLighting.PFLConfig;
 import com.gomdev.shader.perVertexLighting.PVLConfig;
 import com.gomdev.shader.texturedCube.TexturedCubeConfig;
 import com.gomdev.shader.texturedPointAdv.TexturedPointAdvConfig;
 import com.gomdev.shader.texturedPointBasic.TexturedPointBasicConfig;
 import com.gomdev.shader.texturedRectangle.TexturedRectangleConfig;
-//import com.gomdev.shader.whitehole.WhiteholeConfig;
-import com.gomdev.gles.GLESConfig;
-import com.gomdev.gles.GLESContext;
-import com.gomdev.gles.GLESConfig.Version;
 
-import android.app.Activity;
-import android.app.DialogFragment;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.PixelFormat;
-import android.opengl.GLSurfaceView;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
-public class EffectListActivity extends Activity implements
-        DialogListener, Ad {
-    static final String CLASS = "EffectListActivity";
+public class SampleList {
+    static final String CLASS = "EffectList";
     static final String TAG = ShaderConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
-    static final int REMOVE_DUMMY_GL_SURFACE = 100;
+    private Context mContext = null;
+    private ArrayList<SampleInfo> mSamples = new ArrayList<SampleInfo>();
 
-    private GLSurfaceView mView;
-    private DummyRenderer mRenderer;
-    private ArrayList<EffectInfo> mEffects = new ArrayList<EffectInfo>();
-
-    protected Handler mHandler = new Handler(Looper.getMainLooper()) {
-
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-            case REMOVE_DUMMY_GL_SURFACE:
-                mView.setVisibility(View.GONE);
-                break;
-            default:
-            }
-        }
-    };
-
-    class EffectInfo {
-        String mEffectName;
-        Intent mIntent = null;
-        int[] mShaderResIDs;
-        String[] mShaderTitle;
+    public SampleList(Context context) {
+        mContext = context;
     }
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.effect_list);
+    void setupEffectInfos() {
+        mSamples.clear();
 
-        ShaderContext.newInstance();
-
-        SharedPreferences pref = getSharedPreferences(ShaderConfig.PREF_NAME, 0);
-        String extensions = pref
-                .getString(ShaderConfig.PREF_GLES_EXTENSION, "");
-
-        String renderer = pref
-                .getString(ShaderConfig.PREF_GLES_RENDERER, "");
-
-        String vendor = pref
-                .getString(ShaderConfig.PREF_GLES_VENDOR, "");
-
-        String version = pref
-                .getString(ShaderConfig.PREF_GLES_VERSION, "");
-
-        String hardware = pref
-                .getString(ShaderConfig.PREF_CPU_HARDWARE, "");
-
-        String architecture = pref
-                .getString(ShaderConfig.PREF_CPU_ARCHITECTURE, "");
-
-        String feature = pref
-                .getString(ShaderConfig.PREF_CPU_FEATURE, "");
-
-        if (extensions.compareTo("") != 0 &&
-                renderer.compareTo("") != 0 &&
-                vendor.compareTo("") != 0 &&
-                version.compareTo("") != 0 &&
-                hardware.compareTo("") != 0 &&
-                architecture.compareTo("") != 0 &&
-                feature.compareTo("") != 0) {
-            ShaderContext.getInstance().setExtensions(extensions);
-            ShaderContext.getInstance().setRenderer(renderer);
-            ShaderContext.getInstance().setVendor(vendor);
-            ShaderContext.getInstance().setVersion(version);
-
-            ShaderContext.getInstance().setHardware(hardware);
-            ShaderContext.getInstance().setArchitecture(architecture);
-            ShaderContext.getInstance().setFeature(feature);
-
-            mView = (GLSurfaceView) findViewById(R.id.glsurfaceview);
-            mView.setVisibility(View.GONE);
-        } else {
-            setupGLRendererForGPUInfo();
-        }
-
-        getCPUInfo();
-
-        optionChanged();
-    }
-
-    private void getCPUInfo() {
-        String[] infos = new String[] {
-                ShaderConfig.PREF_CPU_HARDWARE,
-                ShaderConfig.PREF_CPU_ARCHITECTURE,
-                ShaderConfig.PREF_CPU_FEATURE
-        };
-        Map<String, String> cpuInfos = ShaderUtils.getCPUInfo(infos);
-
-        SharedPreferences pref = this.getSharedPreferences(
+        SharedPreferences pref = mContext.getSharedPreferences(
                 ShaderConfig.PREF_NAME, 0);
-        SharedPreferences.Editor editor = pref.edit();
-
-        // cpu hardware
-        String hardware = cpuInfos.get(ShaderConfig.PREF_CPU_HARDWARE);
-        ShaderContext.getInstance().setHardware(hardware);
-
-        editor.putString(ShaderConfig.PREF_CPU_HARDWARE, hardware);
-
-        // cpu architecture
-        String architecture = cpuInfos.get(ShaderConfig.PREF_CPU_ARCHITECTURE);
-        ShaderContext.getInstance().setArchitecture(architecture);
-
-        editor.putString(ShaderConfig.PREF_CPU_FEATURE, architecture);
-
-        // cpu feature
-        String feature = cpuInfos.get(ShaderConfig.PREF_CPU_FEATURE);
-        ShaderContext.getInstance().setFeature(feature);
-
-        editor.putString(ShaderConfig.PREF_CPU_FEATURE, feature);
-
-        editor.commit();
-    }
-
-    private void setupGLRendererForGPUInfo() {
-        mRenderer = new DummyRenderer(this);
-        mRenderer.setHandler(mHandler);
-        mView = (GLSurfaceView) findViewById(R.id.glsurfaceview);
-        mView.setEGLContextClientVersion(2);
-        mView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-        mView.setRenderer(mRenderer);
-        mView.setZOrderOnTop(true);
-        mView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-        mView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-    }
-
-    private void optionChanged() {
-        setupEffectInfos();
-        makeEffectList();
-    }
-
-    private void setupEffectInfos() {
-        mEffects.clear();
-
-        SharedPreferences pref = getSharedPreferences(ShaderConfig.PREF_NAME, 0);
         boolean useGLES30 = pref.getBoolean(ShaderConfig.PREF_USE_GLES_30,
                 GLESConfig.GLES_VERSION == Version.GLES_30);
 
@@ -218,16 +82,16 @@ public class EffectListActivity extends Activity implements
 
         if (DEBUG) {
             Log.d(TAG, "onCreate() Effects");
-            for (EffectInfo effectInfo : mEffects) {
-                Log.d(TAG, "\t " + effectInfo.mEffectName);
+            for (SampleInfo effectInfo : mSamples) {
+                Log.d(TAG, "\t " + effectInfo.mSampleName);
             }
         }
     }
 
     private void setupIR(Version version) {
-        EffectInfo info = new EffectInfo();
-        info.mEffectName = IRConfig.EFFECT_NAME;
-        info.mIntent = new Intent(this,
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = IRConfig.EFFECT_NAME;
+        info.mIntent = new Intent(mContext,
                 com.gomdev.shader.instancedRendering.IRActivity.class);
 
         if (version == Version.GLES_20) {
@@ -252,13 +116,13 @@ public class EffectListActivity extends Activity implements
             };
         }
 
-        mEffects.add(info);
+        mSamples.add(info);
     }
 
     private void setupIR2(Version version) {
-        EffectInfo info = new EffectInfo();
-        info.mEffectName = IR2Config.EFFECT_NAME;
-        info.mIntent = new Intent(this,
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = IR2Config.EFFECT_NAME;
+        info.mIntent = new Intent(mContext,
                 com.gomdev.shader.instancedRendering2.IR2Activity.class);
 
         if (version == Version.GLES_20) {
@@ -283,14 +147,14 @@ public class EffectListActivity extends Activity implements
             };
         }
 
-        mEffects.add(info);
+        mSamples.add(info);
     }
 
     private void setupTexturePlane(Version version) {
-        EffectInfo info = new EffectInfo();
-        info.mEffectName = TexturedRectangleConfig.EFFECT_NAME;
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = TexturedRectangleConfig.EFFECT_NAME;
         info.mIntent = new Intent(
-                this,
+                mContext,
                 com.gomdev.shader.texturedRectangle.TexturedRectangleActivity.class);
 
         if (version == Version.GLES_20) {
@@ -315,14 +179,14 @@ public class EffectListActivity extends Activity implements
             };
         }
 
-        mEffects.add(info);
+        mSamples.add(info);
     }
 
     private void setupTextureCube(Version version) {
-        EffectInfo info = new EffectInfo();
-        info.mEffectName = TexturedCubeConfig.EFFECT_NAME;
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = TexturedCubeConfig.EFFECT_NAME;
         info.mIntent = new Intent(
-                this,
+                mContext,
                 com.gomdev.shader.texturedCube.TexturedCubeActivity.class);
 
         if (version == Version.GLES_20) {
@@ -347,13 +211,13 @@ public class EffectListActivity extends Activity implements
             };
         }
 
-        mEffects.add(info);
+        mSamples.add(info);
     }
 
     private void setupMipmap(Version version) {
-        EffectInfo info = new EffectInfo();
-        info.mEffectName = MipmapConfig.EFFECT_NAME;
-        info.mIntent = new Intent(this,
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = MipmapConfig.EFFECT_NAME;
+        info.mIntent = new Intent(mContext,
                 com.gomdev.shader.mipmap.MipmapActivity.class);
 
         if (version == Version.GLES_20) {
@@ -378,13 +242,13 @@ public class EffectListActivity extends Activity implements
             };
         }
 
-        mEffects.add(info);
+        mSamples.add(info);
     }
 
     private void setupColoredTriangle(Version version) {
-        EffectInfo info = new EffectInfo();
-        info.mEffectName = ColoredTriangleConfig.EFFECT_NAME;
-        info.mIntent = new Intent(this,
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = ColoredTriangleConfig.EFFECT_NAME;
+        info.mIntent = new Intent(mContext,
                 com.gomdev.shader.coloredTriangle.ColoredTriangleActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
@@ -408,14 +272,14 @@ public class EffectListActivity extends Activity implements
             };
         }
 
-        mEffects.add(info);
+        mSamples.add(info);
     }
 
     private void setupColoredPlane(Version version) {
-        EffectInfo info = new EffectInfo();
-        info.mEffectName = ColoredRectangleConfig.EFFECT_NAME;
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = ColoredRectangleConfig.EFFECT_NAME;
         info.mIntent = new Intent(
-                this,
+                mContext,
                 com.gomdev.shader.coloredRectangle.ColoredRectangleActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
@@ -439,14 +303,14 @@ public class EffectListActivity extends Activity implements
             };
         }
 
-        mEffects.add(info);
+        mSamples.add(info);
     }
 
     private void setupColoredPointBasic(Version version) {
-        EffectInfo info = new EffectInfo();
-        info.mEffectName = ColoredPointBasicConfig.EFFECT_NAME;
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = ColoredPointBasicConfig.EFFECT_NAME;
         info.mIntent = new Intent(
-                this,
+                mContext,
                 com.gomdev.shader.coloredPointBasic.ColoredPointBasicActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
@@ -470,14 +334,14 @@ public class EffectListActivity extends Activity implements
             };
         }
 
-        mEffects.add(info);
+        mSamples.add(info);
     }
 
     private void setupColoredPointAdv(Version version) {
-        EffectInfo info = new EffectInfo();
-        info.mEffectName = ColoredPointAdvConfig.EFFECT_NAME;
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = ColoredPointAdvConfig.EFFECT_NAME;
         info.mIntent = new Intent(
-                this,
+                mContext,
                 com.gomdev.shader.coloredPointAdv.ColoredPointAdvActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
@@ -501,14 +365,14 @@ public class EffectListActivity extends Activity implements
             };
         }
 
-        mEffects.add(info);
+        mSamples.add(info);
     }
 
     private void setupTexturedPointBasic(Version version) {
-        EffectInfo info = new EffectInfo();
-        info.mEffectName = TexturedPointBasicConfig.EFFECT_NAME;
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = TexturedPointBasicConfig.EFFECT_NAME;
         info.mIntent = new Intent(
-                this,
+                mContext,
                 com.gomdev.shader.texturedPointBasic.TexturedPointBasicActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
@@ -532,14 +396,14 @@ public class EffectListActivity extends Activity implements
             };
         }
 
-        mEffects.add(info);
+        mSamples.add(info);
     }
 
     private void setupTexturedPointAdv(Version version) {
-        EffectInfo info = new EffectInfo();
-        info.mEffectName = TexturedPointAdvConfig.EFFECT_NAME;
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = TexturedPointAdvConfig.EFFECT_NAME;
         info.mIntent = new Intent(
-                this,
+                mContext,
                 com.gomdev.shader.texturedPointAdv.TexturedPointAdvActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
@@ -563,14 +427,14 @@ public class EffectListActivity extends Activity implements
             };
         }
 
-        mEffects.add(info);
+        mSamples.add(info);
     }
 
     private void setupColoredPointBlending(Version version) {
-        EffectInfo info = new EffectInfo();
-        info.mEffectName = ColoredPointBlendingConfig.EFFECT_NAME;
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = ColoredPointBlendingConfig.EFFECT_NAME;
         info.mIntent = new Intent(
-                this,
+                mContext,
                 com.gomdev.shader.coloredPointBlending.ColoredPointBlendingActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
@@ -583,7 +447,7 @@ public class EffectListActivity extends Activity implements
             info.mShaderTitle = new String[] {
                     "Colored Point 20 VS",
                     "Colored Point 20 FS",
-                    "Cube 20 VS", 
+                    "Cube 20 VS",
                     "Cube 20 FS"
             };
         } else {
@@ -597,18 +461,18 @@ public class EffectListActivity extends Activity implements
             info.mShaderTitle = new String[] {
                     "Colored Point 30 VS",
                     "Colored Point 30 FS",
-                    "Cube 30 VS", 
+                    "Cube 30 VS",
                     "Cube 30 FS"
             };
         }
 
-        mEffects.add(info);
+        mSamples.add(info);
     }
 
     private void setupIcon(Version version) {
-        EffectInfo info = new EffectInfo();
-        info.mEffectName = IconConfig.EFFECT_NAME;
-        info.mIntent = new Intent(this,
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = IconConfig.EFFECT_NAME;
+        info.mIntent = new Intent(mContext,
                 com.gomdev.shader.icon.IconActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
@@ -640,13 +504,13 @@ public class EffectListActivity extends Activity implements
             };
         }
 
-        mEffects.add(info);
+        mSamples.add(info);
     }
 
     private void setupPVL(Version version) {
-        EffectInfo info = new EffectInfo();
-        info.mEffectName = PVLConfig.EFFECT_NAME;
-        info.mIntent = new Intent(this,
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = PVLConfig.EFFECT_NAME;
+        info.mIntent = new Intent(mContext,
                 com.gomdev.shader.perVertexLighting.PVLActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
@@ -670,13 +534,13 @@ public class EffectListActivity extends Activity implements
             };
         }
 
-        mEffects.add(info);
+        mSamples.add(info);
     }
 
     private void setupPFL(Version version) {
-        EffectInfo info = new EffectInfo();
-        info.mEffectName = PFLConfig.EFFECT_NAME;
-        info.mIntent = new Intent(this,
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = PFLConfig.EFFECT_NAME;
+        info.mIntent = new Intent(mContext,
                 com.gomdev.shader.perFragmentLighting.PFLActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
@@ -700,13 +564,13 @@ public class EffectListActivity extends Activity implements
             };
         }
 
-        mEffects.add(info);
+        mSamples.add(info);
     }
 
     // private void setupOQ(Version version) {
-    // EffectInfo info = new EffectInfo();
+    // SampleInfo info = new SampleInfo();
     // info.mEffectName = OQConfig.EFFECT_NAME;
-    // info.mIntent = new Intent(this,
+    // info.mIntent = new Intent(mContext,
     // com.gomdev.shader.occlusionQuery.OQActivity.class);
     // if (version == Version.GLES_20) {
     // info.mShaderResIDs = new int[] {
@@ -734,9 +598,9 @@ public class EffectListActivity extends Activity implements
     // }
 
     private void setupMultiLighting(Version version) {
-        EffectInfo info = new EffectInfo();
-        info.mEffectName = MultiLightingConfig.EFFECT_NAME;
-        info.mIntent = new Intent(this,
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = MultiLightingConfig.EFFECT_NAME;
+        info.mIntent = new Intent(mContext,
                 com.gomdev.shader.multiLighting.MultiLightingActivity.class);
         if (version == Version.GLES_20) {
             info.mShaderResIDs = new int[] {
@@ -760,13 +624,13 @@ public class EffectListActivity extends Activity implements
             };
         }
 
-        mEffects.add(info);
+        mSamples.add(info);
     }
 
     // private void setupWhitehole(Version version) {
-    // EffectInfo info = new EffectInfo();
+    // SampleInfo info = new SampleInfo();
     // info.mEffectName = WhiteholeConfig.EFFECT_NAME;
-    // info.mIntent = new Intent(this,
+    // info.mIntent = new Intent(mContext,
     // com.gomdev.shader.whitehole.WhiteholeActivity.class);
     // if (version == Version.GLES_20) {
     // info.mShaderResIDs = new int[] {
@@ -793,14 +657,11 @@ public class EffectListActivity extends Activity implements
     // mEffects.add(info);
     // }
 
-    private void makeEffectList() {
+    void makeEffectList() {
         ArrayList<String> effectList = new ArrayList<String>();
-        // for (EffectInfo effectInfo : mEffects) {
-        // effectList.add(effectInfo.mEffectName);
-        // }
-        for (int i = 0; i < mEffects.size(); i++) {
-            EffectInfo info = mEffects.get(i);
-            String effectTitle = (i + 1) + ". " + info.mEffectName;
+        for (int i = 0; i < mSamples.size(); i++) {
+            SampleInfo info = mSamples.get(i);
+            String effectTitle = (i + 1) + ". " + info.mSampleName;
             effectList.add(effectTitle);
         }
 
@@ -812,21 +673,41 @@ public class EffectListActivity extends Activity implements
             }
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
                 android.R.layout.simple_list_item_1, effectList);
 
-        ListView list = (ListView) findViewById(R.id.list);
+        ListView list = (ListView) ((Activity) mContext)
+                .findViewById(R.id.list);
         list.setAdapter(adapter);
         list.setOnItemClickListener(mItemClickListener);
     }
 
-    AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
+    ArrayList<String> getTitleList() {
+        ArrayList<String> effectList = new ArrayList<String>();
+        for (int i = 0; i < mSamples.size(); i++) {
+            SampleInfo info = mSamples.get(i);
+            String effectTitle = (i + 1) + ". " + info.mSampleName;
+            effectList.add(effectTitle);
+        }
+
+        if (DEBUG) {
+            Log.d(TAG, "onCreate() string list");
+
+            for (String str : effectList) {
+                Log.d(TAG, "\t Item=" + str);
+            }
+        }
+
+        return effectList;
+    }
+
+    private AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
             String effectName = parent.getItemAtPosition(position).toString();
 
-            EffectInfo info = getEffectInfo(effectName);
+            SampleInfo info = getEffectInfo(effectName);
             int numOfShader = info.mShaderResIDs.length;
 
             ShaderContext context = ShaderContext.getInstance();
@@ -840,71 +721,27 @@ public class EffectListActivity extends Activity implements
             for (int i = 0; i < numOfShader; i++) {
                 title = info.mShaderTitle[i];
                 savedFileName = ShaderUtils.getSavedFilePath(
-                        EffectListActivity.this, info.mEffectName, title);
-                context.setShaderInfo(info.mEffectName, info.mShaderTitle[i],
+                        mContext, info.mSampleName, title);
+                context.setShaderInfo(info.mSampleName, info.mShaderTitle[i],
                         info.mShaderResIDs[i], savedFileName);
             }
 
             if (DEBUG) {
                 Log.d(TAG, "onItemClick() item=" + effectName);
             }
-            startActivity(info.mIntent);
+            ((Activity) mContext).startActivity(info.mIntent);
         }
     };
 
-    EffectInfo getEffectInfo(String effectName) {
-        for (EffectInfo effectInfo : mEffects) {
+    SampleInfo getEffectInfo(String effectName) {
+        for (SampleInfo sampleInfo : mSamples) {
             int index = effectName.indexOf(' ');
             String name = effectName.substring(index + 1);
-            if (name.compareTo(effectInfo.mEffectName) == 0) {
-                return effectInfo;
+            if (name.compareTo(sampleInfo.mSampleName) == 0) {
+                return sampleInfo;
             }
         }
 
         return null;
-    }
-
-    @Override
-    public int getLayoutID() {
-        return R.layout.fragment_list;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.effect_list_options, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.options:
-            showOptionsDialog();
-            return true;
-        case R.id.deviceInfo:
-            showDeviceInfoDialog();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void showOptionsDialog() {
-        ShaderOptionsDialog dialog = new ShaderOptionsDialog();
-        dialog.show(getFragmentManager(), "effect_options");
-    }
-
-    private void showDeviceInfoDialog() {
-        DeviceInfoDialog dialog = new DeviceInfoDialog();
-        dialog.show(getFragmentManager(), "effect_device_info");
-    }
-
-    @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
-        optionChanged();
-    }
-
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
     }
 }

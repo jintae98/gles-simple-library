@@ -4,15 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <android.opengl.GLSurfaceView
+        android:id="@+id/glsurfaceview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <fragment
-            android:id="@+id/placeholderFragment"
-            android:name="com.gomdev.shader.PlaceholderFragment"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/adFragment" />
