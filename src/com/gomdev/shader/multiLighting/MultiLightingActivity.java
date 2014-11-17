@@ -16,14 +16,14 @@
 
 package com.gomdev.shader.multiLighting;
 
-import com.gomdev.shader.EffectActivity;
+import com.gomdev.shader.SampleActivity;
 import com.gomdev.shader.R;
 
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
-public class MultiLightingActivity extends EffectActivity {
+public class MultiLightingActivity extends SampleActivity {
     private MultiLightingRenderer mRenderer;
 
     @Override
@@ -31,7 +31,7 @@ public class MultiLightingActivity extends EffectActivity {
         super.onCreate(icicle);
 
         mRenderer = new MultiLightingRenderer(this);
-        mView = (GLSurfaceView) findViewById(R.id.effect_surfaceview);
+        mView = (GLSurfaceView) findViewById(R.id.sample_surfaceview);
         mRenderer.setSurfaceView(mView);
 
         setGLESVersion();

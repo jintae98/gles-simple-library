@@ -16,14 +16,14 @@
 
 package com.gomdev.shader.occlusionQuery;
 
-import com.gomdev.shader.EffectActivity;
+import com.gomdev.shader.SampleActivity;
 import com.gomdev.shader.R;
 
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
-public class OQActivity extends EffectActivity {
+public class OQActivity extends SampleActivity {
     private OQRenderer mRenderer;
 
     @Override
@@ -31,7 +31,7 @@ public class OQActivity extends EffectActivity {
         super.onCreate(icicle);
 
         mRenderer = new OQRenderer(this);
-        mView = (GLSurfaceView) findViewById(R.id.effect_surfaceview);
+        mView = (GLSurfaceView) findViewById(R.id.sample_surfaceview);
         mRenderer.setSurfaceView(mView);
 
         setGLESVersion();

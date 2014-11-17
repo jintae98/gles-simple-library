@@ -8,7 +8,7 @@ import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
 import com.gomdev.gles.GLESVertexInfo.RenderType;
-import com.gomdev.shader.EffectRenderer;
+import com.gomdev.shader.SampleRenderer;
 import com.gomdev.shader.R;
 import com.gomdev.shader.ShaderUtils;
 
@@ -21,7 +21,7 @@ import android.opengl.GLES20;
 import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-public class ColoredPointAdvRenderer extends EffectRenderer {
+public class ColoredPointAdvRenderer extends SampleRenderer {
     private static final String CLASS = "ColoredPointAdbRenderer";
     private static final String TAG = ColoredPointAdvConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = ColoredPointAdvConfig.DEBUG;

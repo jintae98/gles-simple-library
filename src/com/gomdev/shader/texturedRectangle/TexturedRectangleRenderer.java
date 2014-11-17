@@ -2,7 +2,7 @@ package com.gomdev.shader.texturedRectangle;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.shader.EffectRenderer;
+import com.gomdev.shader.SampleRenderer;
 import com.gomdev.shader.ShaderUtils;
 
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.graphics.Bitmap;
 import android.opengl.GLES20;
 import android.util.Log;
 
-public class TexturedRectangleRenderer extends EffectRenderer {
+public class TexturedRectangleRenderer extends SampleRenderer {
     private static final String CLASS = "TextureRenderer";
     private static final String TAG = TexturedRectangleConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = TexturedRectangleConfig.DEBUG;

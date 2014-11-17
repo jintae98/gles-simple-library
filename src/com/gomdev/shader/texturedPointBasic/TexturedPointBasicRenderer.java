@@ -8,7 +8,7 @@ import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
 import com.gomdev.gles.GLESVertexInfo.RenderType;
-import com.gomdev.shader.EffectRenderer;
+import com.gomdev.shader.SampleRenderer;
 import com.gomdev.shader.R;
 import com.gomdev.shader.ShaderUtils;
 
@@ -18,7 +18,7 @@ import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.util.Log;
 
-public class TexturedPointBasicRenderer extends EffectRenderer implements
+public class TexturedPointBasicRenderer extends SampleRenderer implements
         GLESRendererListener {
     private static final String CLASS = "TexturedPointBasicRenderer";
     private static final String TAG = TexturedPointBasicConfig.TAG + "_"

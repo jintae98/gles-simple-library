@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 public class ShaderInfo implements Parcelable {
 
-    String mEffectName;
+    String mSampleName;
     String mTitle;
     int mResID;
     String mFilePath;
@@ -26,7 +26,7 @@ public class ShaderInfo implements Parcelable {
     }
 
     private ShaderInfo(Parcel in) {
-        mEffectName = in.readString();
+        mSampleName = in.readString();
         mTitle = in.readString();
         mResID = in.readInt();
         mFilePath = in.readString();
@@ -39,7 +39,7 @@ public class ShaderInfo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mEffectName);
+        dest.writeString(mSampleName);
         dest.writeString(mTitle);
         dest.writeInt(mResID);
         dest.writeString(mFilePath);

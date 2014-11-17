@@ -6,7 +6,7 @@ import java.util.Random;
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESVertexInfo.RenderType;
-import com.gomdev.shader.EffectRenderer;
+import com.gomdev.shader.SampleRenderer;
 import com.gomdev.shader.ShaderUtils;
 
 import android.content.Context;
@@ -15,7 +15,7 @@ import android.opengl.GLES30;
 import android.opengl.Matrix;
 import android.util.Log;
 
-public class IRRenderer extends EffectRenderer implements GLESRendererListener {
+public class IRRenderer extends SampleRenderer implements GLESRendererListener {
     private static final String CLASS = "IRRenderer";
     private static final String TAG = IRConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = IRConfig.DEBUG;

@@ -2,7 +2,7 @@ package com.gomdev.shader.multiLighting;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.shader.EffectRenderer;
+import com.gomdev.shader.SampleRenderer;
 import com.gomdev.shader.ShaderUtils;
 
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.opengl.Matrix;
 
-public class MultiLightingRenderer extends EffectRenderer {
+public class MultiLightingRenderer extends SampleRenderer {
     static final String CLASS = "PVLRenderer";
     static final String TAG = MultiLightingConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = MultiLightingConfig.DEBUG;

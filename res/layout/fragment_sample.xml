@@ -5,7 +5,7 @@
     android:layout_height="match_parent" >
 
     <android.opengl.GLSurfaceView
-        android:id="@+id/effect_surfaceview"
+        android:id="@+id/sample_surfaceview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     
@@ -16,6 +16,6 @@
         android:visibility="gone"
         android:inputType="text|textMultiLine" />
 
-    <include layout="@layout/effect_info" />
+    <include layout="@layout/sample_info" />
 
 </FrameLayout>

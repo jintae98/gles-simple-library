@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.gomdev.effect.ShaderEditActivity" >
+    tools:context="com.gomdev.shader.ShaderEditActivity" >
 
     <item
         android:id="@+id/save"

@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.gomdev.effect.EffectActivity" >
+    tools:context="com.gomdev.shader.MainActivity" >
 
     <item
         android:id="@+id/shader_list"

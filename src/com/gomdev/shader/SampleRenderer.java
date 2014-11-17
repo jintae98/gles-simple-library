@@ -21,8 +21,8 @@ import com.gomdev.gles.GLESRenderer;
 import com.gomdev.gles.GLESUtils;
 import com.gomdev.gles.GLESConfig.Version;
 
-public abstract class EffectRenderer implements Renderer {
-    static final String CLASS = "EffectRenderer";
+public abstract class SampleRenderer implements Renderer {
+    static final String CLASS = "SampleRenderer";
     static final String TAG = ShaderConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
@@ -133,7 +133,7 @@ public abstract class EffectRenderer implements Renderer {
 
     };
 
-    public EffectRenderer(Context context) {
+    public SampleRenderer(Context context) {
         mContext = context;
 
         GLESContext.getInstance().setContext(context);
@@ -162,10 +162,10 @@ public abstract class EffectRenderer implements Renderer {
         mIsShaderCompiled = createShader();
 
         if (mIsShaderCompiled == true) {
-            mHandler.sendEmptyMessage(EffectRenderer.COMPILE_AND_LINK_SUCCESS);
+            mHandler.sendEmptyMessage(SampleRenderer.COMPILE_AND_LINK_SUCCESS);
             onSurfaceCreated();
         } else {
-            mHandler.sendEmptyMessage(EffectRenderer.COMPILE_OR_LINK_ERROR);
+            mHandler.sendEmptyMessage(SampleRenderer.COMPILE_OR_LINK_ERROR);
             Log.e(TAG, "\t shader compiliation fails");
         }
 
@@ -183,10 +183,10 @@ public abstract class EffectRenderer implements Renderer {
         }
 
         if (mIsShaderCompiled == true) {
-            mHandler.sendEmptyMessage(EffectRenderer.COMPILE_AND_LINK_SUCCESS);
+            mHandler.sendEmptyMessage(SampleRenderer.COMPILE_AND_LINK_SUCCESS);
             onSurfaceChanged(width, height);
         } else {
-            mHandler.sendEmptyMessage(EffectRenderer.COMPILE_OR_LINK_ERROR);
+            mHandler.sendEmptyMessage(SampleRenderer.COMPILE_OR_LINK_ERROR);
         }
 
         mIsOnSurfaceCreatedCalled = false;

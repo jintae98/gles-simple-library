@@ -4,7 +4,7 @@ import java.util.Random;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.shader.EffectRenderer;
+import com.gomdev.shader.SampleRenderer;
 import com.gomdev.shader.ShaderUtils;
 
 import android.content.Context;
@@ -16,7 +16,7 @@ import android.opengl.GLES30;
 import android.opengl.Matrix;
 import android.util.Log;
 
-public class OQRenderer extends EffectRenderer {
+public class OQRenderer extends SampleRenderer {
     private static final String CLASS = "OQRenderer";
     private static final String TAG = OQConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = OQConfig.DEBUG;

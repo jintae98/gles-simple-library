@@ -7,7 +7,7 @@ import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
 import com.gomdev.gles.GLESVertexInfo.RenderType;
-import com.gomdev.shader.EffectRenderer;
+import com.gomdev.shader.SampleRenderer;
 import com.gomdev.shader.R;
 import com.gomdev.shader.ShaderUtils;
 
@@ -20,7 +20,7 @@ import android.opengl.GLES20;
 import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-public class TexturedPointAdvRenderer extends EffectRenderer implements
+public class TexturedPointAdvRenderer extends SampleRenderer implements
         GLESRendererListener {
     private static final String CLASS = "TexturedPointAdvRenderer";
     private static final String TAG = TexturedPointAdvConfig.TAG + "_" + CLASS;

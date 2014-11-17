@@ -28,7 +28,7 @@ public class SampleListFragment extends MainFragment {
                 false);
 
         mSampleList = new SampleList(getActivity());
-        mSampleList.setupEffectInfos();
+        mSampleList.setupSampleInfos();
 
         ArrayList<String> mTitles = mSampleList.getTitleList();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
@@ -42,7 +42,7 @@ public class SampleListFragment extends MainFragment {
     }
 
     void resetSampleList() {
-        mSampleList.setupEffectInfos();
+        mSampleList.setupSampleInfos();
     }
 
     @Override
@@ -54,13 +54,13 @@ public class SampleListFragment extends MainFragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
-            String effectName = parent.getItemAtPosition(position).toString();
+            String sampleName = parent.getItemAtPosition(position).toString();
 
-            SampleInfo info = mSampleList.getEffectInfo(effectName);
+            SampleInfo info = mSampleList.getSampleInfo(sampleName);
             int numOfShader = info.mShaderResIDs.length;
 
             ShaderContext context = ShaderContext.getInstance();
-            context.setEffetName(effectName);
+            context.setSampleName(sampleName);
             context.setNumOfShaders(numOfShader);
 
             context.clearShaderInfos();

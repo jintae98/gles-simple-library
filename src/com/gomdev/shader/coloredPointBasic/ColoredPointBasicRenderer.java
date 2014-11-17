@@ -6,14 +6,14 @@ import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
 import com.gomdev.gles.GLESVertexInfo.RenderType;
-import com.gomdev.shader.EffectRenderer;
+import com.gomdev.shader.SampleRenderer;
 import com.gomdev.shader.ShaderUtils;
 
 import android.content.Context;
 import android.opengl.GLES20;
 import android.util.Log;
 
-public class ColoredPointBasicRenderer extends EffectRenderer {
+public class ColoredPointBasicRenderer extends SampleRenderer {
     private static final String CLASS = "ColoredPointRenderer";
     private static final String TAG = ColoredPointBasicConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = ColoredPointBasicConfig.DEBUG;

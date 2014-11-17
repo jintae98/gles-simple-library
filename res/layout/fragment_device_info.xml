@@ -24,7 +24,7 @@
                     android:paddingBottom="5dip"
                     android:paddingLeft="5dip"
                     android:paddingTop="5dip"
-                    android:text="@string/effect_list_hardware" />
+                    android:text="@string/sample_list_hardware" />
 
                 <TextView
                     android:id="@+id/hardware"
@@ -42,7 +42,7 @@
                     android:paddingBottom="5dip"
                     android:paddingLeft="5dip"
                     android:paddingTop="5dip"
-                    android:text="@string/effect_list_architecture" />
+                    android:text="@string/sample_list_architecture" />
 
                 <TextView
                     android:id="@+id/architecture"
@@ -60,7 +60,7 @@
                     android:paddingBottom="5dip"
                     android:paddingLeft="5dip"
                     android:paddingTop="5dip"
-                    android:text="@string/effect_list_feature" />
+                    android:text="@string/sample_list_feature" />
 
                 <TextView
                     android:id="@+id/feature"
@@ -78,7 +78,7 @@
                     android:paddingBottom="5dip"
                     android:paddingLeft="5dip"
                     android:paddingTop="5dip"
-                    android:text="@string/effect_list_vendor" />
+                    android:text="@string/sample_list_vendor" />
 
                 <TextView
                     android:id="@+id/vendor"
@@ -96,7 +96,7 @@
                     android:paddingBottom="5dip"
                     android:paddingLeft="5dip"
                     android:paddingTop="5dip"
-                    android:text="@string/effect_list_renderer" />
+                    android:text="@string/sample_list_renderer" />
 
                 <TextView
                     android:id="@+id/renderer"
@@ -114,7 +114,7 @@
                     android:paddingBottom="5dip"
                     android:paddingLeft="5dip"
                     android:paddingTop="5dip"
-                    android:text="@string/effect_list_version" />
+                    android:text="@string/sample_list_version" />
 
                 <TextView
                     android:id="@+id/version"
@@ -132,7 +132,7 @@
                     android:paddingBottom="5dip"
                     android:paddingLeft="5dip"
                     android:paddingTop="5dip"
-                    android:text="@string/effect_list_extensions" />
+                    android:text="@string/sample_list_extensions" />
 
                 <ScrollView
                     android:layout_width="match_parent"

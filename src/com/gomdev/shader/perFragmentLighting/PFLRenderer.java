@@ -2,7 +2,7 @@ package com.gomdev.shader.perFragmentLighting;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.shader.EffectRenderer;
+import com.gomdev.shader.SampleRenderer;
 import com.gomdev.shader.ShaderUtils;
 
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.util.Log;
 
-public class PFLRenderer extends EffectRenderer {
+public class PFLRenderer extends SampleRenderer {
     private static final String CLASS = "PVLRenderer";
     private static final String TAG = PFLConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = PFLConfig.DEBUG;

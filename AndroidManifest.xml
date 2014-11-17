@@ -58,12 +58,6 @@
             android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
         <activity
-            android:name="com.gomdev.shader.EffectListActivity"
-            android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
             android:name="com.gomdev.shader.whitehole.WhiteholeActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"

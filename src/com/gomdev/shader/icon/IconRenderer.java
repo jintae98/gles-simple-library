@@ -2,7 +2,7 @@ package com.gomdev.shader.icon;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.shader.EffectRenderer;
+import com.gomdev.shader.SampleRenderer;
 import com.gomdev.shader.ShaderUtils;
 import com.gomdev.shader.R;
 
@@ -13,7 +13,7 @@ import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.util.Log;
 
-public class IconRenderer extends EffectRenderer {
+public class IconRenderer extends SampleRenderer {
     private static final String CLASS = "IconRenderer";
     private static final String TAG = IconConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = IconConfig.DEBUG;
@@ -343,7 +343,7 @@ public class IconRenderer extends EffectRenderer {
 
             mBGShader.setShaderSource(vsSource, fsSource);
             if (mBGShader.load() == false) {
-                mHandler.sendEmptyMessage(EffectRenderer.COMPILE_OR_LINK_ERROR);
+                mHandler.sendEmptyMessage(SampleRenderer.COMPILE_OR_LINK_ERROR);
                 return false;
             }
 

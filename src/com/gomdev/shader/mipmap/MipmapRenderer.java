@@ -2,7 +2,7 @@ package com.gomdev.shader.mipmap;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.shader.EffectRenderer;
+import com.gomdev.shader.SampleRenderer;
 import com.gomdev.shader.ShaderUtils;
 
 import android.content.Context;
@@ -11,7 +11,7 @@ import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.util.Log;
 
-public class MipmapRenderer extends EffectRenderer {
+public class MipmapRenderer extends SampleRenderer {
     private static final String CLASS = "MipmapRenderer";
     private static final String TAG = MipmapConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = MipmapConfig.DEBUG;

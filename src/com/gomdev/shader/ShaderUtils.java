@@ -37,8 +37,8 @@ public class ShaderUtils {
     }
 
     public static String getShaderSource(Context context) {
-        ShaderContext effectContext = ShaderContext.getInstance();
-        ShaderInfo savedShaderInfo = effectContext.getSavedShaderInfo();
+        ShaderContext shaderContext = ShaderContext.getInstance();
+        ShaderInfo savedShaderInfo = shaderContext.getSavedShaderInfo();
 
         String savedFileName = savedShaderInfo.mFilePath;
         String shaderSource = null;
@@ -55,9 +55,9 @@ public class ShaderUtils {
     }
 
     public static String getShaderSource(Context context, int i) {
-        ShaderContext effectContext = ShaderContext.getInstance();
+        ShaderContext shaderContext = ShaderContext.getInstance();
 
-        ArrayList<ShaderInfo> shaderInfos = effectContext.getShaderInfoList();
+        ArrayList<ShaderInfo> shaderInfos = shaderContext.getShaderInfoList();
         ShaderInfo shaderInfo = shaderInfos.get(i);
 
         String savedFileName = shaderInfo.mFilePath;
@@ -75,9 +75,9 @@ public class ShaderUtils {
     }
 
     public static String getFragmentShaderSource(Context context, int i) {
-        ShaderContext effectContext = ShaderContext.getInstance();
+        ShaderContext shaderContext = ShaderContext.getInstance();
 
-        ArrayList<ShaderInfo> shaderInfos = effectContext.getShaderInfoList();
+        ArrayList<ShaderInfo> shaderInfos = shaderContext.getShaderInfoList();
         ShaderInfo shaderInfo = shaderInfos.get(i);
 
         String savedFileName = shaderInfo.mFilePath;
@@ -113,7 +113,7 @@ public class ShaderUtils {
         context.setShaderInfoList(shaderInfoList);
         prefShaderInfoList.clear();
 
-        context.setEffetName(icicle.getString(ShaderConfig.STATE_EFFECT_NAME));
+        context.setSampleName(icicle.getString(ShaderConfig.STATE_SAMPLE_NAME));
         context.setNumOfShaders(icicle.getInt(ShaderConfig.STATE_NUM_OF_SHADER));
         context.setSavedShaderInfo((ShaderInfo) icicle
                 .getParcelable(ShaderConfig.STATE_SAVED_SHADER_INFO));
@@ -127,8 +127,8 @@ public class ShaderUtils {
         ShaderContext context = ShaderContext.getInstance();
         outState.putParcelableArrayList(ShaderConfig.STATE_SHADER_INFO,
                 context.getShaderInfoList());
-        outState.putString(ShaderConfig.STATE_EFFECT_NAME,
-                context.getEffectName());
+        outState.putString(ShaderConfig.STATE_SAMPLE_NAME,
+                context.getSampleName());
         outState.putInt(ShaderConfig.STATE_NUM_OF_SHADER,
                 context.getNumOfShaders());
         outState.putParcelable(ShaderConfig.STATE_SAVED_SHADER_INFO,

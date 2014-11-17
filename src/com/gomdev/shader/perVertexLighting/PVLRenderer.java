@@ -2,7 +2,7 @@ package com.gomdev.shader.perVertexLighting;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.shader.EffectRenderer;
+import com.gomdev.shader.SampleRenderer;
 import com.gomdev.shader.ShaderUtils;
 
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.util.Log;
 
-public class PVLRenderer extends EffectRenderer {
+public class PVLRenderer extends SampleRenderer {
     private static final String CLASS = "PVLRenderer";
     private static final String TAG = PVLConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = PVLConfig.DEBUG;

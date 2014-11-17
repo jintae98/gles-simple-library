@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.gomdev.shader.R;
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.shader.EffectRenderer;
+import com.gomdev.shader.SampleRenderer;
 import com.gomdev.shader.ShaderUtils;
 
 import android.content.Context;
@@ -14,7 +14,7 @@ import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.util.Log;
 
-public class WhiteholeRenderer extends EffectRenderer {
+public class WhiteholeRenderer extends SampleRenderer {
     private static final String CLASS = "WhiteholeRenderer";
     private static final String TAG = WhiteholeConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = WhiteholeConfig.DEBUG;

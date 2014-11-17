@@ -2,7 +2,7 @@ package com.gomdev.shader.texturedCube;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.shader.EffectRenderer;
+import com.gomdev.shader.SampleRenderer;
 import com.gomdev.shader.ShaderUtils;
 
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.graphics.Bitmap;
 import android.opengl.GLES20;
 import android.util.Log;
 
-public class TexturedCubeRenderer extends EffectRenderer {
+public class TexturedCubeRenderer extends SampleRenderer {
     private static final String CLASS = "TexturedCubeRenderer";
     private static final String TAG = TexturedCubeConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = TexturedCubeConfig.DEBUG;

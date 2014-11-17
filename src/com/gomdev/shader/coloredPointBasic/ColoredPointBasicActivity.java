@@ -16,14 +16,14 @@
 
 package com.gomdev.shader.coloredPointBasic;
 
-import com.gomdev.shader.EffectActivity;
+import com.gomdev.shader.SampleActivity;
 import com.gomdev.shader.R;
 
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
-public class ColoredPointBasicActivity extends EffectActivity {
+public class ColoredPointBasicActivity extends SampleActivity {
     private ColoredPointBasicRenderer mRenderer;
 
     @Override
@@ -31,7 +31,7 @@ public class ColoredPointBasicActivity extends EffectActivity {
         super.onCreate(icicle);
 
         mRenderer = new ColoredPointBasicRenderer(this);
-        mView = (GLSurfaceView) findViewById(R.id.effect_surfaceview);
+        mView = (GLSurfaceView) findViewById(R.id.sample_surfaceview);
         mRenderer.setSurfaceView(mView);
 
         setGLESVersion();

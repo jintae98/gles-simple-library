@@ -9,7 +9,7 @@ import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
 import com.gomdev.gles.GLESVertexInfo.RenderType;
-import com.gomdev.shader.EffectRenderer;
+import com.gomdev.shader.SampleRenderer;
 import com.gomdev.shader.R;
 import com.gomdev.shader.ShaderUtils;
 
@@ -24,7 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
-public class ColoredPointBlendingRenderer extends EffectRenderer implements
+public class ColoredPointBlendingRenderer extends SampleRenderer implements
         GLESRendererListener {
     private static final String CLASS = "ColoredPointBlendingRenderer";
     private static final String TAG = ColoredPointBlendingConfig.TAG + "_"

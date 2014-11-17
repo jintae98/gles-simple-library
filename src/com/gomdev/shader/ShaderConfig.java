@@ -18,7 +18,7 @@ public class ShaderConfig {
     public static final String PREF_CPU_ARCHITECTURE = "CPU architecture";
     public static final String PREF_CPU_FEATURE = "Features";
 
-    public static final String STATE_EFFECT_NAME = "effectName";
+    public static final String STATE_SAMPLE_NAME = "sampleName";
     public static final String STATE_SHADER_INFO = "shaderInfo";
     public static final String STATE_NUM_OF_SHADER = "numOfShader";
     public static final String STATE_SAVED_SHADER_INFO = "savedShaderInfo";

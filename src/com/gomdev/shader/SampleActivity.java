@@ -34,8 +34,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 @SuppressLint("Registered")
-public class EffectActivity extends Activity implements Ad {
-    static final String CLASS = "EffectActivity";
+public class SampleActivity extends Activity implements Ad {
+    static final String CLASS = "SampleActivity";
     static final String TAG = ShaderConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
@@ -68,12 +68,12 @@ public class EffectActivity extends Activity implements Ad {
 
     @Override
     public int getLayoutID() {
-        return R.layout.fragment_effect;
+        return R.layout.fragment_sample;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.effect_options, menu);
+        getMenuInflater().inflate(R.menu.sample_options, menu);
         return true;
     }
 

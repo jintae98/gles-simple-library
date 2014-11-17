@@ -33,7 +33,7 @@ import com.gomdev.shader.texturedPointBasic.TexturedPointBasicConfig;
 import com.gomdev.shader.texturedRectangle.TexturedRectangleConfig;
 
 public class SampleList {
-    static final String CLASS = "EffectList";
+    static final String CLASS = "SampleList";
     static final String TAG = ShaderConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
@@ -44,7 +44,7 @@ public class SampleList {
         mContext = context;
     }
 
-    void setupEffectInfos() {
+    void setupSampleInfos() {
         mSamples.clear();
 
         SharedPreferences pref = mContext.getSharedPreferences(
@@ -81,9 +81,9 @@ public class SampleList {
         // setupWhitehole(version);
 
         if (DEBUG) {
-            Log.d(TAG, "onCreate() Effects");
-            for (SampleInfo effectInfo : mSamples) {
-                Log.d(TAG, "\t " + effectInfo.mSampleName);
+            Log.d(TAG, "onCreate() Samples");
+            for (SampleInfo sampleInfo : mSamples) {
+                Log.d(TAG, "\t " + sampleInfo.mSampleName);
             }
         }
     }
@@ -569,7 +569,7 @@ public class SampleList {
 
     // private void setupOQ(Version version) {
     // SampleInfo info = new SampleInfo();
-    // info.mEffectName = OQConfig.EFFECT_NAME;
+    // info.mSampleName = OQConfig.EFFECT_NAME;
     // info.mIntent = new Intent(mContext,
     // com.gomdev.shader.occlusionQuery.OQActivity.class);
     // if (version == Version.GLES_20) {
@@ -594,7 +594,7 @@ public class SampleList {
     // };
     // }
     //
-    // mEffects.add(info);
+    // mSamples.add(info);
     // }
 
     private void setupMultiLighting(Version version) {
@@ -629,7 +629,7 @@ public class SampleList {
 
     // private void setupWhitehole(Version version) {
     // SampleInfo info = new SampleInfo();
-    // info.mEffectName = WhiteholeConfig.EFFECT_NAME;
+    // info.mSampleName = WhiteholeConfig.EFFECT_NAME;
     // info.mIntent = new Intent(mContext,
     // com.gomdev.shader.whitehole.WhiteholeActivity.class);
     // if (version == Version.GLES_20) {
@@ -654,27 +654,27 @@ public class SampleList {
     // };
     // }
     //
-    // mEffects.add(info);
+    // mSamples.add(info);
     // }
 
-    void makeEffectList() {
-        ArrayList<String> effectList = new ArrayList<String>();
+    void makeSampleList() {
+        ArrayList<String> sampleList = new ArrayList<String>();
         for (int i = 0; i < mSamples.size(); i++) {
             SampleInfo info = mSamples.get(i);
-            String effectTitle = (i + 1) + ". " + info.mSampleName;
-            effectList.add(effectTitle);
+            String sampleTitle = (i + 1) + ". " + info.mSampleName;
+            sampleList.add(sampleTitle);
         }
 
         if (DEBUG) {
             Log.d(TAG, "onCreate() string list");
 
-            for (String str : effectList) {
+            for (String str : sampleList) {
                 Log.d(TAG, "\t Item=" + str);
             }
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
-                android.R.layout.simple_list_item_1, effectList);
+                android.R.layout.simple_list_item_1, sampleList);
 
         ListView list = (ListView) ((Activity) mContext)
                 .findViewById(R.id.list);
@@ -683,35 +683,35 @@ public class SampleList {
     }
 
     ArrayList<String> getTitleList() {
-        ArrayList<String> effectList = new ArrayList<String>();
+        ArrayList<String> sampleList = new ArrayList<String>();
         for (int i = 0; i < mSamples.size(); i++) {
             SampleInfo info = mSamples.get(i);
-            String effectTitle = (i + 1) + ". " + info.mSampleName;
-            effectList.add(effectTitle);
+            String sampleTitle = (i + 1) + ". " + info.mSampleName;
+            sampleList.add(sampleTitle);
         }
 
         if (DEBUG) {
             Log.d(TAG, "onCreate() string list");
 
-            for (String str : effectList) {
+            for (String str : sampleList) {
                 Log.d(TAG, "\t Item=" + str);
             }
         }
 
-        return effectList;
+        return sampleList;
     }
 
     private AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
-            String effectName = parent.getItemAtPosition(position).toString();
+            String sampleName = parent.getItemAtPosition(position).toString();
 
-            SampleInfo info = getEffectInfo(effectName);
+            SampleInfo info = getSampleInfo(sampleName);
             int numOfShader = info.mShaderResIDs.length;
 
             ShaderContext context = ShaderContext.getInstance();
-            context.setEffetName(effectName);
+            context.setSampleName(sampleName);
             context.setNumOfShaders(numOfShader);
 
             context.clearShaderInfos();
@@ -727,16 +727,16 @@ public class SampleList {
             }
 
             if (DEBUG) {
-                Log.d(TAG, "onItemClick() item=" + effectName);
+                Log.d(TAG, "onItemClick() item=" + sampleName);
             }
             ((Activity) mContext).startActivity(info.mIntent);
         }
     };
 
-    SampleInfo getEffectInfo(String effectName) {
+    SampleInfo getSampleInfo(String sampleName) {
         for (SampleInfo sampleInfo : mSamples) {
-            int index = effectName.indexOf(' ');
-            String name = effectName.substring(index + 1);
+            int index = sampleName.indexOf(' ');
+            String name = sampleName.substring(index + 1);
             if (name.compareTo(sampleInfo.mSampleName) == 0) {
                 return sampleInfo;
             }

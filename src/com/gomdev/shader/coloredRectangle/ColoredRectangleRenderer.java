@@ -2,14 +2,14 @@ package com.gomdev.shader.coloredRectangle;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
-import com.gomdev.shader.EffectRenderer;
+import com.gomdev.shader.SampleRenderer;
 import com.gomdev.shader.ShaderUtils;
 
 import android.content.Context;
 import android.opengl.GLES20;
 import android.util.Log;
 
-public class ColoredRectangleRenderer extends EffectRenderer {
+public class ColoredRectangleRenderer extends SampleRenderer {
     private static final String CLASS = "ColoredCubeRenderer";
     private static final String TAG = ColoredRectangleConfig.TAG + "_" + CLASS;
     private static final boolean DEBUG = ColoredRectangleConfig.DEBUG;

@@ -11,10 +11,10 @@ public class ShaderContext {
     static final String TAG = ShaderConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
 
-    private static ShaderContext sEffectContext = null;
+    private static ShaderContext sShaderContext = null;
 
     private ArrayList<ShaderInfo> mShaderInfos = null;
-    private String mEffectName = null;
+    private String mSampleName = null;
     private int mNumOfShaders = 0;
     private ShaderInfo mSavedShaderInfo = null;
 
@@ -33,24 +33,24 @@ public class ShaderContext {
     private String mFeature = null;
 
     public static ShaderContext getInstance() {
-        return sEffectContext;
+        return sShaderContext;
     }
 
     public static ShaderContext newInstance() {
-        sEffectContext = new ShaderContext();
-        return sEffectContext;
+        sShaderContext = new ShaderContext();
+        return sShaderContext;
     }
 
     private ShaderContext() {
         mShaderInfos = new ArrayList<ShaderInfo>();
     }
 
-    public void setEffetName(String name) {
-        mEffectName = name;
+    public void setSampleName(String name) {
+        mSampleName = name;
     }
 
-    public String getEffectName() {
-        return mEffectName;
+    public String getSampleName() {
+        return mSampleName;
     }
 
     public void setNumOfShaders(int num) {
@@ -61,10 +61,10 @@ public class ShaderContext {
         return mNumOfShaders;
     }
 
-    public void setShaderInfo(String effectName, String title,
+    public void setShaderInfo(String sampleName, String title,
             int resID, String filePath) {
         ShaderInfo shader = new ShaderInfo();
-        shader.mEffectName = effectName;
+        shader.mSampleName = sampleName;
         shader.mTitle = title;
         shader.mResID = resID;
         shader.mFilePath = filePath;
