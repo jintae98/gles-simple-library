@@ -27,7 +27,7 @@ public class OptionsFragment extends MainFragment {
     public enum Options {
         SHOW_INFO(0, "Show informations"),
         SHOW_FPS(1, "Show FPS"),
-        USE_GLES30(2, "Use GLES 3.0");
+        USE_GLES30(2, "Use OpenGL ES 3.0");
 
         private final int mIndex;
         private final String mTitle;
