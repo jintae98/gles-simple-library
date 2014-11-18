@@ -3,6 +3,7 @@ package com.gomdev.shader;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.Service;
 import android.content.Context;
 import android.content.pm.ConfigurationInfo;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+@SuppressLint("InflateParams")
 public class DeviceInfoFragment extends MainFragment {
     static final String CLASS = "DeviceInfoFragment";
     static final String TAG = ShaderConfig.TAG + "_" + CLASS;
@@ -30,7 +32,6 @@ public class DeviceInfoFragment extends MainFragment {
     private FrameLayout mLayout = null;
     private ProgressBar mProgressBar = null;
 
-    @SuppressLint("InflateParams")
     @Override
     public View onCreateView(LayoutInflater inflater,
             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -143,6 +144,26 @@ public class DeviceInfoFragment extends MainFragment {
     void updateDeviceInfo() {
         if (DEBUG) {
             Log.d(TAG, "updateDeviceInfo()");
+        }
+
+        if (mLayout == null) {
+            LayoutInflater inflater = (LayoutInflater) getActivity()
+                    .getSystemService(Service.LAYOUT_INFLATER_SERVICE);
+            mLayout = (FrameLayout) inflater.inflate(
+                    R.layout.fragment_device_info, null);
+
+            if (mLayout == null) {
+                Log.e(TAG, "updateDeviceInfo() mLayout is null");
+                return;
+            }
+        }
+
+        if (mProgressBar == null) {
+            mProgressBar = (ProgressBar) mLayout.findViewById(R.id.progressBar);
+            if (mProgressBar == null) {
+                Log.e(TAG, "updateDeviceInfo() mProgressBar is null");
+                return;
+            }
         }
 
         setDeviceInfo();
