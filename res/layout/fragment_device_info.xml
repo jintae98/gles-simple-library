@@ -3,153 +3,156 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:layout_height="match_parent" >
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-            <LinearLayout
+            <TextView
+                style="?android:attr/listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:paddingBottom="5dip"
+                android:paddingEnd="5dip"
+                android:paddingStart="5dip"
+                android:paddingTop="5dip"
+                android:text="@string/sample_list_hardware" />
 
-                <TextView
-                    style="?android:attr/listSeparatorTextViewStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="5dip"
-                    android:paddingLeft="5dip"
-                    android:paddingTop="5dip"
-                    android:text="@string/sample_list_hardware" />
+            <TextView
+                android:id="@+id/hardware"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dip"
+                android:paddingEnd="10dip"
+                android:paddingStart="10dip"
+                android:paddingTop="5dip"
+                android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/hardware"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="5dip"
-                    android:paddingLeft="10dip"
-                    android:paddingTop="5dip"
-                    android:textSize="15sp" />
+            <TextView
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dip"
+                android:paddingEnd="5dip"
+                android:paddingStart="5dip"
+                android:paddingTop="5dip"
+                android:text="@string/sample_list_architecture" />
 
-                <TextView
-                    style="?android:attr/listSeparatorTextViewStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="5dip"
-                    android:paddingLeft="5dip"
-                    android:paddingTop="5dip"
-                    android:text="@string/sample_list_architecture" />
+            <TextView
+                android:id="@+id/architecture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dip"
+                android:paddingEnd="10dip"
+                android:paddingStart="10dip"
+                android:paddingTop="5dip"
+                android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/architecture"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="5dip"
-                    android:paddingLeft="10dip"
-                    android:paddingTop="5dip"
-                    android:textSize="15sp" />
+            <TextView
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dip"
+                android:paddingEnd="5dip"
+                android:paddingStart="5dip"
+                android:paddingTop="5dip"
+                android:text="@string/sample_list_feature" />
 
-                <TextView
-                    style="?android:attr/listSeparatorTextViewStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="5dip"
-                    android:paddingLeft="5dip"
-                    android:paddingTop="5dip"
-                    android:text="@string/sample_list_feature" />
+            <TextView
+                android:id="@+id/feature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dip"
+                android:paddingEnd="10dip"
+                android:paddingStart="10dip"
+                android:paddingTop="5dip"
+                android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/feature"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="5dip"
-                    android:paddingLeft="10dip"
-                    android:paddingTop="5dip"
-                    android:textSize="15sp" />
+            <TextView
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dip"
+                android:paddingEnd="5dip"
+                android:paddingStart="5dip"
+                android:paddingTop="5dip"
+                android:text="@string/sample_list_vendor" />
 
-                <TextView
-                    style="?android:attr/listSeparatorTextViewStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="5dip"
-                    android:paddingLeft="5dip"
-                    android:paddingTop="5dip"
-                    android:text="@string/sample_list_vendor" />
+            <TextView
+                android:id="@+id/vendor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dip"
+                android:paddingEnd="10dip"
+                android:paddingStart="10dip"
+                android:paddingTop="5dip"
+                android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/vendor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="5dip"
-                    android:paddingLeft="10dip"
-                    android:paddingTop="5dip"
-                    android:textSize="15sp" />
+            <TextView
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dip"
+                android:paddingEnd="5dip"
+                android:paddingStart="5dip"
+                android:paddingTop="5dip"
+                android:text="@string/sample_list_renderer" />
 
-                <TextView
-                    style="?android:attr/listSeparatorTextViewStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="5dip"
-                    android:paddingLeft="5dip"
-                    android:paddingTop="5dip"
-                    android:text="@string/sample_list_renderer" />
+            <TextView
+                android:id="@+id/renderer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dip"
+                android:paddingEnd="10dip"
+                android:paddingStart="10dip"
+                android:paddingTop="5dip"
+                android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/renderer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="5dip"
-                    android:paddingLeft="10dip"
-                    android:paddingTop="5dip"
-                    android:textSize="15sp" />
+            <TextView
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dip"
+                android:paddingEnd="5dip"
+                android:paddingStart="5dip"
+                android:paddingTop="5dip"
+                android:text="@string/sample_list_version" />
 
-                <TextView
-                    style="?android:attr/listSeparatorTextViewStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="5dip"
-                    android:paddingLeft="5dip"
-                    android:paddingTop="5dip"
-                    android:text="@string/sample_list_version" />
+            <TextView
+                android:id="@+id/version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dip"
+                android:paddingEnd="10dip"
+                android:paddingStart="10dip"
+                android:paddingTop="5dip"
+                android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/version"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="5dip"
-                    android:paddingLeft="10dip"
-                    android:paddingTop="5dip"
-                    android:textSize="15sp" />
+            <TextView
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dip"
+                android:paddingEnd="5dip"
+                android:paddingStart="5dip"
+                android:paddingTop="5dip"
+                android:text="@string/sample_list_extensions" />
 
-                <TextView
-                    style="?android:attr/listSeparatorTextViewStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="5dip"
-                    android:paddingLeft="5dip"
-                    android:paddingTop="5dip"
-                    android:text="@string/sample_list_extensions" />
-
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
-
-                    <TextView
-                        android:id="@+id/extensions"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="5dip"
-                        android:paddingLeft="5dip"
-                        android:paddingTop="5dip"
-                        android:textSize="15sp" />
-                </ScrollView>
-            </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
+            <TextView
+                android:id="@+id/extensions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dip"
+                android:paddingEnd="10dip"
+                android:paddingStart="10dip"
+                android:paddingTop="5dip"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </ScrollView>
 
     <ProgressBar
         android:id="@+id/progressBar"
