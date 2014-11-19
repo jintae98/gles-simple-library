@@ -200,7 +200,7 @@ public class IconRenderer extends SampleRenderer {
         {
             mBG.setCamera(camera);
 
-            GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(
+            GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(mBGShader,
                     mScreenRatio * 2f, 2f, false, true, false, false);
             mBG.setVertexInfo(vertexInfo, true, true);
 
@@ -222,7 +222,7 @@ public class IconRenderer extends SampleRenderer {
         {
             mFront.setCamera(camera);
 
-            GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(
+            GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(mShader,
                     cubeSize, cubeSize,
                     false, false, true, false,
                     0.5f, 0.5f, 0.5f);
@@ -232,7 +232,7 @@ public class IconRenderer extends SampleRenderer {
         {
             mLeft.setCamera(camera);
 
-            GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(
+            GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(mShader,
                     cubeSize, cubeSize,
                     false, false, true, false,
                     1f, 1f, 1f);
@@ -242,7 +242,7 @@ public class IconRenderer extends SampleRenderer {
         {
             mRight.setCamera(camera);
 
-            GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(
+            GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(mShader,
                     cubeSize, cubeSize,
                     false, false, true, false,
                     0.5f, 0.5f, 0.5f);
@@ -252,7 +252,7 @@ public class IconRenderer extends SampleRenderer {
         {
             mBack.setCamera(camera);
 
-            GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(
+            GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(mShader,
                     cubeSize, cubeSize,
                     false, false, true, false,
                     1f, 1f, 1f);
@@ -262,7 +262,7 @@ public class IconRenderer extends SampleRenderer {
         {
             mTop.setCamera(camera);
 
-            GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(
+            GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(mShader,
                     cubeSize, cubeSize,
                     false, false, true, false,
                     1f, 1f, 1f);
@@ -272,7 +272,7 @@ public class IconRenderer extends SampleRenderer {
         {
             mBottom.setCamera(camera);
 
-            GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(
+            GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(mShader,
                     cubeSize, cubeSize,
                     false, false, true, false,
                     0.5f, 0.5f, 0.5f);

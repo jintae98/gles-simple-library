@@ -176,7 +176,8 @@ public class TexturedPointAdvRenderer extends SampleRenderer implements
             mUserBuffer.put(i * NUM_ELEMENT_OF_USER_ATTRIB, userData);
         }
         mPosBuffer.position(0);
-        mVertexInfo.setPositionBuffer(mPosBuffer);
+        int positionIndex = mShader.getPositionAttribIndex();
+        mVertexInfo.setBuffer(positionIndex, mPosBuffer);
 
         mUserBuffer.position(0);
 
@@ -307,10 +308,13 @@ public class TexturedPointAdvRenderer extends SampleRenderer implements
                 normalizedDist[yDistOffset + xDistOffset] = 1f;
             }
         }
-        vertexInfo.setPositionBuffer(position, NUM_ELEMENT_OF_POSITION);
-        mPosBuffer = vertexInfo.getPositionBuffer();
+        
+        int attribIndex = mShader.getPositionAttribIndex();
+        vertexInfo.setBuffer(attribIndex, position, NUM_ELEMENT_OF_POSITION);
+        mPosBuffer = (FloatBuffer) vertexInfo.getBuffer(attribIndex);
 
-        vertexInfo.setTexCoordBuffer(texCoord, NUM_ELEMENT_OF_TEXCOORD);
+        attribIndex = mShader.getTexCoordAttribIndex();
+        vertexInfo.setBuffer(attribIndex, texCoord, NUM_ELEMENT_OF_TEXCOORD);
 
         mUserBuffer = GLESUtils.makeFloatBuffer(normalizedDist);
 
@@ -401,7 +405,7 @@ public class TexturedPointAdvRenderer extends SampleRenderer implements
     }
 
     @Override
-    public void setupVBO(GLESVertexInfo vertexInfo) {
+    public void setupVBO(GLESShader shader, GLESVertexInfo vertexInfo) {
         // TODO Auto-generated method stub
 
     }

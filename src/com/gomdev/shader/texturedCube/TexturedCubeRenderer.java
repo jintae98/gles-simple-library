@@ -88,8 +88,9 @@ public class TexturedCubeRenderer extends SampleRenderer {
         mTextureObject.setCamera(camera);
 
         float cubeSize = mScreenRatio * 0.7f;
-        GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(cubeSize, false,
-                true, false);
+        GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(mTextureShader,
+                cubeSize,
+                false, true, false);
 
         mTextureObject.setVertexInfo(vertexInfo, true, true);
 

@@ -38,7 +38,7 @@ public class GLESObject extends GLESSpatial {
 
         GLESRenderer renderer = GLESContext.getInstance().getRenderer();
         if (useVBO == true) {
-            renderer.setupVBO(vertexInfo);
+            renderer.setupVBO(mShader, vertexInfo);
         }
     }
 

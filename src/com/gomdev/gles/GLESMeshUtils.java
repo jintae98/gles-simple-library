@@ -15,15 +15,18 @@ public class GLESMeshUtils {
 
     }
 
-    public static GLESVertexInfo createTriangle(float width, float height,
+    public static GLESVertexInfo createTriangle(GLESShader shader, float width,
+            float height,
             boolean useNormal, boolean useTexCoord, boolean useColor,
             boolean useIndex) {
 
-        return createTriangle(width, height, useNormal, useTexCoord, useColor,
+        return createTriangle(shader, width, height, useNormal, useTexCoord,
+                useColor,
                 useIndex, 1f, 0f, 0f);
     }
 
-    public static GLESVertexInfo createTriangle(float width, float height,
+    public static GLESVertexInfo createTriangle(GLESShader shader, float width,
+            float height,
             boolean useNormal, boolean useTexCoord, boolean useColor,
             boolean useIndex, float red, float green, float blue) {
 
@@ -42,7 +45,7 @@ public class GLESMeshUtils {
 
         GLESVertexInfo vertexInfo = new GLESVertexInfo();
 
-        vertexInfo.setPositionBuffer(vertex, 3);
+        vertexInfo.setBuffer(shader.getPositionAttribIndex(), vertex, 3);
 
         if (useTexCoord == true) {
             float[] texCoord = {
@@ -51,7 +54,7 @@ public class GLESMeshUtils {
                     0.5f, 0f,
             };
 
-            vertexInfo.setTexCoordBuffer(texCoord, 2);
+            vertexInfo.setBuffer(shader.getTexCoordAttribIndex(), texCoord, 2);
         }
 
         if (useNormal == true) {
@@ -61,7 +64,7 @@ public class GLESMeshUtils {
                     0f, 0f, 1f,
             };
 
-            vertexInfo.setNormalBuffer(normal, 3);
+            vertexInfo.setBuffer(shader.getNormalAttribIndex(), normal, 3);
         }
 
         if (useColor == true) {
@@ -71,7 +74,7 @@ public class GLESMeshUtils {
                     red, green, blue, 1f,
             };
 
-            vertexInfo.setColorBuffer(color, 4);
+            vertexInfo.setBuffer(shader.getColorAttribIndex(), color, 4);
         }
 
         if (useIndex == true) {
@@ -91,7 +94,9 @@ public class GLESMeshUtils {
         return vertexInfo;
     }
 
-    public static GLESVertexInfo createPlaneMesh(float width, float height,
+    public static GLESVertexInfo createPlaneMesh(GLESShader shader,
+            float width,
+            float height,
             int resolution, boolean useTexCoord, boolean useNormal) {
 
         int wResolution = 0;
@@ -155,13 +160,14 @@ public class GLESMeshUtils {
 
         GLESVertexInfo vertexInfo = new GLESVertexInfo();
 
-        vertexInfo.setPositionBuffer(vertices, 3);
+        vertexInfo.setBuffer(shader.getPositionAttribIndex(), vertices, 3);
+
         if (useTexCoord == true) {
-            vertexInfo.setTexCoordBuffer(texCoord, 2);
+            vertexInfo.setBuffer(shader.getTexCoordAttribIndex(), texCoord, 2);
         }
 
         if (useNormal == true) {
-            vertexInfo.setNormalBuffer(normal, 3);
+            vertexInfo.setBuffer(shader.getNormalAttribIndex(), normal, 3);
         }
 
         short[] indices = new short[hResolution * wResolution
@@ -196,15 +202,18 @@ public class GLESMeshUtils {
         return vertexInfo;
     }
 
-    public static GLESVertexInfo createPlane(float width, float height,
+    public static GLESVertexInfo createPlane(GLESShader shader, float width,
+            float height,
             boolean useNormal, boolean useTexCoord, boolean useColor,
             boolean useIndex) {
 
-        return createPlane(width, height, useNormal, useTexCoord, useColor,
+        return createPlane(shader, width, height, useNormal, useTexCoord,
+                useColor,
                 useIndex, 1f, 0f, 0f);
     }
 
-    public static GLESVertexInfo createPlane(float width, float height,
+    public static GLESVertexInfo createPlane(GLESShader shader, float width,
+            float height,
             boolean useNormal, boolean useTexCoord, boolean useColor,
             boolean useIndex, float red, float green, float blue) {
 
@@ -223,7 +232,7 @@ public class GLESMeshUtils {
 
         GLESVertexInfo vertexInfo = new GLESVertexInfo();
 
-        vertexInfo.setPositionBuffer(vertex, 3);
+        vertexInfo.setBuffer(shader.getPositionAttribIndex(), vertex, 3);
 
         if (useTexCoord == true) {
             float[] texCoord = {
@@ -233,7 +242,7 @@ public class GLESMeshUtils {
                     1f, 0f
             };
 
-            vertexInfo.setTexCoordBuffer(texCoord, 2);
+            vertexInfo.setBuffer(shader.getTexCoordAttribIndex(), texCoord, 2);
         }
 
         if (useNormal == true) {
@@ -244,7 +253,7 @@ public class GLESMeshUtils {
                     0f, 0f, 1f
             };
 
-            vertexInfo.setNormalBuffer(normal, 3);
+            vertexInfo.setBuffer(shader.getNormalAttribIndex(), normal, 3);
         }
 
         if (useColor == true) {
@@ -255,7 +264,7 @@ public class GLESMeshUtils {
                     red, green, blue, 1f,
             };
 
-            vertexInfo.setColorBuffer(color, 4);
+            vertexInfo.setBuffer(shader.getColorAttribIndex(), color, 4);
         }
 
         if (useIndex == true) {
@@ -276,16 +285,19 @@ public class GLESMeshUtils {
         return vertexInfo;
     }
 
-    public static GLESVertexInfo createPlaneForDebug(float width, float height,
+    public static GLESVertexInfo createPlaneForDebug(GLESShader shader,
+            float width, float height,
             boolean useNormal, boolean useTexCoord, boolean useColor,
             boolean useIndex) {
 
-        return createPlaneForDebug(width, height, useNormal, useTexCoord,
+        return createPlaneForDebug(shader, width, height, useNormal,
+                useTexCoord,
                 useColor,
                 useIndex, 1f, 0f, 0f);
     }
 
-    public static GLESVertexInfo createPlaneForDebug(float width, float height,
+    public static GLESVertexInfo createPlaneForDebug(GLESShader shader,
+            float width, float height,
             boolean useNormal, boolean useTexCoord, boolean useColor,
             boolean useIndex, float red, float green, float blue) {
 
@@ -304,7 +316,7 @@ public class GLESMeshUtils {
 
         GLESVertexInfo vertexInfo = new GLESVertexInfo();
 
-        vertexInfo.setPositionBuffer(vertex, 3);
+        vertexInfo.setBuffer(shader.getPositionAttribIndex(), vertex, 3);
 
         if (useTexCoord == true) {
             float[] texCoord = {
@@ -314,7 +326,7 @@ public class GLESMeshUtils {
                     0f, 0f,
             };
 
-            vertexInfo.setTexCoordBuffer(texCoord, 2);
+            vertexInfo.setBuffer(shader.getTexCoordAttribIndex(), texCoord, 2);
         }
 
         if (useNormal == true) {
@@ -325,7 +337,7 @@ public class GLESMeshUtils {
                     0f, 0f, 1f
             };
 
-            vertexInfo.setNormalBuffer(normal, 3);
+            vertexInfo.setBuffer(shader.getNormalAttribIndex(), normal, 3);
         }
 
         if (useColor == true) {
@@ -336,7 +348,7 @@ public class GLESMeshUtils {
                     red, green, blue, 1f,
             };
 
-            vertexInfo.setColorBuffer(color, 4);
+            vertexInfo.setBuffer(shader.getColorAttribIndex(), color, 4);
         }
 
         GLES20.glLineWidth(4.0f);
@@ -358,7 +370,7 @@ public class GLESMeshUtils {
         return vertexInfo;
     }
 
-    public static GLESVertexInfo createCube(float cubeSize,
+    public static GLESVertexInfo createCube(GLESShader shader, float cubeSize,
             boolean useNormal, boolean useTexCoord, boolean useColor) {
         float half = cubeSize * 0.5f;
 
@@ -401,7 +413,8 @@ public class GLESMeshUtils {
         };
 
         GLESVertexInfo vertexInfo = new GLESVertexInfo();
-        vertexInfo.setPositionBuffer(vertex, 3);
+
+        vertexInfo.setBuffer(shader.getPositionAttribIndex(), vertex, 3);
 
         short[] index = new short[] {
                 0, 1, 3, 1, 2, 3,
@@ -454,7 +467,7 @@ public class GLESMeshUtils {
                     0f, -1f, 0f
             };
 
-            vertexInfo.setNormalBuffer(normal, 3);
+            vertexInfo.setBuffer(shader.getNormalAttribIndex(), normal, 3);
         }
 
         if (useTexCoord == true) {
@@ -496,7 +509,7 @@ public class GLESMeshUtils {
                     0.0f, 0.0f
             };
 
-            vertexInfo.setTexCoordBuffer(texCoord, 2);
+            vertexInfo.setBuffer(shader.getTexCoordAttribIndex(), texCoord, 2);
         }
 
         if (useColor == true) {
@@ -538,7 +551,7 @@ public class GLESMeshUtils {
                     1f, 0f, 0f, 1f
             };
 
-            vertexInfo.setColorBuffer(color, 4);
+            vertexInfo.setBuffer(shader.getColorAttribIndex(), color, 4);
         }
 
         vertexInfo.setRenderType(RenderType.DRAW_ELEMENTS);
@@ -547,16 +560,17 @@ public class GLESMeshUtils {
         return vertexInfo;
     }
 
-    public static GLESVertexInfo createSphere(float radius,
+    public static GLESVertexInfo createSphere(GLESShader shader, float radius,
             int numOfVerticalLine,
             int numOfHorizontalLine, boolean useTexCoord, boolean useNormal,
             boolean useColor)
     {
-        return createSphere(radius, numOfVerticalLine, numOfHorizontalLine,
+        return createSphere(shader, radius, numOfVerticalLine,
+                numOfHorizontalLine,
                 useTexCoord, useNormal, useColor, 1f, 0f, 0f, 1f);
     }
 
-    public static GLESVertexInfo createSphere(float radius,
+    public static GLESVertexInfo createSphere(GLESShader shader, float radius,
             int numOfVerticalLine,
             int numOfHorizontalLine, boolean useTexCoord, boolean useNormal,
             boolean useColor, float r, float g, float b, float a)
@@ -620,18 +634,18 @@ public class GLESMeshUtils {
             }
         }
 
-        vertexInfo.setPositionBuffer(vertices, 3);
+        vertexInfo.setBuffer(shader.getPositionAttribIndex(), vertices, 3);
 
         if (useNormal == true) {
-            vertexInfo.setNormalBuffer(normal, 3);
+            vertexInfo.setBuffer(shader.getNormalAttribIndex(), normal, 3);
         }
 
         if (useTexCoord == true) {
-            vertexInfo.setTexCoordBuffer(texCoord, 2);
+            vertexInfo.setBuffer(shader.getTexCoordAttribIndex(), texCoord, 2);
         }
 
         if (useColor == true) {
-            vertexInfo.setColorBuffer(color, 4);
+            vertexInfo.setBuffer(shader.getColorAttribIndex(), color, 4);
         } else if (useTexCoord == false) {
             new IllegalArgumentException(
                     "Only one of useTexCoord and useColor should be true");

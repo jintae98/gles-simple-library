@@ -157,7 +157,7 @@ public class ColoredPointAdvRenderer extends SampleRenderer {
             mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 1, y);
         }
         mPosBuffer.position(0);
-        mVertexInfo.setPositionBuffer(mPosBuffer);
+        mVertexInfo.setBuffer(mShader.getPositionAttribIndex(), mPosBuffer);
 
         mView.requestRender();
     }
@@ -272,10 +272,12 @@ public class ColoredPointAdvRenderer extends SampleRenderer {
                 texCoord[yTexOffset + xTexOffset + 1] = t;
             }
         }
-        vertexInfo.setPositionBuffer(position, NUM_ELEMENT_OF_POSITION);
-        mPosBuffer = vertexInfo.getPositionBuffer();
+        int attribIndex = mShader.getPositionAttribIndex();
+        vertexInfo.setBuffer(attribIndex, position, NUM_ELEMENT_OF_POSITION);
+        mPosBuffer = (FloatBuffer) vertexInfo.getBuffer(attribIndex);
 
-        vertexInfo.setTexCoordBuffer(texCoord, NUM_ELEMENT_OF_TEXCOORD);
+        attribIndex = mShader.getTexCoordAttribIndex();
+        vertexInfo.setBuffer(attribIndex, texCoord, NUM_ELEMENT_OF_TEXCOORD);
 
         vertexInfo.setPrimitiveMode(PrimitiveMode.POINTS);
         vertexInfo.setRenderType(RenderType.DRAW_ARRAYS);

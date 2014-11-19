@@ -129,14 +129,14 @@ public class IR2Renderer extends SampleRenderer {
         makeInstanceDataBuffer();
 
         if (mVersion == Version.GLES_20) {
-            GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(0.1f,
-                    true, false, false);
+            GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(mShader, 
+                    0.1f, true, false, false);
             mObject.setVertexInfo(vertexInfo, true, true);
         } else {
             updateInstanceUniform();
 
-            GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(0.1f,
-                    true, false, false);
+            GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(mShader,
+                    0.1f, true, false, false);
             mObject.setVertexInfo(vertexInfo, true, true);
 
             vertexInfo.setRenderType(RenderType.DRAW_ELEMENTS_INSTANCED);

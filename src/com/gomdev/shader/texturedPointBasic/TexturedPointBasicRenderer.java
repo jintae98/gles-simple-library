@@ -135,7 +135,7 @@ public class TexturedPointBasicRenderer extends SampleRenderer implements
             mPosBuffer.put(i * NUM_ELEMENT_OF_POSITION + 1, y);
         }
         mPosBuffer.position(0);
-        mVertexInfo.setPositionBuffer(mPosBuffer);
+        mVertexInfo.setBuffer(mShader.getPositionAttribIndex(), mPosBuffer);
 
         mView.requestRender();
     }
@@ -212,8 +212,9 @@ public class TexturedPointBasicRenderer extends SampleRenderer implements
             size[i * NUM_ELEMENT_OF_SIZE] = basePointSize +
                     mRandom.nextFloat() * basePointSize * 2f;
         }
-        vertexInfo.setPositionBuffer(position, NUM_ELEMENT_OF_POSITION);
-        mPosBuffer = vertexInfo.getPositionBuffer();
+        int positionIndex = mShader.getPositionAttribIndex();
+        vertexInfo.setBuffer(positionIndex, position, NUM_ELEMENT_OF_POSITION);
+        mPosBuffer = (FloatBuffer) vertexInfo.getBuffer(positionIndex);
 
         mSizeBuffer = GLESUtils.makeFloatBuffer(size);
 
@@ -277,7 +278,7 @@ public class TexturedPointBasicRenderer extends SampleRenderer implements
     }
 
     @Override
-    public void setupVBO(GLESVertexInfo vertexInfo) {
+    public void setupVBO(GLESShader shader, GLESVertexInfo vertexInfo) {
 
     }
 

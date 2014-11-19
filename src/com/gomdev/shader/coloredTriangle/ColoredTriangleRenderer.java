@@ -84,7 +84,7 @@ public class ColoredTriangleRenderer extends SampleRenderer {
 
         mBasicObject.setCamera(camera);
 
-        GLESVertexInfo vertexInfo = GLESMeshUtils.createTriangle(
+        GLESVertexInfo vertexInfo = GLESMeshUtils.createTriangle(mBasicShader,
                 mScreenRatio * 2f - 0.1f, 2f - 0.1f, false, false, true, false,
                 0f, 0f, 1f);
         mBasicObject.setVertexInfo(vertexInfo, true, true);

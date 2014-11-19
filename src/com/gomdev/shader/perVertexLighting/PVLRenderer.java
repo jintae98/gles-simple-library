@@ -106,7 +106,7 @@ public class PVLRenderer extends SampleRenderer {
         {
             mCubeObject.setCamera(camera);
 
-            GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(
+            GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(mShader,
                     mScreenRatio * 0.5f, true, false, true);
             mCubeObject.setVertexInfo(vertexInfo, true, true);
         }
@@ -114,8 +114,9 @@ public class PVLRenderer extends SampleRenderer {
         {
             mLightObject.setCamera(camera);
 
-            GLESVertexInfo vertexInfo = GLESMeshUtils.createSphere(0.1f, 10,
-                    10, false, true, true);
+            GLESVertexInfo vertexInfo = GLESMeshUtils.createSphere(mShader,
+                    0.1f, 10, 10, 
+                    false, true, true);
             mLightObject.setVertexInfo(vertexInfo, true, false);
         }
 

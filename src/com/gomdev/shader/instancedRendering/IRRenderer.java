@@ -121,8 +121,8 @@ public class IRRenderer extends SampleRenderer implements GLESRendererListener {
 
         makeTransBuffer();
 
-        GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(0.1f,
-                true, false, true);
+        GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(mShader,
+                0.1f, true, false, true);
         mObject.setVertexInfo(vertexInfo, true, true);
 
         if (mVersion == Version.GLES_30) {
@@ -250,7 +250,7 @@ public class IRRenderer extends SampleRenderer implements GLESRendererListener {
     }
 
     @Override
-    public void setupVBO(GLESVertexInfo vertexInfo) {
+    public void setupVBO(GLESShader shader, GLESVertexInfo vertexInfo) {
         if (mVersion == Version.GLES_20) {
             return;
         }

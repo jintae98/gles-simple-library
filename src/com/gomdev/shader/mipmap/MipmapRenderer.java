@@ -94,9 +94,9 @@ public class MipmapRenderer extends SampleRenderer {
             mNonMipmap.setCamera(camera);
 
             GLESVertexInfo vertexInfo = GLESMeshUtils
-                    .createPlane(mScreenRatio * 2f, mScreenRatio * 2f, false,
-                            true,
-                            false, false);
+                    .createPlane(mShader, 
+                            mScreenRatio * 2f, mScreenRatio * 2f, 
+                            false, true, false, false);
             mNonMipmap.setVertexInfo(vertexInfo, true, true);
 
             GLESTexture texture = new GLESTexture(bitmap);
@@ -109,9 +109,9 @@ public class MipmapRenderer extends SampleRenderer {
             mMipmap.setCamera(camera);
 
             GLESVertexInfo vertexInfo = GLESMeshUtils
-                    .createPlane(mScreenRatio * 2f, mScreenRatio * 2f, false,
-                            true,
-                            false, false);
+                    .createPlane(mShader,
+                            mScreenRatio * 2f, mScreenRatio * 2f, 
+                            false, true, false, false);
             mMipmap.setVertexInfo(vertexInfo, true, true);
 
             GLESTexture texture = new GLESTexture(bitmap);

@@ -88,7 +88,7 @@ public abstract class GLESRenderer {
         disableVertexAttribute(object);
     }
 
-    public abstract void setupVBO(GLESVertexInfo vertexInfo);
+    public abstract void setupVBO(GLESShader shader, GLESVertexInfo vertexInfo);
 
     protected abstract void applyCamera(GLESObject object);
 

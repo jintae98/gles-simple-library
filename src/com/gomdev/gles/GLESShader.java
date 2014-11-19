@@ -3,6 +3,8 @@ package com.gomdev.gles;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.gomdev.gles.GLESConfig.Version;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.opengl.GLES20;
@@ -15,6 +17,8 @@ public class GLESShader {
 
     private final Context mContext;
     private final Resources mRes;
+
+    private final Version mVersion;
 
     private int mProgram;
 
@@ -40,6 +44,8 @@ public class GLESShader {
             throw new IllegalStateException("glCreateProgram() error="
                     + GLES20.glGetError());
         }
+
+        mVersion = GLESContext.getInstance().getVersion();
     }
 
     public int getProgram() {
@@ -47,32 +53,32 @@ public class GLESShader {
     }
 
     public int getPositionAttribIndex() {
-        if (mPositionIndex == -1) {
-            Log.e(TAG, "getPositionAttribIndex() mPositionIndex is not set");
+        if (mVersion == Version.GLES_30) {
+            return GLESConfig.POSITION_LOCATION;
         }
 
         return mPositionIndex;
     }
 
     public int getColorAttribIndex() {
-        if (mColorIndex == -1) {
-            Log.e(TAG, "getColorAttribIndex() mColorIndex is not set");
+        if (mVersion == Version.GLES_30) {
+            return GLESConfig.COLOR_LOCATION;
         }
 
         return mColorIndex;
     }
 
     public int getNormalAttribIndex() {
-        if (mNormalIndex == -1) {
-            Log.e(TAG, "getNormalAttribIndex() mNormalIndex is not set");
+        if (mVersion == Version.GLES_30) {
+            return GLESConfig.NORMAL_LOCATION;
         }
 
         return mNormalIndex;
     }
 
     public int getTexCoordAttribIndex() {
-        if (mTexCoordIndex == -1) {
-            Log.e(TAG, "getTexCoordAttribIndex() mTexCoordIndex is not set");
+        if (mVersion == Version.GLES_30) {
+            return GLESConfig.TEXCOORD_LOCATION;
         }
 
         return mTexCoordIndex;

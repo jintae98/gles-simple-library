@@ -107,8 +107,9 @@ public class WhiteholeRenderer extends SampleRenderer {
         mWhiteholeObject.setCamera(camera);
         mWhiteholeObject.setScreenSize(width, height);
 
-        GLESVertexInfo vertexInfo = GLESMeshUtils.createPlaneMesh(mWidth,
-                mHeight, WhiteholeConfig.MESH_RESOLUTION, true, false);
+        GLESVertexInfo vertexInfo = GLESMeshUtils.createPlaneMesh(
+                mShaderWhitehole,
+                mWidth, mHeight, WhiteholeConfig.MESH_RESOLUTION, true, false);
         mWhiteholeObject.setVertexInfo(vertexInfo, true, true);
     }
 

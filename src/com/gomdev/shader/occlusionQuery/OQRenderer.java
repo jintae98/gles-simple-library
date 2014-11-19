@@ -157,8 +157,8 @@ public class OQRenderer extends SampleRenderer {
 
         makeTransformInfo();
 
-        GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(0.1f,
-                true, true, false);
+        GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(mShader,
+                0.1f, true, true, false);
         mObject.setVertexInfo(vertexInfo, true, true);
     }
 

@@ -4,7 +4,7 @@ public class GLESParticle {
     public float mX = 0f;
     public float mY = 0f;
     public float mZ = 0f;
-    
+
     public float mR = 1f;
     public float mG = 1f;
     public float mB = 1f;

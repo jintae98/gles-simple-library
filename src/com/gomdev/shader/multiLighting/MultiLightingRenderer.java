@@ -132,7 +132,7 @@ public class MultiLightingRenderer extends SampleRenderer {
         {
             mCube.setCamera(camera);
 
-            GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(
+            GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(mShader,
                     mScreenRatio * 0.5f, true, false, true);
             mCube.setVertexInfo(vertexInfo, true, true);
         }
@@ -140,16 +140,20 @@ public class MultiLightingRenderer extends SampleRenderer {
         {
             mLight1.setCamera(camera);
 
-            GLESVertexInfo vertexInfo = GLESMeshUtils.createSphere(0.1f, 10,
-                    10, false, true, true, 1f, 0f, 0f, 1f);
+            GLESVertexInfo vertexInfo = GLESMeshUtils.createSphere(mShader,
+                    0.1f, 10, 10, 
+                    false, true, true, 
+                    1f, 0f, 0f, 1f);
             mLight1.setVertexInfo(vertexInfo, true, false);
         }
 
         {
             mLight2.setCamera(camera);
 
-            GLESVertexInfo vertexInfo = GLESMeshUtils.createSphere(0.04f, 10,
-                    10, false, true, true, 0, 1f, 0f, 1f);
+            GLESVertexInfo vertexInfo = GLESMeshUtils.createSphere(mShader,
+                    0.04f, 10, 10, 
+                    false, true, true, 
+                    0, 1f, 0f, 1f);
             mLight2.setVertexInfo(vertexInfo, true, false);
         }
 

@@ -87,7 +87,7 @@ public class TexturedRectangleRenderer extends SampleRenderer {
 
         mTextureObject.setCamera(camera);
 
-        GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(
+        GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(mTextureShader,
                 mScreenRatio * 2f - 0.1f, 2f - 0.1f, false, true, false, false);
 
         mTextureObject.setVertexInfo(vertexInfo, true, true);

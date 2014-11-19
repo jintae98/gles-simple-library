@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.gomdev.gles.GLESConfig;
 import com.gomdev.gles.GLESObject;
+import com.gomdev.gles.GLESShader;
 import com.gomdev.gles.GLESVertexInfo;
 import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
 import com.gomdev.gles.gles20.GLES20Renderer;
@@ -22,24 +23,28 @@ public class GLES30Renderer extends GLES20Renderer {
     }
 
     @Override
-    public void setupVBO(GLESVertexInfo vertexInfo) {
+    public void setupVBO(GLESShader shader, GLESVertexInfo vertexInfo) {
         int[] ids = new int[1];
         GLES30.glGenBuffers(1, ids, 0);
-        vertexInfo.setPositionVBOID(ids[0]);
+
+        int attribIndex = shader.getPositionAttribIndex();
+        vertexInfo.setVBOID(attribIndex, ids[0]);
 
         GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, ids[0]);
-        FloatBuffer floatBuffer = vertexInfo.getPositionBuffer();
+        FloatBuffer floatBuffer = (FloatBuffer) vertexInfo
+                .getBuffer(attribIndex);
         GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER,
                 floatBuffer.capacity() * GLESConfig.FLOAT_SIZE_BYTES,
                 floatBuffer,
                 GLES30.GL_STATIC_DRAW);
         GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0);
 
-        if (vertexInfo.useTexCoord() == true) {
+        attribIndex = shader.getTexCoordAttribIndex();
+        if (vertexInfo.useAttrib(attribIndex) == true) {
             GLES30.glGenBuffers(1, ids, 0);
-            vertexInfo.setTexCoordVBOID(ids[0]);
+            vertexInfo.setVBOID(attribIndex, ids[0]);
             GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, ids[0]);
-            floatBuffer = vertexInfo.getTexCoordBuffer();
+            floatBuffer = (FloatBuffer) vertexInfo.getBuffer(attribIndex);
             GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER,
                     floatBuffer.capacity() * GLESConfig.FLOAT_SIZE_BYTES,
                     floatBuffer,
@@ -47,11 +52,12 @@ public class GLES30Renderer extends GLES20Renderer {
             GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0);
         }
 
-        if (vertexInfo.useNormal() == true) {
+        attribIndex = shader.getNormalAttribIndex();
+        if (vertexInfo.useAttrib(attribIndex) == true) {
             GLES30.glGenBuffers(1, ids, 0);
-            vertexInfo.setNormalVBOID(ids[0]);
+            vertexInfo.setVBOID(attribIndex, ids[0]);
             GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, ids[0]);
-            floatBuffer = vertexInfo.getNormalBuffer();
+            floatBuffer = (FloatBuffer) vertexInfo.getBuffer(attribIndex);
             GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER,
                     floatBuffer.capacity() * GLESConfig.FLOAT_SIZE_BYTES,
                     floatBuffer,
@@ -59,11 +65,12 @@ public class GLES30Renderer extends GLES20Renderer {
             GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0);
         }
 
-        if (vertexInfo.useColor() == true) {
+        attribIndex = shader.getColorAttribIndex();
+        if (vertexInfo.useAttrib(attribIndex) == true) {
             GLES30.glGenBuffers(1, ids, 0);
-            vertexInfo.setColorVBOID(ids[0]);
+            vertexInfo.setVBOID(attribIndex, ids[0]);
             GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, ids[0]);
-            floatBuffer = vertexInfo.getColorBuffer();
+            floatBuffer = (FloatBuffer) vertexInfo.getBuffer(attribIndex);
             GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER,
                     floatBuffer.capacity() * GLESConfig.FLOAT_SIZE_BYTES,
                     floatBuffer,
@@ -72,7 +79,7 @@ public class GLES30Renderer extends GLES20Renderer {
         }
 
         if (mListener != null) {
-            mListener.setupVBO(vertexInfo);
+            mListener.setupVBO(null, vertexInfo);
         }
 
         if (vertexInfo.useIndex() == true) {
@@ -90,6 +97,7 @@ public class GLES30Renderer extends GLES20Renderer {
 
     public void setupVAO(GLESObject object) {
         GLESVertexInfo vertexInfo = object.getVertexInfo();
+        GLESShader shader = object.getShader();
         boolean useVBO = object.useVBO();
 
         int[] vaoIDs = new int[1];
@@ -102,12 +110,14 @@ public class GLES30Renderer extends GLES20Renderer {
                     vertexInfo.getIndexVBOID());
         }
 
-        int numOfElements = vertexInfo.getNumOfPositionElements();
+        int attribIndex = shader.getPositionAttribIndex();
+
+        int numOfElements = vertexInfo.getNumOfElements(attribIndex);
         GLES30.glEnableVertexAttribArray(GLESConfig.POSITION_LOCATION);
 
         if (useVBO == true) {
             GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER,
-                    vertexInfo.getPositionVBOID());
+                    vertexInfo.getVBOID(attribIndex));
             GLES30.glVertexAttribPointer(GLESConfig.POSITION_LOCATION,
                     numOfElements, GLES30.GL_FLOAT, false,
                     numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
@@ -116,16 +126,17 @@ public class GLES30Renderer extends GLES20Renderer {
             GLES30.glVertexAttribPointer(GLESConfig.POSITION_LOCATION,
                     numOfElements, GLES30.GL_FLOAT, false,
                     numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
-                    vertexInfo.getPositionBuffer());
+                    vertexInfo.getBuffer(attribIndex));
         }
 
-        if (vertexInfo.useTexCoord() == true) {
-            numOfElements = vertexInfo.getNumOfTexCoordElements();
+        attribIndex = shader.getTexCoordAttribIndex();
+        if (vertexInfo.useAttrib(attribIndex) == true) {
+            numOfElements = vertexInfo.getNumOfElements(attribIndex);
             GLES30.glEnableVertexAttribArray(GLESConfig.TEXCOORD_LOCATION);
 
             if (useVBO == true) {
                 GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER,
-                        vertexInfo.getTexCoordVBOID());
+                        vertexInfo.getVBOID(attribIndex));
                 GLES30.glVertexAttribPointer(GLESConfig.TEXCOORD_LOCATION,
                         numOfElements, GLES30.GL_FLOAT, false,
                         numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
@@ -134,17 +145,18 @@ public class GLES30Renderer extends GLES20Renderer {
                 GLES30.glVertexAttribPointer(GLESConfig.TEXCOORD_LOCATION,
                         numOfElements, GLES30.GL_FLOAT, false,
                         numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
-                        vertexInfo.getTexCoordBuffer());
+                        vertexInfo.getBuffer(attribIndex));
             }
         }
 
-        if (vertexInfo.useNormal() == true) {
-            numOfElements = vertexInfo.getNumOfNormalElements();
+        attribIndex = shader.getNormalAttribIndex();
+        if (vertexInfo.useAttrib(attribIndex) == true) {
+            numOfElements = vertexInfo.getNumOfElements(attribIndex);
             GLES30.glEnableVertexAttribArray(GLESConfig.NORMAL_LOCATION);
 
             if (useVBO == true) {
                 GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER,
-                        vertexInfo.getNormalVBOID());
+                        vertexInfo.getVBOID(attribIndex));
                 GLES30.glVertexAttribPointer(GLESConfig.NORMAL_LOCATION,
                         numOfElements, GLES30.GL_FLOAT, false,
                         numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
@@ -153,17 +165,18 @@ public class GLES30Renderer extends GLES20Renderer {
                 GLES30.glVertexAttribPointer(GLESConfig.NORMAL_LOCATION,
                         numOfElements, GLES30.GL_FLOAT, false,
                         numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
-                        vertexInfo.getNormalBuffer());
+                        vertexInfo.getBuffer(attribIndex));
             }
         }
 
-        if (vertexInfo.useColor() == true) {
-            numOfElements = vertexInfo.getNumOfColorElements();
+        attribIndex = shader.getColorAttribIndex();
+        if (vertexInfo.useAttrib(attribIndex) == true) {
+            numOfElements = vertexInfo.getNumOfElements(attribIndex);
             GLES30.glEnableVertexAttribArray(GLESConfig.COLOR_LOCATION);
 
             if (useVBO == true) {
                 GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER,
-                        vertexInfo.getColorVBOID());
+                        vertexInfo.getVBOID(attribIndex));
                 GLES30.glVertexAttribPointer(GLESConfig.COLOR_LOCATION,
                         numOfElements, GLES30.GL_FLOAT, false,
                         numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
@@ -172,7 +185,7 @@ public class GLES30Renderer extends GLES20Renderer {
                 GLES30.glVertexAttribPointer(GLESConfig.COLOR_LOCATION,
                         numOfElements, GLES30.GL_FLOAT, false,
                         numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
-                        vertexInfo.getColorBuffer());
+                        vertexInfo.getBuffer(attribIndex));
             }
         }
 
@@ -186,6 +199,7 @@ public class GLES30Renderer extends GLES20Renderer {
     @Override
     protected void enableVertexAttribute(GLESObject object) {
         GLESVertexInfo vertexInfo = object.getVertexInfo();
+        GLESShader shader = object.getShader();
 
         boolean useVBO = object.useVBO();
         boolean useVAO = object.useVAO();
@@ -194,22 +208,25 @@ public class GLES30Renderer extends GLES20Renderer {
             return;
         }
 
+        int attribIndex = shader.getPositionAttribIndex();
+
         if (useVBO == true) {
-            int id = vertexInfo.getPositionVBOID();
+            int id = vertexInfo.getVBOID(attribIndex);
             GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, id);
 
-            int numOfElements = vertexInfo.getNumOfPositionElements();
+            int numOfElements = vertexInfo.getNumOfElements(attribIndex);
             GLES30.glVertexAttribPointer(GLESConfig.POSITION_LOCATION,
                     numOfElements, GLES30.GL_FLOAT, false,
                     numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
                     0);
             GLES30.glEnableVertexAttribArray(GLESConfig.POSITION_LOCATION);
 
-            if (vertexInfo.useNormal() == true) {
-                id = vertexInfo.getNormalVBOID();
+            attribIndex = shader.getNormalAttribIndex();
+            if (vertexInfo.useAttrib(attribIndex) == true) {
+                id = vertexInfo.getVBOID(attribIndex);
                 GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, id);
 
-                numOfElements = vertexInfo.getNumOfNormalElements();
+                numOfElements = vertexInfo.getNumOfElements(attribIndex);
                 GLES30.glVertexAttribPointer(GLESConfig.NORMAL_LOCATION,
                         numOfElements, GLES30.GL_FLOAT, false,
                         numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
@@ -217,11 +234,12 @@ public class GLES30Renderer extends GLES20Renderer {
                 GLES30.glEnableVertexAttribArray(GLESConfig.NORMAL_LOCATION);
             }
 
-            if (vertexInfo.useTexCoord() == true) {
-                id = vertexInfo.getTexCoordVBOID();
+            attribIndex = shader.getTexCoordAttribIndex();
+            if (vertexInfo.useAttrib(attribIndex) == true) {
+                id = vertexInfo.getVBOID(attribIndex);
                 GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, id);
 
-                numOfElements = vertexInfo.getNumOfTexCoordElements();
+                numOfElements = vertexInfo.getNumOfElements(attribIndex);
                 GLES30.glVertexAttribPointer(GLESConfig.TEXCOORD_LOCATION,
                         numOfElements, GLES30.GL_FLOAT, false,
                         numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
@@ -229,11 +247,12 @@ public class GLES30Renderer extends GLES20Renderer {
                 GLES30.glEnableVertexAttribArray(GLESConfig.TEXCOORD_LOCATION);
             }
 
-            if (vertexInfo.useColor() == true) {
-                id = vertexInfo.getColorVBOID();
+            attribIndex = shader.getColorAttribIndex();
+            if (vertexInfo.useAttrib(attribIndex) == true) {
+                id = vertexInfo.getVBOID(attribIndex);
                 GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, id);
 
-                numOfElements = vertexInfo.getNumOfColorElements();
+                numOfElements = vertexInfo.getNumOfElements(attribIndex);
                 GLES30.glVertexAttribPointer(GLESConfig.COLOR_LOCATION,
                         numOfElements, GLES30.GL_FLOAT, false,
                         numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
@@ -243,37 +262,40 @@ public class GLES30Renderer extends GLES20Renderer {
 
             GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0);
         } else {
-            int numOfElements = vertexInfo.getNumOfPositionElements();
+            int numOfElements = vertexInfo.getNumOfElements(attribIndex);
             GLES30.glVertexAttribPointer(GLESConfig.POSITION_LOCATION,
                     numOfElements, GLES30.GL_FLOAT, false,
                     numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
-                    vertexInfo.getPositionBuffer());
+                    vertexInfo.getBuffer(attribIndex));
             GLES30.glEnableVertexAttribArray(GLESConfig.POSITION_LOCATION);
 
-            if (vertexInfo.useNormal() == true) {
-                numOfElements = vertexInfo.getNumOfNormalElements();
+            attribIndex = shader.getNormalAttribIndex();
+            if (vertexInfo.useAttrib(attribIndex) == true) {
+                numOfElements = vertexInfo.getNumOfElements(attribIndex);
                 GLES30.glVertexAttribPointer(GLESConfig.NORMAL_LOCATION,
                         numOfElements, GLES30.GL_FLOAT, false,
                         numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
-                        vertexInfo.getNormalBuffer());
+                        vertexInfo.getBuffer(attribIndex));
                 GLES30.glEnableVertexAttribArray(GLESConfig.NORMAL_LOCATION);
             }
 
-            if (vertexInfo.useTexCoord() == true) {
-                numOfElements = vertexInfo.getNumOfTexCoordElements();
+            attribIndex = shader.getTexCoordAttribIndex();
+            if (vertexInfo.useAttrib(attribIndex) == true) {
+                numOfElements = vertexInfo.getNumOfElements(attribIndex);
                 GLES30.glVertexAttribPointer(GLESConfig.TEXCOORD_LOCATION,
                         numOfElements, GLES30.GL_FLOAT, false,
                         numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
-                        vertexInfo.getTexCoordBuffer());
+                        vertexInfo.getBuffer(attribIndex));
                 GLES30.glEnableVertexAttribArray(GLESConfig.TEXCOORD_LOCATION);
             }
 
-            if (vertexInfo.useColor() == true) {
-                numOfElements = vertexInfo.getNumOfColorElements();
+            attribIndex = shader.getColorAttribIndex();
+            if (vertexInfo.useAttrib(attribIndex) == true) {
+                numOfElements = vertexInfo.getNumOfElements(attribIndex);
                 GLES30.glVertexAttribPointer(GLESConfig.COLOR_LOCATION,
                         numOfElements, GLES30.GL_FLOAT, false,
                         numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
-                        vertexInfo.getColorBuffer());
+                        vertexInfo.getBuffer(attribIndex));
                 GLES30.glEnableVertexAttribArray(GLESConfig.COLOR_LOCATION);
             }
         }
@@ -286,6 +308,7 @@ public class GLES30Renderer extends GLES20Renderer {
     @Override
     protected void disableVertexAttribute(GLESObject object) {
         GLESVertexInfo vertexInfo = object.getVertexInfo();
+        GLESShader shader = object.getShader();
 
         boolean useVAO = object.useVAO();
         if (useVAO == true) {
@@ -295,15 +318,18 @@ public class GLES30Renderer extends GLES20Renderer {
 
         GLES30.glDisableVertexAttribArray(GLESConfig.POSITION_LOCATION);
 
-        if (vertexInfo.useNormal() == true) {
+        int attribIndex = shader.getNormalAttribIndex();
+        if (vertexInfo.useAttrib(attribIndex) == true) {
             GLES30.glDisableVertexAttribArray(GLESConfig.NORMAL_LOCATION);
         }
 
-        if (vertexInfo.useTexCoord() == true) {
+        attribIndex = shader.getTexCoordAttribIndex();
+        if (vertexInfo.useAttrib(attribIndex) == true) {
             GLES30.glDisableVertexAttribArray(GLESConfig.TEXCOORD_LOCATION);
         }
 
-        if (vertexInfo.useColor() == true) {
+        attribIndex = shader.getColorAttribIndex();
+        if (vertexInfo.useAttrib(attribIndex) == true) {
             GLES30.glDisableVertexAttribArray(GLESConfig.COLOR_LOCATION);
         }
 
@@ -315,11 +341,14 @@ public class GLES30Renderer extends GLES20Renderer {
     @Override
     protected void drawArraysInstanced(GLESObject object) {
         GLESVertexInfo vertexInfo = object.getVertexInfo();
+        GLESShader shader = object.getShader();
         PrimitiveMode mode = vertexInfo.getPrimitiveMode();
         int instanceCount = vertexInfo.getNumOfInstance();
 
-        int numOfVertex = vertexInfo.getPositionBuffer().capacity()
-                / vertexInfo.getNumOfPositionElements();
+        int positionIndex = shader.getPositionAttribIndex();
+
+        int numOfVertex = vertexInfo.getBuffer(positionIndex).capacity()
+                / vertexInfo.getNumOfElements(positionIndex);
 
         switch (mode) {
         case TRIANGLES:

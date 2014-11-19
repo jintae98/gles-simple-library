@@ -144,8 +144,11 @@ public class ColoredPointBlendingRenderer extends SampleRenderer implements
 
     private void update() {
 
-        FloatBuffer positionBuffer = mVertexInfo.getPositionBuffer();
-        FloatBuffer colorBuffer = mVertexInfo.getColorBuffer();
+        int positionIndex = mParticleShader.getPositionAttribIndex();
+        FloatBuffer positionBuffer = (FloatBuffer) mVertexInfo
+                .getBuffer(positionIndex);
+        FloatBuffer colorBuffer = (FloatBuffer) mVertexInfo
+                .getBuffer(mParticleShader.getColorAttribIndex());
 
         if (mIsParticlesSorted == true) {
             for (int i = 0; i < NUM_OF_PARTICLES; i++) {
@@ -203,7 +206,7 @@ public class ColoredPointBlendingRenderer extends SampleRenderer implements
         mVertexInfo = createParticles(width, height);
         mParticleObject.setVertexInfo(mVertexInfo, false, false);
 
-        GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(
+        GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(mCubeShader,
                 mScreenRatio * 0.5f, false, false, true);
         mCubeObject.setVertexInfo(vertexInfo, false, false);
     }
@@ -279,8 +282,13 @@ public class ColoredPointBlendingRenderer extends SampleRenderer implements
             mParticles.add(particle);
             mSortedParticles.add(particle);
         }
-        mVertexInfo.setPositionBuffer(position, NUM_ELEMENT_OF_POSITION);
-        mVertexInfo.setColorBuffer(color, NUM_ELEMENT_OF_COLOR);
+
+        int positionIndex = mParticleShader.getPositionAttribIndex();
+        mVertexInfo.setBuffer(positionIndex, position,
+                NUM_ELEMENT_OF_POSITION);
+
+        mVertexInfo.setBuffer(mParticleShader.getColorAttribIndex(), color,
+                NUM_ELEMENT_OF_COLOR);
 
         mPointSizeBuffer = GLESUtils.makeFloatBuffer(size);
 
@@ -508,7 +516,7 @@ public class ColoredPointBlendingRenderer extends SampleRenderer implements
     }
 
     @Override
-    public void setupVBO(GLESVertexInfo vertexInfo) {
+    public void setupVBO(GLESShader shader, GLESVertexInfo vertexInfo) {
 
     }
 

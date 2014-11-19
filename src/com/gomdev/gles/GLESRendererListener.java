@@ -1,7 +1,7 @@
 package com.gomdev.gles;
 
 public interface GLESRendererListener {
-    public void setupVBO(GLESVertexInfo vertexInfo);
+    public void setupVBO(GLESShader shader, GLESVertexInfo vertexInfo);
 
     public void setupVAO(GLESObject object);
 

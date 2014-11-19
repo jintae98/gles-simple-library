@@ -1,7 +1,9 @@
 package com.gomdev.gles;
 
-import java.nio.FloatBuffer;
+import java.nio.Buffer;
 import java.nio.ShortBuffer;
+
+import android.util.SparseArray;
 
 public class GLESVertexInfo {
     static final String CLASS = "GLESVertexInfo";
@@ -25,30 +27,20 @@ public class GLESVertexInfo {
         DRAW_ARRAYS_INSTANCED,
     }
 
+    class AttributeInfo {
+        int mIndex = -1;
+        Buffer mBuffer = null;
+        int mVBOID = -1;
+        int mNumOfElements = 0;
+    }
+
+    private SparseArray<AttributeInfo> mAttribs = new SparseArray<AttributeInfo>();
+
     private PrimitiveMode mPrimitiveMode = PrimitiveMode.TRIANGLES;
     private RenderType mRenderType = RenderType.DRAW_ELEMENTS;
     private int mNumOfInstance = 0;
 
-    private boolean mUseTexture = false;
-    private boolean mUseNormal = false;
-    private boolean mUseColor = false;
     private boolean mUseIndex = false;
-
-    private FloatBuffer mPositionBuffer = null;
-    private int mNumOfPositionElements = 0;
-    private int mPositionVBOID = -1;
-
-    private FloatBuffer mTexCoordBuffer = null;
-    private int mNumOfTexCoordElements = 0;
-    private int mTexCoordVBOID = -1;
-
-    private FloatBuffer mNormalBuffer = null;
-    private int mNumOfNormalElements = 0;
-    private int mNormalVBOID = -1;
-
-    private FloatBuffer mColorBuffer = null;
-    private int mNumOfColorElements = 0;
-    private int mColorVBOID = -1;
 
     private ShortBuffer mIndexBuffer = null;
     private int mIndexVBOID = -1;
@@ -83,107 +75,70 @@ public class GLESVertexInfo {
         return mNumOfInstance;
     }
 
-    public void setPositionBuffer(float[] position, int numOfElements) {
-        mPositionBuffer = GLESUtils.makeFloatBuffer(position);
-        mNumOfPositionElements = numOfElements;
+    public void setBuffer(int index, float[] data, int numOfElements) {
+        AttributeInfo attribInfo = new AttributeInfo();
+        attribInfo.mIndex = index;
+        attribInfo.mBuffer = GLESUtils.makeFloatBuffer(data);
+        attribInfo.mNumOfElements = numOfElements;
+
+        mAttribs.append(index, attribInfo);
     }
 
-    public void setPositionBuffer(FloatBuffer buffer) {
-        mPositionBuffer = buffer;
+    public void setBuffer(int index, Buffer buffer) {
+        AttributeInfo attribInfo = mAttribs.get(index);
+
+        if (attribInfo == null) {
+            throw new IllegalArgumentException("index=" + index
+                    + " AttribInfo is null");
+        }
+
+        attribInfo.mIndex = index;
+        attribInfo.mBuffer = buffer;
     }
 
-    public FloatBuffer getPositionBuffer() {
-        return mPositionBuffer;
+    public Buffer getBuffer(int index) {
+        AttributeInfo attribInfo = mAttribs.get(index);
+        if (attribInfo == null) {
+            throw new IllegalArgumentException("index=" + index
+                    + " AttribInfo is null");
+        }
+        return attribInfo.mBuffer;
     }
 
-    public int getNumOfPositionElements() {
-        return mNumOfPositionElements;
+    public int getNumOfElements(int index) {
+        AttributeInfo attribInfo = mAttribs.get(index);
+        if (attribInfo == null) {
+            throw new IllegalArgumentException("index=" + index
+                    + " AttribInfo is null");
+        }
+        return attribInfo.mNumOfElements;
     }
 
-    public void setPositionVBOID(int id) {
-        mPositionVBOID = id;
+    public void setVBOID(int index, int vboID) {
+        AttributeInfo attribInfo = mAttribs.get(index);
+        if (attribInfo == null) {
+            throw new IllegalArgumentException("index=" + index
+                    + " AttribInfo is null");
+        }
+        attribInfo.mVBOID = vboID;
     }
 
-    public int getPositionVBOID() {
-        return mPositionVBOID;
+    public int getVBOID(int index) {
+        AttributeInfo attribInfo = mAttribs.get(index);
+        if (attribInfo == null) {
+            throw new IllegalArgumentException("index=" + index
+                    + " AttribInfo is null");
+        }
+        return attribInfo.mVBOID;
     }
 
-    public void setTexCoordBuffer(float[] texCoord, int numOfElements) {
-        mTexCoordBuffer = GLESUtils.makeFloatBuffer(texCoord);
-        mNumOfTexCoordElements = numOfElements;
-        mUseTexture = true;
-    }
+    public boolean useAttrib(int index) {
+        AttributeInfo attribInfo = mAttribs.get(index);
+        if (attribInfo == null) {
+            return false;
+        }
 
-    public FloatBuffer getTexCoordBuffer() {
-        return mTexCoordBuffer;
-    }
-
-    public int getNumOfTexCoordElements() {
-        return mNumOfTexCoordElements;
-    }
-
-    public boolean useTexCoord() {
-        return mUseTexture;
-    }
-
-    public void setTexCoordVBOID(int id) {
-        mTexCoordVBOID = id;
-    }
-
-    public int getTexCoordVBOID() {
-        return mTexCoordVBOID;
-    }
-
-    public void setNormalBuffer(float[] normal, int numOfElements) {
-        mNormalBuffer = GLESUtils.makeFloatBuffer(normal);
-        mNumOfNormalElements = numOfElements;
-        mUseNormal = true;
-    }
-
-    public FloatBuffer getNormalBuffer() {
-        return mNormalBuffer;
-    }
-
-    public int getNumOfNormalElements() {
-        return mNumOfNormalElements;
-    }
-
-    public boolean useNormal() {
-        return mUseNormal;
-    }
-
-    public void setNormalVBOID(int id) {
-        mNormalVBOID = id;
-    }
-
-    public int getNormalVBOID() {
-        return mNormalVBOID;
-    }
-
-    public void setColorBuffer(float[] color, int numOfElements) {
-        mColorBuffer = GLESUtils.makeFloatBuffer(color);
-        mNumOfColorElements = numOfElements;
-        mUseColor = true;
-    }
-
-    public FloatBuffer getColorBuffer() {
-        return mColorBuffer;
-    }
-
-    public int getNumOfColorElements() {
-        return mNumOfColorElements;
-    }
-
-    public boolean useColor() {
-        return mUseColor;
-    }
-
-    public void setColorVBOID(int id) {
-        mColorVBOID = id;
-    }
-
-    public int getColorVBOID() {
-        return mColorVBOID;
+        return true;
     }
 
     public void setIndexBuffer(short[] index) {

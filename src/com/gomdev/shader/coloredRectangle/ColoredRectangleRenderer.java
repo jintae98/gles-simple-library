@@ -84,7 +84,7 @@ public class ColoredRectangleRenderer extends SampleRenderer {
 
         mBasicObject.setCamera(camera);
 
-        GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(
+        GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(mBasicShader, 
                 mScreenRatio * 2f - 0.1f, 2f - 0.1f, false, false, true, false,
                 1f, 0f, 0f);
         mBasicObject.setVertexInfo(vertexInfo, true, true);
