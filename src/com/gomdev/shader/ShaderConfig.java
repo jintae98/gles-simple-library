@@ -29,3 +29,10 @@ public class ShaderConfig {
 
     public static final boolean ENABLE_AD = true;
 }
+
+enum GLES_VERSION {
+    GLES_10,
+    GLES_20,
+    GLES_30,
+    GLES_31
+}

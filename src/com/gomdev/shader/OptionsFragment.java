@@ -46,15 +46,11 @@ public class OptionsFragment extends MainFragment {
         }
     }
 
-    public static final Options[] OPTIONS = new Options[] {
-            Options.SHOW_INFO,
-            Options.USE_GLES30,
-            Options.SHOW_FPS
-    };
+    public static Options[] sOptions = null;
 
     private ArrayList<String> mOptions = new ArrayList<String>();
     private ArrayAdapter<String> mAdapter = null;
-    private int mNumOfOptions = OPTIONS.length;
+    private int mNumOfOptions = 0;
 
     private SharedPreferences mPref = null;
     private SharedPreferences.Editor mPrefEditor = null;
@@ -65,6 +61,21 @@ public class OptionsFragment extends MainFragment {
         if (DEBUG) {
             Log.d(TAG, "onCreateView() " + this);
         }
+
+        if (ShaderUtils.getGLESVersion(getActivity()) == GLES_VERSION.GLES_20) {
+            sOptions = new Options[] {
+                    Options.SHOW_INFO,
+                    Options.SHOW_FPS
+            };
+        } else {
+            sOptions = new Options[] {
+                    Options.SHOW_INFO,
+                    Options.USE_GLES30,
+                    Options.SHOW_FPS
+            };
+        }
+
+        mNumOfOptions = sOptions.length;
 
         mPref = getActivity().getSharedPreferences(ShaderConfig.PREF_NAME, 0);
         mPrefEditor = mPref.edit();
@@ -92,7 +103,7 @@ public class OptionsFragment extends MainFragment {
         final ShaderContext context = ShaderContext.getInstance();
 
         for (int i = 0; i < mNumOfOptions; i++) {
-            mOptions.add(OPTIONS[i].getTitle());
+            mOptions.add(sOptions[i].getTitle());
         }
 
         mAdapter = new ArrayAdapter<String>(getActivity(),
@@ -108,7 +119,7 @@ public class OptionsFragment extends MainFragment {
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
                 boolean isChecked = ((CheckedTextView) view).isChecked();
-                Options option = OPTIONS[position];
+                Options option = sOptions[position];
                 switch (option) {
                 case SHOW_INFO:
                     context.setShowInfo(isChecked);
@@ -137,7 +148,7 @@ public class OptionsFragment extends MainFragment {
         });
 
         for (int i = 0; i < mNumOfOptions; i++) {
-            Options option = OPTIONS[i];
+            Options option = sOptions[i];
             switch (option) {
             case SHOW_INFO:
                 listView.setItemChecked(i, context.showInfo());
