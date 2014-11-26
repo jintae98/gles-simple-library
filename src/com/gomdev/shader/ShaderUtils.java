@@ -12,9 +12,7 @@ import java.util.Map;
 import com.gomdev.gles.GLESFileUtils;
 import com.gomdev.gles.GLESUtils;
 
-import android.app.ActivityManager;
 import android.content.Context;
-import android.content.pm.ConfigurationInfo;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -175,23 +173,5 @@ public class ShaderUtils {
         }
 
         return cpuInfos;
-    }
-    
-    public static GLES_VERSION getGLESVersion(Context context) {
-        ActivityManager am = (ActivityManager) context
-                .getSystemService(Context.ACTIVITY_SERVICE);
-
-        ConfigurationInfo info = am.getDeviceConfigurationInfo();
-
-        if (info.reqGlEsVersion >= 0x31000) {
-            return GLES_VERSION.GLES_31;
-        } else if (info.reqGlEsVersion >= 0x30000) {
-            return GLES_VERSION.GLES_30;
-        } else if (info.reqGlEsVersion >= 0x20000) {
-            return GLES_VERSION.GLES_20;
-        } else if (info.reqGlEsVersion >= 0x10000) {
-            return GLES_VERSION.GLES_10;
-        }
-        return GLES_VERSION.GLES_10;
     }
 }

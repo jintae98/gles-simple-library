@@ -1,7 +1,11 @@
 package com.gomdev.shader;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Service;
+import android.content.Context;
+import android.content.pm.ConfigurationInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -17,6 +21,13 @@ public class DeviceInfoFragment extends MainFragment {
     static final String CLASS = "DeviceInfoFragment";
     static final String TAG = ShaderConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
+
+    enum GLES_VERSION {
+        GLES_10,
+        GLES_20,
+        GLES_30,
+        GLES_31
+    }
 
     private FrameLayout mLayout = null;
     private ProgressBar mProgressBar = null;
@@ -83,7 +94,7 @@ public class DeviceInfoFragment extends MainFragment {
         if (versionStr != null) {
             versionView.setText(versionStr);
         } else {
-            GLES_VERSION version = ShaderUtils.getGLESVersion(getActivity());
+            GLES_VERSION version = getGLESVersion();
             switch (version) {
             case GLES_31:
                 versionView.setText("OpenGL ES 3.1");
@@ -109,6 +120,25 @@ public class DeviceInfoFragment extends MainFragment {
         if (extensions != null) {
             mProgressBar.setVisibility(View.GONE);
         }
+    }
+
+    private GLES_VERSION getGLESVersion() {
+        Activity activity = getActivity();
+        ActivityManager am = (ActivityManager) activity
+                .getSystemService(Context.ACTIVITY_SERVICE);
+
+        ConfigurationInfo info = am.getDeviceConfigurationInfo();
+
+        if (info.reqGlEsVersion >= 0x31000) {
+            return GLES_VERSION.GLES_31;
+        } else if (info.reqGlEsVersion >= 0x30000) {
+            return GLES_VERSION.GLES_30;
+        } else if (info.reqGlEsVersion >= 0x20000) {
+            return GLES_VERSION.GLES_20;
+        } else if (info.reqGlEsVersion >= 0x10000) {
+            return GLES_VERSION.GLES_10;
+        }
+        return GLES_VERSION.GLES_10;
     }
 
     void updateDeviceInfo() {
