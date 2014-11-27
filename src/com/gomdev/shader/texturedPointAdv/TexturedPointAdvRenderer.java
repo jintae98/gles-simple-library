@@ -207,7 +207,7 @@ public class TexturedPointAdvRenderer extends SampleRenderer implements
 
         Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.lockscreen);
-        GLESTexture texture = new GLESTexture(bitmap);
+        GLESTexture texture = new GLESTexture2D(bitmap);
         mObject.setTexture(texture);
 
         int location = GLES20.glGetUniformLocation(mShader.getProgram(),

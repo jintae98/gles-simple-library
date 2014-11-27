@@ -1,24 +1,26 @@
-package com.gomdev.shader.texturedCube;
+package com.gomdev.shader.cubemapBasic;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
+import com.gomdev.shader.R;
 import com.gomdev.shader.SampleRenderer;
 import com.gomdev.shader.ShaderUtils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.util.Log;
 
-public class TexturedCubeRenderer extends SampleRenderer {
-    private static final String CLASS = "TexturedCubeRenderer";
-    private static final String TAG = TexturedCubeConfig.TAG + "_" + CLASS;
-    private static final boolean DEBUG = TexturedCubeConfig.DEBUG;
+public class CubemapBasicRenderer extends SampleRenderer {
+    private static final String CLASS = "CubemapBasicRenderer";
+    private static final String TAG = CubemapBasicConfig.TAG + "_" + CLASS;
+    private static final boolean DEBUG = CubemapBasicConfig.DEBUG;
 
     private GLESSceneManager mSM = null;
 
-    private GLESObject mTextureObject = null;
-    private GLESShader mTextureShader = null;
+    private GLESObject mObject = null;
+    private GLESShader mShader = null;
 
     private Version mVersion;
 
@@ -32,7 +34,16 @@ public class TexturedCubeRenderer extends SampleRenderer {
 
     private float mScreenRatio = 0f;
 
-    public TexturedCubeRenderer(Context context) {
+    private int[] mResIDs = new int[] {
+            R.drawable.x_pos,
+            R.drawable.x_neg,
+            R.drawable.y_pos,
+            R.drawable.y_neg,
+            R.drawable.z_pos,
+            R.drawable.z_neg
+    };
+
+    public CubemapBasicRenderer(Context context) {
         super(context);
 
         mVersion = GLESContext.getInstance().getVersion();
@@ -40,20 +51,20 @@ public class TexturedCubeRenderer extends SampleRenderer {
         mSM = GLESSceneManager.createSceneManager();
         GLESNode root = mSM.createRootNode("Root");
 
-        mTextureObject = mSM.createObject("TextureObject");
+        mObject = mSM.createObject("TextureObject");
 
         GLESGLState state = new GLESGLState();
         state.setCullFaceState(true);
         state.setCullFace(GLES20.GL_BACK);
         state.setDepthState(true);
         state.setDepthFunc(GLES20.GL_LEQUAL);
-        mTextureObject.setGLState(state);
+        mObject.setGLState(state);
 
-        root.addChild(mTextureObject);
+        root.addChild(mObject);
     }
 
     public void destroy() {
-        mTextureObject = null;
+        mObject = null;
     }
 
     @Override
@@ -69,13 +80,16 @@ public class TexturedCubeRenderer extends SampleRenderer {
     }
 
     private void update() {
-        GLESTransform transform = mTextureObject.getTransform();
+        GLESTransform transform = mObject.getTransform();
 
         transform.setIdentity();
 
         transform.setRotate(mMoveX * 0.2f, 0f, 1f, 0f);
         transform.rotate(mMoveY * 0.2f, 1f, 0f, 0f);
     }
+
+    private GLESVertexInfo mSphereVertexInfo = null;
+    private GLESVertexInfo mCubeVertexInfo = null;
 
     @Override
     protected void onSurfaceChanged(int width, int height) {
@@ -85,18 +99,25 @@ public class TexturedCubeRenderer extends SampleRenderer {
 
         GLESCamera camera = setupCamera(width, height);
 
-        mTextureObject.setCamera(camera);
+        mObject.setCamera(camera);
+
+        float size = mScreenRatio * 0.35f;
+        mSphereVertexInfo = GLESMeshUtils.createSphere(mShader,
+                size, 20, 20, false, true, false);
 
         float cubeSize = mScreenRatio * 0.7f;
-        GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(mTextureShader,
-                cubeSize,
-                false, true, false);
+        mCubeVertexInfo = GLESMeshUtils.createCube(mShader,
+                cubeSize, true, false, false);
 
-        mTextureObject.setVertexInfo(vertexInfo, true, true);
+        mObject.setVertexInfo(mSphereVertexInfo, false, false);
 
-        Bitmap bitmap = GLESUtils.makeCheckerboard(512, 512, 32);
-        GLESTexture texture = new GLESTexture2D(bitmap);
-        mTextureObject.setTexture(texture);
+        Bitmap[] bitmaps = new Bitmap[mResIDs.length];
+        for (int i = 0; i < mResIDs.length; i++) {
+            bitmaps[i] = BitmapFactory.decodeResource(mContext.getResources(),
+                    mResIDs[i]);
+        }
+        GLESTexture texture = new GLESTextureCubemap(bitmaps);
+        mObject.setTexture(texture);
     }
 
     private GLESCamera setupCamera(int width, int height) {
@@ -118,12 +139,12 @@ public class TexturedCubeRenderer extends SampleRenderer {
     protected void onSurfaceCreated() {
         GLES20.glClearColor(0.7f, 0.7f, 0.7f, 0.0f);
 
-        mTextureObject.setShader(mTextureShader);
+        mObject.setShader(mShader);
 
         Bitmap bitmap = GLESUtils.makeCheckerboard(512, 512, 32);
         GLESTexture texture = new GLESTexture2D(bitmap);
         bitmap.recycle();
-        mTextureObject.setTexture(texture);
+        mObject.setTexture(texture);
     }
 
     @Override
@@ -132,27 +153,28 @@ public class TexturedCubeRenderer extends SampleRenderer {
             Log.d(TAG, "createShader()");
         }
 
-        mTextureShader = new GLESShader(mContext);
+        mShader = new GLESShader(mContext);
 
         String vsSource = ShaderUtils.getShaderSource(mContext, 0);
         String fsSource = ShaderUtils.getShaderSource(mContext, 1);
 
-        mTextureShader.setShaderSource(vsSource, fsSource);
-        if (mTextureShader.load() == false) {
+        mShader.setShaderSource(vsSource, fsSource);
+        if (mShader.load() == false) {
             return false;
         }
 
         if (mVersion == Version.GLES_20) {
             String attribName = GLESShaderConstant.ATTRIB_POSITION;
-            mTextureShader.setPositionAttribIndex(attribName);
+            mShader.setPositionAttribIndex(attribName);
 
-            attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
-            mTextureShader.setTexCoordAttribIndex(attribName);
+            attribName = GLESShaderConstant.ATTRIB_NORMAL;
+            mShader.setNormalAttribIndex(attribName);
         }
 
         return true;
     }
 
+    private int mObjectIndex = 0;
     public void touchDown(float x, float y) {
         if (DEBUG) {
             Log.d(TAG, "touchDown() x=" + x + " y=" + y);
@@ -162,6 +184,14 @@ public class TexturedCubeRenderer extends SampleRenderer {
 
         mDownX = x;
         mDownY = y;
+        
+        if (mObjectIndex == 0) {
+            mObjectIndex = 1;
+            mObject.setVertexInfo(mSphereVertexInfo, false, false);
+        } else {
+            mObjectIndex = 0;
+            mObject.setVertexInfo(mCubeVertexInfo, false, false);
+        }
 
         mView.requestRender();
     }

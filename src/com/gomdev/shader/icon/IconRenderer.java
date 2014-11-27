@@ -206,7 +206,7 @@ public class IconRenderer extends SampleRenderer {
 
             Bitmap bitmap = BitmapFactory.decodeResource(
                     mContext.getResources(), R.drawable.bg);
-            GLESTexture texture = new GLESTexture(bitmap);
+            GLESTexture texture = new GLESTexture2D(bitmap);
 
             if (mVersion == Version.GLES_30) {
                 GLES30.glBindTexture(GLES30.GL_TEXTURE_2D,

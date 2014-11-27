@@ -140,7 +140,7 @@ public class WhiteholeRenderer extends SampleRenderer {
         mWhiteholeObject.setShader(mShaderWhitehole);
         Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.galaxy);
-        mWhiteholeTexture = new GLESTexture(bitmap, GLES20.GL_MIRRORED_REPEAT);
+        mWhiteholeTexture = new GLESTexture2D(bitmap, GLES20.GL_MIRRORED_REPEAT);
         bitmap.recycle();
         mWhiteholeObject.setTexture(mWhiteholeTexture);
 

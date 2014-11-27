@@ -1,24 +1,29 @@
-package com.gomdev.shader.texturedCube;
+package com.gomdev.shader.cubemapAdv;
 
 import com.gomdev.gles.*;
 import com.gomdev.gles.GLESConfig.Version;
+import com.gomdev.shader.R;
 import com.gomdev.shader.SampleRenderer;
 import com.gomdev.shader.ShaderUtils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
+import android.opengl.Matrix;
 import android.util.Log;
 
-public class TexturedCubeRenderer extends SampleRenderer {
-    private static final String CLASS = "TexturedCubeRenderer";
-    private static final String TAG = TexturedCubeConfig.TAG + "_" + CLASS;
-    private static final boolean DEBUG = TexturedCubeConfig.DEBUG;
+public class CubemapAdvRenderer extends SampleRenderer {
+    private static final String CLASS = "CubemapAdvRenderer";
+    private static final String TAG = CubemapAdvConfig.TAG + "_" + CLASS;
+    private static final boolean DEBUG = CubemapAdvConfig.DEBUG;
 
     private GLESSceneManager mSM = null;
 
-    private GLESObject mTextureObject = null;
-    private GLESShader mTextureShader = null;
+    private GLESObject mObject = null;
+    private GLESShader mShader = null;
+
+    private int mNormalMatrixHandle = -1;
 
     private Version mVersion;
 
@@ -32,7 +37,16 @@ public class TexturedCubeRenderer extends SampleRenderer {
 
     private float mScreenRatio = 0f;
 
-    public TexturedCubeRenderer(Context context) {
+    private int[] mResIDs = new int[] {
+            R.drawable.x_pos,
+            R.drawable.x_neg,
+            R.drawable.y_pos,
+            R.drawable.y_neg,
+            R.drawable.z_pos,
+            R.drawable.z_neg
+    };
+
+    public CubemapAdvRenderer(Context context) {
         super(context);
 
         mVersion = GLESContext.getInstance().getVersion();
@@ -40,20 +54,20 @@ public class TexturedCubeRenderer extends SampleRenderer {
         mSM = GLESSceneManager.createSceneManager();
         GLESNode root = mSM.createRootNode("Root");
 
-        mTextureObject = mSM.createObject("TextureObject");
+        mObject = mSM.createObject("TextureObject");
 
         GLESGLState state = new GLESGLState();
         state.setCullFaceState(true);
         state.setCullFace(GLES20.GL_BACK);
         state.setDepthState(true);
         state.setDepthFunc(GLES20.GL_LEQUAL);
-        mTextureObject.setGLState(state);
+        mObject.setGLState(state);
 
-        root.addChild(mTextureObject);
+        root.addChild(mObject);
     }
 
     public void destroy() {
-        mTextureObject = null;
+        mObject = null;
     }
 
     @Override
@@ -69,12 +83,30 @@ public class TexturedCubeRenderer extends SampleRenderer {
     }
 
     private void update() {
-        GLESTransform transform = mTextureObject.getTransform();
+        GLESTransform transform = mObject.getTransform();
 
         transform.setIdentity();
 
         transform.setRotate(mMoveX * 0.2f, 0f, 1f, 0f);
         transform.rotate(mMoveY * 0.2f, 1f, 0f, 0f);
+
+        GLESCamera camera = mObject.getCamera();
+
+        float[] vMatrix = camera.getViewMatrix();
+        float[] mMatrix = transform.getMatrix();
+
+        float[] vmMatrix = new float[16];
+        Matrix.multiplyMM(vmMatrix, 0, vMatrix, 0, mMatrix, 0);
+        float[] normalMatrix = new float[9];
+
+        for (int i = 0; i < 3; i++) {
+            normalMatrix[i * 3 + 0] = vmMatrix[i * 4 + 0];
+            normalMatrix[i * 3 + 1] = vmMatrix[i * 4 + 1];
+            normalMatrix[i * 3 + 2] = vmMatrix[i * 4 + 2];
+        }
+
+        GLES20.glUniformMatrix3fv(mNormalMatrixHandle, 1, false,
+                normalMatrix, 0);
     }
 
     @Override
@@ -85,24 +117,27 @@ public class TexturedCubeRenderer extends SampleRenderer {
 
         GLESCamera camera = setupCamera(width, height);
 
-        mTextureObject.setCamera(camera);
+        mObject.setCamera(camera);
 
-        float cubeSize = mScreenRatio * 0.7f;
-        GLESVertexInfo vertexInfo = GLESMeshUtils.createCube(mTextureShader,
-                cubeSize,
-                false, true, false);
+        float size = mScreenRatio;
+        GLESVertexInfo vertexInfo = GLESMeshUtils.createPlane(mShader,
+                size, size, true, false, false, false);
 
-        mTextureObject.setVertexInfo(vertexInfo, true, true);
+        mObject.setVertexInfo(vertexInfo, true, true);
 
-        Bitmap bitmap = GLESUtils.makeCheckerboard(512, 512, 32);
-        GLESTexture texture = new GLESTexture2D(bitmap);
-        mTextureObject.setTexture(texture);
+        Bitmap[] bitmaps = new Bitmap[mResIDs.length];
+        for (int i = 0; i < mResIDs.length; i++) {
+            bitmaps[i] = BitmapFactory.decodeResource(mContext.getResources(),
+                    mResIDs[i]);
+        }
+        GLESTexture texture = new GLESTextureCubemap(bitmaps);
+        mObject.setTexture(texture);
     }
 
     private GLESCamera setupCamera(int width, int height) {
         GLESCamera camera = new GLESCamera();
 
-        float fovy = 30f;
+        float fovy = 60f;
         float eyeZ = 1f / (float) Math.tan(Math.toRadians(fovy * 0.5));
 
         camera.setLookAt(0f, 0f, eyeZ, 0f, 0f, 0f, 0f, 1f, 0f);
@@ -111,6 +146,10 @@ public class TexturedCubeRenderer extends SampleRenderer {
 
         camera.setViewport(new GLESRect(0, 0, width, height));
 
+        int location = GLES20.glGetUniformLocation(mShader.getProgram(),
+                "uEyePos");
+        GLES20.glUniform4f(location, 0f, 0f, eyeZ, 1f);
+
         return camera;
     }
 
@@ -118,12 +157,15 @@ public class TexturedCubeRenderer extends SampleRenderer {
     protected void onSurfaceCreated() {
         GLES20.glClearColor(0.7f, 0.7f, 0.7f, 0.0f);
 
-        mTextureObject.setShader(mTextureShader);
+        mObject.setShader(mShader);
 
         Bitmap bitmap = GLESUtils.makeCheckerboard(512, 512, 32);
         GLESTexture texture = new GLESTexture2D(bitmap);
         bitmap.recycle();
-        mTextureObject.setTexture(texture);
+        mObject.setTexture(texture);
+
+        mNormalMatrixHandle = GLES20.glGetUniformLocation(mShader.getProgram(),
+                "uNormalMatrix");
     }
 
     @Override
@@ -132,22 +174,22 @@ public class TexturedCubeRenderer extends SampleRenderer {
             Log.d(TAG, "createShader()");
         }
 
-        mTextureShader = new GLESShader(mContext);
+        mShader = new GLESShader(mContext);
 
         String vsSource = ShaderUtils.getShaderSource(mContext, 0);
         String fsSource = ShaderUtils.getShaderSource(mContext, 1);
 
-        mTextureShader.setShaderSource(vsSource, fsSource);
-        if (mTextureShader.load() == false) {
+        mShader.setShaderSource(vsSource, fsSource);
+        if (mShader.load() == false) {
             return false;
         }
 
         if (mVersion == Version.GLES_20) {
             String attribName = GLESShaderConstant.ATTRIB_POSITION;
-            mTextureShader.setPositionAttribIndex(attribName);
+            mShader.setPositionAttribIndex(attribName);
 
-            attribName = GLESShaderConstant.ATTRIB_TEXCOORD;
-            mTextureShader.setTexCoordAttribIndex(attribName);
+            attribName = GLESShaderConstant.ATTRIB_NORMAL;
+            mShader.setNormalAttribIndex(attribName);
         }
 
         return true;

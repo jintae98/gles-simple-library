@@ -20,6 +20,8 @@ import com.gomdev.shader.coloredPointBasic.ColoredPointBasicConfig;
 import com.gomdev.shader.coloredPointBlending.ColoredPointBlendingConfig;
 import com.gomdev.shader.coloredRectangle.ColoredRectangleConfig;
 import com.gomdev.shader.coloredTriangle.ColoredTriangleConfig;
+import com.gomdev.shader.cubemapAdv.CubemapAdvConfig;
+import com.gomdev.shader.cubemapBasic.CubemapBasicConfig;
 import com.gomdev.shader.icon.IconConfig;
 import com.gomdev.shader.instancedRendering.IRConfig;
 import com.gomdev.shader.instancedRendering2.IR2Config;
@@ -75,6 +77,8 @@ public class SampleList {
         setupTexturedPointBasic(version);
         setupTexturedPointAdv(version);
         setupColoredPointBlending(version);
+        setupCubemap(version);
+        setupCubemapAdv(version);
         // setupOQ(version);
         setupIR(version);
         setupIR2(version);
@@ -531,6 +535,68 @@ public class SampleList {
             info.mShaderTitle = new String[] {
                     "Per Vertex Lighting 30 VS",
                     "Per Vertex Lighting 30 FS"
+            };
+        }
+
+        mSamples.add(info);
+    }
+
+    private void setupCubemap(Version version) {
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = CubemapBasicConfig.EFFECT_NAME;
+        info.mIntent = new Intent(mContext,
+                com.gomdev.shader.cubemapBasic.CubemapBasicActivity.class);
+
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[] {
+                    R.raw.cubemap_texture_20_vs,
+                    R.raw.cubemap_texture_20_fs,
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Cubemap 20 VS",
+                    "Cubemap 20 FS",
+            };
+        } else {
+            info.mShaderResIDs = new int[] {
+                    R.raw.cubemap_texture_30_vs,
+                    R.raw.cubemap_texture_30_fs,
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Cubemap 30 VS",
+                    "Cubemap 30 FS",
+            };
+        }
+
+        mSamples.add(info);
+    }
+    
+    private void setupCubemapAdv(Version version) {
+        SampleInfo info = new SampleInfo();
+        info.mSampleName = CubemapAdvConfig.EFFECT_NAME;
+        info.mIntent = new Intent(mContext,
+                com.gomdev.shader.cubemapAdv.CubemapAdvActivity.class);
+
+        if (version == Version.GLES_20) {
+            info.mShaderResIDs = new int[] {
+                    R.raw.cubemap2_texture_20_vs,
+                    R.raw.cubemap2_texture_20_fs,
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Cubemap 20 VS",
+                    "Cubemap 20 FS",
+            };
+        } else {
+            info.mShaderResIDs = new int[] {
+                    R.raw.cubemap2_texture_30_vs,
+                    R.raw.cubemap2_texture_30_fs,
+            };
+
+            info.mShaderTitle = new String[] {
+                    "Cubemap 30 VS",
+                    "Cubemap 30 FS",
             };
         }
 

@@ -27,5 +27,5 @@ public class ShaderConfig {
     public static final String STATE_USE_GLES30 = "useGLES30";
     public static final String STATE_EXTENSIONS = "extensions";
 
-    public static final boolean ENABLE_AD = true;
+    public static final boolean ENABLE_AD = false;
 }
