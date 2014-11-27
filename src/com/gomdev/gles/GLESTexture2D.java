@@ -109,7 +109,7 @@ public class GLESTexture2D extends GLESTexture {
         Bitmap bitmap = bitmaps[0];
 
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureID);
-        GLUtils.texSubImage2D(GLES20.GL_TEXTURE_2D, 0, width, height, bitmap);
+        GLUtils.texSubImage2D(GLES20.GL_TEXTURE_2D, 0, 0, 0, bitmap);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
     }
 
