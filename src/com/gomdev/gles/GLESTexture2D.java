@@ -10,53 +10,30 @@ public class GLESTexture2D extends GLESTexture {
     static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
-    public GLESTexture2D() {
-        super();
+    private Bitmap mBitmap = null;
 
-        init(null);
-    }
-
-    public GLESTexture2D(int width, int height, Bitmap bitmap) {
+    protected GLESTexture2D(int width, int height) {
         super();
 
         mWidth = width;
         mHeight = height;
 
-        init(bitmap);
+        init();
     }
 
-    public GLESTexture2D(Bitmap bitmap) {
+    protected GLESTexture2D(int width, int height, Bitmap bitmap) {
         super();
 
-        mWidth = bitmap.getWidth();
-        mHeight = bitmap.getHeight();
+        mWidth = width;
+        mHeight = height;
 
-        init(bitmap);
+        mBitmap = bitmap;
+
+        init();
     }
 
-    public GLESTexture2D(Bitmap bitmap, int wrapMode) {
-        super();
-
-        mWidth = bitmap.getWidth();
-        mHeight = bitmap.getHeight();
-
-        mWrapMode = wrapMode;
-
-        init(bitmap);
-
-    }
-
-    private void init(Bitmap bitmap) {
+    private void init() {
         mTarget = GLES20.GL_TEXTURE_2D;
-
-        if (bitmap == null) {
-            return;
-        }
-
-        Bitmap bitmaps[] = new Bitmap[] {
-                bitmap
-        };
-        makeTexture(bitmaps);
     }
 
     @Override
@@ -70,23 +47,18 @@ public class GLESTexture2D extends GLESTexture {
     }
 
     @Override
-    protected void makeTexture(Bitmap[] bitmaps) {
-        if (bitmaps == null) {
+    protected void makeTexture() {
+        if (mBitmap == null) {
             Log.e(TAG, "makeTexture() bitmaps is null");
             return;
         }
-
-        Bitmap bitmap = bitmaps[0];
-
-        mWidth = bitmap.getWidth();
-        mHeight = bitmap.getHeight();
 
         int[] textureIDs = new int[1];
         GLES20.glGenTextures(1, textureIDs, 0);
         mTextureID = textureIDs[0];
 
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureID);
-        GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
+        GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, mBitmap, 0);
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S,
                 mWrapMode);
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S,
@@ -119,19 +91,19 @@ public class GLESTexture2D extends GLESTexture {
             Log.e(TAG, "changeTexture() bitmap is null");
         }
 
+        mBitmap = bitmaps[0];
+
         if (GLES20.glIsTexture(mTextureID) == false) {
-            makeTexture(bitmaps);
+            makeTexture();
             return;
         }
 
-        Bitmap bitmap = bitmaps[0];
-
-        float bitmapWidth = bitmap.getWidth();
-        float bitmapHeight = bitmap.getHeight();
+        float bitmapWidth = mBitmap.getWidth();
+        float bitmapHeight = mBitmap.getHeight();
         if ((Float.compare(bitmapWidth, mWidth) == 0)
                 && (Float.compare(bitmapHeight, mHeight) == 0)) {
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureID);
-            GLUtils.texSubImage2D(GLES20.GL_TEXTURE_2D, 0, 0, 0, bitmap);
+            GLUtils.texSubImage2D(GLES20.GL_TEXTURE_2D, 0, 0, 0, mBitmap);
         } else {
             int[] textureIDs = new int[1];
             textureIDs[0] = mTextureID;
@@ -139,7 +111,7 @@ public class GLESTexture2D extends GLESTexture {
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
             GLES20.glDeleteTextures(1, textureIDs, 0);
 
-            makeTexture(bitmaps);
+            makeTexture();
         }
 
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);

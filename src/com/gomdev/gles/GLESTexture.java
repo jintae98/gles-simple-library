@@ -18,7 +18,11 @@ public abstract class GLESTexture {
     protected int mMinFilter = GLES20.GL_LINEAR;
     protected int mMagFilter = GLES20.GL_LINEAR;
 
-    public GLESTexture() {
+    protected GLESTexture() {
+    }
+
+    public void load() {
+        makeTexture();
     }
 
     public int getTarget() {
@@ -52,11 +56,87 @@ public abstract class GLESTexture {
 
     public abstract void destroy();
 
-    protected abstract void makeTexture(Bitmap[] bitmap);
+    protected abstract void makeTexture();
 
     protected abstract void makeSubTexture(int width, int height,
             Bitmap[] bitmap);
 
     public abstract void changeTexture(Bitmap[] bitmap);
+
+    public static class Builder {
+        private int mTarget = -1;
+        private int mWidth = 0;
+        private int mHeight = 0;
+        private int mWrapMode = GLES20.GL_REPEAT;
+        private int mMinFilter = GLES20.GL_LINEAR;
+        private int mMagFilter = GLES20.GL_LINEAR;
+
+        public Builder(int target, int width, int height) {
+            mTarget = target;
+            mWidth = width;
+            mHeight = height;
+        }
+
+        public Builder setWrapMode(int wrapMode) {
+            mWrapMode = wrapMode;
+            return this;
+        }
+
+        public Builder setFilter(int minFilter, int magFilter) {
+            mMinFilter = minFilter;
+            mMagFilter = magFilter;
+            return this;
+        }
+
+        public GLESTexture load() {
+            GLESTexture texture = null;
+
+            if (GLES20.GL_TEXTURE_CUBE_MAP == mTarget) {
+                texture = new GLESTextureCubemap(mWidth, mHeight);
+            } else {
+                texture = new GLESTexture2D(mWidth, mHeight);
+            }
+
+            setTextureInfo(texture);
+
+            return texture;
+        }
+
+        private void setTextureInfo(GLESTexture texture) {
+            texture.setFilter(mMinFilter, mMagFilter);
+            texture.setWrapMode(mWrapMode);
+            texture.load();
+        }
+
+        public GLESTexture load(Bitmap[] bitmaps) {
+            GLESTexture texture = null;
+
+            if (GLES20.GL_TEXTURE_CUBE_MAP == mTarget) {
+                texture = new GLESTextureCubemap(mWidth, mHeight, bitmaps);
+            } else {
+                throw new IllegalArgumentException(
+                        "Should use load(Bitmap bitmap) or use GL_TEXTURE_CUBE_MAP as target");
+            }
+
+            setTextureInfo(texture);
+
+            return texture;
+        }
+
+        public GLESTexture load(Bitmap bitmap) {
+            GLESTexture texture = null;
+
+            if (GLES20.GL_TEXTURE_2D == mTarget) {
+                texture = new GLESTexture2D(mWidth, mHeight, bitmap);
+            } else {
+                throw new IllegalArgumentException(
+                        "Should use load(Bitmap[] bitmaps) or use GL_TEXTURE_2D as target");
+            }
+
+            setTextureInfo(texture);
+
+            return texture;
+        }
+    }
 
 }

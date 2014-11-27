@@ -10,52 +10,31 @@ public class GLESTextureCubemap extends GLESTexture {
     static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
-    public GLESTextureCubemap() {
-        super();
+    private Bitmap[] mBitmaps = null;
 
-        init(null);
-    }
-
-    public GLESTextureCubemap(int width, int height, Bitmap[] bitmaps) {
+    protected GLESTextureCubemap(int width, int height) {
         super();
 
         mWidth = width;
         mHeight = height;
 
-        init(bitmaps);
+        init();
     }
 
-    public GLESTextureCubemap(Bitmap[] bitmaps) {
+    protected GLESTextureCubemap(int width, int height, Bitmap[] bitmaps) {
         super();
 
-        Bitmap bitmap = bitmaps[0];
+        mWidth = width;
+        mHeight = height;
 
-        mWidth = bitmap.getWidth();
-        mHeight = bitmap.getHeight();
+        mBitmaps = bitmaps;
 
-        init(bitmaps);
+        init();
     }
 
-    public GLESTextureCubemap(Bitmap[] bitmaps, int wrapMode) {
-        super();
-
-        Bitmap bitmap = bitmaps[0];
-
-        mWidth = bitmap.getWidth();
-        mHeight = bitmap.getHeight();
-
-        init(bitmaps);
-
-        mWrapMode = wrapMode;
-    }
-
-    private void init(Bitmap[] bitmaps) {
+    private void init() {
         mTarget = GLES20.GL_TEXTURE_CUBE_MAP;
         mWrapMode = GLES20.GL_REPEAT;
-
-        if (bitmaps != null) {
-            makeTexture(bitmaps);
-        }
     }
 
     @Override
@@ -69,16 +48,11 @@ public class GLESTextureCubemap extends GLESTexture {
     }
 
     @Override
-    protected void makeTexture(Bitmap[] bitmaps) {
-        if (bitmaps == null) {
+    protected void makeTexture() {
+        if (mBitmaps == null) {
             Log.e(TAG, "makeTexture() bitmaps is null");
             return;
         }
-
-        Bitmap bitmap = bitmaps[0];
-
-        mWidth = bitmap.getWidth();
-        mHeight = bitmap.getHeight();
 
         int[] textureIDs = new int[1];
         GLES20.glGenTextures(1, textureIDs, 0);
@@ -87,17 +61,17 @@ public class GLESTextureCubemap extends GLESTexture {
         GLES20.glBindTexture(GLES20.GL_TEXTURE_CUBE_MAP, mTextureID);
 
         GLUtils.texImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0,
-                bitmaps[0], 0);
+                mBitmaps[0], 0);
         GLUtils.texImage2D(GLES20.GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0,
-                bitmaps[1], 0);
+                mBitmaps[1], 0);
         GLUtils.texImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0,
-                bitmaps[2], 0);
+                mBitmaps[2], 0);
         GLUtils.texImage2D(GLES20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0,
-                bitmaps[3], 0);
+                mBitmaps[3], 0);
         GLUtils.texImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0,
-                bitmaps[4], 0);
+                mBitmaps[4], 0);
         GLUtils.texImage2D(GLES20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0,
-                bitmaps[5], 0);
+                mBitmaps[5], 0);
 
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_CUBE_MAP,
                 GLES20.GL_TEXTURE_WRAP_S,
@@ -144,8 +118,10 @@ public class GLESTextureCubemap extends GLESTexture {
             Log.e(TAG, "changeTexture() bitmap is null");
         }
 
+        mBitmaps = bitmaps;
+
         if (GLES20.glIsTexture(mTextureID) == false) {
-            makeTexture(bitmaps);
+            makeTexture();
             return;
         }
 
@@ -176,7 +152,7 @@ public class GLESTextureCubemap extends GLESTexture {
             GLES20.glBindTexture(GLES20.GL_TEXTURE_CUBE_MAP, 0);
             GLES20.glDeleteTextures(1, textureIDs, 0);
 
-            makeTexture(bitmaps);
+            makeTexture();
         }
 
         GLES20.glBindTexture(GLES20.GL_TEXTURE_CUBE_MAP, 0);

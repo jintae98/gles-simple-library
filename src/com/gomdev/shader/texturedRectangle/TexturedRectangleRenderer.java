@@ -115,7 +115,9 @@ public class TexturedRectangleRenderer extends SampleRenderer {
         mTextureObject.setShader(mTextureShader);
 
         Bitmap bitmap = GLESUtils.makeCheckerboard(512, 512, 32);
-        GLESTexture texture = new GLESTexture2D(bitmap);
+        GLESTexture.Builder builder = new GLESTexture.Builder(
+                GLES20.GL_TEXTURE_2D, bitmap.getWidth(), bitmap.getHeight());
+        GLESTexture texture = builder.load(bitmap);
         bitmap.recycle();
         mTextureObject.setTexture(texture);
     }

@@ -95,7 +95,9 @@ public class TexturedCubeRenderer extends SampleRenderer {
         mTextureObject.setVertexInfo(vertexInfo, true, true);
 
         Bitmap bitmap = GLESUtils.makeCheckerboard(512, 512, 32);
-        GLESTexture texture = new GLESTexture2D(bitmap);
+        GLESTexture.Builder builder = new GLESTexture.Builder(
+                GLES20.GL_TEXTURE_2D, bitmap.getWidth(), bitmap.getHeight());
+        GLESTexture texture = builder.load(bitmap);
         mTextureObject.setTexture(texture);
     }
 
@@ -119,11 +121,6 @@ public class TexturedCubeRenderer extends SampleRenderer {
         GLES20.glClearColor(0.7f, 0.7f, 0.7f, 0.0f);
 
         mTextureObject.setShader(mTextureShader);
-
-        Bitmap bitmap = GLESUtils.makeCheckerboard(512, 512, 32);
-        GLESTexture texture = new GLESTexture2D(bitmap);
-        bitmap.recycle();
-        mTextureObject.setTexture(texture);
     }
 
     @Override

@@ -99,7 +99,9 @@ public class MipmapRenderer extends SampleRenderer {
                             false, true, false, false);
             mNonMipmap.setVertexInfo(vertexInfo, true, true);
 
-            GLESTexture texture = new GLESTexture2D(bitmap);
+            GLESTexture.Builder builder = new GLESTexture.Builder(
+                    GLES20.GL_TEXTURE_2D, bitmap.getWidth(), bitmap.getHeight());
+            GLESTexture texture = builder.load(bitmap);
             mNonMipmap.setTexture(texture);
         }
 
@@ -114,7 +116,9 @@ public class MipmapRenderer extends SampleRenderer {
                             false, true, false, false);
             mMipmap.setVertexInfo(vertexInfo, true, true);
 
-            GLESTexture texture = new GLESTexture2D(bitmap);
+            GLESTexture.Builder builder = new GLESTexture.Builder(
+                    GLES20.GL_TEXTURE_2D, bitmap.getWidth(), bitmap.getHeight());
+            GLESTexture texture = builder.load(bitmap);
             mMipmap.setTexture(texture);
 
             if (mVersion == Version.GLES_20) {

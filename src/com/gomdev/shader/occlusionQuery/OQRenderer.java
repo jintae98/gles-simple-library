@@ -196,7 +196,9 @@ public class OQRenderer extends SampleRenderer {
 
         Bitmap bitmap = GLESUtils.makeBitmap(512, 512, Config.ARGB_8888,
                 Color.GREEN);
-        GLESTexture texture = new GLESTexture2D(bitmap);
+        GLESTexture.Builder builder = new GLESTexture.Builder(
+                GLES20.GL_TEXTURE_2D, bitmap.getWidth(), bitmap.getHeight());
+        GLESTexture texture = builder.load(bitmap);
         mObject.setTexture(texture);
 
         mIsVisibilityChecked = false;

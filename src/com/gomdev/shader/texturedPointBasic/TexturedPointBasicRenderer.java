@@ -155,7 +155,9 @@ public class TexturedPointBasicRenderer extends SampleRenderer implements
 
         Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(),
                 R.drawable.snow);
-        GLESTexture texture = new GLESTexture2D(bitmap);
+        GLESTexture.Builder builder = new GLESTexture.Builder(
+                GLES20.GL_TEXTURE_2D, bitmap.getWidth(), bitmap.getHeight());
+        GLESTexture texture = builder.load(bitmap);
         mObject.setTexture(texture);
 
         mPrevTick = 0L;

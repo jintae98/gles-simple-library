@@ -130,7 +130,11 @@ public class CubemapAdvRenderer extends SampleRenderer {
             bitmaps[i] = BitmapFactory.decodeResource(mContext.getResources(),
                     mResIDs[i]);
         }
-        GLESTexture texture = new GLESTextureCubemap(bitmaps);
+        int imgWidth = bitmaps[0].getWidth();
+        int imgHeight = bitmaps[0].getHeight();
+        GLESTexture.Builder builder = new GLESTexture.Builder(
+                GLES20.GL_TEXTURE_CUBE_MAP, imgWidth, imgHeight);
+        GLESTexture texture = builder.load(bitmaps);
         mObject.setTexture(texture);
     }
 
@@ -158,11 +162,6 @@ public class CubemapAdvRenderer extends SampleRenderer {
         GLES20.glClearColor(0.7f, 0.7f, 0.7f, 0.0f);
 
         mObject.setShader(mShader);
-
-        Bitmap bitmap = GLESUtils.makeCheckerboard(512, 512, 32);
-        GLESTexture texture = new GLESTexture2D(bitmap);
-        bitmap.recycle();
-        mObject.setTexture(texture);
 
         mNormalMatrixHandle = GLES20.glGetUniformLocation(mShader.getProgram(),
                 "uNormalMatrix");
