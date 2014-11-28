@@ -3,9 +3,6 @@ package com.gomdev.shader;
 import java.util.ArrayList;
 import java.util.Map;
 
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
-import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
@@ -21,8 +18,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 
-public class MainActivity extends FragmentActivity implements
-        ActionBar.TabListener {
+public class MainActivity extends FragmentActivity {
     static final String CLASS = "MainActivity";
     static final String TAG = ShaderConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = ShaderConfig.DEBUG;
@@ -52,6 +48,7 @@ public class MainActivity extends FragmentActivity implements
 
     private TabsAdapter mTabsAdapter;
     private ViewPager mViewPager;
+    private SlidingTabLayout mSlidingTabLayout;
 
     private GLSurfaceView mView;
     private DummyRenderer mRenderer;
@@ -193,51 +190,13 @@ public class MainActivity extends FragmentActivity implements
         mTabsAdapter = new TabsAdapter(
                 getSupportFragmentManager());
 
-        final ActionBar actionBar = getActionBar();
-        actionBar.setHomeButtonEnabled(false);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mTabsAdapter);
-        mViewPager
-                .setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-                    @Override
-                    public void onPageSelected(int position) {
-                        TabInfo tabInfo = mTabInfos.get(position);
-                        Fragment fragment = tabInfo.mFragment;
 
-                        switch (position) {
-                        case TAB_SAMPLELIST_POSITION:
-                            if (fragment != null) {
-                                ((SampleListFragment) fragment)
-                                        .resetSampleList();
-                            }
-                            break;
-                        case TAB_DEVICEINFO_POSITION:
-                            if (mIsGPUInfoUpdated == true
-                                    && fragment != null) {
-                                ((DeviceInfoFragment) fragment)
-                                        .updateDeviceInfo();
-                                mView.setVisibility(View.GONE);
-                                mIsGPUInfoUpdated = false;
-                            }
-                            break;
-                        default:
-                        }
+        mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
+        mSlidingTabLayout.setViewPager(mViewPager);
+        mSlidingTabLayout.setOnPageChangeListener(new MyPageChangeListener());
 
-                        actionBar.setSelectedNavigationItem(position);
-                    }
-                });
-
-        for (int i = 0; i < mTabInfos.size(); i++) {
-            TabInfo tabInfo = mTabInfos.get(i);
-            actionBar.addTab(actionBar.newTab()
-                    .setText(tabInfo.mTitle)
-                    .setTabListener(this));
-        }
-
-        actionBar.setSelectedNavigationItem(0);
-        mViewPager.setCurrentItem(0);
     }
 
     void setCurrentFragment(int index, Fragment fragment) {
@@ -248,28 +207,32 @@ public class MainActivity extends FragmentActivity implements
         mTabInfos.get(index).mFragment = fragment;
     }
 
-    @Override
-    public void onTabReselected(Tab tab, FragmentTransaction ft) {
-        if (DEBUG) {
-            Log.d(TAG, "onTabReselected()");
+    class MyPageChangeListener extends ViewPager.SimpleOnPageChangeListener {
+
+        @Override
+        public void onPageSelected(int position) {
+            TabInfo tabInfo = mTabInfos.get(position);
+            Fragment fragment = tabInfo.mFragment;
+
+            switch (position) {
+            case TAB_SAMPLELIST_POSITION:
+                if (fragment != null) {
+                    ((SampleListFragment) fragment)
+                            .resetSampleList();
+                }
+                break;
+            case TAB_DEVICEINFO_POSITION:
+                if (mIsGPUInfoUpdated == true
+                        && fragment != null) {
+                    ((DeviceInfoFragment) fragment)
+                            .updateDeviceInfo();
+                    mView.setVisibility(View.GONE);
+                    mIsGPUInfoUpdated = false;
+                }
+                break;
+            default:
+            }
         }
-    }
-
-    @Override
-    public void onTabSelected(Tab tab, FragmentTransaction ft) {
-        if (DEBUG) {
-            Log.d(TAG, "onTabSelected()");
-        }
-
-        mViewPager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-        if (DEBUG) {
-            Log.d(TAG, "onTabUnselected()");
-        }
-
     }
 
     public class TabsAdapter extends FragmentPagerAdapter {
