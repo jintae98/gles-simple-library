@@ -88,7 +88,12 @@ public class GLESTextureCubemap extends GLESTexture {
     }
 
     @Override
-    protected void makeSubTexture(int width, int height, Bitmap[] bitmaps) {
+    public void makeSubTexture(int width, int height, Bitmap bitmap) {
+        Log.e(TAG, "should use makeSubTexture(..., Bitmap[] bitmap)");
+    }
+
+    @Override
+    public void makeSubTexture(int width, int height, Bitmap[] bitmaps) {
         if (bitmaps == null) {
             Log.e(TAG, "makeSubTexture() bitmap is null");
             return;
@@ -110,6 +115,11 @@ public class GLESTextureCubemap extends GLESTexture {
                 bitmaps[5]);
 
         GLES20.glBindTexture(GLES20.GL_TEXTURE_CUBE_MAP, 0);
+    }
+
+    @Override
+    public void changeTexture(Bitmap bitmap) {
+        Log.e(TAG, "should use changeTexture(..., Bitmap[] bitmap)");
     }
 
     @Override

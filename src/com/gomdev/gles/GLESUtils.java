@@ -42,6 +42,8 @@ public class GLESUtils {
 
     private static float sWidthPixels = 0f;
     private static float sHeightPixels = 0f;
+    private static int sTitleBarHeight = 0;
+    private static int sStatusBarHeight = 0;
 
     public static Bitmap checkAndReplaceBitmap(Bitmap bitmap) {
         if (bitmap == null) {
@@ -135,20 +137,28 @@ public class GLESUtils {
         return sHeightPixels;
     }
 
-    public static float getPixelFromDpi(Context context, float dpi) {
+    public static int getPixelFromDpi(Context context, float dpi) {
         if (Float.compare(sDpiConvertUnit, 0.0F) == 0) {
             sDpiConvertUnit = context.getResources().getDisplayMetrics().densityDpi / 160.0F;
         }
-        return dpi * sDpiConvertUnit;
+        return (int) (dpi * sDpiConvertUnit);
+    }
+
+    public static float getDpiFromPixel(Context context, int pixel) {
+        if (Float.compare(sDpiConvertUnit, 0.0F) == 0) {
+            sDpiConvertUnit = context.getResources().getDisplayMetrics().densityDpi / 160.0F;
+        }
+
+        return (float) pixel / sDpiConvertUnit;
     }
 
     public static float getPixelsFromPercentage(float paramFloat1,
-            float paramFloat2) {
+                                                float paramFloat2) {
         return paramFloat2 * (0.01F * paramFloat1);
     }
 
     public static Bitmap makeBitmap(int width, int height, Config config,
-            int color) {
+                                    int color) {
         Bitmap bitmap = Bitmap.createBitmap(width, height, config);
         Canvas canvas = new Canvas(bitmap);
         canvas.drawColor(color);
@@ -285,7 +295,7 @@ public class GLESUtils {
     }
 
     private static void generateNextMipMap(GLESBitmapInfo src,
-            GLESBitmapInfo dst) {
+                                           GLESBitmapInfo dst) {
         int x, y;
 
         int dstWidth;
@@ -354,9 +364,6 @@ public class GLESUtils {
         dst.mHeight = dstHeight;
         dst.mData = dstData;
     }
-
-    private static int sTitleBarHeight = 0;
-    private static int sStatusBarHeight = 0;
 
     public static int getTitleBarHeight(Activity activity) {
         if (sTitleBarHeight == 0) {

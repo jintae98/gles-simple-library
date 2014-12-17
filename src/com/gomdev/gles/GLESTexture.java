@@ -58,8 +58,11 @@ public abstract class GLESTexture {
 
     protected abstract void makeTexture();
 
-    protected abstract void makeSubTexture(int width, int height,
-            Bitmap[] bitmap);
+    public abstract void makeSubTexture(int offsetX, int offsetY, Bitmap bitmap);
+
+    public abstract void makeSubTexture(int offsetX, int offsetY, Bitmap[] bitmap);
+
+    public abstract void changeTexture(Bitmap bitmap);
 
     public abstract void changeTexture(Bitmap[] bitmap);
 
