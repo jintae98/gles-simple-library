@@ -42,8 +42,9 @@ public class GLESNode extends GLESSpatial {
 
     @Override
     public void draw(GLESRenderer renderer) {
-        for (GLESSpatial spatial : mChildList) {
-            spatial.draw(renderer);
+        int size = mChildList.size();
+        for (int i = 0; i < size; i++) {
+            mChildList.get(i).draw(renderer);
         }
     }
 
@@ -60,8 +61,9 @@ public class GLESNode extends GLESSpatial {
         boolean hasChanged = getNeedToUpdate();
         updateWorldData(applicationTime);
 
-        for (GLESSpatial spatial : mChildList) {
-            spatial.update(applicationTime, hasChanged);
+        int size = mChildList.size();
+        for (int i = 0; i < size; i++) {
+            mChildList.get(i).update(applicationTime, hasChanged);
         }
     }
 
@@ -73,8 +75,9 @@ public class GLESNode extends GLESSpatial {
     public void dump() {
         super.dump();
 
-        for (GLESSpatial spatial : mChildList) {
-            spatial.dump();
+        int size = mChildList.size();
+        for (int i = 0; i < size; i++) {
+            mChildList.get(i).dump();
         }
     }
 }
