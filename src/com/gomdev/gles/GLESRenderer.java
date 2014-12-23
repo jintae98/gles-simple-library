@@ -55,6 +55,10 @@ public abstract class GLESRenderer {
     }
 
     void draw(GLESObject object) {
+        if (object.getVisibility() == false) {
+            return;
+        }
+
         applyCamera(object);
         applyTransform(object);
         setGLState(object);

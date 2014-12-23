@@ -113,6 +113,10 @@ public class GLESObject extends GLESSpatial {
         mIsVisible = false;
     }
 
+    public boolean getVisibility() {
+        return mIsVisible;
+    }
+
     protected void update() {
     }
 
