@@ -194,7 +194,11 @@ public class GLES20Renderer extends GLESRenderer {
 
         if (texture != null) {
             GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-            GLES20.glBindTexture(texture.getTarget(), texture.getTextureID());
+            int textureID = texture.getTextureID();
+            GLES20.glBindTexture(texture.getTarget(), textureID);
+            if (GLES20.glIsTexture(textureID) == false) {
+                Log.e(TAG, "bindTexture() object=" + object.getName() + " textureID is invalid");
+            }
         }
     }
 

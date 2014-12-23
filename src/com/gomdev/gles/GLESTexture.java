@@ -47,10 +47,6 @@ public abstract class GLESTexture {
     }
 
     public int getTextureID() {
-        if (!GLES20.glIsTexture(mTextureID)) {
-            Log.e(TAG, "mTextureID is invalid");
-            return -1;
-        }
         return mTextureID;
     }
 
