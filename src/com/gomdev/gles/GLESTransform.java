@@ -76,6 +76,10 @@ public class GLESTransform {
         mNeedToUpdate = true;
     }
 
+    public GLESVector3 getTranslate() {
+        return mTranslate;
+    }
+
     public boolean isSetTranslate() {
         return mIsTranslate;
     }
@@ -94,6 +98,10 @@ public class GLESTransform {
 
         mIsPreTranslate = true;
         mNeedToUpdate = true;
+    }
+
+    public GLESVector3 getPreTranslate() {
+        return mPreTranslate;
     }
 
     public boolean isSetPreTranslate() {
