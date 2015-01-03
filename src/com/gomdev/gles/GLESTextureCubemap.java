@@ -58,7 +58,7 @@ public class GLESTextureCubemap extends GLESTexture {
         GLES20.glGenTextures(1, textureIDs, 0);
         mTextureID = textureIDs[0];
 
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_CUBE_MAP, mTextureID);
+        GLES20.glBindTexture(mTarget, mTextureID);
 
         GLUtils.texImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0,
                 mBitmaps[0], 0);
@@ -73,18 +73,18 @@ public class GLESTextureCubemap extends GLESTexture {
         GLUtils.texImage2D(GLES20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0,
                 mBitmaps[5], 0);
 
-        GLES20.glTexParameteri(GLES20.GL_TEXTURE_CUBE_MAP,
+        GLES20.glTexParameteri(mTarget,
                 GLES20.GL_TEXTURE_WRAP_S,
                 mWrapMode);
-        GLES20.glTexParameteri(GLES20.GL_TEXTURE_CUBE_MAP,
+        GLES20.glTexParameteri(mTarget,
                 GLES20.GL_TEXTURE_WRAP_T,
                 mWrapMode);
-        GLES20.glTexParameterf(GLES20.GL_TEXTURE_CUBE_MAP,
+        GLES20.glTexParameterf(mTarget,
                 GLES20.GL_TEXTURE_MAG_FILTER, mMagFilter);
-        GLES20.glTexParameterf(GLES20.GL_TEXTURE_CUBE_MAP,
+        GLES20.glTexParameterf(mTarget,
                 GLES20.GL_TEXTURE_MIN_FILTER, mMinFilter);
 
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_CUBE_MAP, 0);
+        GLES20.glBindTexture(mTarget, 0);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class GLESTextureCubemap extends GLESTexture {
             return;
         }
 
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_CUBE_MAP, mTextureID);
+        GLES20.glBindTexture(mTarget, mTextureID);
 
         GLUtils.texSubImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, 0, 0,
                 bitmaps[0]);
@@ -114,7 +114,7 @@ public class GLESTextureCubemap extends GLESTexture {
         GLUtils.texSubImage2D(GLES20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, 0, 0,
                 bitmaps[5]);
 
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_CUBE_MAP, 0);
+        GLES20.glBindTexture(mTarget, 0);
     }
 
     @Override
@@ -141,7 +141,7 @@ public class GLESTextureCubemap extends GLESTexture {
         float bitmapHeight = bitmap.getHeight();
         if ((Float.compare(bitmapWidth, mWidth) == 0)
                 && (Float.compare(bitmapHeight, mHeight) == 0)) {
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_CUBE_MAP, mTextureID);
+            GLES20.glBindTexture(mTarget, mTextureID);
 
             GLUtils.texSubImage2D(GLES20.GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, 0,
                     0, bitmaps[0]);
@@ -159,13 +159,13 @@ public class GLESTextureCubemap extends GLESTexture {
             int[] textureIDs = new int[1];
             textureIDs[0] = mTextureID;
 
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_CUBE_MAP, 0);
+            GLES20.glBindTexture(mTarget, 0);
             GLES20.glDeleteTextures(1, textureIDs, 0);
 
             makeTexture();
         }
 
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_CUBE_MAP, 0);
+        GLES20.glBindTexture(mTarget, 0);
 
         return;
     }

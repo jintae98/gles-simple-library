@@ -30,7 +30,7 @@ public class GLESObject extends GLESSpatial {
     }
 
     public void setVertexInfo(GLESVertexInfo vertexInfo, boolean useVBO,
-            boolean useVAO) {
+                              boolean useVAO) {
         mVertexInfo = vertexInfo;
         mUseVBO = useVBO;
 

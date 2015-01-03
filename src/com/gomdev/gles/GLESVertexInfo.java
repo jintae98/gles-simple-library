@@ -1,9 +1,9 @@
 package com.gomdev.gles;
 
+import android.util.SparseArray;
+
 import java.nio.Buffer;
 import java.nio.ShortBuffer;
-
-import android.util.SparseArray;
 
 public class GLESVertexInfo {
     static final String CLASS = "GLESVertexInfo";

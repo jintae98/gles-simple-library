@@ -1,14 +1,14 @@
 package com.gomdev.gles;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.gomdev.gles.GLESConfig.Version;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.opengl.GLES20;
 import android.util.Log;
+
+import com.gomdev.gles.GLESConfig.Version;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GLESShader {
     static final String CLASS = "GLESShader";
@@ -279,7 +279,7 @@ public class GLESShader {
     }
 
     public boolean setShaderSource(String vertexShaderSource,
-            String fragmentShaderSource) {
+                                   String fragmentShaderSource) {
         mVertexShaderSource = vertexShaderSource;
         mFragmentShaderSource = fragmentShaderSource;
         return true;
@@ -308,7 +308,7 @@ public class GLESShader {
     }
 
     private native int nLoadProgramBinary(int paramInt1, int paramInt2,
-            String paramString);
+                                          String paramString);
 
     private native int nRetrieveProgramBinary(int paramInt, String paramString);
 }

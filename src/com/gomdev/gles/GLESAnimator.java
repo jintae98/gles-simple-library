@@ -34,7 +34,7 @@ public class GLESAnimator {
     private boolean mUseVector = true;
 
     public GLESAnimator(float fromValue, float toValue,
-            GLESAnimatorCallback callback) {
+                        GLESAnimatorCallback callback) {
         mFromValue = fromValue;
         mToValue = toValue;
         mDistance.set(mToValue - mFromValue, 0.0F, 0.0F);
@@ -51,7 +51,7 @@ public class GLESAnimator {
     }
 
     public GLESAnimator(GLESVector3 from, GLESVector3 to,
-            GLESAnimatorCallback callback) {
+                        GLESAnimatorCallback callback) {
         mFrom = from;
         mTo = to;
         mDistance.set(mTo.mX - mFrom.mX, mTo.mY - mFrom.mY, mTo.mZ - mFrom.mZ);

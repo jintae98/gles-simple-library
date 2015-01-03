@@ -42,8 +42,8 @@ public class GLESVector3 {
     public static GLESVector3 cross(GLESVector3 vector1, GLESVector3 vector2) {
         return new GLESVector3(
                 vector1.mY * vector2.mZ - vector1.mZ * vector2.mY, vector1.mZ
-                        * vector2.mX - vector1.mX * vector2.mZ, vector1.mX
-                        * vector2.mY - vector1.mY * vector2.mX);
+                * vector2.mX - vector1.mX * vector2.mZ, vector1.mX
+                * vector2.mY - vector1.mY * vector2.mX);
     }
 
     public static float dot(GLESVector3 vector1, GLESVector3 vector2) {
@@ -52,18 +52,18 @@ public class GLESVector3 {
     }
 
     public static GLESVector3 getNomalVector(GLESVector3 vector1,
-            GLESVector3 vector2) {
+                                             GLESVector3 vector2) {
         GLESVector3 normalVector = cross(vector1, vector2);
         normalVector.normalize();
         return normalVector;
     }
 
     public static GLESVector3 getNomalVector(float[] point1, float[] point2,
-            float[] point3) {
+                                             float[] point3) {
         GLESVector3 normalVector = cross(new GLESVector3(point2[0] - point1[0],
                 point2[1] - point1[1], point2[2] - point1[2]), new GLESVector3(
                 point3[0] - point1[0], point3[1] - point1[1], point3[2]
-                        - point1[2]));
+                - point1[2]));
         normalVector.normalize();
         return normalVector;
     }

@@ -1,15 +1,15 @@
 package com.gomdev.gles;
 
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.os.Environment;
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
-import android.os.Environment;
-import android.util.Log;
 
 public class GLESFileUtils {
     static final String CLASS = "GLESFileUtils";
@@ -103,7 +103,7 @@ public class GLESFileUtils {
     }
 
     public static boolean saveImageFile(String path, CompressFormat format,
-            Bitmap bitmap) {
+                                        Bitmap bitmap) {
         File file = new File(path);
         FileOutputStream out = null;
 

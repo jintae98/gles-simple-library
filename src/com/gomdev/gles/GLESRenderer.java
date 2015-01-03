@@ -1,11 +1,11 @@
 package com.gomdev.gles;
 
+import android.util.Log;
+
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESVertexInfo.RenderType;
 import com.gomdev.gles.gles20.GLES20Renderer;
 import com.gomdev.gles.gles30.GLES30Renderer;
-
-import android.util.Log;
 
 public abstract class GLESRenderer {
     static final String CLASS = "GLESRenderer";
@@ -22,10 +22,10 @@ public abstract class GLESRenderer {
         Version version = GLESContext.getInstance().getVersion();
 
         switch (version) {
-        case GLES_20:
-            return new GLES20Renderer();
-        case GLES_30:
-            return new GLES30Renderer();
+            case GLES_20:
+                return new GLES20Renderer();
+            case GLES_30:
+                return new GLES30Renderer();
         }
 
         Log.e(TAG, "createRenderer() you should select version!!!");
@@ -75,18 +75,18 @@ public abstract class GLESRenderer {
 
         RenderType renderType = object.getVertexInfo().getRenderType();
         switch (renderType) {
-        case DRAW_ARRAYS:
-            drawArrays(object);
-            break;
-        case DRAW_ELEMENTS:
-            drawElements(object);
-            break;
-        case DRAW_ARRAYS_INSTANCED:
-            drawArraysInstanced(object);
-            break;
-        case DRAW_ELEMENTS_INSTANCED:
-            drawElementsInstanced(object);
-            break;
+            case DRAW_ARRAYS:
+                drawArrays(object);
+                break;
+            case DRAW_ELEMENTS:
+                drawElements(object);
+                break;
+            case DRAW_ARRAYS_INSTANCED:
+                drawArraysInstanced(object);
+                break;
+            case DRAW_ELEMENTS_INSTANCED:
+                drawElementsInstanced(object);
+                break;
         }
 
         disableVertexAttribute(object);

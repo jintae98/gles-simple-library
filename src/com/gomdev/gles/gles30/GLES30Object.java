@@ -22,7 +22,7 @@ public class GLES30Object extends GLESObject {
 
     @Override
     public void setVertexInfo(GLESVertexInfo vertexInfo, boolean useVBO,
-            boolean useVAO) {
+                              boolean useVAO) {
         super.setVertexInfo(vertexInfo, useVBO, useVAO);
 
         if (useVAO == true && useVBO == true) {

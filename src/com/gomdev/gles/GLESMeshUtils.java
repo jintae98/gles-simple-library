@@ -1,10 +1,10 @@
 package com.gomdev.gles;
 
-import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
-import com.gomdev.gles.GLESVertexInfo.RenderType;
-
 import android.opengl.GLES20;
 import android.util.Log;
+
+import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
+import com.gomdev.gles.GLESVertexInfo.RenderType;
 
 public class GLESMeshUtils {
     static final String CLASS = "GLESMeshUtils";
@@ -16,9 +16,9 @@ public class GLESMeshUtils {
     }
 
     public static GLESVertexInfo createTriangle(GLESShader shader, float width,
-            float height,
-            boolean useNormal, boolean useTexCoord, boolean useColor,
-            boolean useIndex) {
+                                                float height,
+                                                boolean useNormal, boolean useTexCoord, boolean useColor,
+                                                boolean useIndex) {
 
         return createTriangle(shader, width, height, useNormal, useTexCoord,
                 useColor,
@@ -26,9 +26,9 @@ public class GLESMeshUtils {
     }
 
     public static GLESVertexInfo createTriangle(GLESShader shader, float width,
-            float height,
-            boolean useNormal, boolean useTexCoord, boolean useColor,
-            boolean useIndex, float red, float green, float blue) {
+                                                float height,
+                                                boolean useNormal, boolean useTexCoord, boolean useColor,
+                                                boolean useIndex, float red, float green, float blue) {
 
         float right = width * 0.5f;
         float left = -right;
@@ -95,9 +95,9 @@ public class GLESMeshUtils {
     }
 
     public static GLESVertexInfo createPlaneMesh(GLESShader shader,
-            float width,
-            float height,
-            int resolution, boolean useTexCoord, boolean useNormal) {
+                                                 float width,
+                                                 float height,
+                                                 int resolution, boolean useTexCoord, boolean useNormal) {
 
         int wResolution = 0;
         int hResolution = resolution + 2;
@@ -203,9 +203,9 @@ public class GLESMeshUtils {
     }
 
     public static GLESVertexInfo createPlane(GLESShader shader, float width,
-            float height,
-            boolean useNormal, boolean useTexCoord, boolean useColor,
-            boolean useIndex) {
+                                             float height,
+                                             boolean useNormal, boolean useTexCoord, boolean useColor,
+                                             boolean useIndex) {
 
         return createPlane(shader, width, height, useNormal, useTexCoord,
                 useColor,
@@ -213,9 +213,9 @@ public class GLESMeshUtils {
     }
 
     public static GLESVertexInfo createPlane(GLESShader shader, float width,
-            float height,
-            boolean useNormal, boolean useTexCoord, boolean useColor,
-            boolean useIndex, float red, float green, float blue) {
+                                             float height,
+                                             boolean useNormal, boolean useTexCoord, boolean useColor,
+                                             boolean useIndex, float red, float green, float blue) {
 
         float right = width * 0.5f;
         float left = -right;
@@ -286,9 +286,9 @@ public class GLESMeshUtils {
     }
 
     public static GLESVertexInfo createPlaneForDebug(GLESShader shader,
-            float width, float height,
-            boolean useNormal, boolean useTexCoord, boolean useColor,
-            boolean useIndex) {
+                                                     float width, float height,
+                                                     boolean useNormal, boolean useTexCoord, boolean useColor,
+                                                     boolean useIndex) {
 
         return createPlaneForDebug(shader, width, height, useNormal,
                 useTexCoord,
@@ -297,9 +297,9 @@ public class GLESMeshUtils {
     }
 
     public static GLESVertexInfo createPlaneForDebug(GLESShader shader,
-            float width, float height,
-            boolean useNormal, boolean useTexCoord, boolean useColor,
-            boolean useIndex, float red, float green, float blue) {
+                                                     float width, float height,
+                                                     boolean useNormal, boolean useTexCoord, boolean useColor,
+                                                     boolean useIndex, float red, float green, float blue) {
 
         float right = width * 0.5f;
         float left = -right;
@@ -371,10 +371,10 @@ public class GLESMeshUtils {
     }
 
     public static GLESVertexInfo createCube(GLESShader shader, float cubeSize,
-            boolean useNormal, boolean useTexCoord, boolean useColor) {
+                                            boolean useNormal, boolean useTexCoord, boolean useColor) {
         float half = cubeSize * 0.5f;
 
-        float[] vertex = new float[] {
+        float[] vertex = new float[]{
                 // front
                 -half, -half, half,
                 half, -half, half,
@@ -416,7 +416,7 @@ public class GLESMeshUtils {
 
         vertexInfo.setBuffer(shader.getPositionAttribIndex(), vertex, 3);
 
-        short[] index = new short[] {
+        short[] index = new short[]{
                 0, 1, 3, 1, 2, 3,
                 4, 5, 7, 5, 6, 7,
                 8, 9, 11, 9, 10, 11,
@@ -429,7 +429,7 @@ public class GLESMeshUtils {
 
         if (useNormal == true) {
 
-            float[] normal = new float[] {
+            float[] normal = new float[]{
                     // front
                     0f, 0f, 1f,
                     0f, 0f, 1f,
@@ -471,7 +471,7 @@ public class GLESMeshUtils {
         }
 
         if (useTexCoord == true) {
-            float[] texCoord = new float[] {
+            float[] texCoord = new float[]{
                     // front
                     0.0f, 1.0f,
                     1.0f, 1.0f,
@@ -513,7 +513,7 @@ public class GLESMeshUtils {
         }
 
         if (useColor == true) {
-            float[] color = new float[] {
+            float[] color = new float[]{
                     // front
                     0f, 0f, 1f, 1f,
                     0f, 0f, 1f, 1f,
@@ -561,20 +561,18 @@ public class GLESMeshUtils {
     }
 
     public static GLESVertexInfo createSphere(GLESShader shader, float radius,
-            int numOfVerticalLine,
-            int numOfHorizontalLine, boolean useTexCoord, boolean useNormal,
-            boolean useColor)
-    {
+                                              int numOfVerticalLine,
+                                              int numOfHorizontalLine, boolean useTexCoord, boolean useNormal,
+                                              boolean useColor) {
         return createSphere(shader, radius, numOfVerticalLine,
                 numOfHorizontalLine,
                 useTexCoord, useNormal, useColor, 1f, 0f, 0f, 1f);
     }
 
     public static GLESVertexInfo createSphere(GLESShader shader, float radius,
-            int numOfVerticalLine,
-            int numOfHorizontalLine, boolean useTexCoord, boolean useNormal,
-            boolean useColor, float r, float g, float b, float a)
-    {
+                                              int numOfVerticalLine,
+                                              int numOfHorizontalLine, boolean useTexCoord, boolean useNormal,
+                                              boolean useColor, float r, float g, float b, float a) {
         double theta = 0f;
         double sinTheta = 0f;
         double cosTheta = 0f;

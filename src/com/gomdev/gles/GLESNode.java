@@ -32,6 +32,10 @@ public class GLESNode extends GLESSpatial {
         spatial.setParent(this);
     }
 
+    public void removeChild(GLESSpatial spatial) {
+        mChildList.remove(spatial);
+    }
+
     public int getNumOfChild() {
         return mChildList.size();
     }

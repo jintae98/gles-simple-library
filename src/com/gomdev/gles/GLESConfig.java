@@ -11,6 +11,12 @@ public class GLESConfig {
 
     public static final Version GLES_VERSION = Version.GLES_20;
 
+    public static final int GL_ATC_RGB_AMD = 0x8C92;
+    public static final int GL_ATC_RGBA_EXPLICIT_ALPHA_AMD = 0x8C93;
+    public static final int GL_ATC_RGBA_INTERPOLATED_ALPHA_AMD = 0x87EE;
+    public static final int GL_ETC1_RGB8_OES = 0x8D64;
+    public static final int GL_COMPRESSED_RGBA8_ETC2_EAC = 0x9278;
+
     public static final int POSITION_LOCATION = 0;
     public static final int TEXCOORD_LOCATION = 1;
     public static final int NORMAL_LOCATION = 2;

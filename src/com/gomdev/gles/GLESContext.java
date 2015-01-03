@@ -1,8 +1,8 @@
 package com.gomdev.gles;
 
-import com.gomdev.gles.GLESConfig.Version;
-
 import android.content.Context;
+
+import com.gomdev.gles.GLESConfig.Version;
 
 public class GLESContext {
     static final String CLASS = "GLESContext";

@@ -28,12 +28,12 @@ public class GLESCamera {
     }
 
     public void setFrustum(float left, float right, float bottom, float top,
-            float near, float far) {
+                           float near, float far) {
         Matrix.frustumM(mPMatrix, 0, left, right, bottom, top, near, far);
     }
 
     public void setOrtho(float left, float right, float bottom, float top,
-            float near, float far) {
+                         float near, float far) {
         Matrix.orthoM(mPMatrix, 0, left, right, bottom, top, near, far);
     }
 
@@ -46,7 +46,7 @@ public class GLESCamera {
     }
 
     public void setLookAt(float eyeX, float eyeY, float eyeZ, float centerX,
-            float centerY, float centerZ, float upX, float upY, float upZ) {
+                          float centerY, float centerZ, float upX, float upY, float upZ) {
         Matrix.setLookAtM(mVMatrix, 0, eyeX, eyeY, eyeZ, centerX, centerY,
                 centerZ, upX, upY, upZ);
     }

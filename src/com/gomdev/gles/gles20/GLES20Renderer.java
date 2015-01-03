@@ -1,8 +1,5 @@
 package com.gomdev.gles.gles20;
 
-import java.nio.FloatBuffer;
-import java.nio.ShortBuffer;
-
 import android.opengl.GLES20;
 import android.util.Log;
 
@@ -19,6 +16,9 @@ import com.gomdev.gles.GLESTransform;
 import com.gomdev.gles.GLESVertexInfo;
 import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
 
+import java.nio.FloatBuffer;
+import java.nio.ShortBuffer;
+
 public class GLES20Renderer extends GLESRenderer {
     static final String CLASS = "GLES20Renderer";
     static final String TAG = GLESConfig.TAG + "_" + CLASS;
@@ -32,10 +32,10 @@ public class GLES20Renderer extends GLESRenderer {
     public void setupVBO(GLESShader shader, GLESVertexInfo vertexInfo) {
         int[] ids = new int[1];
         GLES20.glGenBuffers(1, ids, 0);
-        
+
         int attribIndex = shader.getPositionAttribIndex();
         vertexInfo.setVBOID(attribIndex, ids[0]);
-        
+
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, ids[0]);
         FloatBuffer floatBuffer = (FloatBuffer) vertexInfo.getBuffer(attribIndex);
         GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
@@ -171,7 +171,7 @@ public class GLES20Renderer extends GLESRenderer {
 
         if (mCurrentGLState == null
                 || glState.getCullFaceState() != mCurrentGLState
-                        .getCullFaceState()) {
+                .getCullFaceState()) {
             if (glState.getCullFaceState() == true) {
                 GLES20.glEnable(GLES20.GL_CULL_FACE);
 
@@ -209,7 +209,7 @@ public class GLES20Renderer extends GLESRenderer {
         boolean useVBO = object.useVBO();
 
         int attribIndex = shader.getPositionAttribIndex();
-        
+
         if (useVBO == true) {
             int id = vertexInfo.getVBOID(attribIndex);
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, id);
@@ -312,37 +312,37 @@ public class GLES20Renderer extends GLESRenderer {
         GLESVertexInfo vertexInfo = object.getVertexInfo();
         PrimitiveMode mode = vertexInfo.getPrimitiveMode();
         GLESShader shader = object.getShader();
-        
+
         int positionIndex = shader.getPositionAttribIndex();
 
         int numOfVertex = vertexInfo.getBuffer(positionIndex).capacity()
                 / vertexInfo.getNumOfElements(positionIndex);
 
         switch (mode) {
-        case TRIANGLES:
-            GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, numOfVertex);
-            break;
-        case TRIANGLE_FAN:
-            GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, numOfVertex);
-            break;
-        case TRIANGLE_STRIP:
-            GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, numOfVertex);
-            break;
-        case LINES:
-            GLES20.glDrawArrays(GLES20.GL_LINES, 0, numOfVertex);
-            break;
-        case LINE_STRIP:
-            GLES20.glDrawArrays(GLES20.GL_LINE_STRIP, 0, numOfVertex);
-            break;
-        case LINE_LOOP:
-            GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, numOfVertex);
-            break;
-        case POINTS:
-            GLES20.glDrawArrays(GLES20.GL_POINTS, 0, numOfVertex);
-            break;
-        default:
-            Log.d(TAG, "drawArrays() mode is invalid. mode=" + mode);
-            break;
+            case TRIANGLES:
+                GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, numOfVertex);
+                break;
+            case TRIANGLE_FAN:
+                GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, numOfVertex);
+                break;
+            case TRIANGLE_STRIP:
+                GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, numOfVertex);
+                break;
+            case LINES:
+                GLES20.glDrawArrays(GLES20.GL_LINES, 0, numOfVertex);
+                break;
+            case LINE_STRIP:
+                GLES20.glDrawArrays(GLES20.GL_LINE_STRIP, 0, numOfVertex);
+                break;
+            case LINE_LOOP:
+                GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, numOfVertex);
+                break;
+            case POINTS:
+                GLES20.glDrawArrays(GLES20.GL_POINTS, 0, numOfVertex);
+                break;
+            default:
+                Log.d(TAG, "drawArrays() mode is invalid. mode=" + mode);
+                break;
         }
     }
 
@@ -357,89 +357,89 @@ public class GLES20Renderer extends GLESRenderer {
 
             ShortBuffer indexBuffer = vertexInfo.getIndexBuffer();
             switch (mode) {
-            case TRIANGLES:
-                GLES20.glDrawElements(GLES20.GL_TRIANGLES,
-                        indexBuffer.capacity(),
-                        GLES20.GL_UNSIGNED_SHORT, 0);
-                break;
-            case TRIANGLE_FAN:
-                GLES20.glDrawElements(GLES20.GL_TRIANGLE_FAN,
-                        indexBuffer.capacity(),
-                        GLES20.GL_UNSIGNED_SHORT, 0);
-                break;
-            case TRIANGLE_STRIP:
-                GLES20.glDrawElements(GLES20.GL_TRIANGLE_STRIP,
-                        indexBuffer.capacity(),
-                        GLES20.GL_UNSIGNED_SHORT, 0);
-                break;
-            case LINES:
-                GLES20.glDrawElements(GLES20.GL_LINES,
-                        indexBuffer.capacity(),
-                        GLES20.GL_UNSIGNED_SHORT, 0);
-                break;
-            case LINE_STRIP:
-                GLES20.glDrawElements(GLES20.GL_LINE_STRIP,
-                        indexBuffer.capacity(),
-                        GLES20.GL_UNSIGNED_SHORT, 0);
-                break;
-            case LINE_LOOP:
-                GLES20.glDrawElements(GLES20.GL_LINE_LOOP,
-                        indexBuffer.capacity(),
-                        GLES20.GL_UNSIGNED_SHORT, 0);
-                break;
-            case POINTS:
-                GLES20.glDrawElements(GLES20.GL_POINTS,
-                        indexBuffer.capacity(),
-                        GLES20.GL_UNSIGNED_SHORT, 0);
-                break;
+                case TRIANGLES:
+                    GLES20.glDrawElements(GLES20.GL_TRIANGLES,
+                            indexBuffer.capacity(),
+                            GLES20.GL_UNSIGNED_SHORT, 0);
+                    break;
+                case TRIANGLE_FAN:
+                    GLES20.glDrawElements(GLES20.GL_TRIANGLE_FAN,
+                            indexBuffer.capacity(),
+                            GLES20.GL_UNSIGNED_SHORT, 0);
+                    break;
+                case TRIANGLE_STRIP:
+                    GLES20.glDrawElements(GLES20.GL_TRIANGLE_STRIP,
+                            indexBuffer.capacity(),
+                            GLES20.GL_UNSIGNED_SHORT, 0);
+                    break;
+                case LINES:
+                    GLES20.glDrawElements(GLES20.GL_LINES,
+                            indexBuffer.capacity(),
+                            GLES20.GL_UNSIGNED_SHORT, 0);
+                    break;
+                case LINE_STRIP:
+                    GLES20.glDrawElements(GLES20.GL_LINE_STRIP,
+                            indexBuffer.capacity(),
+                            GLES20.GL_UNSIGNED_SHORT, 0);
+                    break;
+                case LINE_LOOP:
+                    GLES20.glDrawElements(GLES20.GL_LINE_LOOP,
+                            indexBuffer.capacity(),
+                            GLES20.GL_UNSIGNED_SHORT, 0);
+                    break;
+                case POINTS:
+                    GLES20.glDrawElements(GLES20.GL_POINTS,
+                            indexBuffer.capacity(),
+                            GLES20.GL_UNSIGNED_SHORT, 0);
+                    break;
 
-            default:
-                Log.d(TAG, "drawElements() mode is invalid. mode=" + mode);
-                break;
+                default:
+                    Log.d(TAG, "drawElements() mode is invalid. mode=" + mode);
+                    break;
             }
 
             GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, 0);
         } else {
             ShortBuffer indexBuffer = vertexInfo.getIndexBuffer();
             switch (mode) {
-            case TRIANGLES:
-                GLES20.glDrawElements(GLES20.GL_TRIANGLES,
-                        indexBuffer.capacity(),
-                        GLES20.GL_UNSIGNED_SHORT, indexBuffer);
-                break;
-            case TRIANGLE_FAN:
-                GLES20.glDrawElements(GLES20.GL_TRIANGLE_FAN,
-                        indexBuffer.capacity(),
-                        GLES20.GL_UNSIGNED_SHORT, indexBuffer);
-                break;
-            case TRIANGLE_STRIP:
-                GLES20.glDrawElements(GLES20.GL_TRIANGLE_FAN,
-                        indexBuffer.capacity(),
-                        GLES20.GL_UNSIGNED_SHORT, indexBuffer);
-                break;
-            case LINES:
-                GLES20.glDrawElements(GLES20.GL_LINES,
-                        indexBuffer.capacity(),
-                        GLES20.GL_UNSIGNED_SHORT, indexBuffer);
-                break;
-            case LINE_STRIP:
-                GLES20.glDrawElements(GLES20.GL_LINE_STRIP,
-                        indexBuffer.capacity(),
-                        GLES20.GL_UNSIGNED_SHORT, indexBuffer);
-                break;
-            case LINE_LOOP:
-                GLES20.glDrawElements(GLES20.GL_LINE_LOOP,
-                        indexBuffer.capacity(),
-                        GLES20.GL_UNSIGNED_SHORT, indexBuffer);
-                break;
-            case POINTS:
-                GLES20.glDrawElements(GLES20.GL_POINTS,
-                        indexBuffer.capacity(),
-                        GLES20.GL_UNSIGNED_SHORT, indexBuffer);
-                break;
-            default:
-                Log.d(TAG, "drawElements() mode is invalid. mode=" + mode);
-                break;
+                case TRIANGLES:
+                    GLES20.glDrawElements(GLES20.GL_TRIANGLES,
+                            indexBuffer.capacity(),
+                            GLES20.GL_UNSIGNED_SHORT, indexBuffer);
+                    break;
+                case TRIANGLE_FAN:
+                    GLES20.glDrawElements(GLES20.GL_TRIANGLE_FAN,
+                            indexBuffer.capacity(),
+                            GLES20.GL_UNSIGNED_SHORT, indexBuffer);
+                    break;
+                case TRIANGLE_STRIP:
+                    GLES20.glDrawElements(GLES20.GL_TRIANGLE_FAN,
+                            indexBuffer.capacity(),
+                            GLES20.GL_UNSIGNED_SHORT, indexBuffer);
+                    break;
+                case LINES:
+                    GLES20.glDrawElements(GLES20.GL_LINES,
+                            indexBuffer.capacity(),
+                            GLES20.GL_UNSIGNED_SHORT, indexBuffer);
+                    break;
+                case LINE_STRIP:
+                    GLES20.glDrawElements(GLES20.GL_LINE_STRIP,
+                            indexBuffer.capacity(),
+                            GLES20.GL_UNSIGNED_SHORT, indexBuffer);
+                    break;
+                case LINE_LOOP:
+                    GLES20.glDrawElements(GLES20.GL_LINE_LOOP,
+                            indexBuffer.capacity(),
+                            GLES20.GL_UNSIGNED_SHORT, indexBuffer);
+                    break;
+                case POINTS:
+                    GLES20.glDrawElements(GLES20.GL_POINTS,
+                            indexBuffer.capacity(),
+                            GLES20.GL_UNSIGNED_SHORT, indexBuffer);
+                    break;
+                default:
+                    Log.d(TAG, "drawElements() mode is invalid. mode=" + mode);
+                    break;
             }
         }
     }

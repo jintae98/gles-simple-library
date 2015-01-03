@@ -35,14 +35,14 @@ public class GLESSceneManager {
 
         GLESObject object = null;
         switch (version) {
-        case GLES_20:
-            object = new GLESObject(name);
-            break;
-        case GLES_30:
-            object = new GLES30Object(name);
-            break;
-        default:
-            object = new GLESObject(name);
+            case GLES_20:
+                object = new GLESObject(name);
+                break;
+            case GLES_30:
+                object = new GLES30Object(name);
+                break;
+            default:
+                object = new GLESObject(name);
         }
 
         return object;

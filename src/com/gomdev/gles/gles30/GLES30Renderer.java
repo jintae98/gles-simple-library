@@ -1,8 +1,5 @@
 package com.gomdev.gles.gles30;
 
-import java.nio.FloatBuffer;
-import java.nio.ShortBuffer;
-
 import android.opengl.GLES30;
 import android.util.Log;
 
@@ -12,6 +9,9 @@ import com.gomdev.gles.GLESShader;
 import com.gomdev.gles.GLESVertexInfo;
 import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
 import com.gomdev.gles.gles20.GLES20Renderer;
+
+import java.nio.FloatBuffer;
+import java.nio.ShortBuffer;
 
 public class GLES30Renderer extends GLES20Renderer {
     static final String CLASS = "GLES30Renderer";
@@ -351,37 +351,37 @@ public class GLES30Renderer extends GLES20Renderer {
                 / vertexInfo.getNumOfElements(positionIndex);
 
         switch (mode) {
-        case TRIANGLES:
-            GLES30.glDrawArraysInstanced(GLES30.GL_TRIANGLES, 0, numOfVertex,
-                    instanceCount);
-            break;
-        case TRIANGLE_FAN:
-            GLES30.glDrawArraysInstanced(GLES30.GL_TRIANGLE_FAN, 0,
-                    numOfVertex, instanceCount);
-            break;
-        case TRIANGLE_STRIP:
-            GLES30.glDrawArraysInstanced(GLES30.GL_TRIANGLE_STRIP, 0,
-                    numOfVertex, instanceCount);
-            break;
-        case LINES:
-            GLES30.glDrawArraysInstanced(GLES30.GL_LINES, 0,
-                    numOfVertex, instanceCount);
-            break;
-        case LINE_STRIP:
-            GLES30.glDrawArraysInstanced(GLES30.GL_LINE_STRIP, 0,
-                    numOfVertex, instanceCount);
-            break;
-        case LINE_LOOP:
-            GLES30.glDrawArraysInstanced(GLES30.GL_LINE_LOOP, 0,
-                    numOfVertex, instanceCount);
-            break;
-        case POINTS:
-            GLES30.glDrawArraysInstanced(GLES30.GL_POINTS, 0,
-                    numOfVertex, instanceCount);
-            break;
-        default:
-            Log.d(TAG, "drawArrays() mode is invalid. mode=" + mode);
-            break;
+            case TRIANGLES:
+                GLES30.glDrawArraysInstanced(GLES30.GL_TRIANGLES, 0, numOfVertex,
+                        instanceCount);
+                break;
+            case TRIANGLE_FAN:
+                GLES30.glDrawArraysInstanced(GLES30.GL_TRIANGLE_FAN, 0,
+                        numOfVertex, instanceCount);
+                break;
+            case TRIANGLE_STRIP:
+                GLES30.glDrawArraysInstanced(GLES30.GL_TRIANGLE_STRIP, 0,
+                        numOfVertex, instanceCount);
+                break;
+            case LINES:
+                GLES30.glDrawArraysInstanced(GLES30.GL_LINES, 0,
+                        numOfVertex, instanceCount);
+                break;
+            case LINE_STRIP:
+                GLES30.glDrawArraysInstanced(GLES30.GL_LINE_STRIP, 0,
+                        numOfVertex, instanceCount);
+                break;
+            case LINE_LOOP:
+                GLES30.glDrawArraysInstanced(GLES30.GL_LINE_LOOP, 0,
+                        numOfVertex, instanceCount);
+                break;
+            case POINTS:
+                GLES30.glDrawArraysInstanced(GLES30.GL_POINTS, 0,
+                        numOfVertex, instanceCount);
+                break;
+            default:
+                Log.d(TAG, "drawArrays() mode is invalid. mode=" + mode);
+                break;
         }
     }
 
@@ -397,88 +397,88 @@ public class GLES30Renderer extends GLES20Renderer {
 
             ShortBuffer indexBuffer = vertexInfo.getIndexBuffer();
             switch (mode) {
-            case TRIANGLES:
-                GLES30.glDrawElementsInstanced(GLES30.GL_TRIANGLES,
-                        indexBuffer.capacity(),
-                        GLES30.GL_UNSIGNED_SHORT, 0, instanceCount);
-                break;
-            case TRIANGLE_FAN:
-                GLES30.glDrawElementsInstanced(GLES30.GL_TRIANGLE_FAN,
-                        indexBuffer.capacity(),
-                        GLES30.GL_UNSIGNED_SHORT, 0, instanceCount);
-                break;
-            case TRIANGLE_STRIP:
-                GLES30.glDrawElementsInstanced(GLES30.GL_TRIANGLE_STRIP,
-                        indexBuffer.capacity(),
-                        GLES30.GL_UNSIGNED_SHORT, 0, instanceCount);
-                break;
-            case LINES:
-                GLES30.glDrawElementsInstanced(GLES30.GL_LINES,
-                        indexBuffer.capacity(),
-                        GLES30.GL_UNSIGNED_SHORT, 0, instanceCount);
-                break;
-            case LINE_STRIP:
-                GLES30.glDrawElementsInstanced(GLES30.GL_LINE_STRIP,
-                        indexBuffer.capacity(),
-                        GLES30.GL_UNSIGNED_SHORT, 0, instanceCount);
-                break;
-            case LINE_LOOP:
-                GLES30.glDrawElementsInstanced(GLES30.GL_LINE_LOOP,
-                        indexBuffer.capacity(),
-                        GLES30.GL_UNSIGNED_SHORT, 0, instanceCount);
-                break;
-            case POINTS:
-                GLES30.glDrawElementsInstanced(GLES30.GL_POINTS,
-                        indexBuffer.capacity(),
-                        GLES30.GL_UNSIGNED_SHORT, 0, instanceCount);
-                break;
-            default:
-                Log.d(TAG, "drawElements() mode is invalid. mode=" + mode);
-                break;
+                case TRIANGLES:
+                    GLES30.glDrawElementsInstanced(GLES30.GL_TRIANGLES,
+                            indexBuffer.capacity(),
+                            GLES30.GL_UNSIGNED_SHORT, 0, instanceCount);
+                    break;
+                case TRIANGLE_FAN:
+                    GLES30.glDrawElementsInstanced(GLES30.GL_TRIANGLE_FAN,
+                            indexBuffer.capacity(),
+                            GLES30.GL_UNSIGNED_SHORT, 0, instanceCount);
+                    break;
+                case TRIANGLE_STRIP:
+                    GLES30.glDrawElementsInstanced(GLES30.GL_TRIANGLE_STRIP,
+                            indexBuffer.capacity(),
+                            GLES30.GL_UNSIGNED_SHORT, 0, instanceCount);
+                    break;
+                case LINES:
+                    GLES30.glDrawElementsInstanced(GLES30.GL_LINES,
+                            indexBuffer.capacity(),
+                            GLES30.GL_UNSIGNED_SHORT, 0, instanceCount);
+                    break;
+                case LINE_STRIP:
+                    GLES30.glDrawElementsInstanced(GLES30.GL_LINE_STRIP,
+                            indexBuffer.capacity(),
+                            GLES30.GL_UNSIGNED_SHORT, 0, instanceCount);
+                    break;
+                case LINE_LOOP:
+                    GLES30.glDrawElementsInstanced(GLES30.GL_LINE_LOOP,
+                            indexBuffer.capacity(),
+                            GLES30.GL_UNSIGNED_SHORT, 0, instanceCount);
+                    break;
+                case POINTS:
+                    GLES30.glDrawElementsInstanced(GLES30.GL_POINTS,
+                            indexBuffer.capacity(),
+                            GLES30.GL_UNSIGNED_SHORT, 0, instanceCount);
+                    break;
+                default:
+                    Log.d(TAG, "drawElements() mode is invalid. mode=" + mode);
+                    break;
             }
 
             GLES30.glBindBuffer(GLES30.GL_ELEMENT_ARRAY_BUFFER, 0);
         } else {
             ShortBuffer indexBuffer = vertexInfo.getIndexBuffer();
             switch (mode) {
-            case TRIANGLES:
-                GLES30.glDrawElementsInstanced(GLES30.GL_TRIANGLES,
-                        indexBuffer.capacity(),
-                        GLES30.GL_UNSIGNED_SHORT, indexBuffer, instanceCount);
-                break;
-            case TRIANGLE_FAN:
-                GLES30.glDrawElementsInstanced(GLES30.GL_TRIANGLE_FAN,
-                        indexBuffer.capacity(),
-                        GLES30.GL_UNSIGNED_SHORT, indexBuffer, instanceCount);
-                break;
-            case TRIANGLE_STRIP:
-                GLES30.glDrawElementsInstanced(GLES30.GL_TRIANGLE_FAN,
-                        indexBuffer.capacity(),
-                        GLES30.GL_UNSIGNED_SHORT, indexBuffer, instanceCount);
-                break;
-            case LINES:
-                GLES30.glDrawElementsInstanced(GLES30.GL_LINES,
-                        indexBuffer.capacity(),
-                        GLES30.GL_UNSIGNED_SHORT, indexBuffer, instanceCount);
-                break;
-            case LINE_STRIP:
-                GLES30.glDrawElementsInstanced(GLES30.GL_LINE_STRIP,
-                        indexBuffer.capacity(),
-                        GLES30.GL_UNSIGNED_SHORT, indexBuffer, instanceCount);
-                break;
-            case LINE_LOOP:
-                GLES30.glDrawElementsInstanced(GLES30.GL_LINE_LOOP,
-                        indexBuffer.capacity(),
-                        GLES30.GL_UNSIGNED_SHORT, indexBuffer, instanceCount);
-                break;
-            case POINTS:
-                GLES30.glDrawElementsInstanced(GLES30.GL_POINTS,
-                        indexBuffer.capacity(),
-                        GLES30.GL_UNSIGNED_SHORT, indexBuffer, instanceCount);
-                break;
-            default:
-                Log.d(TAG, "drawElements() mode is invalid. mode=" + mode);
-                break;
+                case TRIANGLES:
+                    GLES30.glDrawElementsInstanced(GLES30.GL_TRIANGLES,
+                            indexBuffer.capacity(),
+                            GLES30.GL_UNSIGNED_SHORT, indexBuffer, instanceCount);
+                    break;
+                case TRIANGLE_FAN:
+                    GLES30.glDrawElementsInstanced(GLES30.GL_TRIANGLE_FAN,
+                            indexBuffer.capacity(),
+                            GLES30.GL_UNSIGNED_SHORT, indexBuffer, instanceCount);
+                    break;
+                case TRIANGLE_STRIP:
+                    GLES30.glDrawElementsInstanced(GLES30.GL_TRIANGLE_FAN,
+                            indexBuffer.capacity(),
+                            GLES30.GL_UNSIGNED_SHORT, indexBuffer, instanceCount);
+                    break;
+                case LINES:
+                    GLES30.glDrawElementsInstanced(GLES30.GL_LINES,
+                            indexBuffer.capacity(),
+                            GLES30.GL_UNSIGNED_SHORT, indexBuffer, instanceCount);
+                    break;
+                case LINE_STRIP:
+                    GLES30.glDrawElementsInstanced(GLES30.GL_LINE_STRIP,
+                            indexBuffer.capacity(),
+                            GLES30.GL_UNSIGNED_SHORT, indexBuffer, instanceCount);
+                    break;
+                case LINE_LOOP:
+                    GLES30.glDrawElementsInstanced(GLES30.GL_LINE_LOOP,
+                            indexBuffer.capacity(),
+                            GLES30.GL_UNSIGNED_SHORT, indexBuffer, instanceCount);
+                    break;
+                case POINTS:
+                    GLES30.glDrawElementsInstanced(GLES30.GL_POINTS,
+                            indexBuffer.capacity(),
+                            GLES30.GL_UNSIGNED_SHORT, indexBuffer, instanceCount);
+                    break;
+                default:
+                    Log.d(TAG, "drawElements() mode is invalid. mode=" + mode);
+                    break;
             }
         }
     }

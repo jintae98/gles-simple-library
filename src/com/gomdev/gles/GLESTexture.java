@@ -2,7 +2,8 @@ package com.gomdev.gles;
 
 import android.graphics.Bitmap;
 import android.opengl.GLES20;
-import android.util.Log;
+
+import java.nio.ByteBuffer;
 
 public abstract class GLESTexture {
     static final String CLASS = "GLESTexture";
@@ -17,6 +18,7 @@ public abstract class GLESTexture {
     protected int mWrapMode = GLES20.GL_CLAMP_TO_EDGE;// 33071;
     protected int mMinFilter = GLES20.GL_LINEAR;
     protected int mMagFilter = GLES20.GL_LINEAR;
+    protected int mInternalFormat = GLESConfig.GL_ATC_RGBA_EXPLICIT_ALPHA_AMD;
 
     protected GLESTexture() {
     }
@@ -36,6 +38,10 @@ public abstract class GLESTexture {
     public void setFilter(int minFilter, int magFilter) {
         mMinFilter = minFilter;
         mMagFilter = magFilter;
+    }
+
+    public void setInternalFormat(int internalFormat) {
+        mInternalFormat = internalFormat;
     }
 
     public int getWidth() {
@@ -69,11 +75,18 @@ public abstract class GLESTexture {
         private int mWrapMode = GLES20.GL_REPEAT;
         private int mMinFilter = GLES20.GL_LINEAR;
         private int mMagFilter = GLES20.GL_LINEAR;
+        private int mInternalFormat = GLESConfig.GL_ATC_RGBA_EXPLICIT_ALPHA_AMD;
 
         public Builder(int target, int width, int height) {
             mTarget = target;
             mWidth = width;
             mHeight = height;
+        }
+
+        public Builder(GLESCompressedTextureInfo info) {
+            mTarget = GLES20.GL_TEXTURE_2D;
+            mWidth = info.getWidth();
+            mHeight = info.getHeight();
         }
 
         public Builder setWrapMode(int wrapMode) {
@@ -84,6 +97,11 @@ public abstract class GLESTexture {
         public Builder setFilter(int minFilter, int magFilter) {
             mMinFilter = minFilter;
             mMagFilter = magFilter;
+            return this;
+        }
+
+        public Builder setInternalFormat(int internalFormat) {
+            mInternalFormat = internalFormat;
             return this;
         }
 
@@ -104,6 +122,7 @@ public abstract class GLESTexture {
         private void setTextureInfo(GLESTexture texture) {
             texture.setFilter(mMinFilter, mMagFilter);
             texture.setWrapMode(mWrapMode);
+            texture.setInternalFormat(mInternalFormat);
             texture.load();
         }
 
@@ -127,6 +146,21 @@ public abstract class GLESTexture {
 
             if (GLES20.GL_TEXTURE_2D == mTarget) {
                 texture = new GLESTexture2D(mWidth, mHeight, bitmap);
+            } else {
+                throw new IllegalArgumentException(
+                        "Should use load(Bitmap[] bitmaps) or use GL_TEXTURE_2D as target");
+            }
+
+            setTextureInfo(texture);
+
+            return texture;
+        }
+
+        public GLESTexture load(ByteBuffer data) {
+            GLESTexture texture = null;
+
+            if (GLES20.GL_TEXTURE_2D == mTarget) {
+                texture = new GLESCompressedTexture2D(mWidth, mHeight, data);
             } else {
                 throw new IllegalArgumentException(
                         "Should use load(Bitmap[] bitmaps) or use GL_TEXTURE_2D as target");

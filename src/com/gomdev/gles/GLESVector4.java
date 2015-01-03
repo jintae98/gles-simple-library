@@ -67,14 +67,14 @@ public class GLESVector4 {
     }
 
     public static GLESVector4 getNomalVector(GLESVector4 vector1,
-            GLESVector4 vector2) {
+                                             GLESVector4 vector2) {
         GLESVector4 normalVector = cross(vector1, vector2);
         normalVector.normalize();
         return normalVector;
     }
 
     public static GLESVector4 getNomalVector(float[] point1, float[] point2,
-            float[] point3) {
+                                             float[] point3) {
         GLESVector4 normalVector = cross(
                 new GLESVector4(point2[0] - point1[0], point2[1] - point1[1],
                         point2[2] - point1[2], 0f),

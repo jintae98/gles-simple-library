@@ -43,7 +43,7 @@ public class GLESGLState {
     }
 
     public void setBlendFuncSeperate(int srcColor, int dstColor,
-            int srcAlpha, int dstAlpha) {
+                                     int srcAlpha, int dstAlpha) {
         if (mBlendFunc == null) {
             mBlendFunc = new BlendFunc();
         }
