@@ -170,13 +170,16 @@ public class GLESShader {
             if (compiled[0] == 0) {
                 Log.e(TAG, "Could not compile shader " + shaderType + ":");
 
-                String log = GLES20.glGetShaderInfoLog(shader);
+//                String log = GLES20.glGetShaderInfoLog(shader);
+                String log = nGetShaderInfoLog(shader);
                 Log.e(TAG, log);
                 mCompileLog.append(log);
 
                 GLES20.glDeleteShader(shader);
                 shader = 0;
                 return false;
+            } else {
+                Log.d(TAG, "setShaderFromString() compile complete");
             }
         }
 
@@ -193,7 +196,8 @@ public class GLESShader {
         if (linkStatus[0] != GLES20.GL_TRUE) {
             Log.e(TAG, "Could not link program: ");
 
-            String log = GLES20.glGetProgramInfoLog(mProgram);
+//            String log = GLES20.glGetProgramInfoLog(mProgram);
+            String log = nGetProgramInfoLog(mProgram);
             Log.e(TAG, log);
             mCompileLog.append(log);
 
@@ -307,8 +311,12 @@ public class GLESShader {
         GLES20.glUseProgram(mProgram);
     }
 
-    private native int nLoadProgramBinary(int paramInt1, int paramInt2,
-                                          String paramString);
+    private native int nLoadProgramBinary(int program, int binaryFormat,
+                                          String fileName);
 
-    private native int nRetrieveProgramBinary(int paramInt, String paramString);
+    private native int nRetrieveProgramBinary(int program, String fileName);
+
+    private native String nGetShaderInfoLog(int shader);
+
+    private native String nGetProgramInfoLog(int program);
 }
