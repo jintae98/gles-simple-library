@@ -5,11 +5,14 @@ public class GLESConfig {
     public static final String TAG = "gomdev";
 
     public enum Version {
+        GLES_10,
+        GLES_11,
         GLES_20,
-        GLES_30
+        GLES_30,
+        GLES_31
     }
 
-    public static final Version GLES_VERSION = Version.GLES_20;
+    public static final Version DEFAULT_GLES_VERSION = Version.GLES_20;
 
     public static final int GL_ATC_RGB_AMD = 0x8C92;
     public static final int GL_ATC_RGBA_EXPLICIT_ALPHA_AMD = 0x8C93;

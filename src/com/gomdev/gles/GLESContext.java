@@ -13,7 +13,7 @@ public class GLESContext {
 
     private GLESRenderer mRenderer = null;
     private Context mContext = null;
-    private Version mGLESVersion = GLESConfig.GLES_VERSION;
+    private Version mGLESVersion = GLESConfig.DEFAULT_GLES_VERSION;
     private String mShaderErrorLog = null;
 
     public static GLESContext getInstance() {

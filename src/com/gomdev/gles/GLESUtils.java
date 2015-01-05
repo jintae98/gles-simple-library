@@ -1,7 +1,9 @@
 package com.gomdev.gles;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.pm.ConfigurationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
@@ -391,4 +393,21 @@ public class GLESUtils {
         sTitleBarHeight = contentViewTop - sStatusBarHeight;
     }
 
+    public static GLESConfig.Version getGLESVersion(Context context) {
+        ActivityManager am = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+
+        ConfigurationInfo info = am.getDeviceConfigurationInfo();
+
+        if (info.reqGlEsVersion >= 0x31000) {
+            return GLESConfig.Version.GLES_31;
+        } else if (info.reqGlEsVersion >= 0x30000) {
+            return GLESConfig.Version.GLES_30;
+        } else if (info.reqGlEsVersion >= 0x20000) {
+            return GLESConfig.Version.GLES_20;
+        } else if (info.reqGlEsVersion >= 0x10000) {
+            return GLESConfig.Version.GLES_10;
+        }
+        return GLESConfig.Version.GLES_10;
+    }
 }
