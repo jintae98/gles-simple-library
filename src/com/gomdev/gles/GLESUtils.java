@@ -410,4 +410,9 @@ public class GLESUtils {
         }
         return GLESConfig.Version.GLES_10;
     }
+
+    public static boolean checkGLESExtension(String extension) {
+        String extensions = " " + GLES20.glGetString(GLES20.GL_EXTENSIONS) + " ";
+        return extensions.contains(extension);
+    }
 }

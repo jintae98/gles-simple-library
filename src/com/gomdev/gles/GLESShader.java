@@ -178,8 +178,6 @@ public class GLESShader {
                 GLES20.glDeleteShader(shader);
                 shader = 0;
                 return false;
-            } else {
-                Log.d(TAG, "setShaderFromString() compile complete");
             }
         }
 

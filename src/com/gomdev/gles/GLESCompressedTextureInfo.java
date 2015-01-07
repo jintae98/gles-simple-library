@@ -12,24 +12,51 @@ public class GLESCompressedTextureInfo {
 
     private int mWidth;
     private int mHeight;
+    private int mInternalFormat;
+    private int mBlockSize;
     private ByteBuffer mData;
 
-    public GLESCompressedTextureInfo(int width, int height, ByteBuffer data) {
+    public GLESCompressedTextureInfo() {
+    }
+
+    public void setWidth(int width) {
         mWidth = width;
-        mHeight = height;
-        mData = data;
     }
 
     public int getWidth() {
         return mWidth;
     }
 
+    public void setHeight(int height) {
+        mHeight = height;
+    }
+
     public int getHeight() {
         return mHeight;
     }
 
+    public void setData(ByteBuffer data) {
+        mData = data;
+    }
+
     public ByteBuffer getData() {
         return mData;
+    }
+
+    public void setInternalFormat(int format) {
+        mInternalFormat = format;
+    }
+
+    public int getInternalFormat() {
+        return mInternalFormat;
+    }
+
+    public void setBlockSize(int blockSize) {
+        mBlockSize = blockSize;
+    }
+
+    public int getBlockSize() {
+        return mBlockSize;
     }
 
 }
