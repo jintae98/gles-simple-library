@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
@@ -414,5 +415,45 @@ public class GLESUtils {
     public static boolean checkGLESExtension(String extension) {
         String extensions = " " + GLES20.glGetString(GLES20.GL_EXTENSIONS) + " ";
         return extensions.contains(extension);
+    }
+
+    public static Bitmap drawTextToBitmap(Context context, int x, int y, int width, int height, String str, Paint paint) {
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(bitmap);
+        bitmap.eraseColor(0xFFFFFFFF);
+
+//        Drawable background = context.getResources().getDrawable(bgResID);
+//        background.setBounds(0, 0, 256, 256);
+//        background.draw(canvas); // draw the background to our bitmap
+
+        canvas.drawText(str, x, y, paint);
+
+        return bitmap;
+    }
+
+    public static float[] makePositionCoord(float left, float top, float width, float height) {
+        float right = left + width;
+        float bottom = top - height;
+
+        float[] vertex = {
+                left, bottom, 0f,
+                right, bottom, 0f,
+                left, top, 0f,
+                right, top, 0f
+        };
+
+        return vertex;
+    }
+
+    public static float[] makeTexCoord(float minS, float minT, float maxS, float maxT) {
+        float[] texCoord = new float[]{
+                minS, maxT,
+                maxS, maxT,
+                minS, minT,
+                maxS, minT
+        };
+
+        return texCoord;
     }
 }
