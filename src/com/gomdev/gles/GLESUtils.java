@@ -9,6 +9,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -417,9 +418,7 @@ public class GLESUtils {
         return extensions.contains(extension);
     }
 
-    public static Bitmap drawTextToBitmap(Context context, int x, int y, int width, int height, String str, Paint paint) {
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-
+    public static Bitmap drawTextToBitmap(int x, int y, String str, Paint paint, Bitmap bitmap) {
         Canvas canvas = new Canvas(bitmap);
         bitmap.eraseColor(0xFFFFFFFF);
 
