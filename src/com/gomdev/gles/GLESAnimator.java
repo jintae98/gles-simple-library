@@ -178,6 +178,26 @@ public class GLESAnimator {
         mDuration = (end - start);
     }
 
+    public void setValues(GLESVector3 from, GLESVector3 to) {
+        mUseVector = true;
+        mIsSetValue = true;
+
+        mFrom = from;
+        mTo = to;
+
+        mDistance.set(mTo.mX - mFrom.mX, mTo.mY - mFrom.mY, mTo.mZ - mFrom.mZ);
+    }
+
+    public void setValues(float from, float to) {
+        mUseVector = false;
+        mIsSetValue = true;
+
+        mFromValue = from;
+        mToValue = to;
+
+        mDistance.set(mToValue - mFromValue, 0.0F, 0.0F);
+    }
+
     public void setInterpolator(Interpolator paramInterpolator) {
         mInterpolator = paramInterpolator;
     }
