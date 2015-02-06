@@ -8,8 +8,6 @@ public abstract class GLESSpatial {
     static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
-    private static float[] sTempMatrix = new float[16];
-
     protected boolean mIsVisible = true;
 
     private GLESSpatial mParent = null;
@@ -50,10 +48,14 @@ public abstract class GLESSpatial {
         }
 
         if (mParent != null) {
+            float[] tempMatrix = GLESMatrixPool.getMatrix();
+
             GLESTransform parentWT = mParent.getWorldTransform();
-            Matrix.multiplyMM(sTempMatrix, 0, parentWT.getMatrix(), 0,
+            Matrix.multiplyMM(tempMatrix, 0, parentWT.getMatrix(), 0,
                     mLocalTransform.getMatrix(), 0);
-            mWorldTransform.setMatrix(sTempMatrix);
+            mWorldTransform.setMatrix(tempMatrix);
+
+            GLESMatrixPool.releaseMatrix(tempMatrix);
         } else {
             mWorldTransform.setMatrix(mLocalTransform.getMatrix());
         }
