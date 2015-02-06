@@ -5,10 +5,10 @@ public class GLESRectF {
     static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
-    public float mX = 0;
-    public float mY = 0;
-    public float mWidth = 0;
-    public float mHeight = 0;
+    float mX = 0;
+    float mY = 0;
+    float mWidth = 0;
+    float mHeight = 0;
 
     public GLESRectF() {
 
@@ -19,6 +19,45 @@ public class GLESRectF {
         mY = y;
         mWidth = width;
         mHeight = height;
+    }
+
+    public void set(float x, float y, float width, float height) {
+        mX = x;
+        mY = y;
+        mWidth = width;
+        mHeight = height;
+    }
+
+    public void setX(float x) {
+        mX = x;
+    }
+
+    public float getX() {
+        return mX;
+    }
+
+    public void setY(float y) {
+        mY = y;
+    }
+
+    public float getY() {
+        return mY;
+    }
+
+    public void setWidth(float width) {
+        mWidth = width;
+    }
+
+    public float getWidth() {
+        return mWidth;
+    }
+
+    public void setHeight(float height) {
+        mHeight = height;
+    }
+
+    public float getHeight() {
+        return mHeight;
     }
 
     @Override

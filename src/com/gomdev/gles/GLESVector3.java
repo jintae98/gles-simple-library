@@ -5,9 +5,9 @@ public class GLESVector3 {
     static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
-    public float mX = 0.0F;
-    public float mY = 0.0F;
-    public float mZ = 0.0F;
+    float mX = 0.0F;
+    float mY = 0.0F;
+    float mZ = 0.0F;
 
     public GLESVector3() {
         mX = 0f;
@@ -31,6 +31,30 @@ public class GLESVector3 {
         mX = array[0];
         mY = array[1];
         mZ = array[2];
+    }
+
+    public void setX(float x) {
+        mX = x;
+    }
+
+    public float getX() {
+        return mX;
+    }
+
+    public void setY(float y) {
+        mY = y;
+    }
+
+    public float getY() {
+        return mY;
+    }
+
+    public void setZ(float z) {
+        mZ = z;
+    }
+
+    public float getZ() {
+        return mZ;
     }
 
     public static GLESVector3 add(GLESVector3 vector1, GLESVector3 vector2) {
@@ -128,6 +152,6 @@ public class GLESVector3 {
     }
 
     public String toString() {
-        return "gomdev GLESVector mX=" + mX + " mY=" + mY + " mZ=" + mZ;
+        return "GLESVector mX=" + mX + " mY=" + mY + " mZ=" + mZ;
     }
 }

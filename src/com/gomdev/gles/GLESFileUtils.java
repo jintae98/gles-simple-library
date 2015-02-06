@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class GLESFileUtils {
+public final class GLESFileUtils {
     static final String CLASS = "GLESFileUtils";
     static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;

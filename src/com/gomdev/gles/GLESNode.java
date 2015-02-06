@@ -11,13 +11,13 @@ public class GLESNode extends GLESSpatial {
 
     private ArrayList<GLESSpatial> mChildList = new ArrayList<GLESSpatial>();
 
-    GLESNode() {
+    public GLESNode() {
         super();
 
         init();
     }
 
-    GLESNode(String name) {
+    public GLESNode(String name) {
         super(name);
 
         init();
@@ -46,6 +46,10 @@ public class GLESNode extends GLESSpatial {
 
     @Override
     public void draw(GLESRenderer renderer) {
+        if (getVisibility() == false) {
+            return;
+        }
+
         int size = mChildList.size();
         for (int i = 0; i < size; i++) {
             mChildList.get(i).draw(renderer);
@@ -54,6 +58,10 @@ public class GLESNode extends GLESSpatial {
 
     @Override
     public void update(double applicationTime, boolean parentHasChanged) {
+        if (getVisibility() == false) {
+            return;
+        }
+
         if (parentHasChanged == true) {
             needToUpdate();
         }

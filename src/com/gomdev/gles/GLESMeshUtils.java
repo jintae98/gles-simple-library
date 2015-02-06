@@ -6,7 +6,7 @@ import android.util.Log;
 import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
 import com.gomdev.gles.GLESVertexInfo.RenderType;
 
-public class GLESMeshUtils {
+public final class GLESMeshUtils {
     static final String CLASS = "GLESMeshUtils";
     static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;

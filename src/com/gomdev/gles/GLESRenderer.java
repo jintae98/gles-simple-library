@@ -4,8 +4,6 @@ import android.util.Log;
 
 import com.gomdev.gles.GLESConfig.Version;
 import com.gomdev.gles.GLESVertexInfo.RenderType;
-import com.gomdev.gles.gles20.GLES20Renderer;
-import com.gomdev.gles.gles30.GLES30Renderer;
 
 public abstract class GLESRenderer {
     static final String CLASS = "GLESRenderer";
@@ -55,10 +53,6 @@ public abstract class GLESRenderer {
     }
 
     void draw(GLESObject object) {
-        if (object.getVisibility() == false) {
-            return;
-        }
-
         applyCamera(object);
         applyTransform(object);
         setGLState(object);

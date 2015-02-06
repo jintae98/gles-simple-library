@@ -5,8 +5,8 @@ import java.nio.ByteBuffer;
 /**
  * Created by gomdev on 15. 1. 2..
  */
-public class GLESCompressedTextureInfo {
-    static final String CLASS = "GLESCompressedTexture";
+public final class GLESCompressedTextureInfo {
+    static final String CLASS = "GLESCompressedTextureInfo";
     static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 

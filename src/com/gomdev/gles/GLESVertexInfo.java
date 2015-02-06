@@ -5,7 +5,7 @@ import android.util.SparseArray;
 import java.nio.Buffer;
 import java.nio.ShortBuffer;
 
-public class GLESVertexInfo {
+public final class GLESVertexInfo {
     static final String CLASS = "GLESVertexInfo";
     static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
@@ -38,6 +38,8 @@ public class GLESVertexInfo {
 
     private PrimitiveMode mPrimitiveMode = PrimitiveMode.TRIANGLES;
     private RenderType mRenderType = RenderType.DRAW_ELEMENTS;
+
+    private int mNumOfVertex = 0;
     private int mNumOfInstance = 0;
 
     private boolean mUseIndex = false;
@@ -105,11 +107,18 @@ public class GLESVertexInfo {
         return attribInfo.mBuffer;
     }
 
+    public void setNumOfVertex(int numOfVertex) {
+        mNumOfVertex = numOfVertex;
+    }
+
+    public int getNumOfVertex() {
+        return mNumOfVertex;
+    }
+
     public int getNumOfElements(int index) {
         AttributeInfo attribInfo = mAttribs.get(index);
         if (attribInfo == null) {
-            throw new IllegalArgumentException("index=" + index
-                    + " AttribInfo is null");
+            return 0;
         }
         return attribInfo.mNumOfElements;
     }

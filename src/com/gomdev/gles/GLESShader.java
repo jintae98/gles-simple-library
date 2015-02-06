@@ -1,7 +1,6 @@
 package com.gomdev.gles;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.opengl.GLES20;
 import android.util.Log;
 
@@ -10,13 +9,12 @@ import com.gomdev.gles.GLESConfig.Version;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GLESShader {
+public final class GLESShader {
     static final String CLASS = "GLESShader";
     static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
     private final Context mContext;
-    private final Resources mRes;
 
     private final Version mVersion;
 
@@ -36,7 +34,6 @@ public class GLESShader {
 
     public GLESShader(Context context) {
         mContext = context;
-        mRes = context.getResources();
         mProgram = GLES20.glCreateProgram();
 
         if (mProgram == 0) {
@@ -186,7 +183,7 @@ public class GLESShader {
         return true;
     }
 
-    private boolean linkProgram() {
+    public boolean linkProgram() {
         GLES20.glLinkProgram(mProgram);
 
         int[] linkStatus = new int[1];

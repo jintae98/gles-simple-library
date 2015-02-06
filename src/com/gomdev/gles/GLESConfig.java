@@ -1,6 +1,6 @@
 package com.gomdev.gles;
 
-public class GLESConfig {
+public final class GLESConfig {
     public static final boolean DEBUG = false;
     public static final String TAG = "gomdev";
 

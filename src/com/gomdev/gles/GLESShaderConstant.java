@@ -1,6 +1,6 @@
 package com.gomdev.gles;
 
-public class GLESShaderConstant {
+public final class GLESShaderConstant {
     // attrib
     public static final String ATTRIB_POSITION = "aPosition";
     public static final String ATTRIB_NORMAL = "aNormal";

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.gomdev.gles.GLESConfig.Version;
 
-public class GLESContext {
+public final class GLESContext {
     static final String CLASS = "GLESContext";
     static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;

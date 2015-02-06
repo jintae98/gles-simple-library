@@ -29,7 +29,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
-public class GLESUtils {
+public final class GLESUtils {
     static final String CLASS = "GLESUtils";
     static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;

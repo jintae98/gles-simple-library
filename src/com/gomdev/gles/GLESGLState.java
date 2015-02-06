@@ -2,7 +2,7 @@ package com.gomdev.gles;
 
 import android.opengl.GLES20;
 
-public class GLESGLState {
+public final class GLESGLState {
     public class BlendFunc {
         public int mSrcColor;
         public int mDstColor;

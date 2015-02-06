@@ -1,19 +1,8 @@
-package com.gomdev.gles.gles20;
+package com.gomdev.gles;
 
 import android.opengl.GLES20;
 import android.util.Log;
 
-import com.gomdev.gles.GLESCamera;
-import com.gomdev.gles.GLESConfig;
-import com.gomdev.gles.GLESGLState;
-import com.gomdev.gles.GLESObject;
-import com.gomdev.gles.GLESRect;
-import com.gomdev.gles.GLESRenderer;
-import com.gomdev.gles.GLESShader;
-import com.gomdev.gles.GLESShaderConstant;
-import com.gomdev.gles.GLESTexture;
-import com.gomdev.gles.GLESTransform;
-import com.gomdev.gles.GLESVertexInfo;
 import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
 
 import java.nio.FloatBuffer;
@@ -315,8 +304,18 @@ public class GLES20Renderer extends GLESRenderer {
 
         int positionIndex = shader.getPositionAttribIndex();
 
-        int numOfVertex = vertexInfo.getBuffer(positionIndex).capacity()
-                / vertexInfo.getNumOfElements(positionIndex);
+        int numOfVertex = 0;
+        int numOfElements = vertexInfo.getNumOfElements(positionIndex);
+        if (numOfElements == 0) {
+            numOfVertex = vertexInfo.getNumOfVertex();
+        } else {
+            numOfVertex = vertexInfo.getBuffer(positionIndex).capacity()
+                    / vertexInfo.getNumOfElements(positionIndex);
+        }
+
+        if (numOfVertex == 0) {
+            throw new IllegalArgumentException(object.getName() + " numOfVertex is 0");
+        }
 
         switch (mode) {
             case TRIANGLES:

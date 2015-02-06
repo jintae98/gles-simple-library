@@ -3,7 +3,7 @@ package com.gomdev.gles;
 import android.opengl.Matrix;
 import android.util.Log;
 
-public class GLESCamera {
+public final class GLESCamera {
     static final String CLASS = "GLESCamera";
     static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;

@@ -2,11 +2,15 @@ package com.gomdev.gles;
 
 import android.graphics.Bitmap;
 
-public class GLESBitmapInfo {
-    public int mWidth = 0;
-    public int mHeight = 0;
+public final class GLESBitmapInfo {
+    static final String CLASS = "GLESBitmapInfo";
+    static final String TAG = GLESConfig.TAG + "_" + CLASS;
+    static final boolean DEBUG = GLESConfig.DEBUG;
 
-    public int[] mData = null;
+    int mWidth = 0;
+    int mHeight = 0;
+
+    int[] mData = null;
 
     public GLESBitmapInfo() {
 
@@ -24,5 +28,22 @@ public class GLESBitmapInfo {
         mWidth = info.mWidth;
         mHeight = info.mHeight;
         mData = info.mData;
+    }
+
+    public float getWidth() {
+        return mWidth;
+    }
+
+    public float getHeight() {
+        return mHeight;
+    }
+
+    public int[] getData() {
+        return mData;
+    }
+
+    @Override
+    public String toString() {
+        return "GLESBitmapInfo width=" + mWidth + " height=" + mHeight;
     }
 }

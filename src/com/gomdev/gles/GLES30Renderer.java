@@ -1,19 +1,17 @@
-package com.gomdev.gles.gles30;
+package com.gomdev.gles;
 
+import android.annotation.TargetApi;
 import android.opengl.GLES30;
+import android.os.Build;
 import android.util.Log;
 
-import com.gomdev.gles.GLESConfig;
-import com.gomdev.gles.GLESObject;
-import com.gomdev.gles.GLESShader;
-import com.gomdev.gles.GLESVertexInfo;
 import com.gomdev.gles.GLESVertexInfo.PrimitiveMode;
-import com.gomdev.gles.gles20.GLES20Renderer;
 
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
-public class GLES30Renderer extends GLES20Renderer {
+@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+public final class GLES30Renderer extends GLES20Renderer {
     static final String CLASS = "GLES30Renderer";
     static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
@@ -262,12 +260,17 @@ public class GLES30Renderer extends GLES20Renderer {
 
             GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0);
         } else {
-            int numOfElements = vertexInfo.getNumOfElements(attribIndex);
-            GLES30.glVertexAttribPointer(GLESConfig.POSITION_LOCATION,
-                    numOfElements, GLES30.GL_FLOAT, false,
-                    numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
-                    vertexInfo.getBuffer(attribIndex));
-            GLES30.glEnableVertexAttribArray(GLESConfig.POSITION_LOCATION);
+            int numOfElements = 0;
+
+            attribIndex = shader.getPositionAttribIndex();
+            if (vertexInfo.useAttrib(attribIndex) == true) {
+                numOfElements = vertexInfo.getNumOfElements(attribIndex);
+                GLES30.glVertexAttribPointer(GLESConfig.POSITION_LOCATION,
+                        numOfElements, GLES30.GL_FLOAT, false,
+                        numOfElements * GLESConfig.FLOAT_SIZE_BYTES,
+                        vertexInfo.getBuffer(attribIndex));
+                GLES30.glEnableVertexAttribArray(GLESConfig.POSITION_LOCATION);
+            }
 
             attribIndex = shader.getNormalAttribIndex();
             if (vertexInfo.useAttrib(attribIndex) == true) {

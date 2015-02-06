@@ -3,7 +3,7 @@ package com.gomdev.gles;
 import android.opengl.Matrix;
 import android.util.Log;
 
-public class GLESTransform {
+public final class GLESTransform {
     static final String CLASS = "GLESTransform";
     static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;

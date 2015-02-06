@@ -10,6 +10,8 @@ public abstract class GLESSpatial {
 
     private static float[] sTempMatrix = new float[16];
 
+    protected boolean mIsVisible = true;
+
     private GLESSpatial mParent = null;
 
     private GLESTransform mWorldTransform = null;
@@ -81,6 +83,18 @@ public abstract class GLESSpatial {
 
     protected boolean getNeedToUpdate() {
         return mNeedToUpdate;
+    }
+
+    public void show() {
+        mIsVisible = true;
+    }
+
+    public void hide() {
+        mIsVisible = false;
+    }
+
+    public boolean getVisibility() {
+        return mIsVisible;
     }
 
     public void dump() {

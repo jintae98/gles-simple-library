@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
 /**
  * Created by gomdev on 15. 1. 3..
  */
-public class GLESCompressedTexture2D extends GLESTexture2D {
+public final class GLESCompressedTexture2D extends GLESTexture2D {
     static final String CLASS = "GLESTexture";
     static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;

@@ -7,11 +7,10 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public class GLESDDSDecoder {
+public final class GLESDDSDecoder {
     static final String CLASS = "GLESDDSDecoder";
     static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
-
 
     public static final int DDS_MAGIC_NUMBER = 0x20534444;  // 'DDS '
     public static final int DDS_MAGIC_NUMBER_SIZE = 4;

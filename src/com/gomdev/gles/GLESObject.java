@@ -15,8 +15,6 @@ public class GLESObject extends GLESSpatial {
     protected GLESVertexInfo mVertexInfo = null;
     protected boolean mUseVBO = true;
 
-    protected boolean mIsVisible = true;
-
     public GLESObject() {
         super();
     }
@@ -105,18 +103,6 @@ public class GLESObject extends GLESSpatial {
         mListener = listener;
     }
 
-    public void show() {
-        mIsVisible = true;
-    }
-
-    public void hide() {
-        mIsVisible = false;
-    }
-
-    public boolean getVisibility() {
-        return mIsVisible;
-    }
-
     protected void update() {
     }
 
@@ -125,6 +111,10 @@ public class GLESObject extends GLESSpatial {
 
     @Override
     public void update(double applicationTime, boolean parentHasChanged) {
+        if (getVisibility() == false) {
+            return;
+        }
+
         if (parentHasChanged == true) {
             needToUpdate();
         }
@@ -138,6 +128,10 @@ public class GLESObject extends GLESSpatial {
 
     @Override
     public void draw(GLESRenderer renderer) {
+        if (getVisibility() == false) {
+            return;
+        }
+
         mShader.useProgram();
 
         if (mListener != null) {
