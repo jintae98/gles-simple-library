@@ -36,12 +36,20 @@ public class GLESNode extends GLESSpatial {
         mChildList.remove(spatial);
     }
 
+    public void removeAll() {
+        mChildList.clear();
+    }
+
     public int getNumOfChild() {
         return mChildList.size();
     }
 
     public void setListener(GLESNodeListener listener) {
         mListener = listener;
+    }
+
+    public GLESNodeListener getListener() {
+        return mListener;
     }
 
     @Override

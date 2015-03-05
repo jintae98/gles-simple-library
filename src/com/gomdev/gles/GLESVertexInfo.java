@@ -1,5 +1,6 @@
 package com.gomdev.gles;
 
+import android.util.Log;
 import android.util.SparseArray;
 
 import java.nio.Buffer;
@@ -90,8 +91,9 @@ public final class GLESVertexInfo {
         AttributeInfo attribInfo = mAttribs.get(index);
 
         if (attribInfo == null) {
-            throw new IllegalArgumentException("index=" + index
-                    + " AttribInfo is null");
+            Log.e(TAG, "setBuffer() index=" + index + " attribInfo is null");
+            new Exception().printStackTrace();
+            return;
         }
 
         attribInfo.mIndex = index;
@@ -101,9 +103,11 @@ public final class GLESVertexInfo {
     public Buffer getBuffer(int index) {
         AttributeInfo attribInfo = mAttribs.get(index);
         if (attribInfo == null) {
-            throw new IllegalArgumentException("index=" + index
-                    + " AttribInfo is null");
+            Log.e(TAG, "getBuffer() index=" + index + " attribInfo is null");
+            new Exception().printStackTrace();
+            return null;
         }
+
         return attribInfo.mBuffer;
     }
 
@@ -118,26 +122,33 @@ public final class GLESVertexInfo {
     public int getNumOfElements(int index) {
         AttributeInfo attribInfo = mAttribs.get(index);
         if (attribInfo == null) {
+            Log.e(TAG, "getNumOfElements() index=" + index + " attribInfo is null");
+            new Exception().printStackTrace();
             return 0;
         }
+
         return attribInfo.mNumOfElements;
     }
 
     public void setVBOID(int index, int vboID) {
         AttributeInfo attribInfo = mAttribs.get(index);
         if (attribInfo == null) {
-            throw new IllegalArgumentException("index=" + index
-                    + " AttribInfo is null");
+            Log.e(TAG, "setVBOID() index=" + index + " vboID=" + vboID + " attribInfo is null");
+            new Exception().printStackTrace();
+            return;
         }
+
         attribInfo.mVBOID = vboID;
     }
 
     public int getVBOID(int index) {
         AttributeInfo attribInfo = mAttribs.get(index);
         if (attribInfo == null) {
-            throw new IllegalArgumentException("index=" + index
-                    + " AttribInfo is null");
+            Log.e(TAG, "getBuffer() index=" + index + " attribInfo is null");
+            new Exception().printStackTrace();
+            return -1;
         }
+
         return attribInfo.mVBOID;
     }
 

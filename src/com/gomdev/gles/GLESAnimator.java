@@ -12,8 +12,8 @@ public class GLESAnimator {
     private GLESAnimatorCallback mCallback;
     private Interpolator mInterpolator = null;
 
-    private GLESVector3 mCurrent;
-    private GLESVector3 mDistance;
+    private GLESVector3 mCurrent = new GLESVector3(0f, 0f, 0f);
+    private GLESVector3 mDistance = new GLESVector3(0f, 0f, 0f);
 
     private long mDuration = 1000L;
 
@@ -44,8 +44,6 @@ public class GLESAnimator {
     }
 
     public GLESAnimator(GLESAnimatorCallback callback) {
-        mCurrent = new GLESVector3(0f, 0f, 0f);
-        mDistance = new GLESVector3(0f, 0f, 0f);
         mIsSetValue = false;
         mCallback = callback;
     }
@@ -63,7 +61,6 @@ public class GLESAnimator {
     public void cancel() {
         mIsFinished = true;
         mIsStarted = false;
-        mInterpolator = null;
         if (mCallback != null)
             mCallback.onCancel();
     }
@@ -107,6 +104,7 @@ public class GLESAnimator {
         }
 
         normalizedDuration = mInterpolator.getInterpolation(normalizedDuration);
+
         if (mUseVector == true) {
             mCurrent.mX = mFrom.mX + mDistance.mX * normalizedDuration;
             mCurrent.mY = mFrom.mY + mDistance.mY * normalizedDuration;
@@ -198,8 +196,8 @@ public class GLESAnimator {
         mDistance.set(mToValue - mFromValue, 0.0F, 0.0F);
     }
 
-    public void setInterpolator(Interpolator paramInterpolator) {
-        mInterpolator = paramInterpolator;
+    public void setInterpolator(Interpolator interpolator) {
+        mInterpolator = interpolator;
     }
 
     public void setRepeat(boolean isRepeat) {

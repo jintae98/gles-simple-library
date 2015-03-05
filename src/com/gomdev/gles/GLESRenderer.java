@@ -65,6 +65,11 @@ public abstract class GLESRenderer {
 
         shader.useProgram();
 
+        if (object.useVBO() == true && object.isVBOSetup() == false) {
+            setupVBO(shader, object.getVertexInfo());
+            object.setupVBO(true);
+        }
+
         enableVertexAttribute(object);
 
         RenderType renderType = object.getVertexInfo().getRenderType();

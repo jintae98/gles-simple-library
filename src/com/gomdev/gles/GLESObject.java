@@ -14,6 +14,7 @@ public class GLESObject extends GLESSpatial {
 
     protected GLESVertexInfo mVertexInfo = null;
     protected boolean mUseVBO = true;
+    protected boolean mIsVBOSetup = false;
 
     public GLESObject() {
         super();
@@ -31,17 +32,18 @@ public class GLESObject extends GLESSpatial {
                               boolean useVAO) {
         mVertexInfo = vertexInfo;
         mUseVBO = useVBO;
-
-        mShader.useProgram();
-
-        GLESRenderer renderer = GLESContext.getInstance().getRenderer();
-        if (useVBO == true) {
-            renderer.setupVBO(mShader, vertexInfo);
-        }
     }
 
     public boolean useVBO() {
         return mUseVBO;
+    }
+
+    public boolean isVBOSetup() {
+        return mIsVBOSetup;
+    }
+
+    public void setupVBO(boolean isVBOSetup) {
+        mIsVBOSetup = isVBOSetup;
     }
 
     public boolean useVAO() {
@@ -101,6 +103,10 @@ public class GLESObject extends GLESSpatial {
 
     public void setListener(GLESObjectListener listener) {
         mListener = listener;
+    }
+
+    public GLESObjectListener getListener() {
+        return mListener;
     }
 
     protected void update() {
