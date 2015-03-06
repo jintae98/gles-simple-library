@@ -14,7 +14,9 @@ public class GLESObject extends GLESSpatial {
 
     protected GLESVertexInfo mVertexInfo = null;
     protected boolean mUseVBO = true;
+    protected boolean mUseVAO = false;
     protected boolean mIsVBOSetup = false;
+    protected boolean mIsVAOSetup = false;
 
     public GLESObject() {
         super();
@@ -32,6 +34,7 @@ public class GLESObject extends GLESSpatial {
                               boolean useVAO) {
         mVertexInfo = vertexInfo;
         mUseVBO = useVBO;
+        mUseVAO = false;
     }
 
     public boolean useVBO() {
@@ -48,6 +51,14 @@ public class GLESObject extends GLESSpatial {
 
     public boolean useVAO() {
         return false;
+    }
+
+    public boolean isVAOSetup() {
+        return false;
+    }
+
+    public void setupVAO(boolean isVAOSetup) {
+        mIsVAOSetup = false;
     }
 
     public GLESVertexInfo getVertexInfo() {

@@ -5,8 +5,6 @@ public class GLES30Object extends GLESObject {
     static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
 
-    private boolean mUseVAO = false;
-
     public GLES30Object() {
         super();
     }
@@ -22,9 +20,6 @@ public class GLES30Object extends GLESObject {
 
         if (useVAO == true && useVBO == true) {
             mUseVAO = useVAO;
-            GLES30Renderer renderer = (GLES30Renderer) GLESContext
-                    .getInstance().getRenderer();
-            renderer.setupVAO(this);
         } else if (useVAO == false) {
             mUseVAO = useVAO;
         }
@@ -33,5 +28,15 @@ public class GLES30Object extends GLESObject {
     @Override
     public boolean useVAO() {
         return mUseVAO;
+    }
+
+    @Override
+    public boolean isVAOSetup() {
+        return mIsVAOSetup;
+    }
+
+    @Override
+    public void setupVAO(boolean isVAOSetup) {
+        mIsVAOSetup = isVAOSetup;
     }
 }

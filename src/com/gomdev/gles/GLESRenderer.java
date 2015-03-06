@@ -70,6 +70,11 @@ public abstract class GLESRenderer {
             object.setupVBO(true);
         }
 
+        if (object.useVAO() == true && object.useVBO() == true && object.isVAOSetup() == false) {
+            setupVAO(shader, object.getVertexInfo());
+            object.setupVAO(true);
+        }
+
         enableVertexAttribute(object);
 
         RenderType renderType = object.getVertexInfo().getRenderType();
@@ -89,6 +94,10 @@ public abstract class GLESRenderer {
         }
 
         disableVertexAttribute(object);
+    }
+
+    public void setupVAO(GLESShader shader, GLESVertexInfo vertexInfo) {
+        Log.d(TAG, "should use OpenGL ES 3.0");
     }
 
     public abstract void setupVBO(GLESShader shader, GLESVertexInfo vertexInfo);

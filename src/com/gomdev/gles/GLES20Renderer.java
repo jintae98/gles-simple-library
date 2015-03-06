@@ -85,7 +85,7 @@ public class GLES20Renderer extends GLESRenderer {
         }
 
         if (mListener != null) {
-            mListener.setupVBO(mCurrentShader, vertexInfo);
+            mListener.setupVBO(shader, vertexInfo);
         }
     }
 
