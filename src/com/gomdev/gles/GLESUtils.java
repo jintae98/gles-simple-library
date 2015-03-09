@@ -417,6 +417,11 @@ public final class GLESUtils {
         return extensions.contains(extension);
     }
 
+    public static void checkGLError(String prefix) {
+        int error = GLES20.glGetError();
+        Log.d(TAG, "checkGLError() " + prefix + " 0x" + Integer.toHexString(error));
+    }
+
     public static Bitmap drawTextToBitmap(int x, int y, String str, Paint paint, Bitmap bitmap) {
         Canvas canvas = new Canvas(bitmap);
         bitmap.eraseColor(0xFFFFFFFF);

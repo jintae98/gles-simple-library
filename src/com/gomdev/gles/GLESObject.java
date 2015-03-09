@@ -35,6 +35,8 @@ public class GLESObject extends GLESSpatial {
         mVertexInfo = vertexInfo;
         mUseVBO = useVBO;
         mUseVAO = false;
+        mIsVBOSetup = false;
+        mIsVAOSetup = false;
     }
 
     public boolean useVBO() {

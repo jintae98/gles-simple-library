@@ -217,11 +217,26 @@ public final class GLESMeshUtils {
                                              boolean useNormal, boolean useTexCoord, boolean useColor,
                                              boolean useIndex, float red, float green, float blue) {
 
+        GLESVertexInfo vertexInfo = createPlane(shader,
+                width, height,
+                0f,
+                useNormal, useTexCoord, useColor, useIndex,
+                red, green, blue);
+
+        return vertexInfo;
+    }
+
+    public static GLESVertexInfo createPlane(GLESShader shader,
+                                             float width, float height,
+                                             float depth,
+                                             boolean useNormal, boolean useTexCoord, boolean useColor,
+                                             boolean useIndex, float red, float green, float blue) {
+
         float right = width * 0.5f;
         float left = -right;
         float top = height * 0.5f;
         float bottom = -top;
-        float z = 0.0f;
+        float z = depth;
 
         float[] vertex = {
                 left, bottom, z,

@@ -19,6 +19,9 @@ public class GLES20Renderer extends GLESRenderer {
 
     @Override
     public void setupVBO(GLESShader shader, GLESVertexInfo vertexInfo) {
+        if (DEBUG) {
+            Log.d(TAG, "setupVBO()");
+        }
         int[] ids = new int[1];
         GLES20.glGenBuffers(1, ids, 0);
 
@@ -91,6 +94,10 @@ public class GLES20Renderer extends GLESRenderer {
 
     @Override
     protected void applyCamera(GLESObject object) {
+        if (DEBUG) {
+            Log.d(TAG, "applyCamera() object=" + object.getName());
+        }
+
         GLESShader shader = object.getShader();
         GLESCamera camera = object.getCamera();
 
