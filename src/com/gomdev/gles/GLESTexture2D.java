@@ -5,10 +5,32 @@ import android.opengl.GLES20;
 import android.opengl.GLUtils;
 import android.util.Log;
 
+import java.util.LinkedList;
+
 public class GLESTexture2D extends GLESTexture {
     static final String CLASS = "GLESTexture";
     static final String TAG = GLESConfig.TAG + "_" + CLASS;
     static final boolean DEBUG = GLESConfig.DEBUG;
+    private static final boolean DEBUG_TEXTURE = false;
+
+    private static LinkedList<GLESTexture2D> mTextures = new LinkedList<>();
+
+    public static void clear() {
+        if (DEBUG_TEXTURE == true) {
+            mTextures.clear();
+        }
+    }
+
+    public static void add(GLESTexture2D texture) {
+        mTextures.add(texture);
+        Log.d(TAG, "add() textureID=" + texture.getTextureID() + " numOfTextures=" + mTextures.size());
+    }
+
+    public static void remove(GLESTexture2D texture) {
+        Log.d(TAG, "remove() texturIDe=" + texture.getTextureID());
+        mTextures.remove(texture);
+        Log.d(TAG, "\t numOfTextures=" + mTextures.size());
+    }
 
     private Bitmap mBitmap = null;
 
@@ -43,6 +65,10 @@ public class GLESTexture2D extends GLESTexture {
             textureIDs[0] = mTextureID;
             GLES20.glBindTexture(mTarget, 0);
             GLES20.glDeleteTextures(1, textureIDs, 0);
+
+            if (DEBUG_TEXTURE == true) {
+                GLESTexture2D.remove(this);
+            }
         }
     }
 
@@ -59,6 +85,7 @@ public class GLESTexture2D extends GLESTexture {
         } else {
             GLES20.glTexImage2D(mTarget, 0, GLES20.GL_RGBA, mWidth, mHeight, 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, null);
         }
+
         GLES20.glTexParameteri(mTarget, GLES20.GL_TEXTURE_WRAP_S,
                 mWrapMode);
         GLES20.glTexParameteri(mTarget, GLES20.GL_TEXTURE_WRAP_T,
@@ -69,6 +96,10 @@ public class GLESTexture2D extends GLESTexture {
                 GLES20.GL_TEXTURE_MIN_FILTER, mMinFilter);
 
         GLES20.glBindTexture(mTarget, 0);
+
+        if (DEBUG_TEXTURE == true) {
+            GLESTexture2D.add(this);
+        }
     }
 
     @Override

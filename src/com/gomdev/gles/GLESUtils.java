@@ -417,9 +417,14 @@ public final class GLESUtils {
         return extensions.contains(extension);
     }
 
-    public static void checkGLError(String prefix) {
+    public static boolean checkGLError(String prefix) {
         int error = GLES20.glGetError();
-        Log.d(TAG, "checkGLError() " + prefix + " 0x" + Integer.toHexString(error));
+        if (error != GLES20.GL_NO_ERROR) {
+            Log.d(TAG, "checkGLError() " + prefix + " 0x" + Integer.toHexString(error));
+            return false;
+        }
+
+        return true;
     }
 
     public static Bitmap drawTextToBitmap(int x, int y, String str, Paint paint, Bitmap bitmap) {
